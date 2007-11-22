@@ -11,3 +11,14 @@ The source code of the book is organized in the root of an imaginary user named 
 I make recommendations about where to put libraries and how to organize your development space. You don't have to take these recommendations. But being a reader, I have always found source code distributions from books to be cold and disconnected.
 
 ...more later...
+
+= Organization =
+
+{{{
+<root>
+  + etc       database scripts, configuration files
+  + lab       workshop for the application, full-monty
+  + opt       directory where third-party applications are extracted
+  + projects  working directory while studying a stage
+  + stages    snapshot of the application at the end of each chapter
+}}}
