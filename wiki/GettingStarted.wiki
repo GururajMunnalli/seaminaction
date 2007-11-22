@@ -6,9 +6,7 @@ First of all, I encourage you (read as "urge you") to purchase the book to get a
 
 = General approach =
 
-The source code of the book is organized in the root of an imaginary user named Tommy Twoputt, whose Unix/Linux/OS X username is twoputt and home directory is /home/twoputt.
-
-However, in no way does that mean that you must develop the application on those platforms. Working from the context of a home directory helps to make a connection with you, the developer.
+The source code of the book is organized in the root of an imaginary user named Tommy Twoputt, whose Unix/Linux/OS X username is twoputt and home directory is /home/twoputt. However, in no way does that mean that you must develop the application on those platforms. Working from the context of a home directory helps to make a connection with you, the developer.
 
 I make recommendations about where to put libraries and how to organize your development space. You don't have to take these recommendations. But being a reader, I have always found source code distributions from books to be cold and disconnected.
 
