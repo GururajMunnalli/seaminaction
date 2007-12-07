@@ -1,0 +1,11 @@
+#!/usr/bin/env groovy
+
+/**
+ * This script will display the version of an H2 JAR.
+ *
+ * Execute this script as follows:
+ * 
+ * groovy -cp h2.jar h2version 
+ */
+
+println "H2 " + org.h2.engine.Constants.version
