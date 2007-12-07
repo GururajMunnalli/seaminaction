@@ -201,15 +201,6 @@
             #{facility.uri}
         </h:column>
         <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="drivingRange #{facilityList.order=='drivingRange asc' ? messages.down : ( facilityList.order=='drivingRange desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='drivingRange asc' ? 'drivingRange desc' : 'drivingRange asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.drivingRange}
-        </h:column>
-        <h:column>
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Facility' : from}.xhtml" 
                    value="Select" 
