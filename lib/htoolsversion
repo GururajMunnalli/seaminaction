@@ -1,0 +1,11 @@
+#!/usr/bin/env groovy
+
+/**
+ * This script will display the version of an Hibernate Tools JAR.
+ *
+ * Execute this script as follows:
+ * 
+ * groovy -cp hibernate-tools.jar:commons-logging.jar htoolsversion 
+ */
+
+println "Hibernate Tools " + org.hibernate.tool.Version.VERSION
