@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 7, 2007 3:05:15 PM by Hibernate Tools 3.2.0.CR1
+// Generated Dec 7, 2007 6:48:49 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,21 +34,19 @@ public class Facility implements java.io.Serializable {
 	private String country;
 	private String phone;
 	private String uri;
-	private boolean drivingRange;
 	private Set<Course> courses = new HashSet<Course>(0);
 
 	public Facility() {
 	}
 
-	public Facility(String name, String type, boolean drivingRange) {
+	public Facility(String name, String type) {
 		this.name = name;
 		this.type = type;
-		this.drivingRange = drivingRange;
 	}
 	public Facility(String name, String description, String type,
 			String address, String city, String state, String zip,
 			String county, String country, String phone, String uri,
-			boolean drivingRange, Set<Course> courses) {
+			Set<Course> courses) {
 		this.name = name;
 		this.description = description;
 		this.type = type;
@@ -60,7 +58,6 @@ public class Facility implements java.io.Serializable {
 		this.country = country;
 		this.phone = phone;
 		this.uri = uri;
-		this.drivingRange = drivingRange;
 		this.courses = courses;
 	}
 
@@ -183,16 +180,6 @@ public class Facility implements java.io.Serializable {
 
 	public void setUri(String uri) {
 		this.uri = uri;
-	}
-
-	@Column(name = "DRIVING_RANGE", nullable = false)
-	@NotNull
-	public boolean isDrivingRange() {
-		return this.drivingRange;
-	}
-
-	public void setDrivingRange(boolean drivingRange) {
-		this.drivingRange = drivingRange;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "facility")
 	public Set<Course> getCourses() {

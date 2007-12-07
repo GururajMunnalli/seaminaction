@@ -126,13 +126,6 @@
                                rows="3"
                               value="#{facilityHome.instance.uri}"/>
             </s:decorate>
-
-            <s:decorate id="drivingRangeDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">drivingRange</ui:define>
-                <h:selectBooleanCheckbox id="drivingRange"
-                                   required="true"
-                                      value="#{facilityHome.instance.drivingRange}"/>
-            </s:decorate>
         
             <div style="clear:both">
                 <span class="required">*</span> 
