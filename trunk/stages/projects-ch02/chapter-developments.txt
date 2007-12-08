@@ -11,10 +11,10 @@ open18:
 
   - reverse engineered initial schema to create standard seam-gen CRUD application
   - put seam-gen.properties in root of project containing responses used during setup
-  - customized various entity property names using seam-gen.reveng.xml
-  - modified the build to accomodate GlassFish (change exploded archive folder name, disabled java:/ prefix on DataSource) (JBSEAM-1619)
+  - customized various entity property names and added supplemental methods using seam-gen.reveng.xml
   - set the default sort order to the name property for both Course and Facility listings
   - add color to the tee sets whereever they are displayed
   - sort the tee sets and holes displayed on the course page (CourseHome)
-  - build.xml had to be modified to support detection of Groovy files (JBSEAM-2319)
   - modified the style of messages to make them more attractive (JBSEAM-2033)
+  - modified the build to accomodate GlassFish (change exploded archive folder name, disabled java:/ prefix on DataSource) (JBSEAM-1619)
+  - build.xml had to be modified to support detection of Groovy files (JBSEAM-2319)
