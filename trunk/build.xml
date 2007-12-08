@@ -6,6 +6,7 @@
 	<property file="${seam.runtime}/build.properties" />
 	-->
 	<property name="jboss.deploy.dir" value="${jboss.home}/server/default/deploy" />
+	<property name="jboss.lib.dir" value="${jboss.home}/server/default/lib" />
 
 	<target name="remove-deployments">
 		<delete includeemptydirs="true">
@@ -114,6 +115,7 @@
 			<param name="subject" value="self" />
 			<param name="invoke.target" value="-copy-lib" />
 		</antcall>
+		<copy todir="${jboss.lib.dir}" file="${basedir}/lib/h2.jar" />
 	</target>
 
 	<!-- could consider using <subant> -->

@@ -34,12 +34,14 @@ chapter. Each projects-chxx folder contains a file named
 chapter-developments.txt which describes what setup was done and what changes
 were made to the application in that chapter.
 
-Before you can use these applications, you must "inflate" them with
-the jar files from the Seam distribution (this is done to keep the source code
-download size to a minimum).
+Before you can use these applications, you must "inflate" them with the jar
+files from the Seam distribution (this is done to keep the source code download
+size to a minimum). The h2.jar will also be copied to the JBoss AS installation
+during this process, though the ./seam setup command will also perform this
+task.
 
-Ensure that the property seam.runtime in build.xml points to your Seam
-distribution. Then run:
+To inflate the project stages, ensure that the property seam.runtime in
+build.xml points to your Seam distribution, then run:
 
    ant inflate-all
 
@@ -53,6 +55,7 @@ The files in each project that you need to update are:
    build.properties (location of JBoss AS)
    hibernate-console.properties (used for Eclipse Hibernate Console plugin)
    resources/*-ds.xml
+   resources/glassfish-datasource.xml
 
 Course directory databases for Open18
 --------------------------------------
