@@ -81,7 +81,7 @@
                     <f:param name="order" value="#{teeSetList.order=='color asc' ? 'color desc' : 'color asc'}"/>
                 </s:link>
             </f:facet>
-            #{teeSet.color}
+            <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
         </h:column>
         <h:column>
             <f:facet name="header">
