@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 7, 2007 6:48:49 PM by Hibernate Tools 3.2.0.CR1
+// Generated Dec 7, 2007 7:31:33 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,11 +31,11 @@ public class TeeSet implements java.io.Serializable {
 	private Course course;
 	private String name;
 	private String color;
-	private Double LCourseRating;
-	private Double LSlopeRating;
-	private Double MCourseRating;
-	private Double MSlopeRating;
-	private Integer pos;
+	private Double ladiesCourseRating;
+	private Double ladiesSlopeRating;
+	private Double mensCourseRating;
+	private Double mensSlopeRating;
+	private Integer position;
 	private Set<Tee> tees = new HashSet<Tee>(0);
 
 	public TeeSet() {
@@ -46,16 +46,17 @@ public class TeeSet implements java.io.Serializable {
 		this.color = color;
 	}
 	public TeeSet(Course course, String name, String color,
-			Double LCourseRating, Double LSlopeRating, Double MCourseRating,
-			Double MSlopeRating, Integer pos, Set<Tee> tees) {
+			Double ladiesCourseRating, Double ladiesSlopeRating,
+			Double mensCourseRating, Double mensSlopeRating, Integer position,
+			Set<Tee> tees) {
 		this.course = course;
 		this.name = name;
 		this.color = color;
-		this.LCourseRating = LCourseRating;
-		this.LSlopeRating = LSlopeRating;
-		this.MCourseRating = MCourseRating;
-		this.MSlopeRating = MSlopeRating;
-		this.pos = pos;
+		this.ladiesCourseRating = ladiesCourseRating;
+		this.ladiesSlopeRating = ladiesSlopeRating;
+		this.mensCourseRating = mensCourseRating;
+		this.mensSlopeRating = mensSlopeRating;
+		this.position = position;
 		this.tees = tees;
 	}
 
@@ -102,48 +103,48 @@ public class TeeSet implements java.io.Serializable {
 	}
 
 	@Column(name = "L_COURSE_RATING", precision = 17, scale = 0)
-	public Double getLCourseRating() {
-		return this.LCourseRating;
+	public Double getLadiesCourseRating() {
+		return this.ladiesCourseRating;
 	}
 
-	public void setLCourseRating(Double LCourseRating) {
-		this.LCourseRating = LCourseRating;
+	public void setLadiesCourseRating(Double ladiesCourseRating) {
+		this.ladiesCourseRating = ladiesCourseRating;
 	}
 
 	@Column(name = "L_SLOPE_RATING", precision = 17, scale = 0)
-	public Double getLSlopeRating() {
-		return this.LSlopeRating;
+	public Double getLadiesSlopeRating() {
+		return this.ladiesSlopeRating;
 	}
 
-	public void setLSlopeRating(Double LSlopeRating) {
-		this.LSlopeRating = LSlopeRating;
+	public void setLadiesSlopeRating(Double ladiesSlopeRating) {
+		this.ladiesSlopeRating = ladiesSlopeRating;
 	}
 
 	@Column(name = "M_COURSE_RATING", precision = 17, scale = 0)
-	public Double getMCourseRating() {
-		return this.MCourseRating;
+	public Double getMensCourseRating() {
+		return this.mensCourseRating;
 	}
 
-	public void setMCourseRating(Double MCourseRating) {
-		this.MCourseRating = MCourseRating;
+	public void setMensCourseRating(Double mensCourseRating) {
+		this.mensCourseRating = mensCourseRating;
 	}
 
 	@Column(name = "M_SLOPE_RATING", precision = 17, scale = 0)
-	public Double getMSlopeRating() {
-		return this.MSlopeRating;
+	public Double getMensSlopeRating() {
+		return this.mensSlopeRating;
 	}
 
-	public void setMSlopeRating(Double MSlopeRating) {
-		this.MSlopeRating = MSlopeRating;
+	public void setMensSlopeRating(Double mensSlopeRating) {
+		this.mensSlopeRating = mensSlopeRating;
 	}
 
 	@Column(name = "POS")
-	public Integer getPos() {
-		return this.pos;
+	public Integer getPosition() {
+		return this.position;
 	}
 
-	public void setPos(Integer pos) {
-		this.pos = pos;
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teeSet")
 	public Set<Tee> getTees() {
@@ -153,5 +154,36 @@ public class TeeSet implements java.io.Serializable {
 	public void setTees(Set<Tee> tees) {
 		this.tees = tees;
 	}
+
+	// The following is extra code specified in the hbm.xml files
+
+	@javax.persistence.Transient
+	public int getDistanceOut() {
+		int distance = 0;
+		for (Tee tee : tees) {
+			if (tee.getHole().getNumber() <= 9) {
+				distance += tee.getDistance();
+			}
+		}
+		return distance;
+	}
+
+	@javax.persistence.Transient
+	public int getDistanceIn() {
+		int distance = 0;
+		for (Tee tee : tees) {
+			if (tee.getHole().getNumber() > 9) {
+				distance += tee.getDistance();
+			}
+		}
+		return distance;
+	}
+
+	@javax.persistence.Transient
+	public int getTotalDistance() {
+		return getDistanceOut() + getDistanceIn();
+	}
+
+	// end of extra code specified in the hbm.xml files
 
 }
