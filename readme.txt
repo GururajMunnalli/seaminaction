@@ -61,9 +61,9 @@ Chapter 2 mentions that the DBA provides you with an H2 database that will be
 used to create the course directory module of the Open18 application.  Those
 two archives are located in the databases/ directory.
 
-   open18_db-empty.tar.gz - A database with only the course directory schema
+   open18-db-initial-empty.tar.gz - A database with only the golf course directory schema
 
-   open18_db-populated.tar.gz - A fully populated course directory database (26 facilities/courses)
+   open18-db-initial-seeded.tar.gz - A fully populated golf course directory database (26 facilities/courses)
 
 Both of these archives will extract to a folder named open18-db.
 
