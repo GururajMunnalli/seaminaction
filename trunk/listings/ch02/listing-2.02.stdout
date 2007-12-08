@@ -1,0 +1,9 @@
+create-project:
+  [echo] A new Seam project named 'open18' was created in the
+[CA]/home/twoputt/projects directory
+  [echo] Type 'seam explode' and go to http://localhost:8080/open18
+  [echo] Eclipse Users: Add the project into Eclipse using File >
+[CA]New > Project and select General > Project (not Java Project)
+  [echo] NetBeans Users: Open the project in NetBeans
+
+BUILD SUCCESSFUL
