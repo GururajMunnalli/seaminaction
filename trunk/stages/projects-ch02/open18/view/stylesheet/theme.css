@@ -307,13 +307,13 @@ td.seam-date-hover
 }
 
 .message li.infomsg {
-    background-image: url(../img/msg_info.gif);
+    background-image: url(../img/msg_info.png);
 }
 
 .message li.errormsg {
-    background-image: url(../img/msg_error.gif);
+    background-image: url(../img/msg_error.png);
 }
 
 .message li.warnmsg {
-    background-image: url(../img/msg_warn.gif);
+    background-image: url(../img/msg_warn.png);
 }
