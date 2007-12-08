@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 7, 2007 6:48:49 PM by Hibernate Tools 3.2.0.CR1
+// Generated Dec 7, 2007 7:31:33 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,29 +28,29 @@ public class Hole implements java.io.Serializable {
 	private Long id;
 	private Course course;
 	private int number;
-	private int MPar;
-	private Integer MHandicap;
-	private int LPar;
-	private Integer LHandicap;
+	private int mensPar;
+	private Integer mensHandicap;
+	private int ladiesPar;
+	private Integer ladiesHandicap;
 	private Set<Tee> tees = new HashSet<Tee>(0);
 
 	public Hole() {
 	}
 
-	public Hole(Course course, int number, int MPar, int LPar) {
+	public Hole(Course course, int number, int mensPar, int ladiesPar) {
 		this.course = course;
 		this.number = number;
-		this.MPar = MPar;
-		this.LPar = LPar;
+		this.mensPar = mensPar;
+		this.ladiesPar = ladiesPar;
 	}
-	public Hole(Course course, int number, int MPar, Integer MHandicap,
-			int LPar, Integer LHandicap, Set<Tee> tees) {
+	public Hole(Course course, int number, int mensPar, Integer mensHandicap,
+			int ladiesPar, Integer ladiesHandicap, Set<Tee> tees) {
 		this.course = course;
 		this.number = number;
-		this.MPar = MPar;
-		this.MHandicap = MHandicap;
-		this.LPar = LPar;
-		this.LHandicap = LHandicap;
+		this.mensPar = mensPar;
+		this.mensHandicap = mensHandicap;
+		this.ladiesPar = ladiesPar;
+		this.ladiesHandicap = ladiesHandicap;
 		this.tees = tees;
 	}
 
@@ -87,40 +87,40 @@ public class Hole implements java.io.Serializable {
 
 	@Column(name = "M_PAR", nullable = false)
 	@NotNull
-	public int getMPar() {
-		return this.MPar;
+	public int getMensPar() {
+		return this.mensPar;
 	}
 
-	public void setMPar(int MPar) {
-		this.MPar = MPar;
+	public void setMensPar(int mensPar) {
+		this.mensPar = mensPar;
 	}
 
 	@Column(name = "M_HANDICAP")
-	public Integer getMHandicap() {
-		return this.MHandicap;
+	public Integer getMensHandicap() {
+		return this.mensHandicap;
 	}
 
-	public void setMHandicap(Integer MHandicap) {
-		this.MHandicap = MHandicap;
+	public void setMensHandicap(Integer mensHandicap) {
+		this.mensHandicap = mensHandicap;
 	}
 
 	@Column(name = "L_PAR", nullable = false)
 	@NotNull
-	public int getLPar() {
-		return this.LPar;
+	public int getLadiesPar() {
+		return this.ladiesPar;
 	}
 
-	public void setLPar(int LPar) {
-		this.LPar = LPar;
+	public void setLadiesPar(int ladiesPar) {
+		this.ladiesPar = ladiesPar;
 	}
 
 	@Column(name = "L_HANDICAP")
-	public Integer getLHandicap() {
-		return this.LHandicap;
+	public Integer getLadiesHandicap() {
+		return this.ladiesHandicap;
 	}
 
-	public void setLHandicap(Integer LHandicap) {
-		this.LHandicap = LHandicap;
+	public void setLadiesHandicap(Integer ladiesHandicap) {
+		this.ladiesHandicap = ladiesHandicap;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hole")
 	public Set<Tee> getTees() {

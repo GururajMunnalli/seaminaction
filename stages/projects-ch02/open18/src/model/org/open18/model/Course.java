@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 7, 2007 6:48:49 PM by Hibernate Tools 3.2.0.CR1
+// Generated Dec 7, 2007 7:31:33 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -174,5 +174,86 @@ public class Course implements java.io.Serializable {
 	public void setHoles(Set<Hole> holes) {
 		this.holes = holes;
 	}
+
+	// The following is extra code specified in the hbm.xml files
+
+	@javax.persistence.Transient
+	public int getMensParOut() {
+		int par = 0;
+		for (Hole hole : holes) {
+			if (hole.getNumber() <= 9) {
+				par += hole.getMensPar();
+			}
+		}
+		return par;
+	}
+
+	@javax.persistence.Transient
+	public int getMensParIn() {
+		int par = 0;
+		for (Hole hole : holes) {
+			if (hole.getNumber() > 9) {
+				par += hole.getMensPar();
+			}
+		}
+		return par;
+	}
+
+	@javax.persistence.Transient
+	public int getTotalMensPar() {
+		return getMensParOut() + getMensParIn();
+	}
+
+	@javax.persistence.Transient
+	public int getLadiesParOut() {
+		int par = 0;
+		for (Hole hole : holes) {
+			if (hole.getNumber() <= 9) {
+				par += hole.getLadiesPar();
+			}
+		}
+		return par;
+	}
+
+	@javax.persistence.Transient
+	public int getLadiesParIn() {
+		int par = 0;
+		for (Hole hole : holes) {
+			if (hole.getNumber() > 9) {
+				par += hole.getLadiesPar();
+			}
+		}
+		return par;
+	}
+
+	@javax.persistence.Transient
+	public int getTotalLadiesPar() {
+		return getLadiesParOut() + getLadiesParIn();
+	}
+
+	@javax.persistence.Transient
+	public boolean isLadiesParUnique() {
+		for (Hole hole : holes) {
+			if (hole.getMensPar() != hole.getLadiesPar()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@javax.persistence.Transient
+	public boolean isLadiesHandicapUnique() {
+		for (Hole hole : holes) {
+			if (hole.getLadiesHandicap() != null
+					&& !hole.getLadiesHandicap().equals(hole.getMensHandicap())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// end of extra code specified in the hbm.xml files
 
 }
