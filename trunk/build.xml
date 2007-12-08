@@ -116,6 +116,7 @@
 		</antcall>
 	</target>
 
+	<!-- could consider using <subant> -->
 	<target name="-invoke-all">
 		<antcall target="-invoke-on-${subject}">
 			<param name="project.home" value="${basedir}/stages/projects-ch02/open18" />
@@ -147,6 +148,13 @@
 			<property name="driver.jar" value="${basedir}/lib/h2.jar"/>
 			<property name="icefaces.lib" value="../lib"/>
 		</ant>
+	</target>
+
+	<target name="add-svn-ignores">
+		<taskdef resource="svntask.properties" />
+		<svn javahl="false">
+			<propset path="${path}" name="svn:ignore" file="ignored-project-dirs" />
+		</svn>
 	</target>
 
 	<!-- deprecated
