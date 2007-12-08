@@ -12,7 +12,10 @@
 		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
 
 		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss} %p [%c{6}] %m%n"/>
+			<!--
 			<param name="ConversionPattern" value="%d{HH:mm:ss} [%p] %c#%M@%L => %m%n"/>
+			-->
 		</layout>
 	</appender>
 
@@ -24,13 +27,16 @@
 		<param name="Threshold" value="INFO"/>
 		-->
 		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss} %p [%c{6}] %m%n"/>
+			<!--
 			<param name="ConversionPattern" value="%d{HH:mm:ss} [%p] %c#%M@%L => %m%n"/>
+			-->
 		</layout>
 	</appender>
 
     <!-- digester is way too whiny -->
     <category name="org.apache.commons.digester.Digester">
-		<priority value="DEBUG" />
+		<priority value="WARN" />
     </category>
 
     <!-- log SQL queries -->
@@ -47,7 +53,9 @@
 	<root>
 		<priority value="INFO"/>
 		<appender-ref ref="CONSOLE"/>
+		<!--
 		<appender-ref ref="FILE"/>
+		-->
 	</root>
 
 </log4j:configuration>
