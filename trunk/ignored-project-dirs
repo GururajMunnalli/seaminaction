@@ -1,6 +1,8 @@
 bootstrap
+catalog.xml
 classes
 dist
 exploded-archives
 lib
+temp-testng-customsuite.xml
 test-build
