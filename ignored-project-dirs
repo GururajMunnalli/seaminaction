@@ -6,3 +6,4 @@ exploded-archives
 lib
 temp-testng-customsuite.xml
 test-build
+test-report
