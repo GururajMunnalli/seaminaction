@@ -4,9 +4,8 @@
 <hibernate-reverse-engineering>
 
   <table name="COURSE">
-    <meta attribute="extra-import">javax.persistence.Transient</meta>
     <meta attribute="class-code">
-@Transient
+@javax.persistence.Transient
 public int getMensParOut() {
     int par = 0;
     for (Hole hole : holes) {
@@ -17,7 +16,7 @@ public int getMensParOut() {
     return par;
 }
 
-@Transient
+@javax.persistence.Transient
 public int getMensParIn() {
     int par = 0;
     for (Hole hole : holes) {
@@ -28,12 +27,12 @@ public int getMensParIn() {
     return par;
 }
 
-@Transient
+@javax.persistence.Transient
 public int getTotalMensPar() {
     return getMensParOut() + getMensParIn();
 }
 
-@Transient
+@javax.persistence.Transient
 public int getLadiesParOut() {
     int par = 0;
     for (Hole hole : holes) {
@@ -44,7 +43,7 @@ public int getLadiesParOut() {
     return par;
 }
 
-@Transient
+@javax.persistence.Transient
 public int getLadiesParIn() {
     int par = 0;
     for (Hole hole : holes) {
@@ -55,12 +54,12 @@ public int getLadiesParIn() {
     return par;
 }
 
-@Transient
+@javax.persistence.Transient
 public int getTotalLadiesPar() {
     return getLadiesParOut() + getLadiesParIn();
 }
 
-@Transient
+@javax.persistence.Transient
 public boolean isLadiesParUnique() {
     for (Hole hole : holes) {
         if (hole.getMensPar() != hole.getLadiesPar()) {
@@ -71,7 +70,7 @@ public boolean isLadiesParUnique() {
     return false;
 }
 
-@Transient
+@javax.persistence.Transient
 public boolean isLadiesHandicapUnique() {
     for (Hole hole : holes) {
         if (hole.getLadiesHandicap() != null &amp;&amp;
@@ -93,9 +92,8 @@ public boolean isLadiesHandicapUnique() {
     <column name="L_HANDICAP" property="ladiesHandicap" />
   </table>
   <table name="TEE_SET">
-    <meta attribute="extra-import">javax.persistence.Transient</meta>
     <meta attribute="class-code">
-@Transient
+@javax.persistence.Transient
 public int getDistanceOut() {
     int distance = 0;
     for (Tee tee : tees) {
@@ -106,7 +104,7 @@ public int getDistanceOut() {
     return distance;
 }
 
-@Transient
+@javax.persistence.Transient
 public int getDistanceIn() {
     int distance = 0;
     for ( Tee tee : tees ) {
@@ -117,7 +115,7 @@ public int getDistanceIn() {
     return distance;
 }
 
-@Transient
+@javax.persistence.Transient
 public int getTotalDistance() {
     return getDistanceOut() + getDistanceIn();
 }
