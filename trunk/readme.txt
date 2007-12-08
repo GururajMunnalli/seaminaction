@@ -75,11 +75,11 @@ data in the database or not. The DDL file is also included in this directory,
 which you can use as a reference to prepare the schema for your database of
 choice.
 
-If you want to create the database from scratch, the following two commands
-will initialize the database and load the seed data:
+If you want to create the database from scratch, run the following two commands
+from this directory to initialize the database and load the seed data:
 
-   java -cp /home/twoputt/lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:/home/twoputt/databases/open18-db/h2 -user open18 -password tiger -script /home/twoputt/etc/schema/open18-initial-schema.sql
-   java -cp /home/twoputt/lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:/home/twoputt/databases/open18-db/h2 -user open18 -password tiger -script /home/twoputt/etc/schema/open18-seed-data.sql
+   java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
+   java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql
 
 Configuring JBoss AS
 --------------------
@@ -91,7 +91,7 @@ JBoss AS should be download and extracted to:
 You should also copy the custom launch configuration file into the JBoss AS
 installation directory:
 
-  cp /home/twoputt/etc/jboss-as-conf/run.conf /home/twoputt/opt/jboss-as-4.2.2.GA/bin/
+  cp etc/jboss-as-conf/run.conf jboss-as-4.2.2.GA/bin/
 
 This launch configuration provides memory settings that should avoid permgen
 errors when running on a Sun JVM and it also properly sets the JBOSS_HOME
@@ -104,6 +104,6 @@ After extracting the JBoss Seam 2.0.0.GA distribution, you need to update the
 hibernate-tools.jar used by seam-gen so that the reverse engineering of an H2
 database works properly:
 
-   cp /home/twoputt/lib/hibernate-tools.jar /home/twoputt/opt/jboss-seam-2.0.0.GA/seam-gen/lib
+   cp lib/hibernate-tools.jar opt/jboss-seam-2.0.0.GA/seam-gen/lib
 
 Now seam-gen is ready to use with H2.
