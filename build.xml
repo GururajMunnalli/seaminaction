@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<project name="seam-in-action" default="help" basedir=".">
+	<property name="jboss.home" value="${basedir}/opt/jboss-as-4.2.1.GA" />
+	<property name="seam.runtime" value="${basedir}/opt/jboss-seam-2.0.0.GA" />
+	<!--
+	<property file="${seam.runtime}/build.properties" />
+	-->
+	<property name="jboss.deploy.dir" value="${jboss.home}/server/default/deploy" />
+
+	<target name="remove-deployments">
+		<delete includeemptydirs="true">
+			<fileset dir="${jboss.deploy.dir}">
+				<exclude name="hsqldb-ds.xml" />
+				<exclude name="jmx-console.war/**" />
+				<include name="*.war/**" />
+				<include name="*.ear/**" />
+				<include name="*-ds.xml" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="clean-all">
+		<antcall target="-invoke-all">
+			<param name="subject" value="project" />
+			<param name="invoke.target" value="clean" />
+		</antcall>
+	</target>
+
+	<!-- java -cp lib/h2.jar org.h2.tools.Script -url jdbc:h2:file:databases/open18-db/h2\;IFEXISTS=true -user open18 -password tiger -script databases/export.sql -options NOSETTINGS DROP -->
+	<target name="export-schema">
+		<tstamp/>
+		<java classname="org.h2.tools.Script" fork="true">
+			<classpath>
+				<pathelement location="${basedir}/lib/h2.jar" />
+			</classpath>
+			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2;IFEXISTS=true" />
+			<arg value="-user"/><arg value="open18"/>
+			<arg value="-password"/><arg value="tiger"/>
+			<arg value="-script"/><arg value="databases/export-${DSTAMP}.sql" />
+			<!-- add NODATA to options to exclude data -->
+			<arg value="-options"/><arg value="NOSETTINGS DROP" />
+		</java>
+	</target>
+
+	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2\;IFEXISTS=true -user open18 -password tiger -script databases/import.sql -->
+	<target name="import-schema">
+		<java classname="org.h2.tools.RunScript" fork="true">
+			<classpath>
+				<pathelement location="${basedir}/lib/h2.jar" />
+			</classpath>
+			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2;IFEXISTS=true" />
+			<arg value="-user"/><arg value="open18"/>
+			<arg value="-password"/><arg value="tiger"/>
+			<arg value="-script"/><arg value="databases/import.sql"/>
+		</java>
+	</target>
+
+	<target name="launch-h2-console">
+		<echo message="Launching H2 admin console... (use Ctrl+C to shutdown)" />
+		<java classname="org.h2.tools.Server" fork="true">
+			<classpath>
+				<pathelement location="lib/h2.jar" />	
+			</classpath>
+			<arg value="-web"/>
+		</java>
+	</target>
+
+	<target name="launch-h2">
+		<echo message="Starting H2 and launching H2 admin console... (use Ctrl+C to shutdown)" />
+		<java classname="org.h2.tools.Server" fork="true">
+			<classpath>
+				<pathelement location="lib/h2.jar" />	
+			</classpath>
+			<arg value="-tcp"/>
+			<arg value="-web"/>
+			<arg value="-baseDir"/><arg value="databases"/>
+		</java>
+	</target>
+
+	<target name="dist" depends="clean-all">
+		<tstamp />
+		<delete file="dist/seam-in-action-${DSTAMP}.zip" />
+		<zip zipfile="dist/seam-in-action-${DSTAMP}.zip">
+			<zipfileset prefix="seam-in-action" dir="${basedir}">
+				<include name="build.xml" />
+				<include name="readme.txt" />
+				<include name="lib/h2.jar" />
+				<include name="lib/jtidy*" />
+				<include name="lib/icefaces/**" />
+				<include name="stages/**" />
+				<include name="databases/open18-db/**" />
+				<include name="databases/open18-db*" />
+				<include name="databases/open18-directory*" />
+				<include name="etc/**" />
+
+				<!-- temporary hack to include empty project directory -->
+				<include name="projects/.directory" />
+
+				<!-- only include projects of interest
+				<include name="projects/golftips/**" />
+				<include name="projects/open18_war/**" />
+				<include name="projects/open18_clubhouse/**" />
+				<exclude name="projects/*/lib/**" />
+				-->
+
+				<exclude name="stages/*/*/lib/**" />
+				<exclude name="stages/*/*/bootstrap/**" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="inflate-all">
+		<antcall target="-invoke-all">
+			<param name="subject" value="self" />
+			<param name="invoke.target" value="-copy-lib" />
+		</antcall>
+	</target>
+
+	<target name="-invoke-all">
+		<antcall target="-invoke-on-${subject}">
+			<param name="project.home" value="${basedir}/stages/projects-ch02/open18" />
+		</antcall>
+		<!--
+		<antcall target="-invoke-on-${subject}">
+			<param name="project.home" value="${basedir}/stages/projects-ch04/open18" />
+		</antcall>
+		-->
+	</target>
+
+	<target name="-invoke-on-project">
+		<ant dir="${project.home}" target="${invoke.target}" inheritAll="false" />
+	</target>
+
+	<target name="-invoke-on-self">
+		<antcall target="${invoke.target}" />
+	</target>
+
+	<target name="-check-needs-inflating">
+		<condition property="project.needs.inflating" value="true">
+			<not><available file="${project.home}/lib/jboss-seam.jar"/></not>
+		</condition>
+	</target>
+
+	<target name="-copy-lib" depends="-check-needs-inflating" if="project.needs.inflating">
+		<ant dir="${seam.runtime}/seam-gen" target="copy-lib" inheritAll="false">
+			<property name="project.home" value="${project.home}"/>
+			<property name="driver.jar" value="${basedir}/lib/h2.jar"/>
+			<property name="icefaces.lib" value="../lib"/>
+		</ant>
+	</target>
+
+	<!-- deprecated
+	<target name="inflate">
+		<antcall target="inflate-ch01" />
+		<antcall target="inflate-ch02" />
+		<antcall target="inflate-ch04" />
+	</target>
+
+	<target name="inflate-ch01">
+		<antcall target="-copy-libs-icefaces">
+			<param name="project.dir" value="stages/ch01/golftips" />
+		</antcall>
+	</target>
+
+	<target name="inflate-ch02">
+		<antcall target="-copy-libs-standard">
+			<param name="project.dir" value="stages/ch02/open18_war" />
+		</antcall>
+	</target>
+
+	<target name="inflate-ch04">
+		<antcall target="-copy-libs-standard">
+			<param name="project.dir" value="stages/ch04/open18_clubhouse" />
+		</antcall>
+	</target>
+
+	<target name="-copy-libs-icefaces">
+		<copy todir="${project.dir}/lib" overwrite="true">
+			<fileset dir="${seam.runtime}/lib">
+				<exclude name="jsf-facelets.jar" />
+				<exclude name="ajax4jsf*.jar" />
+				<exclude name="richfaces*.jar" />
+			</fileset>
+			<fileset dir="${seam.runtime}/drools/lib"/>
+			<fileset dir="${seam.runtime}">
+				<include name="jboss-seam*.jar"/>
+				<exclude name="jboss-seam-gen.jar"/>
+			</fileset>
+			<fileset file="lib/h2.jar"/>
+			<fileset dir="lib/icefaces" />
+		</copy>
+		<copy todir="${project.dir}/bootstrap" overwrite="true">
+			<fileset dir="${seam.runtime}/bootstrap" />
+		</copy>
+	</target>
+
+	<target name="-copy-libs-standard">
+		<copy todir="${project.dir}/lib" overwrite="true">
+			<fileset dir="${seam.runtime}/lib" />
+			<fileset dir="${seam.runtime}/drools/lib"/>
+			<fileset dir="${seam.runtime}">
+				<include name="jboss-seam*.jar"/>
+				<exclude name="jboss-seam-gen.jar"/>
+			</fileset>
+			<fileset file="lib/h2.jar"/>
+		</copy>
+		<copy todir="${project.dir}/bootstrap" overwrite="true">
+			<fileset dir="${seam.runtime}/bootstrap" />
+		</copy>
+	</target>
+	-->
+
+</project>
