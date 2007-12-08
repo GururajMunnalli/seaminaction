@@ -17,9 +17,9 @@ Expected versions to retrieve:
    JBoss Seam - 2.0.0.GA
    Java SE - Sun JDK 1.6.0 
 
-After you have JBoss AS and JBoss Seam prepared, you are going to need to apply
-a change to Seam to fix a problem with reverse engineering an H2 database.
-Please see the section "Patching Seam to fix H2 support"
+After you have JBoss AS and JBoss Seam prepared, you need to update Seam to fix
+a problem with the H2 database support. Please see the section below named
+"Patching Seam to fix H2 support" for instructions.
 
 -------------------------------------------------------------------------------
 Please note that it is important to use Sun Java 6 when running seam-gen if you
