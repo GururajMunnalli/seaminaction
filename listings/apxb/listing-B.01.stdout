@@ -1,0 +1,19 @@
+bootstrap/
+build/
+build.properties
+build.xml
+changelog.txt
+classes/
+doc/
+examples/
+lgpl.txt
+lib/
+mail/
+readme.txt
+seam                #1
+seam2migration.txt
+seam.bat            #2
+seam-gen/           #3
+seam-text.g
+src/
+ui/

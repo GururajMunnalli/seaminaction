@@ -1,0 +1,52 @@
+open18/
+|-+ bootstrap/                                 #1
+|-+ exploded-archives/                         #2
+|-+ lib/                                       #3
+|-+ nbproject/                                 #4
+|-- resources/
+|   |-- META-INF/
+|   |   |-- persistence-dev-war.xml            #5
+|   |   |-- persistence-prod-war.xml           #5
+|   |   `-- persistence-test-war.xml           #5
+|   |-- WEB-INF/
+|   |   |-- components.xml                     #6
+|   |   |-- faces-config.xml
+|   |   |-- jboss-web.xml
+|   |   |-- pages.xml                          #7
+|   |   `-- web.xml
+|   |-- components.properties                  #8
+|   |-- import-dev.sql
+|   |-- import-prod.sql
+|   |-- import-test.sql
+|   |-- messages_<lang>.properties             #9
+|   |-- open18-dev-ds.xml                      #10
+|   |-- open18-prod-ds.xml                     #10
+|   |-- seam-gen.reveng.xml
+|   |-- seam.properties                        #11
+|   `-- security.drl
+|-- src/
+|   |-+ action/                                #12
+|   |-+ model/                                 #13
+|   `-+ test/
+|-- view/
+|   |-+ img/
+|   |-+ layout/
+|   |-+ stylesheet/
+|   |-- <entity>.page.xml                      #14
+|   |-- <entity>.xhml                          #14
+|   |-- <entity>List.page.xml                  #15
+|   |-- <entity>List.xhml                      #15
+|   |-- error.xhtml
+|   |-- home.xhtml
+|   |-- index.html
+|   |-- login.page.xml
+|   `-- login.xhtml
+|-- .classpath                                 #16
+|-- .project                                   #16
+|-- build-dev.properties                       #17
+|-- build-prod.properties                      #17
+|-- build.properties                           #18
+|-- build.xml                                  #19
+|-- explode.launch
+|-- hibernate-console.properties
+`-- open18.launch

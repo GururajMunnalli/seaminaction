@@ -1,0 +1,10 @@
+00:00:00,385 INFO  [Initialization] redeploying
+00:00:00,395 INFO  [Scanner] scanning:
+/home/twoputt/opt/jboss-as-4.2.1.GA/server/default/deploy
+[CA]/open18.war/WEB-INF/dev
+00:00:00,424 INFO  [Initialization] Installing components...
+...
+00:00:00,720 INFO  [Component] Component: courseList, scope: EVENT,
+type: JAVA_BEAN, class: org.open18.action.CourseList
+...
+00:00:00,491 INFO  [Initialization] done redeploying

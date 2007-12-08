@@ -1,0 +1,14 @@
+generate:
+
+  [echo] Reverse engineering database using JDBC driver
+[CA]/home/twoputt/lib/h2.jar
+  [echo] project=/home/twoputt/projects/open18
+  [echo] model=org.open18.model
+[hibernate] Executing Hibernate Tool with a JDBC Configuration
+[CA](for reverse engineering)
+(output suppressed)
+[javaformatter] Java formatting of 17 files completed. Skipped 0
+[CA]file(s).
+  [echo] Type 'seam restart' and go to http://localhost:8080/open18
+
+BUILD SUCCESSFUL
