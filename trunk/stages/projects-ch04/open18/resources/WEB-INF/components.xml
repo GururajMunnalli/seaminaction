@@ -6,6 +6,7 @@
             xmlns:bpm="http://jboss.com/products/seam/bpm"
             xmlns:security="http://jboss.com/products/seam/security"
             xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:auth="http://open18.org/components/auth"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
                 "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
@@ -14,6 +15,7 @@
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
+				 http://open18.org/components/auth-1.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
    <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
@@ -53,5 +55,50 @@
       <bpm:pageflow-definitions></bpm:pageflow-definitions>
    </bpm:jbpm>
    -->
-      
+
+   <!-- ===== Open 18 component definitions and configurations ===== -->
+
+   <!-- newGolfer | generic-style component *definition* -->
+   <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
+      <property name="dateJoined">#{currentDatetime}</property>
+   </component>
+
+   <!-- newGolfer | namespace-style component *definition* -->
+   <!--
+   <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}" />
+   -->
+
+   <!-- passwordBean | generic-style component *definition* -->
+   <!--
+   <component name="passwordBean" class="org.open18.auth.PasswordBean" scope="event" />
+   -->
+
+   <!-- passwordBean | namespace-style component *definition* -->
+   <auth:password-bean name="passwordBean" scope="event" />
+   
+   <!-- passwordManager | generic-style component *configuration* -->
+   <!--
+   <component name="passwordManager">
+      <property name="digestAlgorithm">SHA-1</property>
+      <property name="charset">UTF-8</property>
+   </component>
+   -->
+   
+   <!-- passwordManager | partial namespace-style component *configuration* -->
+   <!--
+   <component name="passwordManager">
+      <digestAlgorithm>SHA-1</digestAlgorithm>
+	  <charset>UTF-8</charset>
+   </component>
+   -->
+   
+   <!-- passwordManager | namespace-style component *configuration* variants -->
+   <auth:password-manager digest-algorithm="SHA-1" charset="UTF-8" />
+   <!--
+   <auth:password-manager>
+      <auth:digest-algorithm>SHA-1</auth:digest-algorithm>
+      <auth:charset>UTF-8</auth:charset>
+   </auth:password-manager>
+   -->
+
 </components>
