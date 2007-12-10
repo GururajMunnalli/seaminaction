@@ -10,6 +10,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import org.hibernate.validator.Email;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -48,6 +49,7 @@ public abstract class Member implements Serializable {
 	}
 
 	@Column(name = "email_address")
+	@Email
 	public String getEmailAddress() {
 		return emailAddress;
 	}
