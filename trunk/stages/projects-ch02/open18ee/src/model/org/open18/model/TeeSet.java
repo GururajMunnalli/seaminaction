@@ -23,8 +23,8 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table(name = "TEE_SET", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"COLOR", "COURSE_ID"}),
-		@UniqueConstraint(columnNames = {"POS", "COURSE_ID"})})
+		@UniqueConstraint(columnNames = {"POS", "COURSE_ID"}),
+		@UniqueConstraint(columnNames = {"COLOR", "COURSE_ID"})})
 public class TeeSet implements java.io.Serializable {
 
 	private Long id;
