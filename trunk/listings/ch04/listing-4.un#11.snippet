@@ -1,0 +1,4 @@
+PasswordManager passwordManager = new PasswordManager();
+passwordManager.setDigestAlgorithm("SHA-1");
+passwordManager.setCharset("UTF-8");
+Contexts.getEventContext().set("passwordManager", passwordManager);

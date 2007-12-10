@@ -1,0 +1,10 @@
+<component name="passwordManager"
+  class="org.open18.auth.PasswordManager"/>
+
+<component name="passwordManager"/>
+
+<component class="org.open18.auth.PasswordManager"/>
+
+<component name="passwordManager"
+  class="org.open18.auth.PasswordManager"
+  precedence="25"/>

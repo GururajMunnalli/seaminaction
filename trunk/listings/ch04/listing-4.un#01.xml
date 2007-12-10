@@ -1,0 +1,7 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd">
+<suite name="RegisterAction Tests" verbose="2" parallel="false">
+  <test name="RegisterAction Test">
+      <class name="org.open18.test.RegisterGolferIntegrationTest"/>
+    </classes>
+  </test>
+</suite>

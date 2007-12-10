@@ -1,0 +1,4 @@
+<component name="newGolfer"
+  class="org.open18.model.Golfer" scope="event"/>
+<component name="golferExample"
+  class="org.open18.model.Golfer" scope="event"/>

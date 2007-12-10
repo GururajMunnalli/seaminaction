@@ -1,0 +1,11 @@
+@Local
+public interface RegisterAction {
+    public void register();
+}
+
+@Stateful
+@Name("registerAction")
+@Scope(ScopeType.EVENT)
+public class RegisterActionBean implements RegisterAction {
+    public void register() {}
+}
