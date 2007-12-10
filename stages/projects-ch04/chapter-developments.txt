@@ -30,6 +30,6 @@ detail page name: Golfer
 ./seam new-action
 
 Seam component name: registerAction
-local interface name: register
+local interface name: RegisterAction
 action method name: register
 page name: register
