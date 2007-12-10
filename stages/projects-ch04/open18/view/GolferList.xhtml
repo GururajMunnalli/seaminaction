@@ -13,7 +13,7 @@
     <h:messages globalOnly="true" styleClass="message"/>
     
     <rich:panel>
-        <f:facet name="header">golferList</f:facet>
+        <f:facet name="header">GolferList</f:facet>
         
         <div class="results">
         
@@ -31,7 +31,7 @@
                     <f:facet name="header">Name</f:facet>
                     <s:link id="golfer" 
                          value="#{golfer.name}" 
-                         view="/golfer.xhtml">
+                         view="/Golfer.xhtml">
                         <f:param name="golferId" 
                                 value="#{golfer.id}"/>
                     </s:link>
@@ -45,7 +45,7 @@
     <div class="actionButtons">
         <s:button id="done" 
                value="Create golfer"
-                view="/golfer.xhtml"/>			  
+                view="/Golfer.xhtml"/>			  
     </div>
     
 </ui:define>
