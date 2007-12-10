@@ -1,0 +1,8 @@
+TODO:
+-----
+- need to be able to inflate the open18ee EAR project created for chapter 02
+- there is a problem with hibernate.hbm2ddl.auto=update with H2 in that it generates duplicate foreign keys
+- create a target to auto-generate the prepared databases (open18-db-initial-empty.zip, open18-db-initial-seeded.zip)
+- create a target to copy a stage over to the projects/databases workspaces
+- an ant target to replace all "/home/twoputt" references with their own root
+- support setting stage for build.properties/build.xml
