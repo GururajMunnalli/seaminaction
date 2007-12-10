@@ -1,0 +1,7 @@
+<component xmlns="http://jboss.com/products/seam/components"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+    http://jboss.com/products/seam/components
+    http://jboss.com/products/seam/components-2.0.xsd"
+  name="passwordBean" scope="event">
+</component>

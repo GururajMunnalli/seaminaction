@@ -1,0 +1,4 @@
+<component name="passwordManager">
+  <property name="digestAlgorithm">SHA-1</property>
+  <property name="charset">UTF-8</property>
+</component>
