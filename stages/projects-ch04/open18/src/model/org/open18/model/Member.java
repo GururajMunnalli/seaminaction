@@ -11,6 +11,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.hibernate.validator.Email;
+import org.hibernate.validator.Length;
+import org.hibernate.validator.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -33,6 +35,9 @@ public abstract class Member implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "username", nullable = false)
+	@Length(min = 6)
+	@NotNull
 	public String getUsername() {
 		return username;
 	}
@@ -40,7 +45,8 @@ public abstract class Member implements Serializable {
 		this.username = username;
 	}
 
-	@Column(name = "password_hash")
+	@Column(name = "password_hash", nullable = false)
+	@NotNull
 	public String getPasswordHash() {
 		return passwordHash;
 	}
