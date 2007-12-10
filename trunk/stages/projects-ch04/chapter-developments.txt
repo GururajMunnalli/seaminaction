@@ -1,0 +1,31 @@
+Developments made to the application that occurred in chapter 4 source code.
+The enhancements describe here may go beyond what is shown in the book.
+
+open18-db:
+
+  - updated using top-down development with MEMBER and GOLFER tables
+
+open18:
+
+  - hibernate.hbm2ddl.auto changed from validate to update to support top-down development 
+  - added Member and Golfer entities; Golfer extends from Member using joined inheritence (see JPA documentation)
+  - added Gender enum
+  - added RegisterAction, which serves as action handler for register screen
+  - added register.xhtml page for signing up a new golfer into the system
+  - added PasswordBean for capturing password and PasswordManager for validating password entry and encrypting password
+  - added RegisterActionTest to serve as unit test for RegisterAction component
+  - added RegisterGolferIntegerationTest for doing in-container testing of registration logic; currently test must be run with Java 5
+  - the seam-gen command was used twice in this chapter, with the following responses
+
+./seam new-entity
+
+entity class name: Golfer
+master page name: GolferList
+detail page name: Golfer
+
+./seam new-action
+
+Seam component name: registerAction
+local interface name: register
+action method name: register
+page name: register
