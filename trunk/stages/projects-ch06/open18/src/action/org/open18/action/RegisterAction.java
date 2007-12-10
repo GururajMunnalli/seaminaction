@@ -17,36 +17,36 @@ import org.open18.model.Golfer;
 @Name("registerAction")
 public class RegisterAction {
 
-    @Logger
-    private Log log;
-    
-    @In
-    FacesMessages facesMessages;
+	@Logger
+	private Log log;
+	
+	@In
+	FacesMessages facesMessages;
 
-    public String register() {
-        log.info("registerAction.register() action called");
-        log.info("Registering golfer #{newGolfer.username}");
-        Context eventContext = Contexts.getEventContext();
-        PasswordBean passwordBean =
-            (PasswordBean) eventContext.get("passwordBean");
-        if (!passwordBean.verify()) {
+	public String register() {
+		log.info("registerAction.register() action called");
+		log.info("Registering golfer #{newGolfer.username}");
+		Context eventContext = Contexts.getEventContext();
+		PasswordBean passwordBean =
+			(PasswordBean) eventContext.get("passwordBean");
+		if (!passwordBean.verify()) {
 			facesMessages
 				.addToControl("confirm",
 					"Confirmation password does not match");
-            return null;
-        }
+			return null;
+		}
 
-        Golfer newGolfer = (Golfer) Contexts
-            .lookupInStatefulContexts("newGolfer");
-        PasswordManager passwordManager = (PasswordManager) Component
-            .getInstance(PasswordManager.class);
-        newGolfer.setPasswordHash(passwordManager
-            .hash(passwordBean.getPassword()));
-        EntityManager entityManager =
-            (EntityManager) Component.getInstance("entityManager");
-        entityManager.persist(newGolfer);
-        facesMessages
-            .add("Welcome to the community, #{newGolfer.name}!");
-        return "/home.xhtml";
-    }
+		Golfer newGolfer = (Golfer) Contexts
+			.lookupInStatefulContexts("newGolfer");
+		PasswordManager passwordManager = (PasswordManager) Component
+			.getInstance(PasswordManager.class);
+		newGolfer.setPasswordHash(passwordManager
+			.hash(passwordBean.getPassword()));
+		EntityManager entityManager =
+			(EntityManager) Component.getInstance("entityManager");
+		entityManager.persist(newGolfer);
+		facesMessages
+			.add("Welcome to the community, #{newGolfer.name}!");
+		return "/home.xhtml";
+	}
 }
