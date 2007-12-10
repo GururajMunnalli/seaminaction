@@ -26,14 +26,24 @@
                                      auto-create="true"
                       persistence-unit-jndi-name="java:/open18eeEntityManagerFactory"/>
 
+   <!-- would be needed for a GlassFish deployment -->
+   <!--
+   <persistence:managed-persistence-context name="entityManager"
+                                     auto-create="true"
+                          entity-manager-factory="#{open18eeEntityManagerFactory}"/>
+
+   <persistence:entity-manager-factory name="open18eeEntityManagerFactory" 
+                      persistence-unit-name="open18ee"/>
+   -->
+
+
    <drools:rule-base name="securityRules">
-       <drools:rule-files>
-           <value>/security.drl</value>
-       </drools:rule-files>
+       <drools:rule-files><value>/security.drl</value></drools:rule-files>
    </drools:rule-base>
 
    <security:identity authenticate-method="#{authenticator.authenticate}"
-                           security-rules="#{securityRules}"/>
+                           security-rules="#{securityRules}"
+                              remember-me="true"/>
    
    <event type="org.jboss.seam.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>

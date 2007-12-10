@@ -7,7 +7,7 @@
              
    <persistence-unit name="open18ee">
       <provider>org.hibernate.ejb.HibernatePersistence</provider>
-      <jta-data-source>java:/open18eeDatasource</jta-data-source>
+      <jta-data-source>open18eeDatasource</jta-data-source>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
          <property name="hibernate.hbm2ddl.auto" value="validate"/>
@@ -15,6 +15,9 @@
          <property name="jboss.entity.manager.factory.jndi.name" value="java:/open18eeEntityManagerFactory"/>
          <property name="hibernate.default_catalog" value="H2"/>
          <property name="hibernate.default_schema" value="PUBLIC"/>
+         <!--
+         <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.SunONETransactionManagerLookup"/>
+         -->
       </properties>
    </persistence-unit>
     
