@@ -54,8 +54,9 @@ public abstract class Member implements Serializable {
 		this.passwordHash = passwordHash;
 	}
 
-	@Column(name = "email_address")
+	@Column(name = "email_address", nullable = false)
 	@Email
+	@NotNull
 	public String getEmailAddress() {
 		return emailAddress;
 	}
