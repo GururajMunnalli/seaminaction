@@ -1,4 +1,4 @@
-Developments made to the application source code in chapter 2.
+Developments made to the application source code in chapter 4.
 Please note that the enhancements described here go slightly beyond what is
 covered in the book.
 
