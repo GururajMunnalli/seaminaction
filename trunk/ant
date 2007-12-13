@@ -1,0 +1,25 @@
+#!/bin/sh
+############################################
+# ant bootstrap
+############################################
+
+DIRNAME=`dirname $0`
+
+if [ "x$SEAM_HOME" = "x" ]; then
+    SEAM_HOME=`ls -1d opt/jboss-seam*`
+fi
+
+# OS specific support (must be 'true' or 'false').
+cygwin=false;
+case "`uname`" in
+    CYGWIN*)
+        cygwin=true
+        ;;
+esac
+
+if $cygwin 
+then
+   java -cp "${JAVA_HOME}\lib\tools.jar;..\build\lib\ant-launcher.jar;..\build\lib\ant-nodeps.jar;..\build\lib\ant.jar" -Dant.home=${SEAM_HOME}\lib org.apache.tools.ant.launch.Launcher ${*}
+else
+   java -cp "${JAVA_HOME}/lib/tools.jar:${SEAM_HOME}/build/lib/ant-launcher.jar:${SEAM_HOME}/build/lib/ant-nodeps.jar:${SEAM_HOME}/build/lib/ant.jar" -Dant.home=${SEAM_HOME}/lib org.apache.tools.ant.launch.Launcher ${*}
+fi
