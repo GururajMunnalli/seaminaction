@@ -13,5 +13,3 @@ set SEAM_HOME="%DIRNAME%\opt\jboss-seam-2.0.0.GA"
 set ARGS=%ARGS% %*
 
 java -cp "%JAVA_HOME%\lib\tools.jar;%SEAM_HOME%\build\lib\ant-launcher.jar;%SEAM_HOME%\build\lib\ant-nodeps.jar;%SEAM_HOME%\build\lib\ant.jar" -Dant.home="%SEAM_HOME%\lib" org.apache.tools.ant.launch.Launcher -buildfile "%DIRNAME%\build.xml" %ARGS%
-
-goto END_NO_PAUSE
