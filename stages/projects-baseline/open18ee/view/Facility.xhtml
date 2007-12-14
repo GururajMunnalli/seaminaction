@@ -16,59 +16,71 @@
     <rich:panel>
         <f:facet name="header">Facility</f:facet>
 
-        <s:decorate id="name" template="layout/display.xhtml">
-            <ui:define name="label">name</ui:define>
-            #{facilityHome.instance.name}
-        </s:decorate>
 
-        <s:decorate id="description" template="layout/display.xhtml">
-            <ui:define name="label">description</ui:define>
-            #{facilityHome.instance.description}
-        </s:decorate>
-
-        <s:decorate id="type" template="layout/display.xhtml">
-            <ui:define name="label">type</ui:define>
-            #{facilityHome.instance.type}
-        </s:decorate>
 
         <s:decorate id="address" template="layout/display.xhtml">
             <ui:define name="label">address</ui:define>
             #{facilityHome.instance.address}
         </s:decorate>
 
+
         <s:decorate id="city" template="layout/display.xhtml">
             <ui:define name="label">city</ui:define>
             #{facilityHome.instance.city}
         </s:decorate>
 
-        <s:decorate id="state" template="layout/display.xhtml">
-            <ui:define name="label">state</ui:define>
-            #{facilityHome.instance.state}
-        </s:decorate>
-
-        <s:decorate id="zip" template="layout/display.xhtml">
-            <ui:define name="label">zip</ui:define>
-            #{facilityHome.instance.zip}
-        </s:decorate>
-
-        <s:decorate id="county" template="layout/display.xhtml">
-            <ui:define name="label">county</ui:define>
-            #{facilityHome.instance.county}
-        </s:decorate>
 
         <s:decorate id="country" template="layout/display.xhtml">
             <ui:define name="label">country</ui:define>
             #{facilityHome.instance.country}
         </s:decorate>
 
+
+        <s:decorate id="county" template="layout/display.xhtml">
+            <ui:define name="label">county</ui:define>
+            #{facilityHome.instance.county}
+        </s:decorate>
+
+
+        <s:decorate id="description" template="layout/display.xhtml">
+            <ui:define name="label">description</ui:define>
+            #{facilityHome.instance.description}
+        </s:decorate>
+
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">name</ui:define>
+            #{facilityHome.instance.name}
+        </s:decorate>
+
+
         <s:decorate id="phone" template="layout/display.xhtml">
             <ui:define name="label">phone</ui:define>
             #{facilityHome.instance.phone}
         </s:decorate>
 
+
+        <s:decorate id="state" template="layout/display.xhtml">
+            <ui:define name="label">state</ui:define>
+            #{facilityHome.instance.state}
+        </s:decorate>
+
+
+        <s:decorate id="type" template="layout/display.xhtml">
+            <ui:define name="label">type</ui:define>
+            #{facilityHome.instance.type}
+        </s:decorate>
+
+
         <s:decorate id="uri" template="layout/display.xhtml">
             <ui:define name="label">uri</ui:define>
             #{facilityHome.instance.uri}
+        </s:decorate>
+
+
+        <s:decorate id="zip" template="layout/display.xhtml">
+            <ui:define name="label">zip</ui:define>
+            #{facilityHome.instance.zip}
         </s:decorate>
 
         <div style="clear:both"/>
@@ -105,10 +117,6 @@
                 <h:outputText value="#{course.id}"/>
             </h:column>
             <h:column>
-                <f:facet name="header">name</f:facet>
-                <h:outputText value="#{course.name}"/>
-            </h:column>
-            <h:column>
                 <f:facet name="header">description</f:facet>
                 <h:outputText value="#{course.description}"/>
             </h:column>
@@ -125,8 +133,8 @@
                 <h:outputText value="#{course.greens}"/>
             </h:column>
             <h:column>
-                <f:facet name="header">yearBuilt</f:facet>
-                <h:outputText value="#{course.yearBuilt}"/>
+                <f:facet name="header">name</f:facet>
+                <h:outputText value="#{course.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">numHoles</f:facet>
@@ -135,6 +143,10 @@
             <h:column>
                 <f:facet name="header">signatureHole</f:facet>
                 <h:outputText value="#{course.signatureHole}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">yearBuilt</f:facet>
+                <h:outputText value="#{course.yearBuilt}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>

@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -58,29 +59,11 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="number #{holeList.order=='number asc' ? messages.down : ( holeList.order=='number desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='number asc' ? 'number desc' : 'number asc'}"/>
+                             value="ladiesHandicap #{holeList.order=='ladiesHandicap asc' ? messages.down : ( holeList.order=='ladiesHandicap desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='ladiesHandicap asc' ? 'ladiesHandicap desc' : 'ladiesHandicap asc'}"/>
                 </s:link>
             </f:facet>
-            #{hole.number}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="mensPar #{holeList.order=='mensPar asc' ? messages.down : ( holeList.order=='mensPar desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='mensPar asc' ? 'mensPar desc' : 'mensPar asc'}"/>
-                </s:link>
-            </f:facet>
-            #{hole.mensPar}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="mensHandicap #{holeList.order=='mensHandicap asc' ? messages.down : ( holeList.order=='mensHandicap desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='mensHandicap asc' ? 'mensHandicap desc' : 'mensHandicap asc'}"/>
-                </s:link>
-            </f:facet>
-            #{hole.mensHandicap}
+            #{hole.ladiesHandicap}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -94,11 +77,29 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="ladiesHandicap #{holeList.order=='ladiesHandicap asc' ? messages.down : ( holeList.order=='ladiesHandicap desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='ladiesHandicap asc' ? 'ladiesHandicap desc' : 'ladiesHandicap asc'}"/>
+                             value="mensHandicap #{holeList.order=='mensHandicap asc' ? messages.down : ( holeList.order=='mensHandicap desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='mensHandicap asc' ? 'mensHandicap desc' : 'mensHandicap asc'}"/>
                 </s:link>
             </f:facet>
-            #{hole.ladiesHandicap}
+            #{hole.mensHandicap}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="mensPar #{holeList.order=='mensPar asc' ? messages.down : ( holeList.order=='mensPar desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='mensPar asc' ? 'mensPar desc' : 'mensPar asc'}"/>
+                </s:link>
+            </f:facet>
+            #{hole.mensPar}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="number #{holeList.order=='number asc' ? messages.down : ( holeList.order=='number desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='number asc' ? 'number desc' : 'number asc'}"/>
+                </s:link>
+            </f:facet>
+            #{hole.number}
         </h:column>
         <h:column>
             <f:facet name="header">action</f:facet>

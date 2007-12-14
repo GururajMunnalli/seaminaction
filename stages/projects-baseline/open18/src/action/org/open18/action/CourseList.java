@@ -10,11 +10,11 @@ import java.util.Arrays;
 public class CourseList extends EntityQuery {
 
 	private static final String[] RESTRICTIONS = {
-			"lower(course.name) like concat(lower(#{courseList.course.name}),'%')",
 			"lower(course.description) like concat(lower(#{courseList.course.description}),'%')",
 			"lower(course.designer) like concat(lower(#{courseList.course.designer}),'%')",
 			"lower(course.fairways) like concat(lower(#{courseList.course.fairways}),'%')",
-			"lower(course.greens) like concat(lower(#{courseList.course.greens}),'%')",};
+			"lower(course.greens) like concat(lower(#{courseList.course.greens}),'%')",
+			"lower(course.name) like concat(lower(#{courseList.course.name}),'%')",};
 
 	private Course course = new Course();
 
