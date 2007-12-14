@@ -14,6 +14,58 @@
         </navigation>
     </page>
 
+    <page view-id="/Course*">
+        <action execute="#{courseHome.validateEntityFound}"
+            if="#{view.viewId eq '/Course.xhtml' or
+			    (view.viewId eq '/CourseEdit.xhtml' and courseHome.courseId != null)}"/>
+   
+        <navigation from-action="#{courseHome.validateEntityFound}">
+            <rule if-outcome="invalid">
+                <redirect view-id="/CourseList.xhtml">
+                    <message severity="WARN">
+                        The course you requested does not exist.
+                    </message>
+                </redirect>
+            </rule>
+        </navigation>
+    </page>
+	
+	<page view-id="/course/*" action="#{courseHome.parseRestfulUrl}">
+      <navigation from-action="#{courseHome.parseRestfulUrl}">
+        <rule if-outcome="view">
+          <redirect view-id="/Course.xhtml" />
+        </rule>
+		<rule if-outcome="edit">
+          <redirect view-id="/CourseEdit.xhtml" />
+        </rule>
+        <rule if-outcome="invalid">
+          <redirect view-id="/CourseList.xhtml">
+            <message severity="WARN">
+              The course you requested does not exist.
+		    </message>
+          </redirect>
+        </rule>
+      </navigation>
+    </page>
+	
+	<page view-id="/facility/*" action="#{facilityHome.parseRestfulUrl}">
+      <navigation from-action="#{facilityHome.parseRestfulUrl}">
+        <rule if-outcome="view">
+          <redirect view-id="/Facility.xhtml" />
+        </rule>
+		<rule if-outcome="edit">
+          <redirect view-id="/FacilityEdit.xhtml" />
+        </rule>
+        <rule if-outcome="invalid">
+          <redirect view-id="/FacilityList.xhtml">
+            <message severity="WARN">
+              The facility you requested does not exist.
+		    </message>
+          </redirect>
+        </rule>
+      </navigation>
+    </page>
+
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
             <message>Not found</message>

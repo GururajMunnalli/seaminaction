@@ -7,12 +7,23 @@
    
    <begin-conversation join="true"/>
    
+   <action execute="#{facilityHome.validateEntityFound}"
+      if="#{facilityHome.facilityId ne null}"/>
    <action execute="#{facilityHome.wire}"/>
    
    <param name="facilityFrom"/>
    <param name="facilityId" value="#{facilityHome.facilityId}"/>
 
-
+   <navigation from-action="#{facilityHome.validateEntityFound}">
+      <rule if-outcome="invalid">
+         <redirect view-id="/FacilityList.xhtml">
+            <message severity="WARN">
+              The facility you requested does not exist.
+            </message>
+         </redirect>
+      </rule>
+   </navigation>
+	
    <navigation from-action="#{facilityHome.persist}">
        <end-conversation/>
        <redirect view-id="/Facility.xhtml"/>
