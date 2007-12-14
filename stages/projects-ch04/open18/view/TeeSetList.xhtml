@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -18,13 +19,13 @@
         <rich:simpleTogglePanel label="TeeSet search parameters" switchType="ajax">
         
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" value="#{teeSetList.teeSet.name}"/>
+                <ui:define name="label">color</ui:define>
+                <h:inputText id="color" value="#{teeSetList.teeSet.color}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">color</ui:define>
-                <h:inputText id="color" value="#{teeSetList.teeSet.color}"/>
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" value="#{teeSetList.teeSet.name}"/>
             </s:decorate>
 
         
@@ -59,29 +60,20 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="course id #{teeSetList.order=='course.id asc' ? messages.down : ( teeSetList.order=='course.id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeSetList.order=='course.id asc' ? 'course.id desc' : 'course.id asc'}"/>
-                </s:link>
-            </f:facet>
-            #{teeSet.course.id}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="name #{teeSetList.order=='name asc' ? messages.down : ( teeSetList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeSetList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
-            </f:facet>
-            #{teeSet.name}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
                              value="color #{teeSetList.order=='color asc' ? messages.down : ( teeSetList.order=='color desc' ? messages.up : '' )}">
                     <f:param name="order" value="#{teeSetList.order=='color asc' ? 'color desc' : 'color asc'}"/>
                 </s:link>
             </f:facet>
             <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="course id #{teeSetList.order=='course.id asc' ? messages.down : ( teeSetList.order=='course.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeSetList.order=='course.id asc' ? 'course.id desc' : 'course.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{teeSet.course.id}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -118,6 +110,15 @@
                 </s:link>
             </f:facet>
             #{teeSet.mensSlopeRating}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="name #{teeSetList.order=='name asc' ? messages.down : ( teeSetList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeSetList.order=='name asc' ? 'name desc' : 'name asc'}"/>
+                </s:link>
+            </f:facet>
+            #{teeSet.name}
         </h:column>
         <h:column>
             <f:facet name="header">

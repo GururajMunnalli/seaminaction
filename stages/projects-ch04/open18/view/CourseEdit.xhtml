@@ -19,15 +19,7 @@
         <rich:panel>
             <f:facet name="header">#{courseHome.managed ? 'Edit' : 'Add'} Course</f:facet>
 
-            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" 
-                           size="50"
-                      maxlength="50"
-                          value="#{courseHome.instance.name}">
-                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
+
 
             <s:decorate id="descriptionDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">description</ui:define>
@@ -36,6 +28,7 @@
                                rows="3"
                               value="#{courseHome.instance.description}"/>
             </s:decorate>
+
 
             <s:decorate id="designerDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">designer</ui:define>
@@ -47,6 +40,8 @@
                 </h:inputText>
             </s:decorate>
 
+
+
             <s:decorate id="fairwaysDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">fairways</ui:define>
                 <h:inputText id="fairways" 
@@ -56,6 +51,7 @@
                     <a:support event="onblur" reRender="fairwaysDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
+
 
             <s:decorate id="greensDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">greens</ui:define>
@@ -67,13 +63,18 @@
                 </h:inputText>
             </s:decorate>
 
-            <s:decorate id="yearBuiltDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">yearBuilt</ui:define>
-                <h:inputText id="yearBuilt"
-                          value="#{courseHome.instance.yearBuilt}">
-                    <a:support event="onblur" reRender="yearBuiltDecoration" bypassUpdates="true"/>
+
+
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" 
+                           size="50"
+                      maxlength="50"
+                          value="#{courseHome.instance.name}">
+                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
+
 
             <s:decorate id="numHolesDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">numHoles</ui:define>
@@ -84,11 +85,22 @@
                 </h:inputText>
             </s:decorate>
 
+
             <s:decorate id="signatureHoleDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">signatureHole</ui:define>
                 <h:inputText id="signatureHole"
                           value="#{courseHome.instance.signatureHole}">
                     <a:support event="onblur" reRender="signatureHoleDecoration" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="yearBuiltDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">yearBuilt</ui:define>
+                <h:inputText id="yearBuilt"
+                          value="#{courseHome.instance.yearBuilt}">
+                    <a:support event="onblur" reRender="yearBuiltDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
         
@@ -150,18 +162,6 @@
                 #{facility.id}
             </h:column>
             <h:column>
-                <f:facet name="header">name</f:facet>
-                #{facility.name}
-            </h:column>
-            <h:column>
-                <f:facet name="header">description</f:facet>
-                #{facility.description}
-            </h:column>
-            <h:column>
-                <f:facet name="header">type</f:facet>
-                #{facility.type}
-            </h:column>
-            <h:column>
                 <f:facet name="header">address</f:facet>
                 #{facility.address}
             </h:column>
@@ -170,28 +170,40 @@
                 #{facility.city}
             </h:column>
             <h:column>
-                <f:facet name="header">state</f:facet>
-                #{facility.state}
-            </h:column>
-            <h:column>
-                <f:facet name="header">zip</f:facet>
-                #{facility.zip}
+                <f:facet name="header">country</f:facet>
+                #{facility.country}
             </h:column>
             <h:column>
                 <f:facet name="header">county</f:facet>
                 #{facility.county}
             </h:column>
             <h:column>
-                <f:facet name="header">country</f:facet>
-                #{facility.country}
+                <f:facet name="header">description</f:facet>
+                #{facility.description}
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                #{facility.name}
             </h:column>
             <h:column>
                 <f:facet name="header">phone</f:facet>
                 #{facility.phone}
             </h:column>
             <h:column>
+                <f:facet name="header">state</f:facet>
+                #{facility.state}
+            </h:column>
+            <h:column>
+                <f:facet name="header">type</f:facet>
+                #{facility.type}
+            </h:column>
+            <h:column>
                 <f:facet name="header">uri</f:facet>
                 #{facility.uri}
+            </h:column>
+            <h:column>
+                <f:facet name="header">zip</f:facet>
+                #{facility.zip}
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>
@@ -215,6 +227,70 @@
     </div>
     </rich:tab>
 
+    <rich:tab label="holes">
+        <div class="association" id="holesChildren">
+        
+            <h:outputText value="No holes" 
+                       rendered="#{empty courseHome.holes}"/>
+        
+            <rich:dataTable value="#{courseHome.holes}" 
+                           var="hole" 
+                      rendered="#{not empty courseHome.holes}" 
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="holesTable">
+                <h:column>
+                    <f:facet name="header">id</f:facet>
+                    <h:outputText value="#{hole.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">ladiesHandicap</f:facet>
+                    <h:outputText value="#{hole.ladiesHandicap}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">ladiesPar</f:facet>
+                    <h:outputText value="#{hole.ladiesPar}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">mensHandicap</f:facet>
+                    <h:outputText value="#{hole.mensHandicap}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">mensPar</f:facet>
+                    <h:outputText value="#{hole.mensPar}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">number</f:facet>
+                    <h:outputText value="#{hole.number}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">action</f:facet>
+                    <s:link view="/Hole.xhtml" 
+                              id="selecthole" 
+                           value="Select"
+                     propagation="none">
+                        <f:param name="holeId" 
+                                value="#{hole.id}"/>
+                        <f:param name="holeFrom" value="Course"/>
+                    </s:link>
+                </h:column>
+            </rich:dataTable>
+        
+        </div>
+          
+        <f:subview rendered="#{courseHome.managed}" id="holes">
+        <div class="actionButtons">
+            <s:button id="addhole" 
+                   value="Add hole"
+                    view="/HoleEdit.xhtml"
+             propagation="none">
+                 <f:param name="courseId" 
+                         value="#{courseHome.instance.id}"/>
+                 <f:param name="holeFrom" value="Course"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
     <rich:tab label="teeSets">
         <div class="association" id="teeSetsChildren">
         
@@ -229,10 +305,6 @@
                 <h:column>
                     <f:facet name="header">id</f:facet>
                     <h:outputText value="#{teeSet.id}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">name</f:facet>
-                    <h:outputText value="#{teeSet.name}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">color</f:facet>
@@ -253,6 +325,10 @@
                 <h:column>
                     <f:facet name="header">mensSlopeRating</f:facet>
                     <h:outputText value="#{teeSet.mensSlopeRating}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">name</f:facet>
+                    <h:outputText value="#{teeSet.name}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">position</f:facet>
@@ -282,70 +358,6 @@
                  <f:param name="courseId" 
                          value="#{courseHome.instance.id}"/>
                  <f:param name="teeSetFrom" value="Course"/>
-            </s:button>
-        </div>
-        </f:subview>
-    </rich:tab>
-
-    <rich:tab label="holes">
-        <div class="association" id="holesChildren">
-        
-            <h:outputText value="No holes" 
-                       rendered="#{empty courseHome.holes}"/>
-        
-            <rich:dataTable value="#{courseHome.holes}" 
-                           var="hole" 
-                      rendered="#{not empty courseHome.holes}" 
-                    rowClasses="rvgRowOne,rvgRowTwo"
-                            id="holesTable">
-                <h:column>
-                    <f:facet name="header">id</f:facet>
-                    <h:outputText value="#{hole.id}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">number</f:facet>
-                    <h:outputText value="#{hole.number}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">mensPar</f:facet>
-                    <h:outputText value="#{hole.mensPar}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">mensHandicap</f:facet>
-                    <h:outputText value="#{hole.mensHandicap}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">ladiesPar</f:facet>
-                    <h:outputText value="#{hole.ladiesPar}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">ladiesHandicap</f:facet>
-                    <h:outputText value="#{hole.ladiesHandicap}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">action</f:facet>
-                    <s:link view="/Hole.xhtml" 
-                              id="selecthole" 
-                           value="Select"
-                     propagation="none">
-                        <f:param name="holeId" 
-                                value="#{hole.id}"/>
-                        <f:param name="holeFrom" value="Course"/>
-                    </s:link>
-                </h:column>
-            </rich:dataTable>
-        
-        </div>
-          
-        <f:subview rendered="#{courseHome.managed}" id="holes">
-        <div class="actionButtons">
-            <s:button id="addhole" 
-                   value="Add hole"
-                    view="/HoleEdit.xhtml"
-             propagation="none">
-                 <f:param name="courseId" 
-                         value="#{courseHome.instance.id}"/>
-                 <f:param name="holeFrom" value="Course"/>
             </s:button>
         </div>
         </f:subview>
