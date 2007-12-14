@@ -47,6 +47,29 @@ public class CourseHome extends EntityHome<Course> {
 	}
 
 	/**
+	 * <p>Order the holes according to the value of the number property.</p>
+	 * <p>Note that this could also be done by adding an @OrderBy("number asc") above
+	 * the getHoles() method on the Course entity so that the collection is sorted
+	 * coming out of the database.</p>
+	 */
+	public List<Hole> getHoles() {
+		if (getInstance() == null) {
+			return null;
+		}
+
+		List<Hole> holes =
+				new ArrayList<Hole>(getInstance().getHoles());
+		Collections.sort(holes, new Comparator<Hole>() {
+
+			public int compare(Hole a, Hole b) {
+				return Integer.valueOf(a.getNumber()).compareTo(Integer.valueOf(b.getNumber()));
+			}
+		});
+
+		return holes;
+	}
+
+	/**
 	 * <p>Order the tee sets according to the value of the position property.</p>
 	 * <p>Note that this could also be done by adding an @OrderBy("position asc") above
 	 * the getTeeSets() method on the Course entity so that the collection is sorted
@@ -68,29 +91,6 @@ public class CourseHome extends EntityHome<Course> {
 		});
 
 		return teeSets;
-	}
-
-	/**
-	 * <p>Order the holes according to the value of the number property.</p>
-	 * <p>Note that this could also be done by adding an @OrderBy("number asc") above
-	 * the getHoles() method on the Course entity so that the collection is sorted
-	 * coming out of the database.</p>
-	 */
-	public List<Hole> getHoles() {
-		if (getInstance() == null) {
-			return null;
-		}
-
-		List<Hole> holes =
-				new ArrayList<Hole>(getInstance().getHoles());
-		Collections.sort(holes, new Comparator<Hole>() {
-
-			public int compare(Hole a, Hole b) {
-				return Integer.valueOf(a.getNumber()).compareTo(Integer.valueOf(b.getNumber()));
-			}
-		});
-
-		return holes;
 	}
 
 }
