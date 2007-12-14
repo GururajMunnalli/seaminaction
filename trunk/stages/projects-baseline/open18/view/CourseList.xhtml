@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -17,11 +18,6 @@
     
         <rich:simpleTogglePanel label="Course search parameters" switchType="ajax">
         
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" value="#{courseList.course.name}"/>
-            </s:decorate>
-
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">description</ui:define>
                 <h:inputText id="description" value="#{courseList.course.description}"/>
@@ -40,6 +36,11 @@
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">greens</ui:define>
                 <h:inputText id="greens" value="#{courseList.course.greens}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" value="#{courseList.course.name}"/>
             </s:decorate>
 
         
@@ -74,24 +75,6 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="facility id #{courseList.order=='facility.id asc' ? messages.down : ( courseList.order=='facility.id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{courseList.order=='facility.id asc' ? 'facility.id desc' : 'facility.id asc'}"/>
-                </s:link>
-            </f:facet>
-            #{course.facility.id}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="name #{courseList.order=='name asc' ? messages.down : ( courseList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{courseList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
-            </f:facet>
-            #{course.name}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
                              value="description #{courseList.order=='description asc' ? messages.down : ( courseList.order=='description desc' ? messages.up : '' )}">
                     <f:param name="order" value="#{courseList.order=='description asc' ? 'description desc' : 'description asc'}"/>
                 </s:link>
@@ -106,6 +89,15 @@
                 </s:link>
             </f:facet>
             #{course.designer}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="facility id #{courseList.order=='facility.id asc' ? messages.down : ( courseList.order=='facility.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{courseList.order=='facility.id asc' ? 'facility.id desc' : 'facility.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{course.facility.id}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -128,11 +120,11 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="yearBuilt #{courseList.order=='yearBuilt asc' ? messages.down : ( courseList.order=='yearBuilt desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{courseList.order=='yearBuilt asc' ? 'yearBuilt desc' : 'yearBuilt asc'}"/>
+                             value="name #{courseList.order=='name asc' ? messages.down : ( courseList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{courseList.order=='name asc' ? 'name desc' : 'name asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.yearBuilt}
+            #{course.name}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -151,6 +143,15 @@
                 </s:link>
             </f:facet>
             #{course.signatureHole}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="yearBuilt #{courseList.order=='yearBuilt asc' ? messages.down : ( courseList.order=='yearBuilt desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{courseList.order=='yearBuilt asc' ? 'yearBuilt desc' : 'yearBuilt asc'}"/>
+                </s:link>
+            </f:facet>
+            #{course.yearBuilt}
         </h:column>
         <h:column>
             <f:facet name="header">action</f:facet>

@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -18,21 +19,6 @@
         <rich:simpleTogglePanel label="Facility search parameters" switchType="ajax">
         
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" value="#{facilityList.facility.name}"/>
-            </s:decorate>
-
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">description</ui:define>
-                <h:inputText id="description" value="#{facilityList.facility.description}"/>
-            </s:decorate>
-
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">type</ui:define>
-                <h:inputText id="type" value="#{facilityList.facility.type}"/>
-            </s:decorate>
-
-            <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">address</ui:define>
                 <h:inputText id="address" value="#{facilityList.facility.address}"/>
             </s:decorate>
@@ -43,13 +29,8 @@
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">state</ui:define>
-                <h:inputText id="state" value="#{facilityList.facility.state}"/>
-            </s:decorate>
-
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">zip</ui:define>
-                <h:inputText id="zip" value="#{facilityList.facility.zip}"/>
+                <ui:define name="label">country</ui:define>
+                <h:inputText id="country" value="#{facilityList.facility.country}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
@@ -58,8 +39,13 @@
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">country</ui:define>
-                <h:inputText id="country" value="#{facilityList.facility.country}"/>
+                <ui:define name="label">description</ui:define>
+                <h:inputText id="description" value="#{facilityList.facility.description}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" value="#{facilityList.facility.name}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
@@ -68,8 +54,23 @@
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">state</ui:define>
+                <h:inputText id="state" value="#{facilityList.facility.state}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">type</ui:define>
+                <h:inputText id="type" value="#{facilityList.facility.type}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">uri</ui:define>
                 <h:inputText id="uri" value="#{facilityList.facility.uri}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">zip</ui:define>
+                <h:inputText id="zip" value="#{facilityList.facility.zip}"/>
             </s:decorate>
 
         
@@ -104,33 +105,6 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="name #{facilityList.order=='name asc' ? messages.down : ( facilityList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.name}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="description #{facilityList.order=='description asc' ? messages.down : ( facilityList.order=='description desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='description asc' ? 'description desc' : 'description asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.description}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="type #{facilityList.order=='type asc' ? messages.down : ( facilityList.order=='type desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='type asc' ? 'type desc' : 'type asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.type}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
                              value="address #{facilityList.order=='address asc' ? messages.down : ( facilityList.order=='address desc' ? messages.up : '' )}">
                     <f:param name="order" value="#{facilityList.order=='address asc' ? 'address desc' : 'address asc'}"/>
                 </s:link>
@@ -149,20 +123,11 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="state #{facilityList.order=='state asc' ? messages.down : ( facilityList.order=='state desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='state asc' ? 'state desc' : 'state asc'}"/>
+                             value="country #{facilityList.order=='country asc' ? messages.down : ( facilityList.order=='country desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='country asc' ? 'country desc' : 'country asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.state}
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="zip #{facilityList.order=='zip asc' ? messages.down : ( facilityList.order=='zip desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='zip asc' ? 'zip desc' : 'zip asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.zip}
+            #{facility.country}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -176,11 +141,20 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="country #{facilityList.order=='country asc' ? messages.down : ( facilityList.order=='country desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='country asc' ? 'country desc' : 'country asc'}"/>
+                             value="description #{facilityList.order=='description asc' ? messages.down : ( facilityList.order=='description desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='description asc' ? 'description desc' : 'description asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.country}
+            #{facility.description}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="name #{facilityList.order=='name asc' ? messages.down : ( facilityList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.name}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -194,11 +168,38 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
+                             value="state #{facilityList.order=='state asc' ? messages.down : ( facilityList.order=='state desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='state asc' ? 'state desc' : 'state asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.state}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="type #{facilityList.order=='type asc' ? messages.down : ( facilityList.order=='type desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='type asc' ? 'type desc' : 'type asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.type}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
                              value="uri #{facilityList.order=='uri asc' ? messages.down : ( facilityList.order=='uri desc' ? messages.up : '' )}">
                     <f:param name="order" value="#{facilityList.order=='uri asc' ? 'uri desc' : 'uri asc'}"/>
                 </s:link>
             </f:facet>
             #{facility.uri}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="zip #{facilityList.order=='zip asc' ? messages.down : ( facilityList.order=='zip desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='zip asc' ? 'zip desc' : 'zip asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.zip}
         </h:column>
         <h:column>
             <f:facet name="header">action</f:facet>

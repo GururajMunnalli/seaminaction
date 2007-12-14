@@ -19,15 +19,7 @@
         <rich:panel>
             <f:facet name="header">#{teeSetHome.managed ? 'Edit' : 'Add'} TeeSet</f:facet>
 
-            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" 
-                           size="25"
-                      maxlength="25"
-                          value="#{teeSetHome.instance.name}">
-                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
+
 
             <s:decorate id="colorDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">color</ui:define>
@@ -40,6 +32,8 @@
                 </h:inputText>
             </s:decorate>
 
+
+
             <s:decorate id="ladiesCourseRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">ladiesCourseRating</ui:define>
                 <h:inputText id="ladiesCourseRating"
@@ -47,6 +41,7 @@
                     <a:support event="onblur" reRender="ladiesCourseRatingDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
+
 
             <s:decorate id="ladiesSlopeRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">ladiesSlopeRating</ui:define>
@@ -56,6 +51,7 @@
                 </h:inputText>
             </s:decorate>
 
+
             <s:decorate id="mensCourseRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">mensCourseRating</ui:define>
                 <h:inputText id="mensCourseRating"
@@ -63,6 +59,7 @@
                     <a:support event="onblur" reRender="mensCourseRatingDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
+
 
             <s:decorate id="mensSlopeRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">mensSlopeRating</ui:define>
@@ -72,6 +69,18 @@
                 </h:inputText>
             </s:decorate>
 
+
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" 
+                           size="25"
+                      maxlength="25"
+                          value="#{teeSetHome.instance.name}">
+                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
             <s:decorate id="positionDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">position</ui:define>
                 <h:inputText id="position"
@@ -79,6 +88,7 @@
                     <a:support event="onblur" reRender="positionDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
+
         
             <div style="clear:both">
                 <span class="required">*</span> 
@@ -138,20 +148,16 @@
                 #{course.id}
             </h:column>
             <h:column>
-	    	    <f:facet name="header">facility id</f:facet>
-		    	#{course.facility.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">name</f:facet>
-                #{course.name}
-            </h:column>
-            <h:column>
                 <f:facet name="header">description</f:facet>
                 #{course.description}
             </h:column>
             <h:column>
                 <f:facet name="header">designer</f:facet>
                 #{course.designer}
+            </h:column>
+            <h:column>
+	    	    <f:facet name="header">facility id</f:facet>
+		    	#{course.facility.id}
             </h:column>
             <h:column>
                 <f:facet name="header">fairways</f:facet>
@@ -162,8 +168,8 @@
                 #{course.greens}
             </h:column>
             <h:column>
-                <f:facet name="header">yearBuilt</f:facet>
-                #{course.yearBuilt}
+                <f:facet name="header">name</f:facet>
+                #{course.name}
             </h:column>
             <h:column>
                 <f:facet name="header">numHoles</f:facet>
@@ -172,6 +178,10 @@
             <h:column>
                 <f:facet name="header">signatureHole</f:facet>
                 #{course.signatureHole}
+            </h:column>
+            <h:column>
+                <f:facet name="header">yearBuilt</f:facet>
+                #{course.yearBuilt}
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>
@@ -207,12 +217,12 @@
                     rowClasses="rvgRowOne,rvgRowTwo"
                             id="teesTable">
                 <h:column>
-                    <f:facet name="header">teeSetId</f:facet>
-                    #{tee.id.teeSetId}
-                </h:column>
-                <h:column>
                     <f:facet name="header">holeId</f:facet>
                     #{tee.id.holeId}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">teeSetId</f:facet>
+                    #{tee.id.teeSetId}
                 </h:column>
                 <h:column>
                     <f:facet name="header">distance</f:facet>
@@ -224,10 +234,10 @@
                               id="selecttee" 
                            value="Select"
                      propagation="none">
-                        <f:param name="teeTeeSetId" 
-                                value="#{tee.id.teeSetId}"/>
                         <f:param name="teeHoleId" 
                                 value="#{tee.id.holeId}"/>
+                        <f:param name="teeTeeSetId" 
+                                value="#{tee.id.teeSetId}"/>
                         <f:param name="teeFrom" value="TeeSet"/>
                     </s:link>
                 </h:column>

@@ -44,13 +44,13 @@ public class CourseHome extends EntityHome<Course> {
 		return isIdDefined() ? getInstance() : null;
 	}
 
-	public List<TeeSet> getTeeSets() {
-		return getInstance() == null ? null : new ArrayList<TeeSet>(
-				getInstance().getTeeSets());
-	}
 	public List<Hole> getHoles() {
 		return getInstance() == null ? null : new ArrayList<Hole>(getInstance()
 				.getHoles());
+	}
+	public List<TeeSet> getTeeSets() {
+		return getInstance() == null ? null : new ArrayList<TeeSet>(
+				getInstance().getTeeSets());
 	}
 
 }

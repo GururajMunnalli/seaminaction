@@ -16,29 +16,35 @@
     <rich:panel>
         <f:facet name="header">Hole</f:facet>
 
-        <s:decorate id="number" template="layout/display.xhtml">
-            <ui:define name="label">number</ui:define>
-            #{holeHome.instance.number}
+
+
+        <s:decorate id="ladiesHandicap" template="layout/display.xhtml">
+            <ui:define name="label">ladiesHandicap</ui:define>
+            #{holeHome.instance.ladiesHandicap}
         </s:decorate>
 
-        <s:decorate id="mensPar" template="layout/display.xhtml">
-            <ui:define name="label">mensPar</ui:define>
-            #{holeHome.instance.mensPar}
-        </s:decorate>
-
-        <s:decorate id="mensHandicap" template="layout/display.xhtml">
-            <ui:define name="label">mensHandicap</ui:define>
-            #{holeHome.instance.mensHandicap}
-        </s:decorate>
 
         <s:decorate id="ladiesPar" template="layout/display.xhtml">
             <ui:define name="label">ladiesPar</ui:define>
             #{holeHome.instance.ladiesPar}
         </s:decorate>
 
-        <s:decorate id="ladiesHandicap" template="layout/display.xhtml">
-            <ui:define name="label">ladiesHandicap</ui:define>
-            #{holeHome.instance.ladiesHandicap}
+
+        <s:decorate id="mensHandicap" template="layout/display.xhtml">
+            <ui:define name="label">mensHandicap</ui:define>
+            #{holeHome.instance.mensHandicap}
+        </s:decorate>
+
+
+        <s:decorate id="mensPar" template="layout/display.xhtml">
+            <ui:define name="label">mensPar</ui:define>
+            #{holeHome.instance.mensPar}
+        </s:decorate>
+
+
+        <s:decorate id="number" template="layout/display.xhtml">
+            <ui:define name="label">number</ui:define>
+            #{holeHome.instance.number}
         </s:decorate>
 
         <div style="clear:both"/>
@@ -75,20 +81,16 @@
                 #{course.id}
             </h:column>
             <h:column>
-	    	    <f:facet name="header">facility id</f:facet>
-		    	#{course.facility.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">name</f:facet>
-                #{course.name}
-            </h:column>
-            <h:column>
                 <f:facet name="header">description</f:facet>
                 #{course.description}
             </h:column>
             <h:column>
                 <f:facet name="header">designer</f:facet>
                 #{course.designer}
+            </h:column>
+            <h:column>
+	    	    <f:facet name="header">facility id</f:facet>
+		    	#{course.facility.id}
             </h:column>
             <h:column>
                 <f:facet name="header">fairways</f:facet>
@@ -99,8 +101,8 @@
                 #{course.greens}
             </h:column>
             <h:column>
-                <f:facet name="header">yearBuilt</f:facet>
-                #{course.yearBuilt}
+                <f:facet name="header">name</f:facet>
+                #{course.name}
             </h:column>
             <h:column>
                 <f:facet name="header">numHoles</f:facet>
@@ -109,6 +111,10 @@
             <h:column>
                 <f:facet name="header">signatureHole</f:facet>
                 #{course.signatureHole}
+            </h:column>
+            <h:column>
+                <f:facet name="header">yearBuilt</f:facet>
+                #{course.yearBuilt}
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>
@@ -136,12 +142,12 @@
                 rowClasses="rvgRowOne,rvgRowTwo"
                         id="teesTable">
             <h:column>
-                <f:facet name="header">teeSetId</f:facet>
-                #{tee.id.teeSetId}
-            </h:column>
-            <h:column>
                 <f:facet name="header">holeId</f:facet>
                 #{tee.id.holeId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">teeSetId</f:facet>
+                #{tee.id.teeSetId}
             </h:column>
             <h:column>
                 <f:facet name="header">distance</f:facet>
@@ -152,10 +158,10 @@
                 <s:link id="selecttee" 
                      value="Select" 
                       view="/Tee.xhtml">
-                    <f:param name="teeTeeSetId" 
-                            value="#{tee.id.teeSetId}"/>
                     <f:param name="teeHoleId" 
                             value="#{tee.id.holeId}"/>
+                    <f:param name="teeTeeSetId" 
+                            value="#{tee.id.teeSetId}"/>
                     <f:param name="teeFrom" value="Hole"/>
                 </s:link>
             </h:column>
