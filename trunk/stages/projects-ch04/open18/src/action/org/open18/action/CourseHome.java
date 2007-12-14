@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.faces.context.FacesContext;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
