@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -38,21 +39,21 @@
               value="#{teeList.resultList}" 
            rendered="#{not empty teeList.resultList}">
         <h:column>
-            <f:facet name="header">teeSetId</f:facet>
-            #{tee.id.teeSetId}
-        </h:column>
-        <h:column>
             <f:facet name="header">holeId</f:facet>
             #{tee.id.holeId}
         </h:column>
         <h:column>
+            <f:facet name="header">teeSetId</f:facet>
+            #{tee.id.teeSetId}
+        </h:column>
+        <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="teeSet id #{teeList.order=='teeSet.id asc' ? messages.down : ( teeList.order=='teeSet.id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeList.order=='teeSet.id asc' ? 'teeSet.id desc' : 'teeSet.id asc'}"/>
+                             value="distance #{teeList.order=='distance asc' ? messages.down : ( teeList.order=='distance desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='distance asc' ? 'distance desc' : 'distance asc'}"/>
                 </s:link>
             </f:facet>
-            #{tee.teeSet.id}
+            #{tee.distance}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -66,21 +67,21 @@
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-                             value="distance #{teeList.order=='distance asc' ? messages.down : ( teeList.order=='distance desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeList.order=='distance asc' ? 'distance desc' : 'distance asc'}"/>
+                             value="teeSet id #{teeList.order=='teeSet.id asc' ? messages.down : ( teeList.order=='teeSet.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='teeSet.id asc' ? 'teeSet.id desc' : 'teeSet.id asc'}"/>
                 </s:link>
             </f:facet>
-            #{tee.distance}
+            #{tee.teeSet.id}
         </h:column>
         <h:column>
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Tee' : from}.xhtml" 
                    value="Select" 
                       id="tee">
-                <f:param name="teeTeeSetId" 
-                        value="#{tee.id.teeSetId}"/>
                 <f:param name="teeHoleId" 
                         value="#{tee.id.holeId}"/>
+                <f:param name="teeTeeSetId" 
+                        value="#{tee.id.teeSetId}"/>
             </s:link>
         </h:column>
     </rich:dataTable>
@@ -127,8 +128,8 @@
         <s:button view="/TeeEdit.xhtml"
                     id="create" 
                  value="Create tee">
-            <f:param name="teeTeeSetId"/>
             <f:param name="teeHoleId"/>
+            <f:param name="teeTeeSetId"/>
         </s:button>
     </s:div>
     
