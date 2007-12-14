@@ -10,8 +10,8 @@ import java.util.Arrays;
 public class TeeSetList extends EntityQuery {
 
 	private static final String[] RESTRICTIONS = {
-			"lower(teeSet.name) like concat(lower(#{teeSetList.teeSet.name}),'%')",
-			"lower(teeSet.color) like concat(lower(#{teeSetList.teeSet.color}),'%')",};
+			"lower(teeSet.color) like concat(lower(#{teeSetList.teeSet.color}),'%')",
+			"lower(teeSet.name) like concat(lower(#{teeSetList.teeSet.name}),'%')",};
 
 	private TeeSet teeSet = new TeeSet();
 
