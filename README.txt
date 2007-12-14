@@ -14,19 +14,23 @@ changes are required. That is the beauty of Java after all.
 Expected versions to retrieve:
 
    JBoss AS - 4.2.2.GA
-   JBoss Seam - 2.0.0.GA
+   JBoss Seam - 2.0.1.CR1
    Java SE - Sun JDK 1.6.0 
 
-After you have JBoss AS and JBoss Seam prepared, you need to update Seam to fix
-a problem with the H2 database support. Please see the section below named
-"Patching Seam to fix H2 support" for instructions.
+** IMPORTANT **
+Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not
+jboss-4.2.2.GA. I have renamed it from the default to better distinguish it
+from Seam, which is also a JBoss project.
+** IMPORTANT **
 
 -------------------------------------------------------------------------------
+** This may no longer be true as of Seam 2.0.0.CR1 **
 Please note that it is important to use Sun Java 6 when running seam-gen if you
 want to get the same results as what is found in the example source code. The
 reason is that Hibernate does not explicitly sort the entities that it derives
 from the database, so the sort is JVM specific. It's not a huge deal, but if
 you are confused as to why there are differences, that is likely the cause.
+** This may no longer be true as of Seam 2.0.0.CR1 **
 -------------------------------------------------------------------------------
 
 The stages/ directory contains a snapshot of the projects at the end of each
@@ -96,14 +100,3 @@ installation directory:
 This launch configuration provides memory settings that should avoid permgen
 errors when running on a Sun JVM and it also properly sets the JBOSS_HOME
 environment variable.
-
-Patching Seam to fix H2 support
--------------------------------
-
-After extracting the JBoss Seam 2.0.0.GA distribution, you need to update the
-hibernate-tools.jar used by seam-gen so that the reverse engineering of an H2
-database works properly:
-
-   cp lib/hibernate-tools.jar opt/jboss-seam-2.0.0.GA/seam-gen/lib
-
-Now seam-gen is ready to use with H2.
