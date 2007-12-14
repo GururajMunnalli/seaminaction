@@ -37,10 +37,11 @@
                            security-rules="#{securityRules}"
                               remember-me="true"/>
                               
+   <!-- bug in Pages.java that forces us to have to use the deprecated events -->
    <event type="org.jboss.seam.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>
    </event>
-   <event type="org.jboss.seam.postAuthenticate">
+   <event type="org.jboss.seam.loginSuccessful">
        <action execute="#{redirect.returnToCapturedView}"/>
    </event>
    
