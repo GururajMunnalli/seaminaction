@@ -1,3 +1,8 @@
+--------------------------------- DISCLAIMER ---------------------------------
+You do NOT need to use this directory for testing the source code in the book!
+It won't really be that useful to you.
+--------------------------------- DISCLAIMER ---------------------------------
+
 This directory contains projects that are the raw output of seam-gen. The only
 change that is made to the project is that the seam-gen.reveng.xml configuration
 is put in place so that when seam generate runs, it creates entity classes that
@@ -7,3 +12,4 @@ The purpose of this stage is that it allows me to see what has changed in
 seam-gen's output so that I can port those changes across the stages. It's
 already a lot of work to maintain the stages and this gives me the flexibility
 of letting diff to most of that work for me.
+
