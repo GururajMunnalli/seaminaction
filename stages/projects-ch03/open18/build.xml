@@ -190,6 +190,7 @@
                 <include name="antlr-*.jar"/>
                 <include name="mvel*.jar"/>
                 <include name="core.jar"/> <!-- dallen: Eclipse JDT required for GlassFish deployment -->
+                <include name="urlrewritefilter.jar"/>
                 <include name="groovy-*.jar" if="groovy.present"/>
             </fileset>
         </copy>
