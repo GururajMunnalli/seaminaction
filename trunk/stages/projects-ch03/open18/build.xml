@@ -186,7 +186,7 @@
                 <include name="jboss-seam-*.jar" />
                 <exclude name="jboss-seam-gen.jar" />
                 <include name="drools-*.jar"/>
-                <include name="janino-*.jar"/>
+                <include name="janino*.jar"/>
                 <include name="antlr-*.jar"/>
                 <include name="mvel*.jar"/>
                 <include name="core.jar"/> <!-- dallen: Eclipse JDT required for GlassFish deployment -->
@@ -204,7 +204,7 @@
         <copy todir="${war.dir}/WEB-INF/classes">
             <fileset dir="${basedir}/resources">
                 <include name="*jpdl.xml" />
-                <include name="hibernate.cfg.xml" />
+                <include name="*hibernate.cfg.xml" />
                 <include name="jbpm.cfg.xml" />
             </fileset>
         </copy>
