@@ -1,3 +1,20 @@
+public List<Hole> getHoles() {
+    if (getInstance() == null) {
+        return null;
+    }
+
+    List<Hole> holes =
+        new ArrayList<Hole>(getInstance().getHoles());
+    Collections.sort(holes, new Comparator<Hole>() {
+        public int compare(Hole a, Hole b) {
+            return Integer.valueOf(a.getNumber())
+                .compareTo(Integer.valueOf(b.getNumber()));
+        }
+    });
+
+    return holes;
+}
+
 public List<TeeSet> getTeeSets() {
     if (getInstance() == null) {
         return null;
@@ -16,21 +33,4 @@ public List<TeeSet> getTeeSets() {
     });
 
     return teeSets;
-}
-
-public List<Hole> getHoles() {
-    if (getInstance() == null) {
-        return null;
-    }
-
-    List<Hole> holes =
-        new ArrayList<Hole>(getInstance().getHoles());
-    Collections.sort(holes, new Comparator<Hole>() {
-        public int compare(Hole a, Hole b) {
-            return Integer.valueOf(a.getNumber())
-                .compareTo(Integer.valueOf(b.getNumber()));
-        }
-    });
-
-    return holes;
 }
