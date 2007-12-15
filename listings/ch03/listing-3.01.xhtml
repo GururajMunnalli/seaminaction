@@ -6,9 +6,13 @@
     <s:validate>
       <h:inputText id="name" required="true"                 #3
         value="#{courseHome.instance.name}">
-        <f:validateLength minimum="3" maximum="40" />
+        <f:validateLength minimum="3" maximum="40"/>
       </h:inputText>
     </s:validate>
   </span>
-  <h:message for="name" styleClass="error" />                #4
+  <span class="error">
+    <h:graphicImage value="/img/error.gif"
+      rendered="#{invalid}" styleClass="errors"/>
+    <h:message for="name" styleClass="errors"/>             #4
+  </span>
 </div>
