@@ -1,0 +1,3 @@
+<listener>
+  <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
+</listener>
