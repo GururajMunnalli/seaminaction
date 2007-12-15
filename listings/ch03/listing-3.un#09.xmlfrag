@@ -1,0 +1,5 @@
+<lifecycle>
+  <phase-listener>
+    org.jboss.seam.jsf.SeamPhaseListener
+  </phase-listener>
+</lifecycle>

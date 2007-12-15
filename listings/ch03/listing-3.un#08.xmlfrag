@@ -1,0 +1,5 @@
+<web:multipart-filter url-pattern="/upload/*"
+  max-request-size="100000" />
+
+<web:multipart-filter url-pattern="#{uploadPath}"
+  max-request-size="@maxUploadSize@" />

@@ -1,0 +1,4 @@
+<s:link value="name">
+  <f:param name="order"
+    value="#{facilityList.order=='id asc' ? 'id desc' : 'id asc'}"/>
+</s:link>
