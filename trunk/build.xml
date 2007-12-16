@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="seam-in-action" default="help" basedir=".">
 	<property name="jboss.home" value="${basedir}/opt/jboss-as-4.2.2.GA"/>
-	<property name="seam.runtime" value="${basedir}/opt/jboss-seam-2.0.0.CR1"/>
+	<property name="seam.runtime" value="${basedir}/opt/jboss-seam-2.0.1.CR1"/>
 	<!--
 	<property file="${seam.runtime}/build.properties"/>
 	-->
@@ -120,6 +120,13 @@
 			<param name="invoke.target" value="-copy-lib"/>
 		</antcall>
 		<copy todir="${jboss.lib.dir}" file="${basedir}/lib/h2.jar"/>
+	</target>
+
+	<target name="inflate">
+		<fail unless="project.home" message="Please supply the project.home property"/>
+		<antcall target="-invoke-on-self">
+			<param name="invoke.target" value="-copy-lib"/>
+		</antcall>
 	</target>
 
 	<!-- could consider using <subant> -->
