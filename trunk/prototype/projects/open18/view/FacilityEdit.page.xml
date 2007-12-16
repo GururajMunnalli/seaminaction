@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
+      no-conversation-view-id="/FacilityList.xhtml"
+      login-required="true">
+   
+   <begin-conversation join="true"/>
+   
+   <action execute="#{facilityHome.validateEntityFound}"
+      if="#{facilityHome.facilityId ne null}"/>
+   <action execute="#{facilityHome.wire}"/>
+   
+   <param name="facilityFrom"/>
+   <param name="facilityId" value="#{facilityHome.facilityId}"/>
+
+   <navigation from-action="#{facilityHome.validateEntityFound}">
+      <rule if-outcome="invalid">
+         <redirect view-id="/FacilityList.xhtml">
+            <message severity="WARN">
+              The facility you requested does not exist.
+            </message>
+         </redirect>
+      </rule>
+   </navigation>
+	
+   <navigation from-action="#{facilityHome.persist}">
+       <end-conversation/>
+       <redirect view-id="/Facility.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{facilityHome.update}">
+       <end-conversation/>
+       <redirect view-id="/Facility.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{facilityHome.remove}">
+       <end-conversation/>
+       <redirect view-id="/FacilityList.xhtml"/>
+   </navigation>
+   
+</page>
