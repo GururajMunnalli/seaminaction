@@ -296,7 +296,7 @@ td.seam-date-hover
     padding: 0;
     color: #000000;
     margin: 5px 0 8px 0;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .message li {
@@ -316,4 +316,47 @@ td.seam-date-hover
 
 .message li.warnmsg {
     background-image: url(../img/msg_warn.png);
+}
+
+/** Open 18 styles **/
+.panelColumn {
+    vertical-align: top;
+}
+
+.aboutPanel {
+    width: 450px;
+}
+
+.newGolfersPanel {
+    width: 300px;
+}
+
+/* let's not make me go blind */
+.rich-panel-header,
+.rich-panel-body,
+.rich-stglpanel-header,
+.rich-stglpanel-body,
+.rich-table-cell,
+.rich-table-subheadercell,
+.rich-tab-header {
+    font-size: 12px;
+}
+
+/*
+.rich-toolbar-item {
+    font-size: 12px;
+}
+*/
+
+.rich-panel-header,
+.rich-stglpanel-header {
+    padding: 3px;
+}
+
+input, textarea {
+    font-size: 11px;
+}
+
+.footer {
+    font-size: 11px;
 }
