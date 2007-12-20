@@ -1,6 +1,6 @@
-<s:decorate id="nameField" template="layout/edit.xhtml">
-  <ui:define name="label">Name:</ui:define>
-  <h:inputText id="name" size="50"                        
+<s:decorate id="nameField" template="layout/edit.xhtml">    #1
+  <ui:define name="label">Name:</ui:define>                 #2
+  <h:inputText id="name" size="50" required="true"          #3
     value="#{courseHome.instance.name}">
     <a:support event="onblur" reRender="nameField"
       bypassUpdates="true"/>

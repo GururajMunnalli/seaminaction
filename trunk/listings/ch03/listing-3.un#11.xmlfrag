@@ -1,7 +1,1 @@
-<page view-id="/Course.xhtml">
-  <param name="courseId" value="#{courseHome.courseId}"/>
-</page>
-
-<page>
-  <param name="courseId" value="#{courseHome.courseId}"/>
-</page>
+<web:redirect-filter disabled="true"/>

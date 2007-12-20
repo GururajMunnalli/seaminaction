@@ -1,0 +1,13 @@
+<page view-id="/FacilityEdit.xhtml">
+  <navigation from-action="#{facilityHome.persist}"
+    evaluate="#{facilityHome.lastStateChange}">
+    <rule if-outcome="persisted"
+      if="#{facilityHome.addCourse}">
+      ...
+    </rule>
+    <rule if-outcome="persisted"
+      if="#{!facilityHome.addCourse}">
+      ...
+    </rule>
+  </navigation>
+</page>
