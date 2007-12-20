@@ -13,17 +13,15 @@
     </s:validate>
   </span>
   <span class="error">
-    <h:graphicImage value="/img/error.gif"
-      rendered="#{invalid}" styleClass="errors"/>
     <h:message for="name" styleClass="errors"/>             #4
   </span>
 </div>
 
 ===== listing-3.02.xhtml =====
 
-<s:decorate id="nameField" template="layout/edit.xhtml">
-  <ui:define name="label">Name:</ui:define>
-  <h:inputText id="name" size="50"                        
+<s:decorate id="nameField" template="layout/edit.xhtml">    #1
+  <ui:define name="label">Name:</ui:define>                 #2
+  <h:inputText id="name" size="50" required="true"          #3
     value="#{courseHome.instance.name}">
     <a:support event="onblur" reRender="nameField"
       bypassUpdates="true"/>
@@ -58,7 +56,28 @@
 
 </ui:composition>
 
-===== listing-3.04.snippet =====
+===== listing-3.04.xml =====
+
+<page view-id="/FacilityEdit.xhtml">
+  <navigation from-action="#{facilityHome.persist}">
+    <rule if-outcome="persisted"
+      if="#{facilityHome.addCourse}">                           #1
+      <redirect view-id="/CourseEdit.xhtml"/>
+        <param name="courseFrom" value="Facility"/>             #2
+        <message severity="INFO">
+          Please enter course information for
+          #{facilityHome.instance.name}.                        #3
+        </message>
+      </redirect>
+    </rule>
+    <rule if-outcome="persisted"
+      if="#{!facilityHome.addCourse}">                          #4
+      <redirect view-id="/Facility.xhtml"/>
+    </rule>
+  </navigation>
+</page>
+
+===== listing-3.05.snippet =====
 
 public String parseRestfulUrl() {
     String viewId =
@@ -79,7 +98,7 @@ public String parseRestfulUrl() {
     }
 }
 
-===== listing-3.05.xml =====
+===== listing-3.06.xml =====
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE urlrewrite PUBLIC
@@ -102,7 +121,7 @@ public String parseRestfulUrl() {
   </rule>
 </urlrewrite>
 
-===== listing-3.06.xmlfrag =====
+===== listing-3.07.xmlfrag =====
 
 <exception class="org.jboss.seam.security.AuthorizationException">
   <redirect view-id="/error.xhtml">
@@ -194,10 +213,10 @@ public String parseRestfulUrl() {
 ===== listing-3.un#08.xmlfrag =====
 
 <web:multipart-filter url-pattern="/upload/*"
-  max-request-size="100000" />
+  max-request-size="100000"/>
 
 <web:multipart-filter url-pattern="#{uploadPath}"
-  max-request-size="@maxUploadSize@" />
+  max-request-size="@maxUploadSize@"/>
 
 ===== listing-3.un#09.xmlfrag =====
 
@@ -209,6 +228,17 @@ public String parseRestfulUrl() {
 
 ===== listing-3.un#10.xmlfrag =====
 
+<context-param>
+  <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+  <param-value>server</param-value>
+</context-param>
+
+===== listing-3.un#11.xmlfrag =====
+
+<web:redirect-filter disabled="true"/>
+
+===== listing-3.un#12.xmlfrag =====
+
 <navigation-rule>
   <from-view-id>/CourseEdit.xhtml</from-view-id>
   <navigation-case>
@@ -217,7 +247,56 @@ public String parseRestfulUrl() {
   </navigation-case>
 </navigation-rule>
 
-===== listing-3.un#11.xmlfrag =====
+===== listing-3.un#13.xmlfrag =====
+
+<navigation-rule>
+  <from-view-id>/FacilityEdit.xhtml</from-view-id>
+  <navigation-case>
+    <from-action>#{facilityHome.persist}</from-action>
+    <from-outcome>persisted</from-outcome>
+    <to-view-id>/Facility.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+</navigation-rule>
+
+===== listing-3.un#14.xml =====
+
+<page view-id="/CourseEdit.xhtml">
+  <navigation from-action="#{courseHome.persist}">
+    <rule if-outcome="persisted"
+      if="#{courseFrom ne null}">
+      <redirect view-id="/#{courseFrom}.xhtml">
+        <message severity="INFO">
+          The data entry for #{courseFrom} is complete.
+        </message>
+      </redirect>
+    </rule>
+    <rule if-outcome="persisted"
+      if="#{courseFrom eq null}">
+      <redirect view-id="/Course.xhtml"/>
+    </rule>
+  </navigation>
+</page>
+
+===== listing-3.un#15.xml =====
+
+<page view-id="/FacilityEdit.xhtml">
+  <navigation from-action="#{facilityHome.persist}"
+    evaluate="#{facilityHome.lastStateChange}">
+    <rule if-outcome="persisted"
+      if="#{facilityHome.addCourse}">
+      ...
+    </rule>
+    <rule if-outcome="persisted"
+      if="#{!facilityHome.addCourse}">
+      ...
+    </rule>
+  </navigation>
+</page>
+
+===== listing-3.un#16.xmlfrag =====
+
+http://localhost:8080/open18/Course.seam?courseId=1
 
 <page view-id="/Course.xhtml">
   <param name="courseId" value="#{courseHome.courseId}"/>
@@ -227,7 +306,7 @@ public String parseRestfulUrl() {
   <param name="courseId" value="#{courseHome.courseId}"/>
 </page>
 
-===== listing-3.un#12.xml =====
+===== listing-3.un#17.xml =====
 
 <page view-id="/FacilityList.xhtml">    
   <param name="firstResult" value="#{facilityList.firstResult}"/>
@@ -247,7 +326,7 @@ public String parseRestfulUrl() {
     value="#{facilityList.facility.description}"/>
 </page>
 
-===== listing-3.un#13.xml =====
+===== listing-3.un#18.xml =====
 
 <s:link value="name">
   <f:param name="order"

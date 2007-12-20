@@ -1,0 +1,7 @@
+<navigation-rule>
+  <from-view-id>/CourseEdit.xhtml</from-view-id>
+  <navigation-case>
+    <from-action>#{courseHome.update}</from-action>
+    <to-view-id>/Course.xhtml</to-view-id>
+  </navigation-case>
+</navigation-rule>
