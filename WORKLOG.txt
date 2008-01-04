@@ -1,8 +1,35 @@
 TODO:
 -----
-- need to be able to inflate the open18ee EAR project created for chapter 02
+- missing preloadFacilities in chapter 03
+- commit changes to ch03 and carry across code base
+- change validator package to validation
+- pro status should be in all caps (why not enum?)
+
+- submit JIRA issue for bug in UIAttachment referencing docType
+- submit security event bug in Pages.java (then correct the components.xml in the open18 project)
+- submit validatorId bug in Param.java
+- submit jboss.home in build.properties overriding seam-gen setting bug
+- submit JIRA issue about a message regarding multi-module eclipse project in seam-gen creation wizard
+- submit JIRA issue that startup attribute is missing from component element in components-2.0.xsd
+
+- write script for generating patches between stages and for an upgrade to Seam
+
+- port changes from chapter 3 to chapter 6
+- validate that JBoss AS directory and Seam directory exist before continuing in Ant script
+- offer to inflate just the project in projects by name -Dproject=
+- continue building out golftips
 - there is a problem with hibernate.hbm2ddl.auto=update with H2 in that it generates duplicate foreign keys
 - create a target to auto-generate the prepared databases (open18-db-initial-empty.zip, open18-db-initial-seeded.zip)
 - create a target to copy a stage over to the projects/databases workspaces
 - an ant target to replace all "/home/twoputt" references with their own root
 - support setting stage for build.properties/build.xml
+
+- consider change the eclipse project name to include stage
+
+they need to be sure that JAVA_HOME points to a JDK
+they need a way to move projects from staging into the projects area
+they may not want to inflate everything (takes up a lot of disk space)
+need to limit the number of places I hardcode paths or give them scripts to update them
+
+the schema is messed up in that grass type is not optional
+it is allowing duplicate facility names
