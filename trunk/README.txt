@@ -2,14 +2,17 @@ Seam in Action - Book source code
 =================================
 SVN snapshot
 
+Book: Seam in Action, Manning Publications
+Author: Dan Allen
+Project site: http://code.google.com/p/seaminaction
+
 Getting started
 ---------------
 
-Please refer to Appendix A for an orientation of the directory structure used
-for the source code that accompanies this book. Please refer to Appendix B for
-how to get JBoss AS, JBoss Seam, and other supporting software installed.  By
-"installed", I mean nothing more than to download and extract. No system-level
-changes are required. That is the beauty of Java after all. 
+Please refer to appendix A for information about how to get JBoss AS, JBoss
+Seam, and other supporting software installed.  By "installed", I mean nothing
+more than to download and extract. No system-level changes are required. That
+is the beauty of Java after all. 
 
 Expected versions to retrieve:
 
@@ -19,22 +22,12 @@ Expected versions to retrieve:
 
 ** IMPORTANT **
 Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not
-jboss-4.2.2.GA. I have renamed it from the default to better distinguish it
-from Seam, which is also a JBoss project.
+jboss-4.2.2.GA. I have renamed it to better distinguish it from Seam,
+which is also a JBoss project.
 ** IMPORTANT **
 
--------------------------------------------------------------------------------
-** This may no longer be true as of Seam 2.0.0.CR1 **
-Please note that it is important to use Sun Java 6 when running seam-gen if you
-want to get the same results as what is found in the example source code. The
-reason is that Hibernate does not explicitly sort the entities that it derives
-from the database, so the sort is JVM specific. It's not a huge deal, but if
-you are confused as to why there are differences, that is likely the cause.
-** This may no longer be true as of Seam 2.0.0.CR1 **
--------------------------------------------------------------------------------
-
 The stages/ directory contains a snapshot of the projects at the end of each
-chapter. Each projects-chxx folder contains a file named
+chapter. Each projects-chXX folder contains a file named
 chapter-developments.txt which describes what setup was done and what changes
 were made to the application in that chapter.
 
@@ -100,3 +93,4 @@ installation directory:
 This launch configuration provides memory settings that should avoid permgen
 errors when running on a Sun JVM and it also properly sets the JBOSS_HOME
 environment variable.
+
