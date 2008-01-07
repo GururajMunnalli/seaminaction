@@ -5,6 +5,14 @@
 
 First of all, I encourage you (read as "urge you") to [http://www.manning.com/affiliate/idevaffiliate.php?id=647 purchase] the book to get all of the gory details on how to set up, develop, and deploy the sample application. That being said, even with the book, there is going to be extra information that I am going to want to relate to you. I will do that on this wiki, starting with this introductory page.
 
+== Prerequisites ===
+
+  * Java SE Development Kit (JDK) 5.0 or better
+  * JBoss Application Server (AS) 4.2.2.GA
+  * JBoss Seam 2.0.0.GA or better
+  * Apache Ant 1.7.0 (required depending on usage)
+  * IDE - Eclipse, NetBeans, or IntelliJ IDEA
+
 == The directory you call "home" ==
 
 Your home directory is your development root. If this happens to be your operating system home directory, then the last path in the directory is typically the same as your username. The book uses the home directory of a fictional developer, Tommy Twoputt, whose username is twoputt. Whenever an absolute path must be referenced in the manuscript, the directory /home/twoputt is used.
