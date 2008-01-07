@@ -19,7 +19,7 @@ For each formal review and the final manuscript, there will be an official downl
 
 You can find out how to check out the project from SVN by clicking on the [http://code.google.com/p/seaminaction/source Source] tab.
 
-== Layout of the source code ==
+== Source code layout ==
 
 This section gives an overview of the project layout and makes a recommendation for how to organize it on your harddrive so that you can match as close as possible to the assumptions made in the book.
 
