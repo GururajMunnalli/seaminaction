@@ -76,7 +76,7 @@ twoputt/
 
 The location of individual applications will be referred to throughout the book using a variable notion. For instance, the JBoss AS directory is tokenized as ${jboss.home} and the Seam distribution as ${seam.dist}.
 
-=== Developing the source code ===
+== Developing the source code ==
 
 This section describes how to get started with developing the source code provided.
 
