@@ -81,7 +81,9 @@ Alternatively, you can extract the database I have prepared.
 unzip -d databases etc/schema/open18-db-initial-seeded.zip
 }}}
 
-Again, the database is all you need to follow along with the book. However, you may want to skip ahead and take advantage of the staged project snapshots.
+Again, the database is all you need to follow along with the book. You can read about the database schema on the DatabaseSchema page.
+
+Instead of creating the project from scratch, you may want to skip ahead and take advantage of the staged project snapshots.
 
 == Inflating the staged projects ==
 
