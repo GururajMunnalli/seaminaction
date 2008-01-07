@@ -5,21 +5,51 @@
 
 First of all, I encourage you (read as "urge you") to [http://www.manning.com/affiliate/idevaffiliate.php?id=647 purchase] the book to get all of the gory details on how to set up, develop, and deploy the sample application. That being said, even with the book, there is going to be extra information that I am going to want to relate to you. I will do that on this wiki, starting with this introductory page.
 
-== General approach ==
+== The directory you call "home" ==
 
-The source code of the book is organized in the root of an imaginary user named Tommy Twoputt, whose Unix/Linux/OS X username is twoputt and home directory is /home/twoputt. However, in no way does that mean that you must develop the application on those platforms. Working from the context of a home directory helps to make a connection with you, the developer.
+Your home directory is where your personal files live. The last path in the directory is typically the same as your username. The book uses the home directory of a fictional developer, Tommy Twoputt, whose username is twoputt. Whenever an absolute path must be referenced in the manuscript, the directory /home/twoputt is used.
+
+The table below shows the home directory for twoputt as it would appear on several different operating systems. Whenever you see twoputt's home directory used in the book, replace it with your own home directory.
+
+|| *Operating system* || *Home area* ||
+|| Linux || /home/twoputt ||
+|| Max OSX || /Users/twoputt ||
+|| Windows || C:/twoputt ||
+
+You can of course choose your own working directory. Here I attempt only to cite the default directory paths used by the sample code.
+
+Notice the forward slash for Windows systems. Backslash is an escape character in Java. Fortunately, Java transposes the slash according to the system it is running on, so you can sidestep use of the backslash (and hence its dual purpose) by always using forward slashes in paths.
+
+Within the text, the home directory will be referred to as ${user.home} to make it generic across systems. The terminal output included in the listings has been generated on a Linux system, but you can look beyond this detail since it makes no difference which operating system you use for developing Seam applications.
+
+== Structuring your home ==
 
 I make recommendations about where to put libraries and how to organize your development space. You don't have to take these recommendations. But being a reader, I have always found source code distributions from books to be cold and disconnected.
 
-...more later...
+As you add new software, your home area can very quickly become chaotic. To help you keep things in order, I recommend a structure that I adhere to throughout the book. The table below lists several folders, along with their purpose, that I like to set up when doing development. You will recognize these directories from the book's source code.
 
-== Organization ==
+|| *Folder* || *What it contains* ||
+|| databases || File-based databases for H2 ||
+|| etc || Database scripts, extra configuration files ||
+|| lib || JAR files not included with Seam, such as H2 driver ||
+|| opt || Directory where third-party applications are extracted, such as JBoss AS and Seam ||
+|| projects || Working development directory while studying a stage ||
+|| prototype || My working version of the applications ||
+|| stages || Snapshot of projects and databases at the end of each chapter ||
 
-{{{
-<root>
-  +- etc         database scripts, configuration files
-  +- opt         directory where third-party applications are extracted
-  +- projects    working directory while studying a stage
-  +- prototypes  complete application which is free to run ahead of the book
-  +- stages      snapshot of the application at the end of each chapter
-}}}
+Appendix A shows you how to get all of the software installed that is needed to use the examples in this book, including Seam. After all of the downloading is complete, your home directory should contain the directories listed in table below, populated with the required software:
+
+twoputt/
+|-- databases/
+|   `-- open18-db/
+|-- lib/
+|   `-- h2.jar
+|-- opt/
+|   |-- apache-ant-1.7.0/
+|   |-- glassfish-v2/
+|   |-- jboss-as-4.2.2.GA/
+|   `-- jboss-seam-2.0.1.CR1/
+`-- projects/
+    `-- open18/
+
+The location of individual applications will be referred to throughout the book using a variable notion. For instance, the JBoss AS directory is tokenized as ${jboss.home} and the Seam distribution as ${seam.dist}.
