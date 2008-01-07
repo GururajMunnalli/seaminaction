@@ -13,7 +13,17 @@ First of all, I encourage you (read as "urge you") to [http://www.manning.com/af
   * Apache Ant 1.7.0 (required depending on usage)
   * IDE - Eclipse, NetBeans, or IntelliJ IDEA
 
-== The directory you call "home" ==
+== Obtaining the source code ==
+
+For each formal review and the final manuscript, there will be an official download bundle that you can retrieve from this project. However, until the final manuscript is ready, your best bet to grab the source from SVN. Part of the reason is that Seam is a fast moving project. Just trying to write about it and keep the example source code up to date has been quite a challenge.
+
+You can find out how to check out the project from SVN by clicking on the [http://code.google.com/p/seaminaction/source Source] tab.
+
+== Layout of the source code ==
+
+This section gives an overview of the project layout and makes a recommendation for how to organize it on your harddrive so that you can match as close as possible to the assumptions made in the book.
+
+=== The directory you call "home" ===
 
 Your home directory is your development root. If this happens to be your operating system home directory, then the last path in the directory is typically the same as your username. The book uses the home directory of a fictional developer, Tommy Twoputt, whose username is twoputt. Whenever an absolute path must be referenced in the manuscript, the directory /home/twoputt is used.
 
@@ -32,7 +42,7 @@ Notice the forward slash for Windows systems. Backslash (\) is an escape charact
 
 Within the text, the home directory will be referred to as ${user.home} to make it generic across systems. The terminal output included in the listings has been generated on a Linux system, but you can look beyond this detail since it makes no difference which operating system you use for developing Seam applications.
 
-== Structuring your home ==
+=== Structuring your home ===
 
 I make recommendations about where to put libraries and how to organize your development space. You don't have to take these recommendations. But being a reader, I have always found source code distributions from books to be cold and disconnected.
 
@@ -66,13 +76,11 @@ twoputt/
 
 The location of individual applications will be referred to throughout the book using a variable notion. For instance, the JBoss AS directory is tokenized as ${jboss.home} and the Seam distribution as ${seam.dist}.
 
-== Obtaining the source code ==
+=== Developing the source code ===
 
-For each formal review and the final manuscript, there will be an official download bundle that you can retrieve from this project. However, until the final manuscript is ready, your best bet to grab the source from SVN. Part of the reason is that Seam is a fast moving project. Just trying to write about it and keep the example source code up to date has been quite a challenge.
+This section describes how to get started with developing the source code provided.
 
-You can find out how to check out the project from SVN by clicking on the [http://code.google.com/p/seaminaction/source Source] tab.
-
-== Starting from scratch ==
+=== Starting from scratch ===
 
 Chapter 2 takes you from an existing database schema to a working prototype. To follow along, you must first create and seed the database. The sample application uses the [http://h2database.com H2 database], which is the second generation of HSQLDB. I believe that this database is the best choice for prototyping because it is robust, fast, and does not require installation (at the system level).
 
@@ -93,7 +101,7 @@ Again, the database is all you need to follow along with the book. You can read 
 
 Instead of creating the project from scratch, you may want to skip ahead and take advantage of the staged project snapshots.
 
-== Inflating the staged projects ==
+=== Inflating the staged projects ===
 
 Once you have the source code checked out, you must "inflate" the project. I had to do this because Seam is a large project and the download would be out of control if I included all of the JAR files. The script I put together draws the necessary files from the Seam distribution into the proper place in the project.
 
