@@ -1,7 +1,7 @@
-#summary Instructions for getting started with the sample application
+#summary Instructions for getting started with the sample application.
 #labels Featured
 
-== Introduction ==
+= Introduction =
 
 First of all, I encourage you (read as "urge you") to [http://www.manning.com/affiliate/idevaffiliate.php?id=647 purchase] the book to get all of the gory details on how to set up, develop, and deploy the sample application. That being said, even with the book, there is going to be extra information that I am going to want to relate to you. I will do that on this wiki, starting with this introductory page.
 
