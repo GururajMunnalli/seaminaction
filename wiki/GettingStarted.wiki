@@ -23,7 +23,7 @@ You can find out how to check out the project from SVN by clicking on the [http:
 
 This section gives an overview of the project layout and makes a recommendation for how to organize it on your harddrive so that you can match as close as possible to the assumptions made in the book.
 
-=== The directory you call "home" ===
+=== _The directory you call "home"_ ===
 
 Your home directory is your development root. If this happens to be your operating system home directory, then the last path in the directory is typically the same as your username. The book uses the home directory of a fictional developer, Tommy Twoputt, whose username is twoputt. Whenever an absolute path must be referenced in the manuscript, the directory /home/twoputt is used.
 
@@ -42,7 +42,7 @@ Notice the forward slash for Windows systems. Backslash (\) is an escape charact
 
 Within the text, the home directory will be referred to as ${user.home} to make it generic across systems. The terminal output included in the listings has been generated on a Linux system, but you can look beyond this detail since it makes no difference which operating system you use for developing Seam applications.
 
-=== Structuring your home ===
+=== _Structuring your home_ ===
 
 I make recommendations about where to put libraries and how to organize your development space. You don't have to take these recommendations. But being a reader, I have always found source code distributions from books to be cold and disconnected.
 
@@ -80,7 +80,7 @@ The location of individual applications will be referred to throughout the book 
 
 This section describes how to get started with developing the source code provided.
 
-=== Starting from scratch ===
+=== _Starting from scratch_ ===
 
 Chapter 2 takes you from an existing database schema to a working prototype. To follow along, you must first create and seed the database. The sample application uses the [http://h2database.com H2 database], which is the second generation of HSQLDB. I believe that this database is the best choice for prototyping because it is robust, fast, and does not require installation (at the system level).
 
@@ -101,7 +101,7 @@ Again, the database is all you need to follow along with the book. You can read 
 
 Instead of creating the project from scratch, you may want to skip ahead and take advantage of the staged project snapshots.
 
-=== Inflating the staged projects ===
+=== _Inflating the staged projects_ ===
 
 Once you have the source code checked out, you must "inflate" the project. I had to do this because Seam is a large project and the download would be out of control if I included all of the JAR files. The script I put together draws the necessary files from the Seam distribution into the proper place in the project.
 
