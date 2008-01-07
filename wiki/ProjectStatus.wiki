@@ -1,0 +1,20 @@
+#summary The current status of the project.
+
+= Purpose =
+
+The purpose of this page is to give you an idea of what is going on in SVN without having to poke around in the dark. As of right now, the final manuscript is not yet complete, and thus the source code is still progressing as well. This page gives updates as to which chapters are expected to be working and which chapters are still theoretical (there is code in the book and on my harddrive but not yet available in this project).
+
+== Status ==
+
+||*Chapter*||*SVN Status*||
+||01||not yet available in SVN||
+||02||available; book also provides enough information to create on your own||
+||03||available||
+||04||partially available||
+||05||not yet available||
+||06||partially available||
+||07 - 15||not yet available||
+
+== Notes ==
+
+Jan 07, 2008 - Working on getting basic information up on project site; uploaded source code sent to final reviewers
