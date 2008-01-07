@@ -55,3 +55,9 @@ twoputt/
 }}}
 
 The location of individual applications will be referred to throughout the book using a variable notion. For instance, the JBoss AS directory is tokenized as ${jboss.home} and the Seam distribution as ${seam.dist}.
+
+== Obtaining the source code ==
+
+For each formal review and the final manuscript, there will be an official download bundle that you can retrieve from this project. However, until the final manuscript is ready, your best bet to grab the source from SVN. Part of the reason is that Seam is a fast moving project. Just trying to write about it and keep the example source code up to date has been quite a challenge.
+
+You can find out how to check out the project from SVN by clicking on the [http://code.google.com/p/seaminaction/source Source] tab.
