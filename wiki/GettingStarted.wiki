@@ -20,7 +20,7 @@ The table below shows the home directory for twoputt as it would appear on sever
 
 You can of course choose your own working directory. Here I attempt only to cite the default directory paths used by the sample code.
 
-Notice the forward slash for Windows systems. Backslash is an escape character in Java. Fortunately, Java transposes the slash according to the system it is running on, so you can sidestep use of the backslash (and hence its dual purpose) by always using forward slashes in paths.
+Notice the forward slash for Windows systems. Backslash (\) is an escape character in Java. Fortunately, Java transposes the slash according to the system it is running on, so you can sidestep use of the backslash (and hence its dual purpose) by always using forward slashes in paths.
 
 Within the text, the home directory will be referred to as ${user.home} to make it generic across systems. The terminal output included in the listings has been generated on a Linux system, but you can look beyond this detail since it makes no difference which operating system you use for developing Seam applications.
 
