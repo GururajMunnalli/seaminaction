@@ -7,7 +7,7 @@ First of all, I encourage you (read as "urge you") to [http://www.manning.com/af
 
 == The directory you call "home" ==
 
-Your home directory is where your personal files live. The last path in the directory is typically the same as your username. The book uses the home directory of a fictional developer, Tommy Twoputt, whose username is twoputt. Whenever an absolute path must be referenced in the manuscript, the directory /home/twoputt is used.
+Your home directory is your development root. If this happens to be your operating system home directory, then the last path in the directory is typically the same as your username. The book uses the home directory of a fictional developer, Tommy Twoputt, whose username is twoputt. Whenever an absolute path must be referenced in the manuscript, the directory /home/twoputt is used.
 
 The table below shows the home directory for twoputt as it would appear on several different operating systems. Whenever you see twoputt's home directory used in the book, replace it with your own home directory.
 
