@@ -9,7 +9,7 @@ Open 18 is a golf course application and golf community site. The initial databa
 
 This section discusses the business domain of the schema.
 
-=== Open 18 directory ===
+=== Directory ===
 
 *facility:* The directory consists of golf course data. The top level entity is the facility. A facility is a conglomerate of golf courses and represents the physical location of those courses. A golf facility can have multiple courses, but more times than not there is only a single course.
 
@@ -25,10 +25,10 @@ This section discusses the business domain of the schema.
 
 This section includes the entity-relationship diagrams for the two main parts of the schema, the directory and the community.
 
-=== Open 18 directory ==
+=== Directory ==
 
 http://seaminaction.googlecode.com/svn/wiki/images/directory-er-diagram.png
 
-=== Open 18 community ===
+=== Community ===
 
 http://seaminaction.googlecode.com/svn/wiki/images/community-er-diagram.png
