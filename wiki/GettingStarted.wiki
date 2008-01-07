@@ -39,6 +39,7 @@ As you add new software, your home area can very quickly become chaotic. To help
 
 Appendix A shows you how to get all of the software installed that is needed to use the examples in this book, including Seam. After all of the downloading is complete, your home directory should contain the directories listed in table below, populated with the required software:
 
+{{{
 twoputt/
 |-- databases/
 |   `-- open18-db/
@@ -51,5 +52,6 @@ twoputt/
 |   `-- jboss-seam-2.0.1.CR1/
 `-- projects/
     `-- open18/
+}}}
 
 The location of individual applications will be referred to throughout the book using a variable notion. For instance, the JBoss AS directory is tokenized as ${jboss.home} and the Seam distribution as ${seam.dist}.
