@@ -5,4 +5,14 @@
 
 Open 18 is a golf course application and golf community site. The initial database schema only includes the golf course directory tables and data.
 
-= Details =
+== ER Diagrams ==
+
+Below are the entity-relationship diagrams for the two main parts of the schema, the directory and the community.
+
+=== Open 18 directory ==
+
+http://seaminaction.googlecode.com/svn/wiki/images/directory-er-diagram.png
+
+=== Open 18 community ===
+
+http://seaminaction.googlecode.com/svn/wiki/images/community-er-diagram.png
