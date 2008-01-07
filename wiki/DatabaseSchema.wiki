@@ -1,0 +1,8 @@
+#summary The Open 18 database schema
+#labels Phase-Design
+
+= Introduction =
+
+Open 18 is a golf course application and golf community site. The initial database schema only includes the golf course directory tables and data.
+
+= Details =
