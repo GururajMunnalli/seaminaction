@@ -61,3 +61,40 @@ The location of individual applications will be referred to throughout the book 
 For each formal review and the final manuscript, there will be an official download bundle that you can retrieve from this project. However, until the final manuscript is ready, your best bet to grab the source from SVN. Part of the reason is that Seam is a fast moving project. Just trying to write about it and keep the example source code up to date has been quite a challenge.
 
 You can find out how to check out the project from SVN by clicking on the [http://code.google.com/p/seaminaction/source Source] tab.
+
+== Starting from scratch ==
+
+Chapter 2 takes you from an existing database schema to a working prototype. To follow along, you must first create and seed the database. The sample application uses the [http://h2database.com H2 database], which is the second generation of HSQLDB. I believe that this database is the best choice for prototyping because it is robust, fast, and does not require installation (at the system level).
+
+Information about how to create the database is documented in the README.txt file. However, I will also include instructions here. Run the following two commands to setup the database for Open 18.
+
+{{{
+java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
+java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql
+}}}
+
+Alternatively, you can extract the database I have prepared.
+
+{{{
+unzip -d databases etc/schema/open18-db-initial-seeded.zip
+}}}
+
+Again, the database is all you need to follow along with the book. However, you may want to skip ahead and take advantage of the staged project snapshots.
+
+== Inflating the staged projects ==
+
+Once you have the source code checked out, you must "inflate" the project. I had to do this because Seam is a large project and the download would be out of control if I included all of the JAR files. The script I put together draws the necessary files from the Seam distribution into the proper place in the project.
+
+The inflating is handled by an Ant build script at the root of the source tree. You run the following command to inflate all of the stages.
+
+{{{
+ant inflate-all
+}}}
+
+You can also inflate a single phase by passing in the location of the project
+
+{{{
+ant -Dproject.home=/home/twoputt/stages/projects-ch02/open18
+}}}
+
+Of course, if you follow along with chapter 2, you actually don't start with the stages but rather from an existing database and a blank project workspace.
