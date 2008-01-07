@@ -1,4 +1,5 @@
 #summary Instructions for getting started with the sample application
+#labels Featured
 
 == Introduction ==
 
