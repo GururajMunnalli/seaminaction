@@ -16,6 +16,10 @@ The purpose of this page is to give you an idea of what is going on in SVN witho
 ||06||partially available||
 ||07 - 15||not yet available||
 
-== Notes ==
+== Notes to reviewers ==
+
+I encourage you to file bug reports using the [http://code.google.com/p/seaminaction/issues/list Issue Tracker] when you encounter errors. I ask for your patience as I synchronize the code with the current draft that you have been provided. At the time of writing this note, chapter 2, 3, and 4 should work as expected. The code from the other chapters will be available shortly.
+
+== Log ==
 
 Jan 07, 2008 - Working on getting basic information up on project site; uploaded source code sent to final reviewers
