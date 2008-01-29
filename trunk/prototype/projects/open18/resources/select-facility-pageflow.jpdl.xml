@@ -5,7 +5,7 @@
 	xsi:schemaLocation="
 		http://jboss.com/products/seam/pageflow
 		http://jboss.com/products/seam/pageflow-2.0.xsd"
-	name="selectFacility">
+	name="Select Facility">
 
 	<start-state>
 		<transition to="notice"/>

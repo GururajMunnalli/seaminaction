@@ -56,7 +56,7 @@ public class CourseWizard implements Serializable {
     
     private boolean ladiesHandicapUnique = false;
 
-    @Begin(pageflow = "courseWizard", nested = true)
+    @Begin(pageflow = "Course Wizard", nested = true)
     public String addCourse() {
         newCourse = new Course();
         newCourse.setFacility(facilityHome.getDefinedInstance());
@@ -125,10 +125,6 @@ public class CourseWizard implements Serializable {
             return "failure";
         }
     }
-
-	public void sayHeyAction() {
-		System.out.println("hey action!");
-	}
 
     public List<SelectItem> getParOptions() {
         List<SelectItem> options = new ArrayList<SelectItem>();

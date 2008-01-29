@@ -5,7 +5,7 @@
 	xsi:schemaLocation="
 		http://jboss.com/products/seam/pageflow
 		http://jboss.com/products/seam/pageflow-2.0.xsd"
-	name="courseWizard">
+	name="Course Wizard">
 
 	<!-- use <start-page> when beginning pageflow from Render Response phase -->
 	<!--
@@ -21,7 +21,7 @@
 
 	<!-- current it is not possible to cancel when in this subflow -->
 	<process-state name="selectFacility">
-		<sub-process name="selectFacility"/>
+		<sub-process name="Select Facility"/>
 		<transition to="basicCourseInfo"/>
 	</process-state>
 
@@ -30,14 +30,14 @@
 		<redirect /> <!-- defining redirect using attribute on <page> has same affect -->
 		<!--
 		<event type="node-enter">
-			<action expression="#{courseWizard.sayHeyAction}"/>
+			<action expression="#{courseWizard.reportEvent}"/>
 		</event>
 		-->
 		<transition name="cancel" to="cancel"/>
 		<transition name="next" to="description"/>
 		<!-- has same affect as node-enter event -->
 		<!--
-		<action expression="#{courseWizard.sayHeyAction}"/>
+		<action expression="#{courseWizard.reportEvent}"/>
 		-->
 	</page>
 

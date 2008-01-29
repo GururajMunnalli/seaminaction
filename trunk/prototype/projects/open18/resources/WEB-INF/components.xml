@@ -92,8 +92,8 @@
         
    <bpm:jbpm>
       <bpm:pageflow-definitions>
-         <value>selectFacility.jpdl.xml</value>
-         <value>courseWizard.jpdl.xml</value>
+         <value>select-facility-pageflow.jpdl.xml</value>
+         <value>course-wizard-pageflow.jpdl.xml</value>
       </bpm:pageflow-definitions>
       <bpm:process-definitions>
          <value>courier.jpdl.xml</value>
