@@ -1,0 +1,311 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich"
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+
+    <h:form id="round" styleClass="edit">
+    
+        <rich:panel>
+            <f:facet name="header">#{roundHome.managed ? 'Edit' : 'Add'} Round</f:facet>
+            
+            <s:decorate id="dateField" template="layout/edit.xhtml">
+                <ui:define name="label">Date</ui:define>
+                <ui:remove>MM/dd/yyyy</ui:remove>
+                <rich:calendar id="date"
+                      datePattern="MMM dd, yyyy"
+                         required="true"
+                            value="#{round.date}"/>
+            </s:decorate>
+
+            <s:decorate id="notesField" template="layout/edit.xhtml">
+                <ui:define name="label">Notes</ui:define>
+                <h:inputTextarea id="notes"
+                               cols="80"
+                               rows="3"
+                              value="#{round.notes}"/>
+            </s:decorate>
+
+            <ui:remove>
+            <s:decorate id="totalScoreField" template="layout/edit.xhtml">
+                <ui:define name="label">Total score</ui:define>
+                <h:inputText id="totalScore"
+                       required="true"
+                          value="#{round.totalScore}">
+                    <a4j:support event="onblur" reRender="totalScoreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            </ui:remove>
+
+            <s:decorate id="weatherField" template="layout/edit.xhtml">
+                <ui:define name="label">Weather</ui:define>
+                <h:selectOneMenu id="weather" value="#{round.weather}" required="true">
+                    <f:selectItem itemValue="#{null}" itemLabel="-- Select --"/>
+                    <f:selectItem itemValue="Sunny"/>
+                    <f:selectItem itemValue="Mostly Sunny"/>
+                    <f:selectItem itemValue="Partly Cloudy"/>
+                    <f:selectItem itemValue="Mostly Cloudy"/>
+                    <f:selectItem itemValue="Cloudy"/>
+                    <f:selectItem itemValue="Fair"/>
+                    <f:selectItem itemValue="Scattered Showers"/>
+                    <f:selectItem itemValue="Scattered T-Storms"/>
+                    <f:selectItem itemValue="Showers"/>
+                    <f:selectItem itemValue="Rain"/>
+                    <f:selectItem itemValue="T-Storms"/>
+                    <a4j:support event="onblur" reRender="weatherField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:selectOneMenu>
+            </s:decorate>
+
+            <ui:remove>
+            <s:decorate id="weatherField" template="layout/edit.xhtml">
+                <ui:define name="label">Weather</ui:define>
+                <h:inputText id="weather" 
+                       required="true"
+                           size="8"
+                      maxlength="8"
+                          value="#{round.weather}">
+                    <a4j:support event="onblur" reRender="weatherField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            </ui:remove>
+
+            <div style="clear:both">
+                <span class="required">*</span> 
+                required fields
+            </div>
+            
+        </rich:panel>
+                
+        <div class="actionButtons">
+
+            <h:commandButton id="save" 
+                          value="Save" 
+                         action="#{roundHome.persist}"
+                       disabled="#{!roundHome.wired}"
+                       rendered="#{!roundHome.managed}"/>  
+                           
+            <h:commandButton id="update" 
+                          value="Save" 
+                         action="#{roundHome.update}"
+                       rendered="#{roundHome.managed}"/>
+                         
+            <h:commandButton id="delete" 
+                          value="Delete" 
+                         action="#{roundHome.remove}"
+                      immediate="true" 
+                       rendered="#{roundHome.managed}"/>
+                    
+            <h:commandButton id="revert"
+                          value="Discard changes"
+                         action="#{roundHome.revert}"
+                      immediate="true" 
+                       rendered="#{roundHome.managed}"/>
+
+            <ui:remove>
+            <s:button id="discard" 
+                   value="Discard changes"
+             propagation="end"
+                    view="/Round.xhtml"
+                rendered="#{roundHome.managed}"/>
+            </ui:remove>
+                
+            <s:button id="cancel" 
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml"
+                rendered="#{!roundHome.managed}"/>
+
+        </div>
+
+<rich:tabPanel switchType="ajax">
+    
+    <rich:tab label="Scorecard *" labelClass="required">
+    <div class="association" id="teeSetParent">
+    
+        <h:outputText value="Tee set not selected" 
+                   rendered="#{round.teeSet == null}"/>
+        
+<ui:remove><!-- having problem with end on c:forEach when teeSet has not been selected...hardcoding 18 for now--></ui:remove>
+<s:fragment rendered="#{round.teeSet != null}">
+<table class="dr-table rich-table " id="teeSetTable" border="0" cellpadding="0" cellspacing="0">
+    <colgroup span="19"/>
+    <thead>
+        <tr class="dr-table-header rich-table-header">
+            <th class="dr-table-headercell rich-table-headercell" colspan="19" scope="colgroup">#{round.teeSet.course.name}</th>
+        </tr>
+        <tr class="dr-table-subheader rich-table-subheader">
+            <th class="dr-table-subheadercell rich-table-subheadercell" style="text-align: left;" scope="col">
+                <div style="float: left; margin-right: 5px;">HOLE</div>
+                <div title="#{round.teeSet.color}" style="float: left; background-color: #{round.teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+                <div style="float: right; font-weight: normal; font-size: smaller; margin-top: 2px;">
+                  <s:fragment rendered="#{round.golfer.gender eq 'MALE'}">
+                      <h:outputText value="#{round.teeSet.mensCourseRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+                      #{' / '}
+                      <h:outputText value="#{round.teeSet.mensSlopeRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+                  </s:fragment>
+                  <s:fragment rendered="#{round.golfer.gender eq 'FEMALE'}">
+                      <h:outputText value="#{round.teeSet.ladiesCourseRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+                      #{' / '}
+                      <h:outputText value="#{round.teeSet.ladiesSlopeRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+                  </s:fragment>
+                </div>
+            </th>
+            <c:forEach var="_holeNum" begin="1" end="18">
+                <th class="dr-table-subheadercell rich-table-subheadercell" scope="col">#{_holeNum}</th>
+            </c:forEach>
+        </tr>
+    </thead>
+    <tbody>
+				<tr class="dr-table-firstrow rich-table-firstrow">
+						<th class="dr-table-cell rich-table-cell" style="text-align: left;">Par</th>
+            <c:forEach var="_holeNum" begin="1" end="18">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center; color: #A0A0A0">
+
+										#{round.teeSet.course.holes.toArray()[_holeNum - 1].getPar(round.golfer.gender)}
+								</td>
+						</c:forEach>
+				</tr>
+        <tr class="dr-table-firstrow rich-table-firstrow">
+            <th class="dr-table-cell rich-table-cell" style="text-align: left;">Score<span class="required">*</span></th>
+            <c:forEach var="_holeNum" begin="1" end="18">
+                <td class="dr-table-cell rich-table-cell">
+                    <s:decorate id="parField_#{_holeNum}" template="/layout/gridEdit.xhtml">
+                        <h:inputText id="par_#{_holeNum}" value="#{scores[_holeNum - 1].strokes}" required="true" size="2"/>
+                    </s:decorate>
+                    <ui:remove><rich:inputNumberSpinner id="par_#{_holeNum}" value="#{scores[_holeNum - 1].strokes}" required="true" maxValue="99" inputSize="2"/></ui:remove>
+                </td>
+            </c:forEach>
+        </tr>
+        <tr class="dr-table-firstrow rich-table-firstrow">
+            <th class="dr-table-cell rich-table-cell" style="text-align: left;">Fairway</th>
+            <c:forEach var="_holeNum" begin="1" end="18">
+                <td class="dr-table-cell rich-table-cell">
+										<ui:remove>
+                    <h:selectBooleanCheckbox id="fairway_#{_holeNum}" value="#{scores[_holeNum - 1].fairway}" rendered="#{not round.teeSet.course.holes.toArray()[_holeNum - 1].isPar3(round.golfer.gender)}"/>
+										</ui:remove>
+                    <h:selectOneMenu id="fairway_#{_holeNum}" value="#{scores[_holeNum - 1].fairway}" rendered="#{not round.teeSet.course.holes.toArray()[_holeNum - 1].isPar3(round.golfer.gender)}">
+											<f:selectItem itemValue="" itemLabel="-"/>
+											<f:selectItem itemValue="#{true}" itemLabel="y"/>
+											<f:selectItem itemValue="#{false}" itemLabel="n"/>
+										</h:selectOneMenu>
+                    <h:outputText value="n/a" rendered="#{round.teeSet.course.holes.toArray()[_holeNum - 1].isPar3(round.golfer.gender)}"/>
+                </td>
+            </c:forEach>
+        </tr>
+        <tr class="dr-table-firstrow rich-table-firstrow">
+            <th class="dr-table-cell rich-table-cell" style="text-align: left;">Green in regulation</th>
+            <c:forEach var="_holeNum" begin="1" end="18">
+                <td class="dr-table-cell rich-table-cell">
+										<ui:remove>
+                    <h:selectBooleanCheckbox id="gir_#{_holeNum}" value="#{scores[_holeNum - 1].greenInRegulation}"/>
+										</ui:remove>
+                    <h:selectOneMenu id="gir_#{_holeNum}" value="#{scores[_holeNum - 1].greenInRegulation}">
+											<f:selectItem itemValue="" itemLabel="-"/>
+											<f:selectItem itemValue="#{true}" itemLabel="y"/>
+											<f:selectItem itemValue="#{false}" itemLabel="n"/>
+										</h:selectOneMenu>
+                </td>
+            </c:forEach>
+        </tr>
+        <tr class="dr-table-firstrow rich-table-firstrow">
+            <th class="dr-table-cell rich-table-cell" style="text-align: left;">Putts</th>
+            <c:forEach var="_holeNum" begin="1" end="18">
+                <td class="dr-table-cell rich-table-cell">
+                    <s:decorate id="puttsField_#{_holeNum}" template="/layout/gridEdit.xhtml">
+                        <h:inputText id="putts_#{_holeNum}" value="#{scores[_holeNum - 1].putts}" size="2"/>
+                    </s:decorate>
+                </td>
+            </c:forEach>
+        </tr>
+    </tbody>
+</table>
+</s:fragment>
+
+        <!-- need this to load styles for use in custom table -->
+				<!-- FIXME - better to use: <a:loadStyle src="resource:///css/table.xcss"/> FIXME -->
+        <div style="display: none;"><rich:dataTable/></div>
+
+        <ui:remove>
+        <rich:dataTable var="teeSet" 
+                   value="#{round.teeSet}" 
+                rendered="#{round.teeSet != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="teeSetTable">
+            <h:column>
+                <f:facet name="header">id</f:facet>
+                #{teeSet.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                #{teeSet.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Course</f:facet>
+                #{teeSet.course.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Color</f:facet>
+                <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+            </h:column>
+            <h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
+                <f:facet name="header">Course Rating</f:facet>
+                #{teeSet.ladiesCourseRating}
+            </h:column>
+            <h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
+                <f:facet name="header">Slope Rating</f:facet>
+                #{teeSet.ladiesSlopeRating}
+            </h:column>
+            <h:column rendered="#{currentGolfer.gender == 'MALE'}">
+                <f:facet name="header">Course Rating</f:facet>
+                #{teeSet.mensCourseRating}
+            </h:column>
+            <h:column rendered="#{currentGolfer.gender == 'MALE'}">
+                <f:facet name="header">Slope Rating</f:facet>
+                #{teeSet.mensSlopeRating}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Position</f:facet>
+                #{teeSet.position}
+            </h:column>
+            <h:column>
+                <f:facet name="header">action</f:facet>
+                <s:link view="/TeeSet.xhtml" 
+                         id="viewteeSet" 
+                      value="View" 
+                propagation="none">
+                    <f:param name="teeSetId" 
+                           value="#{teeSet.id}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+        </ui:remove>
+
+        <div class="actionButtons">
+            <h:commandButton value="Select Tee Set" action="selectTeeSet" />
+            <ui:remove>
+            <s:button value="Select Tee Set"
+                       view="/TeeSetList.xhtml">
+                <f:param name="from" value="RoundEdit"/>
+            </s:button>
+            </ui:remove>
+        </div>
+        
+    </div>
+    </rich:tab>
+
+</rich:tabPanel>
+    </h:form>
+</ui:define>
+
+</ui:composition>

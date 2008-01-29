@@ -1,0 +1,158 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	template="layout/template.xhtml">
+	
+	<ui:define name="body">
+
+		<s:div id="banner" rendered="#{profileLoaded}">
+			<h1>#{selectedGolfer.name}</h1>
+			<ui:remove><p>#{selectedGolfer.status}</p></ui:remove>
+		</s:div>
+	
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+	
+		<s:div rendered="#{not profileLoaded}">
+			Sorry, but this golfer does not exist.
+		</s:div>
+
+		<rich:panel rendered="#{profileLoaded}">
+			<f:facet name="header">Profile</f:facet>
+		
+			<div>
+				<s:graphicImage
+					value="#{selectedGolfer.image ne null ?
+						selectedGolfer.image : '/img/golfer.png'}"
+					fileName="#{selectedGolfer.username}"
+					alt="[profile image]"/>
+			</div>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Gender</ui:define>
+				#{selectedGolfer.gender}
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Birthday</ui:define>
+				<h:outputText value="#{selectedGolfer.dateOfBirth}">
+					<s:convertDateTime pattern="MMMM dd, yyyy"/>
+				</h:outputText>
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Location</ui:define>
+				#{selectedGolfer.location}
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Member since</ui:define>
+				<h:outputText value="#{selectedGolfer.dateJoined}">
+					<s:convertDateTime pattern="MMMM dd, yyyy"/>
+				</h:outputText>
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Pro status</ui:define>
+				#{selectedGolfer.proStatus}
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Specialty</ui:define>
+				#{selectedGolfer.specialty}
+			</s:decorate>
+
+			<div style="clear: both;"/>
+			
+		</rich:panel>
+		
+		<div class="actionButtons">
+			<s:button id="addFriend" value="Add to friends" view="/addFriend.xhtml" rendered="#{s:hasRole('golfer') and currentGolfer.username ne selectedGolfer.username}">
+				<f:param name="friendId" value="#{selectedGolfer.id}"/>
+			</s:button>
+			<s:button id="done" value="Done" action="home" propagation="end"/>
+			<s:button id="edit" value="Edit" view="/GolferEdit.xhtml" rendered="#{currentGolfer.username eq selectedGolfer.username}" propagation="none">
+				<f:param name="golferId" value="#{selectedGolfer.id}"/>
+			</s:button>
+		</div>
+	
+		<rich:tabPanel switchType="ajax">
+			<rich:tab label="Friends (#{selectedGolferFriends.size})">
+				<ui:remove><!-- only needed if not using conversation --></ui:remove>
+				<ui:remove><a4j:actionparam name="golferId" value="#{selectedGolfer.id}"/></ui:remove>
+				<ui:remove><!-- was using {dataModels.getDataModel(selectedGolfer.friends)}, but cannot sort --></ui:remove>
+				<h:outputText value="No friends." rendered="#{empty selectedGolferFriends}"/>
+				<rich:dataTable var="_relationship" value="#{selectedGolferFriends}" rendered="#{not empty selectedGolferFriends}">
+					<h:column>
+						<s:graphicImage value="#{_relationship.friend.image ne null ? _relationship.friend.image : '/img/golfer.png'}" style="vertical-align: text-top; margin-right: 5px;">
+							<s:transformImageSize width="36" maintainRatio="true"/>
+						</s:graphicImage>
+						<s:link viewId="/profile.xhtml" value="#{_relationship.friend.name}" propagation="none" style="color: inherit; font-weight: bold;">
+							<f:param name="golferId" value="#{_relationship.friend.id}"/>
+						</s:link>
+					</h:column>
+					<h:column rendered="#{currentGolfer.username eq selectedGolfer.username}">
+						<s:link view="/removeFriend.xhtml" value="Remove from friends">
+							<f:param name="friendId" value="#{_relationship.friend.id}"/>
+						</s:link>
+					</h:column>
+				</rich:dataTable>
+			</rich:tab>
+			<rich:tab label="Make friends" rendered="#{currentGolfer.username eq selectedGolfer.username}">
+				<ui:remove><a4j:actionparam name="golferId" value="#{selectedGolfer.id}"/></ui:remove>
+				<h:form id="makeFriends">
+					<rich:dataTable var="_golfer" value="#{nonFriendsQuery.resultList}"><!-- use .datamodel if using datamodelselection -->
+						<h:column>
+							<f:facet name="header">Golfer</f:facet>
+							#{_golfer.name}
+						</h:column>
+						<h:column>
+							<f:facet name="header">action</f:facet>
+							<s:link view="/addFriend.xhtml" value="Add to friends">
+								<f:param name="friendId" value="#{_golfer.id}"/>
+							</s:link>
+							<ui:remove><!--
+							<h:commandButton action="#{friendRequest.initiate}" value="Add to friends"/>
+							--></ui:remove>
+							<ui:remove><!--
+							<h:commandButton action="#{friendRequest.initiate(_golfer)}" value="Add to friends"/>
+							--></ui:remove>
+						</h:column>
+					</rich:dataTable>
+				</h:form>
+			</rich:tab>
+			<rich:tab label="#{selectedGolfer.username}'s game">
+				<ui:remove><a4j:actionparam name="golferId" value="#{selectedGolfer.id}"/></ui:remove>
+				<p:linechart title="Game Analysis" domainAxisLabel="Date of round"
+					legend="true" width="600"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white">
+					<p:series key="Putting average">
+						<ui:repeat var="_round" value="#{golferRounds.resultList}">
+							<p:data key="#{_round.date}" value="#{_round.averagePutts}"/>
+						</ui:repeat>
+					</p:series>
+					<p:series key="Strokes over Par">
+						<ui:repeat var="_round" value="#{golferRounds.resultList}">
+							<p:data key="#{_round.date}" value="#{_round.strokesOverPar}"/>
+						</ui:repeat>
+					</p:series>
+					<ui:remove>
+					<p:series key="Handicap" seriesPaint="0xA6C78E">
+						<ui:repeat var="_round" value="#{golferRounds.resultList}">
+							<p:data key="#{_round.date}" value="#{_round.handicap}"/>
+						</ui:repeat>
+					</p:series>
+					</ui:remove>
+				</p:linechart>
+			</rich:tab>
+		</rich:tabPanel>
+
+	</ui:define>
+
+</ui:composition>

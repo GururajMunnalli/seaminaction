@@ -2,6 +2,8 @@
 <page xmlns="http://jboss.com/products/seam/pages"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+
+   <begin-conversation join="true"/>   
       
    <param name="firstResult" value="#{facilityList.firstResult}"/>
    <param name="order" value="#{facilityList.order}"/>
@@ -17,5 +19,18 @@
    <param name="type" value="#{facilityList.facility.type}" validator="#{facilityTypeValidator}"/>
    <param name="uri" value="#{facilityList.facility.uri}"/>
    <param name="zip" value="#{facilityList.facility.zip}"/>
+   <param name="priceRange" value="#{facilityList.facility.priceRange}"/>
+
+   <navigation>
+      <rule if-outcome="reset">
+         <end-conversation before-redirect="true"/>
+         <out name="facilityList" value="#{null}"/>
+         <!-- this next one is required to clear the swizzled entity reference -->
+         <out name="facilityList.facility" value="#{null}"/>
+		 <!-- this next one is required if using entity example -->
+         <out name="facilityExample" value="#{null}"/>
+         <redirect />
+      </rule>
+   </navigation>
 
 </page>

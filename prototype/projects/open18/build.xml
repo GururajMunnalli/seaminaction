@@ -191,13 +191,27 @@
                 <include name="mvel*.jar"/>
                 <include name="core.jar"/> <!-- dallen: Eclipse JDT required for GlassFish deployment -->
                 <include name="urlrewritefilter.jar"/>
+                <include name="itext.jar"/>
+                <include name="jfreechart.jar"/>
+                <include name="jcommon.jar"/>
+                <include name="jcaptcha*.jar"/>
                 <include name="groovy-*.jar" if="groovy.present"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${war.dir}/WEB-INF/classes"> <!-- dallen: RichFaces dynamic styles -->
+            <fileset dir="${src.action.dir}"> 
+                <include name="**/*.xcss"/>
+            </fileset>
+            <fileset dir="${src.model.dir}"> 
+                <include name="**/*.xcss"/>
             </fileset>
         </copy>
         
         <copy todir="${war.dir}/WEB-INF/classes">
             <fileset dir="${basedir}/resources"> 
                 <include name="messages*.properties"/>
+                <include name="*.skin.properties"/> <!-- dallen: RichFaces skins -->
             </fileset>
         </copy>
         

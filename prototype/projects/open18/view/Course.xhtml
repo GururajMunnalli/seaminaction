@@ -6,13 +6,71 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+								xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:rich="http://richfaces.org/rich"
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
+		<s:remote include="favoritesAction"/>
+		<script type="text/javascript">
+var messages = null;
+Seam.Remoting.eval("#" + "{messages}", function(value) {
+	messages = value;
+});
+
+function addToFavorites(entityId, entityName, golferId) {
+	var favoritesAction = Seam.Component.getInstance("favoritesAction");	
+	favoritesAction.isFavorite(entityId, entityName, function(exists) {
+		//Seam.Remoting.getContext().setConversationId(null);
+		if (exists) {
+			alert("This " + entityName + " is already a favorite");
+		}
+		else {
+			var currentGolfer = Seam.Remoting.createType("org.open18.model.Golfer");
+			currentGolfer.setId(golferId);
+			var favorite = Seam.Component.newInstance("newFavorite");
+			favorite.setEntityId(entityId);
+			favorite.setEntityName(entityName);
+			favorite.setGolfer(currentGolfer);
+			favoritesAction.addFavorite(favorite, reportResult);
+		}
+	});
+}
+
+function reportResult(favoriteInstance) {
+	var message = messages.get("favorite.added");
+	message = message.replace("{0}", favoriteInstance.getEntityName());
+	message = message.replace("{1}", favoriteInstance.getId());
+	alert(message);
+}
+
+function removeAllFavorites() {
+	Seam.Component.getInstance('favoritesAction').removeAllFavorites(function() {
+		alert('nuked');
+	});
+}
+
+function showFavoriteCourses(golferId) {
+	var currentGolfer = Seam.Remoting.createType("org.open18.model.Golfer");
+	currentGolfer.setId(golferId);
+	Seam.Component.getInstance("favoritesAction").getFavoriteCourses(currentGolfer, function(result) {
+		var favs = "";
+		result.each(function(course) {
+			favs += course.getName() + " (" + course.getFacility().getName() + " )\n";
+		});
+		alert(favs);
+	});
+}
+		</script>
     
     <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
     
+		<p>
+		<a href="javascript: void(0);" onclick="">Delete favorites</a>
+		|
+		<a href="javascript: void(0);" onclick="showFavoriteCourses(#{currentGolfer.id});">Show favorite coures</a>
+		</p>
+
     <rich:panel>
         <f:facet name="header">Course</f:facet>
 
@@ -45,6 +103,7 @@
         <s:decorate id="name" template="layout/display.xhtml">
             <ui:define name="label">name</ui:define>
             #{courseHome.instance.name}
+						(<a href="#{facesContext.externalContext.requestContextPath}/course/view/#{courseHome.instance.restfulUrlHandle}">permalink</a>)
         </s:decorate>
 
 
@@ -79,7 +138,39 @@
                     id="done"
                  value="Done"/>
 
+        <span style="padding-bottom: 10px; vertical-align: middle;">
+				Course info:#{' '}
+        <s:link view="/exportCourseInfo.xhtml"
+                    id="exportCourseInfo"
+                 value="PDF" target="_blank">
+            <f:param name="courseId" value="#{courseHome.id}"/>
+        </s:link>
+        #{' '}
+				Scorecard:#{' '}
+        <s:link view="/exportSimpleScorecard.xhtml"
+                    id="exportSimpleScorecard"
+                 value="simple PDF" target="_blank">
+            <f:param name="courseId" value="#{courseHome.id}"/>
+        </s:link>
+				#{' '}
+        <s:link view="/exportScorecard.xhtml"
+                    id="exportCompleteScorecard"
+                 value="complete PDF" target="_blank">
+            <f:param name="courseId" value="#{courseHome.id}"/>
+        </s:link>
+				#{' '}
+				<s:span id="addToFavoritesLink" rendered="#{identity.loggedIn}">
+					<a href="javascript: void(0);" onclick="addToFavorites(#{courseHome.id}, 'Course', #{currentGolfer.id});">Add to favorites</a>
+				</s:span>
+        </span>
+
     </div>
+<h:form rendered="#{identity.loggedIn}">
+Friend's email <h:inputText id="recipient" value="#{recipient.emailAddress}" required="true"><s:validate/></h:inputText> 
+	 <h:commandButton action="#{notifications.sendScorecard}" value="Send to friend">
+	 <f:setPropertyActionListener target="#{scorecard.courseId}" value="#{courseHome.id}"/>
+	 </h:commandButton>
+</h:form>
 
     <rich:tabPanel switchType="ajax">
 
@@ -119,12 +210,32 @@
                 #{facility.description}
             </h:column>
             <h:column>
+                <f:facet name="header">drivingRange</f:facet>
+                #{facility.drivingRange}
+            </h:column>
+            <h:column>
                 <f:facet name="header">name</f:facet>
                 #{facility.name}
             </h:column>
             <h:column>
                 <f:facet name="header">phone</f:facet>
                 #{facility.phone}
+            </h:column>
+            <h:column>
+                <f:facet name="header">proShop</f:facet>
+                #{facility.proShop}
+            </h:column>
+            <h:column>
+                <f:facet name="header">rentsClubs</f:facet>
+                #{facility.rentsClubs}
+            </h:column>
+            <h:column>
+                <f:facet name="header">restaurant</f:facet>
+                #{facility.restaurant}
+            </h:column>
+            <h:column>
+                <f:facet name="header">snackBar</f:facet>
+                #{facility.snackBar}
             </h:column>
             <h:column>
                 <f:facet name="header">state</f:facet>
@@ -137,6 +248,10 @@
             <h:column>
                 <f:facet name="header">uri</f:facet>
                 #{facility.uri}
+            </h:column>
+            <h:column>
+                <f:facet name="header">priceRange</f:facet>
+                #{facility.priceRange}
             </h:column>
             <h:column>
                 <f:facet name="header">zip</f:facet>
@@ -283,6 +398,79 @@
         </s:button>
     </div>        
     </rich:tab>
+</rich:tabPanel>
+<div style="margin-top: 5px;"/>
+<rich:tabPanel id="reviews" switchType="client" selectedTab="#{param.reviewTab}">
+	<rich:tab id="list" label="Reviews (#{courseReviews.size})">
+		<div class="reviews">
+			<h:outputText value="This course has not yet been reviewed." rendered="#{courseReviews.size eq 0}"/>
+			<a4j:repeat var="_review" value="#{courseReviews}" rowKeyVar="index">
+				<s:div styleClass="review">
+					<p style="font-weight: bold; text-transform: uppercase;">
+						<s:graphicImage value="#{_review.reviewer.image}" style="vertical-align: middle; margin-right: 8px; position: relative; top: -2px;">
+							<s:transformImageSize width="36" maintainRatio="true"/>
+						</s:graphicImage>
+						<s:link view="/profile.xhtml" value="#{_review.reviewer.username}">
+							<f:param name="golferId" value="#{_review.reviewer.id}"/>
+						</s:link>
+						#{' | '}
+						<strong>Rating</strong>#{' '}<h:graphicImage value="/img/rate-#{_review.rating}.gif" />
+						#{' | '}
+						<h:outputText value="#{_review.dateCreated}"><s:convertDateTime pattern="dd MMM yyyy"/></h:outputText>
+					</p>
+					<p><s:formattedText value="#{_review.text}" /></p>
+				</s:div>
+				<rich:separator height="1" rendered="#{index + 1 lt courseReviews.size}" lineType="dotted"/>
+			</a4j:repeat>
+		</div>
+	</rich:tab>
+	<rich:tab id="add" label="Add review">
+		<!-- TODO: this needs to bring the user back here -->
+		<s:fragment rendered="#{not identity.loggedIn}"><p>Please #{' '}<s:link view="/login.xhtml">login</s:link>#{' '} if you would like to add a review.</p></s:fragment>
+		<h:form id="AddReview" rendered="#{identity.loggedIn}">
+			<p>Please add your review in the form below. Please note that the comment field supports a shorthand syntax called "wiki text". You can use this syntax to format your entry.</p>
+			<s:decorate id="textDecoration" template="layout/edit.xhtml">
+				<ui:define name="label">comment</ui:define>
+				<h:inputTextarea id="text" cols="80" rows="3" value="#{courseReviewHome.instance.text}" required="true">
+					<s:validateFormattedText/>
+				</h:inputTextarea>
+			</s:decorate>
+			<s:decorate id="ratingDecoration" template="layout/edit.xhtml">
+				<ui:define name="label">rating</ui:define>
+				<h:selectOneMenu id="rating" value="#{courseReviewHome.instance.rating}">
+					<f:selectItem itemValue="" itemLabel=""/>
+					<f:selectItem itemValue="0" itemLabel="0"/>
+					<f:selectItem itemValue="1" itemLabel="1"/>
+					<f:selectItem itemValue="2" itemLabel="2"/>
+					<f:selectItem itemValue="3" itemLabel="3"/>
+					<f:selectItem itemValue="4" itemLabel="4"/>
+					<f:selectItem itemValue="5" itemLabel="5"/>
+				</h:selectOneMenu>
+			</s:decorate>
+			<div style="clear:both"/>
+			<!-- TODO: might want to make wiki help a toggle panel -->
+			<div style="margin-top: 5px; padding: 5px 5px 0 5px; float: left; border: 1px solid black;">
+				<strong style="text-decoration: underline;">Wiki Text - Quick Reference</strong>
+				<pre>*bold* /italic/ |monospace| -strikethrough- ^super^ _underline_
+
++Big Heading
+Headings must be followed by text
+
+++Smaller heading
+Paragraphs are ended with a blank line.
+
+#ordered list item
+
+=unordered list item
+
+"quoted text"</pre>
+			</div>
+			<div style="clear:both"/>
+			<div class="actionButtons">
+				<h:commandButton id="save" value="Submit" action="#{courseReviewHome.persist}"/>
+			</div>
+		</h:form>
+	</rich:tab>
 </rich:tabPanel>
 </ui:define>
 

@@ -2,8 +2,10 @@ package org.open18.auth;
 
 import java.security.MessageDigest;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
 @Name("passwordManager")
+@BypassInterceptors
 public class PasswordManager {
 	private String digestAlgorithm;
 	private String charset;

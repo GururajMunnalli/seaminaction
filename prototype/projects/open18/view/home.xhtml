@@ -5,27 +5,186 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	template="layout/template.xhtml">
 
 	<ui:define name="body">
-
 		<div id="banner">
-			<h1>Open 18</h1>
-			<h2>...a place for golfers</h2>
-			<p>Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" /></p>
+			<h1>#{messages['application.title']}</h1>
+			<h2>...#{messages['application.tagline']}</h2>
+			<s:fragment rendered="#{not identity.loggedIn}">
+				<p>Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" /></p>
+			</s:fragment>
 		</div>
 
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
     
-		<rich:panel>
-			<f:facet name="header">About Open 18</f:facet>
-			<p>Open 18 is a golf course directory and community site for golf players.</p>
-			<p><strong>Golf course directory:</strong></p>
-			<p>The golf course directory allows you to browse for golf facilities/courses or search for one in your area. The information available includes the facility, the course, the holes, the tee sets and the tees.</p>
-			<p><strong>The clubhouse:</strong></p>
-			<p>The clubhouse is a social utility that allows you to connect with other golfers. When you register to become a golfer, you will get a profile, which you can share with others. Along with that profile, you can track your golf rounds and publish personal experiences.</p>
-		</rich:panel>
-    
+		<h:panelGrid columns="2" columnClasses="panel-column" cellpadding="0" cellspacing="0">
+			<h:panelGroup>
+			<rich:panel styleClass="main-panel" rendered="#{not identity.loggedIn}">
+				<f:facet name="header">About Open 18</f:facet>
+				<p>Open 18 is a golf course directory and community site for golf players.</p>
+				<p><strong>Golf course directory:</strong></p>
+				<p>The golf course directory allows you to browse for golf facilities/courses or search for one in your area. The information available includes the facility, the course, the holes, the tee sets and the tees.</p>
+				<p><strong>The clubhouse:</strong></p>
+				<p>The clubhouse is a social utility that allows you to connect with other golfers. When you register to become a golfer, you will get a profile, which you can share with others. Along with that profile, you can track your golf rounds and publish personal experiences.</p>
+			</rich:panel>
+			<rich:panel styleClass="main-panel" rendered="#{identity.loggedIn}">
+				<f:facet name="header">Requests</f:facet>
+				<div style="margin-top: -10px;">
+				<h3>Inbox</h3>
+				<h:outputText value="You have no assigned tasks." rendered="#{empty taskInstanceListForType['receive']}"/>
+				<rich:dataTable var="_task" value="#{taskInstanceListForType['receive']}" rendered="#{not empty taskInstanceListForType['receive']}">
+					<h:column>
+						<f:facet name="header">Message</f:facet>
+						#{_task.description}
+					</h:column>
+					<h:column>
+						<f:facet name="header">From</f:facet>
+						#{_task.variables['sender']}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Sent at</f:facet>
+						<h:outputText value="#{_task.create}">
+							<s:convertDateTime type="both" pattern="MMM dd, yyyy hh:mm a"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<ui:remove>
+						<s:button action="#{courier.acknowledge}" taskInstance="#{_task}" value="Acknowledge" />
+						</ui:remove>
+						<s:link action="#{courier.acknowledge}" taskInstance="#{_task}" value="Acknowledge" />
+					</h:column>
+				</rich:dataTable>
+				<h3>Group inbox</h3>
+				<h:outputText value="There are no available group tasks." rendered="#{empty pooledTaskInstanceList}"/>
+				<rich:dataTable var="_task" value="#{pooledTaskInstanceList}" rendered="#{not empty pooledTaskInstanceList}">
+					<h:column>
+						<f:facet name="header">Name</f:facet>
+						#{_task.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Groups</f:facet>
+						<h:panelGroup>
+							<a4j:repeat var="_pooledActor" value="#{dataModels.getDataModel(_task.pooledActors)}" rowKeyVar="i">
+								<h:outputText value=", " rendered="#{i gt 0}"/>
+								#{_pooledActor.actorId}
+							</a4j:repeat>
+						</h:panelGroup>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Description</f:facet>
+						#{_task.description}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Created</f:facet>
+						<h:outputText value="#{_task.create}">
+							<s:convertDateTime type="both" pattern="MMM dd, yyyy hh:mm a"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<ui:remove>
+						<s:button action="#{pooledTask.assignToCurrentActor}" taskInstance="#{_task}" value="Assign" />
+						</ui:remove>
+						<s:link action="#{pooledTask.assignToCurrentActor}" taskInstance="#{_task}" value="Assign" />
+					</h:column>
+				</rich:dataTable>
+				<h3>Friend requests</h3>
+				<h:outputText value="You have no more friend requests." rendered="#{empty taskInstanceListForType['confirm friend']}"/>
+				<rich:dataTable var="_task" value="#{taskInstanceListForType['confirm friend']}" rendered="#{not empty taskInstanceListForType['confirm friend']}">
+					<h:column>
+						#{_task.description}
+					</h:column>
+					<h:column>
+						<ui:remove>
+						<s:button action="#{friendDecision.review}" taskInstance="#{_task}" value="Review" />
+						</ui:remove>
+						<s:link action="#{friendDecision.review}" taskInstance="#{_task}" value="Review" />
+					</h:column>
+				</rich:dataTable>
+				</div>
+			</rich:panel>
+			</h:panelGroup>
+			<h:panelGroup>
+				<rich:panel styleClass="module-box">
+					<f:facet name="header">Cool New Golfers</f:facet>
+	
+					<!-- NOTE: it appears "empty newGolfers" doesn't work when using the manager component -->
+					<s:div rendered="#{newGolfers.size eq 0}">
+					  It's really quite around here!
+					</s:div>
+	
+					<h:form rendered="#{newGolfers.size ge 0}">
+						<rich:dataList var="_golfer" value="#{newGolfers.wrappedData}"> <!-- use wrappedData to prevent dataModelSelection parameter on s:link -->
+							<ui:remove>
+							<h:commandLink action="#{profileAction.view(_golfer)}" value="#{_golfer.name} (#{_golfer.username})"/>
+							<s:link action="#{profileAction.view}" value="#{_golfer.name} (#{_golfer.username})"/>
+							<s:link action="#{profileAction.view(_golfer)}" value="#{_golfer.name} (#{_golfer.username})"/>
+							</ui:remove>
+							<s:link view="/profile.xhtml" value="#{_golfer.name}">
+								<f:param name="golferId" value="#{_golfer.id}"/>
+							</s:link><ui:remove>(#{_golfer.username})</ui:remove>
+						</rich:dataList>
+					</h:form>
+				</rich:panel>
+				<rich:panel styleClass="module-box">
+					<f:facet name="header">Locate Golfer</f:facet>
+						<h:panelGrid columns="2" styleClass="simpleFormLayout" cellspacing="0" cellpadding="0">
+							<h:panelGroup>
+								<label for="profileId">By ID:</label>
+							</h:panelGroup>
+							<h:panelGroup>
+								<form action="#{facesContext.externalContext.requestContextPath}/profile.seam">
+									<input id="profileId" type="text" style="width: 2em;" name="golferId" />
+									<input type="submit" value="Go &#187;" style="margin: 0 0 1px 0; padding-top: 0;"/>
+								</form>
+							</h:panelGroup>
+							<h:panelGroup>
+								<label for="profileUsername">By username:</label>
+							</h:panelGroup>
+							<h:panelGroup>
+								<form action="#{facesContext.externalContext.requestContextPath}/profile.seam">
+									<input id="profileUsername" type="text" style="width: 6em;" name="username" />
+									<input type="submit" value="Go &#187;" style="margin: 0 0 1px 0; padding-top: 0;"/>
+								</form>
+							</h:panelGroup>
+						</h:panelGrid>
+				</rich:panel>
+				<rich:panel styleClass="module-box" rendered="#{identity.loggedIn}">
+					<f:facet name="header">Send message</f:facet>
+					<h:form id="sendMessage">
+						<h:panelGrid columns="2" styleClass="simpleFormLayout" cellspacing="0" cellpadding="0">
+							<h:outputLabel for="recipient" value="To:"/>
+							<h:selectOneMenu id="recipient" value="#{message.recipient}" required="true">
+								<s:selectItems var="_actorId" value="#{availableActorIds}" label="#{_actorId}" noSelectionLabel="-- Select --"/>
+							</h:selectOneMenu>
+							<h:outputLabel for="message" value="Message:"/>
+							<h:inputTextarea id="message" value="#{message.content}" required="true"/>
+						</h:panelGrid>
+						<h:commandButton action="#{courier.send}" value="Send message"/>
+					</h:form>
+				</rich:panel>
+				<rich:panel styleClass="module-box" rendered="#{identity.loggedIn}">
+					<f:facet name="header">Broadcast message</f:facet>
+					<h:form id="broadcastMessage">
+						<h:panelGrid columns="2" styleClass="simpleFormLayout" cellspacing="0" cellpadding="0">
+							<h:outputLabel for="recipient" value="To:"/>
+							<h:selectOneMenu id="recipient" value="#{message.recipient}" required="true">
+								<f:selectItem itemValue="#{null}" itemLabel="--- Select ---"/>
+								<f:selectItem itemValue="member" itemLabel="Any Member"/>
+								<f:selectItem itemValue="golfer" itemLabel="Any Golfer"/>
+								<f:selectItem itemValue="admin" itemLabel="Any Administrator"/>
+							</h:selectOneMenu>
+							<h:outputLabel for="message" value="Message:"/>
+							<h:inputTextarea id="message" value="#{message.content}" required="true"/>
+						</h:panelGrid>
+						<h:commandButton action="#{courier.broadcast}" value="Broadcast message"/>
+					</h:form>
+				</rich:panel>
+			</h:panelGroup>
+		</h:panelGrid>
 	</ui:define> 
 </ui:composition>

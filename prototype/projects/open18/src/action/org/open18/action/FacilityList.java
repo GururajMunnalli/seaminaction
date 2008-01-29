@@ -1,12 +1,18 @@
 package org.open18.action;
 
-import org.open18.model.*;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.framework.EntityQuery;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Factory;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.framework.EntityQuery;
+import org.open18.model.Facility;
 
 @Name("facilityList")
+@Scope(ScopeType.PAGE)
 public class FacilityList extends EntityQuery {
 
 	private static final String[] RESTRICTIONS = {
@@ -20,9 +26,11 @@ public class FacilityList extends EntityQuery {
 			"lower(facility.state) like concat(lower(#{facilityList.facility.state}),'%')",
 			"lower(facility.type) like concat(lower(#{facilityList.facility.type}),'%')",
 			"lower(facility.uri) like concat(lower(#{facilityList.facility.uri}),'%')",
-			"lower(facility.zip) like concat(lower(#{facilityList.facility.zip}),'%')",};
+			"lower(facility.zip) like concat(lower(#{facilityList.facility.zip}),'%')",
+			"facility.priceRange <= #{facilityList.facility.priceRange gt 0 ? facilityList.facility.priceRange : null}"};
 
-	private Facility facility = new Facility();
+	@In("facilityExample")
+	private Facility facility;
 
 	@Override
 	public String getEjbql() {
@@ -49,6 +57,11 @@ public class FacilityList extends EntityQuery {
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
+	}
+	
+	@Factory(value = "facilityExample", autoCreate = true, scope = ScopeType.CONVERSATION)
+	public Facility createFacilityExample() {
+	    return new Facility();
 	}
 
 }

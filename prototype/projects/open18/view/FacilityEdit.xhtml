@@ -14,7 +14,7 @@
     
     <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 
-    <h:form id="facility" styleClass="edit">
+    <h:form id="facility" styleClass="edit" enctype="multipart/form-data">
     
         <rich:panel>
             <f:facet name="header">#{facilityHome.managed ? 'Edit' : 'Add'} Facility</f:facet>
@@ -75,6 +75,14 @@
             </s:decorate>
 
 
+            <s:decorate id="drivingRangeDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">drivingRange</ui:define>
+                <h:selectBooleanCheckbox id="drivingRange"
+                                   required="true"
+                                      value="#{facilityHome.instance.drivingRange}"/>
+            </s:decorate>
+
+
             <s:decorate id="nameDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">name</ui:define>
                 <h:inputText id="name" 
@@ -95,6 +103,38 @@
                           value="#{facilityHome.instance.phone}">
                     <a:support event="onblur" reRender="phoneDecoration" bypassUpdates="true"/>
                 </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="proShopDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">proShop</ui:define>
+                <h:selectBooleanCheckbox id="proShop"
+                                   required="true"
+                                      value="#{facilityHome.instance.proShop}"/>
+            </s:decorate>
+
+
+            <s:decorate id="rentsClubsDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">rentsClubs</ui:define>
+                <h:selectBooleanCheckbox id="rentsClubs"
+                                   required="true"
+                                      value="#{facilityHome.instance.rentsClubs}"/>
+            </s:decorate>
+
+
+            <s:decorate id="restaurantDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">restaurant</ui:define>
+                <h:selectBooleanCheckbox id="restaurant"
+                                   required="true"
+                                      value="#{facilityHome.instance.restaurant}"/>
+            </s:decorate>
+
+
+            <s:decorate id="snackBarDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">snackBar</ui:define>
+                <h:selectBooleanCheckbox id="snackBar"
+                                   required="true"
+                                      value="#{facilityHome.instance.snackBar}"/>
             </s:decorate>
 
 
@@ -130,14 +170,31 @@
             </s:decorate>
 
 
+            <s:decorate id="priceRangeDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">priceRange</ui:define>
+                <h:inputText id="priceRange"
+                          value="#{facilityHome.instance.priceRange}">
+                    <a:support event="onblur" reRender="priceRangeDecoration" bypassUpdates="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
             <s:decorate id="zipDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">zip</ui:define>
                 <h:inputText id="zip" 
                            size="5"
                       maxlength="5"
-                          value="#{facilityHome.instance.zip}">
-                    <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true"/>
+                          value="#{facilityHome.instance.zip}" valueChangeListener="#{facilityHome.updateCityAndState}">
+                    <a:support event="onblur" reRender="zipDecoration,cityDecoration,stateDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="logoDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">logo</ui:define>
+                <s:fileUpload id="logo"
+                            data="#{facilityHome.newLogo}"
+                          accept="image/*"
+                     contentType="#{facilityHome.newLogoContentType}"/>
             </s:decorate>
         
             <div style="clear:both">
@@ -150,28 +207,33 @@
         <div class="actionButtons">
 
             <h:commandButton id="save" 
+                      accesskey="s"
                           value="Save" 
                          action="#{facilityHome.persist}"
                        disabled="#{!facilityHome.wired}"
                        rendered="#{!facilityHome.managed}"/>  
                           			  
             <h:commandButton id="update" 
+                      accesskey="s"
                           value="Save" 
                          action="#{facilityHome.update}"
                        rendered="#{facilityHome.managed}"/>
                         			  
             <h:commandButton id="delete" 
+                      accesskey="d"
                           value="Delete" 
                          action="#{facilityHome.remove}"
                        rendered="#{facilityHome.managed}"/>
                     
             <s:button id="done" 
+               accesskey="q"
                    value="Done"
              propagation="end"
                     view="/Facility.xhtml"
                 rendered="#{facilityHome.managed}"/>
                 
             <s:button id="cancel" 
+               accesskey="q"
                    value="Cancel"
              propagation="end"
                     view="/#{empty facilityFrom ? 'FacilityList' : facilityFrom}.xhtml"

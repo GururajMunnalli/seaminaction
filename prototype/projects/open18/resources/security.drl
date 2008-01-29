@@ -4,3 +4,113 @@ import java.security.Principal;
 
 import org.jboss.seam.security.PermissionCheck;
 import org.jboss.seam.security.Role;
+
+import org.open18.model.Facility;
+import org.open18.model.Course;
+import org.open18.model.Round;
+import org.open18.model.Member;
+import org.open18.model.Golfer;
+
+// There are two options for restricting modification of private courses. You
+// can create two separate rules, one for private courses and one for
+// non-private courses. The other option is to create a blanket rule with low
+// saliance that grants access to anyone with the member (or admin) role
+// ($perm.grant()). Then a more specific rule with higher saliance that revokes
+// access to non-administrators if course is private ($perm.revoke()).
+
+rule ModifyPrivateFacility
+	no-loop
+when
+	$p: PermissionCheck(name == "/FacilityEdit.xhtml", granted == false)
+	Role(name == "admin")
+	Facility(type == "PRIVATE" || == "RESORT")
+then
+	$p.grant();
+end
+
+rule ModifyNonPrivateFacility
+	no-loop
+when
+	$p: PermissionCheck(name == "/FacilityEdit.xhtml", granted == false)
+	Role(name == "member")
+	not Facility(type == "PRIVATE" || == "RESORT")
+then
+	$p.grant();
+end
+
+rule OperateOnOwnFacility
+	no-loop
+when
+	//$p: PermissionCheck(name == "facilityHome", granted == false)
+	$p: PermissionCheck(name == "/FacilityEdit.xhtml", granted == false)
+	Role(name == "member")
+	Principal($username: name)
+	Facility($agent: agent, agent != null)
+	Member(username == $username) from $agent
+then
+	$p.grant();
+end
+
+rule ModifyPrivateCourse
+	no-loop
+when
+	$p: PermissionCheck(name == "/CourseEdit.xhtml", granted == false)
+	Role(name == "admin")
+	Course($facility: facility)
+	Facility(type == "PRIVATE" || == "RESORT") from $facility
+then
+	$p.grant();
+end
+
+rule ModifyNonPrivateCourse
+	no-loop
+when
+	$p: PermissionCheck(name == "/CourseEdit.xhtml", granted == false)
+	Role(name == "member")
+	Course($facility: facility)
+	Facility(type != "PRIVATE" || == "RESORT") from $facility
+then
+	$p.grant();
+end
+
+rule OperateOnOwnCourse
+	no-loop
+when
+	//$p: PermissionCheck(name == "courseHome", granted == false)
+	$p: PermissionCheck(name == "/CourseEdit.xhtml", granted == false)
+	Role(name == "member")
+	Principal($username: name)
+	Course($facility: facility)
+	Facility($agent: agent, agent != null) from $facility
+	Member(username == $username) from $agent
+then
+	$p.grant();
+end
+
+rule ModifyOwnRound
+	no-loop
+when
+	// Using the or binding causes some really strange casting problems
+	//$p: (PermissionCheck(name == "/RoundEdit.xhtml", granted == false)
+	//			or PermissionCheck(name == "roundHome", action in ("update", "remove"), granted == false))
+	$p: PermissionCheck(name == "roundHome", action in ("update", "remove"), granted == false)
+	Role(name == "golfer")
+	Principal($username: name)
+	Round($golfer: golfer)
+	Golfer(username == $username) from $golfer
+then
+	$p.grant();
+end
+
+// same as ModifyOwnRound rule but have to repeat due to problem with left-hand assignment
+rule EditOwnRound
+	no-loop
+when
+	$p: PermissionCheck(name == "/RoundEdit.xhtml", granted == false)
+	Role(name == "golfer")
+	Principal($username: name)
+	Round($golfer: golfer)
+	Golfer(username == $username) from $golfer
+then
+	$p.grant();
+end

@@ -1,0 +1,16 @@
+<p:document
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	type="rtf"
+	title="#{courseHome.instance.name} Fact Sheet"
+	creator="Open 18">
+
+	<p:font size="24"><p:paragraph spacingAfter="50">#{courseHome.instance.name}</p:paragraph></p:font>  
+
+	<p:list>
+		<p:listItem>Designer: #{courseHome.instance.designer}</p:listItem>
+		<p:listItem>Number of Holes: #{courseHome.instance.numHoles}</p:listItem>
+	</p:list>
+
+	<p:image value="/img/msg_info.png" rotation="180"/>
+</p:document>

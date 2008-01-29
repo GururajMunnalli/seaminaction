@@ -1,0 +1,218 @@
+<p:document
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	title="#{course.name} Scorecard"
+	orientation="landscape"
+	creator="Open 18"
+	pageSize="LETTER">
+	<ui:remove>unfortunately, the logo is above the entire scorecard, rather than just about the course title because of issues with p:cell</ui:remove>
+	<p:image value="#{course.facility.logo}" rendered="#{course.facility.logo ne null}">
+		<s:transformImageSize height="96" maintainRatio="true"/>
+	</p:image>
+	<p:table columns="2" widthPercentage="100" widths="4 1" spacingAfter="6">
+		<p:cell border="0" padding="0" verticalAlignment="bottom">
+			<p:paragraph>
+				<p:font size="18">#{course.name}</p:font>
+<ui:remove>dirty hack to get a line space</ui:remove>
+<p:font size="4">
+&#160;
+&#160;
+</p:font>
+				<p:font size="8" color="darkgray">Designed by #{course.designer}</p:font>
+			</p:paragraph>
+		</p:cell>
+		<p:cell border="0" padding="0" paddingRight="2" verticalAlignment="bottom">
+			<p:font size="6">
+				<p:table columns="3" horizontalAlignment="right">
+					<f:facet name="defaultCell">
+						<p:cell paddingTop="2" paddingRight="0" paddingBottom="0" paddingLeft="2" border="0"/>
+					</f:facet>
+					<p:cell><p:paragraph/></p:cell>
+					<p:cell horizontalAlignment="right"><p:paragraph>Men&#160;&#160;&#160;&#160;</p:paragraph></p:cell>
+					<p:cell horizontalAlignment="right"><p:paragraph>Ladies&#160;&#160;&#160;</p:paragraph></p:cell>
+					<ui:repeat var="teeSet" value="#{teeSets}">
+						<p:cell horizontalAlignment="left"><p:paragraph>#{teeSet.name}</p:paragraph></p:cell>
+						<p:cell horizontalAlignment="right">
+							<p:paragraph rendered="#{not empty teeSet.mensCourseRating and not empty teeSet.mensSlopeRating}">
+								<p:text value="#{teeSet.mensCourseRating}">
+									<f:convertNumber pattern="###.#"/>
+								</p:text>#{' / '}<p:text value="#{teeSet.mensSlopeRating}">
+									<f:convertNumber pattern="###.#"/>
+								</p:text>
+							</p:paragraph>
+						</p:cell>
+						<p:cell horizontalAlignment="right">
+							<p:paragraph rendered="#{not empty teeSet.ladiesCourseRating and not empty teeSet.ladiesSlopeRating}">
+								<p:text value="#{teeSet.ladiesCourseRating}">
+									<f:convertNumber pattern="###.#"/>
+								</p:text>#{' / '}<p:text value="#{teeSet.ladiesSlopeRating}">
+									<f:convertNumber pattern="###.#"/>
+								</p:text>
+							</p:paragraph>
+						</p:cell>
+					</ui:repeat>
+				</p:table>
+			</p:font>
+		</p:cell>
+	</p:table>
+
+	<p:font size="8">
+		<p:table columns="23" widthPercentage="100" widths="3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1">
+			<f:facet name="defaultCell">
+				<p:cell horizontalAlignment="center" verticalAlignment="middle" paddingTop="5" paddingRight="3" paddingBottom="5" paddingLeft="3" noWrap="true"/>
+			</f:facet>
+			<p:font size="8" color="white" style="bold">
+				<p:cell horizontalAlignment="left" grayFill=".25"><p:paragraph>Hole</p:paragraph></p:cell>
+				<ui:repeat var="holeNumber" value="#{holeNumbersOut}">
+					<p:cell grayFill=".25"><p:paragraph>#{holeNumber}</p:paragraph></p:cell>
+				</ui:repeat>
+				<p:cell grayFill=".25"><p:paragraph>Out</p:paragraph></p:cell>
+				<p:cell grayFill=".25"><p:paragraph>&#160;</p:paragraph></p:cell>
+				<ui:repeat var="holeNumber" value="#{holeNumbersIn}">
+					<p:cell grayFill=".25"><p:paragraph>#{holeNumber}</p:paragraph></p:cell>
+				</ui:repeat>
+				<p:cell grayFill=".25"><p:paragraph>In</p:paragraph></p:cell>
+				<p:cell grayFill=".25"><p:paragraph>Total</p:paragraph></p:cell>
+			</p:font>
+
+			<ui:repeat var="teeSet" value="#{mensAndUnisexTeeSets}">
+				<p:font size="8" color="#{scorecard.fontColor(teeSet.color)}">
+					<p:cell horizontalAlignment="left" backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.name}</p:paragraph></p:cell>
+					<ui:repeat var="tee" value="#{scorecard.getTeesOut(teeSet)}">
+						<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{tee.distance}</p:paragraph></p:cell>
+					</ui:repeat>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.distanceOut}</p:paragraph></p:cell>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>&#160;</p:paragraph></p:cell>
+					<ui:repeat var="tee" value="#{scorecard.getTeesIn(teeSet)}">
+						<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{tee.distance}</p:paragraph></p:cell>
+					</ui:repeat>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.distanceIn}</p:paragraph></p:cell>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.totalDistance}</p:paragraph></p:cell>
+				</p:font>
+			</ui:repeat>
+
+			<p:cell><p:paragraph>&#160;</p:paragraph></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersOut}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersIn}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+
+			<p:cell><p:paragraph>&#160;</p:paragraph></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersOut}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersIn}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+
+			<p:cell horizontalAlignment="left"><p:paragraph>#{course.ladiesHandicapUnique ? "Men&#8217;s Hcp" : "Handicap"}</p:paragraph></p:cell>
+			<ui:repeat var="hole" value="#{holesOut}">
+				<p:cell><p:paragraph>#{hole.mensHandicap}</p:paragraph></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph>&#160;</p:paragraph></p:cell>
+			<ui:repeat var="hole" value="#{holesIn}">
+				<p:cell><p:paragraph>#{hole.mensHandicap}</p:paragraph></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+
+			<p:font size="8" style="bold">
+			<p:cell horizontalAlignment="left" grayFill=".9"><p:paragraph>#{course.ladiesParUnique ? "Men&#8217;s Par" : "Par"}</p:paragraph></p:cell>
+			<ui:repeat var="hole" value="#{holesOut}">
+				<p:cell grayFill=".9"><p:paragraph>#{hole.mensPar}</p:paragraph></p:cell>
+			</ui:repeat>
+			<p:cell grayFill=".9"><p:paragraph>#{course.mensParOut}</p:paragraph></p:cell>
+			<p:cell grayFill=".9"><p:paragraph>&#160;</p:paragraph></p:cell>
+			<ui:repeat var="hole" value="#{holesIn}">
+				<p:cell grayFill=".9"><p:paragraph>#{hole.mensPar}</p:paragraph></p:cell>
+			</ui:repeat>
+			<p:cell grayFill=".9"><p:paragraph>#{course.mensParIn}</p:paragraph></p:cell>
+			<p:cell grayFill=".9"><p:paragraph>#{course.totalMensPar}</p:paragraph></p:cell>
+			</p:font>
+
+			<p:cell><p:paragraph>&#160;</p:paragraph></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersOut}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersIn}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+
+			<p:cell><p:paragraph>&#160;</p:paragraph></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersOut}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+			<ui:repeat var="holeNumber" value="#{holeNumbersIn}">
+				<p:cell><p:paragraph/></p:cell>
+			</ui:repeat>
+			<p:cell><p:paragraph/></p:cell>
+			<p:cell><p:paragraph/></p:cell>
+
+			<ui:repeat var="teeSet" value="#{ladiesTeeSets}">
+				<p:font size="8" color="#{scorecard.fontColor(teeSet.color)}">
+					<p:cell horizontalAlignment="left" backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.name}</p:paragraph></p:cell>
+					<ui:repeat var="tee" value="#{scorecard.getTeesOut(teeSet)}">
+						<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{tee.distance}</p:paragraph></p:cell>
+					</ui:repeat>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.distanceOut}</p:paragraph></p:cell>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>&#160;</p:paragraph></p:cell>
+					<ui:repeat var="tee" value="#{scorecard.getTeesIn(teeSet)}">
+						<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{tee.distance}</p:paragraph></p:cell>
+					</ui:repeat>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.distanceIn}</p:paragraph></p:cell>
+					<p:cell backgroundColor="#{scorecard.fillColor(teeSet.color)}"><p:paragraph>#{teeSet.totalDistance}</p:paragraph></p:cell>
+				</p:font>
+			</ui:repeat>
+
+			<s:fragment rendered="#{course.ladiesHandicapUnique}">
+				<p:cell horizontalAlignment="left"><p:paragraph>Ladies&#8217;s Hcp</p:paragraph></p:cell>
+				<ui:repeat var="hole" value="#{holesOut}">
+					<p:cell><p:paragraph>#{hole.ladiesHandicap}</p:paragraph></p:cell>
+				</ui:repeat>
+				<p:cell><p:paragraph/></p:cell>
+				<p:cell><p:paragraph>&#160;</p:paragraph></p:cell>
+				<ui:repeat var="hole" value="#{holesIn}">
+					<p:cell><p:paragraph>#{hole.ladiesHandicap}</p:paragraph></p:cell>
+				</ui:repeat>
+				<p:cell><p:paragraph/></p:cell>
+				<p:cell><p:paragraph/></p:cell>
+			</s:fragment>
+
+			<s:fragment rendered="#{course.ladiesParUnique}">
+				<p:font style="bold" size="8">
+				<p:cell horizontalAlignment="left" grayFill=".9"><p:paragraph>Ladies&#8217;s Par</p:paragraph></p:cell>
+				<ui:repeat var="hole" value="#{holesOut}">
+					<p:cell grayFill=".9"><p:paragraph>#{hole.ladiesPar}</p:paragraph></p:cell>
+				</ui:repeat>
+				<p:cell grayFill=".9"><p:paragraph>#{course.ladiesParOut}</p:paragraph></p:cell>
+				<p:cell grayFill=".9"><p:paragraph>&#160;</p:paragraph></p:cell>
+				<ui:repeat var="hole" value="#{holesIn}">
+					<p:cell grayFill=".9"><p:paragraph>#{hole.ladiesPar}</p:paragraph></p:cell>
+				</ui:repeat>
+				<p:cell grayFill=".9"><p:paragraph>#{course.ladiesParIn}</p:paragraph></p:cell>
+				<p:cell grayFill=".9"><p:paragraph>#{course.totalLadiesPar}</p:paragraph></p:cell>
+				</p:font>
+			</s:fragment>
+		</p:table>
+	</p:font>
+
+</p:document>

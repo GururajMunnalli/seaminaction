@@ -6,7 +6,13 @@
        no-conversation-view-id="/home.xhtml"
        login-view-id="/login.xhtml">
 
-    <page view-id="*">
+	<!-- cannot use the param.golferId one if going to allow lookup based on username -->
+	<!--
+    <conversation name="ViewProfile" parameter-name="golferId" parameter-value="#{conversationContext.isSet('golferHome') ? golferHome.instance.id : param.golferId}"/>
+	-->
+    <conversation name="ViewProfile" parameter-name="golferId" parameter-value="#{conversationContext.isSet('golferHome') ? golferHome.instance.id : selectedGolfer.id}"/>
+
+    <page view-id="*"><!-- action="#{themeSelector.selectTheme('blueSky')}">-->
         <navigation>
             <rule if-outcome="home">
                 <redirect view-id="/home.xhtml"/>
@@ -14,10 +20,45 @@
         </navigation>
     </page>
 
+    <!-- Shake conversation lab -->
+    <!--
+    <s:button id="clear" value="Clear" view="/ShakeConversation.xhtml">
+        <f:param name="returnTo" value="/CourseList.xhtml"/>
+    </s:button>
+    -->
+
+    <page view-id="/ShakeConversation.xhtml" action="#{conversation.endBeforeRedirect}">
+        <navigation>
+            <redirect view-id="/_shake_conversation_internal.xhtml">
+                <param name="returnTo" value="#{param.returnTo}"/>
+            </redirect>
+        </navigation>
+    </page>
+
+    <page view-id="/_shake_conversation_internal.xhtml" action="#{eventContext.flush}"> <!-- this is just a dummy action -->
+        <navigation>
+            <redirect view-id="#{param.returnTo}"/>
+        </navigation>
+    </page>
+    <!-- /Shake conversation lab -->
+
+    <page view-id="/register.xhtml">
+       <navigation>
+          <rule if-outcome="cancel">
+             <raise-event type="registrationCanceled"/>
+             <redirect view-id="/home.xhtml"/>
+          </rule>
+       </navigation>
+    </page>
+
+    <page view-id="/exportCourseInfo.xhtml" action="#{scorecard.load}"/>
+    <page view-id="/exportSimpleScorecard.xhtml" action="#{scorecard.load}"/>
+    <page view-id="/exportScorecard.xhtml" action="#{scorecard.load}"/>
+
     <page view-id="/Course*">
         <action execute="#{courseHome.validateEntityFound}"
             if="#{view.viewId eq '/Course.xhtml' or
-			    (view.viewId eq '/CourseEdit.xhtml' and courseHome.courseId != null)}"/>
+                (view.viewId eq '/CourseEdit.xhtml' and courseHome.courseId != null)}"/>
    
         <navigation from-action="#{courseHome.validateEntityFound}">
             <rule if-outcome="invalid">
@@ -29,42 +70,55 @@
             </rule>
         </navigation>
     </page>
-	
-	<page view-id="/course/*" action="#{courseHome.parseRestfulUrl}">
+    
+    <page view-id="/course/*" action="#{courseHome.parseRestfulUrl}">
       <navigation from-action="#{courseHome.parseRestfulUrl}">
         <rule if-outcome="view">
           <redirect view-id="/Course.xhtml" />
         </rule>
-		<rule if-outcome="edit">
+        <rule if-outcome="edit">
           <redirect view-id="/CourseEdit.xhtml" />
         </rule>
         <rule if-outcome="invalid">
           <redirect view-id="/CourseList.xhtml">
             <message severity="WARN">
               The course you requested does not exist.
-		    </message>
+            </message>
           </redirect>
         </rule>
       </navigation>
     </page>
-	
-	<page view-id="/facility/*" action="#{facilityHome.parseRestfulUrl}">
+    
+    <page view-id="/facility/*" action="#{facilityHome.parseRestfulUrl}">
       <navigation from-action="#{facilityHome.parseRestfulUrl}">
         <rule if-outcome="view">
           <redirect view-id="/Facility.xhtml" />
         </rule>
-		<rule if-outcome="edit">
+        <rule if-outcome="edit">
           <redirect view-id="/FacilityEdit.xhtml" />
         </rule>
         <rule if-outcome="invalid">
           <redirect view-id="/FacilityList.xhtml">
             <message severity="WARN">
               The facility you requested does not exist.
-		    </message>
+            </message>
           </redirect>
         </rule>
       </navigation>
     </page>
+
+    <page view-id="/coursewizard/*" conversation-required="true" no-conversation-view-id="/CourseList.xhtml"
+        action="#{pageflow.isInProcess}">
+        <navigation>
+            <rule if="#{pageflow.processInstance.processDefinition.name ne 'courseWizard'}">
+                <redirect view-id="/CourseList.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+
+    <!--
+    <page view-id="/Round*" action="#{themeSelector.selectTheme('emeraldTown')}"/>
+    -->
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
@@ -100,6 +154,12 @@
     <exception class="javax.faces.application.ViewExpiredException">
         <redirect view-id="/error.xhtml">
             <message>Your session has timed out, please try again</message>
+        </redirect>
+    </exception>
+
+    <exception class="org.jboss.seam.NoConversationException">
+        <redirect view-id="/error.xhtml">
+            <message>The conversation ended, timed out or was processing another request</message>
         </redirect>
     </exception>
      

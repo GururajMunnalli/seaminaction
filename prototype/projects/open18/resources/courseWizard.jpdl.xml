@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow-definition 
+	xmlns="http://jboss.com/products/seam/pageflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/pageflow
+		http://jboss.com/products/seam/pageflow-2.0.xsd"
+	name="courseWizard">
+
+	<!-- use <start-page> when beginning pageflow from Render Response phase -->
+	<!--
+	<start-page name="begin" view-id="/coursewizard/basicCourseInfo.xhtml">
+		<transition to="description"/>
+	</start-page>
+	-->
+
+	<start-state>
+		<transition name="facilityNotSelected" to="selectFacility"/>
+		<transition name="facilitySelected" to="basicCourseInfo"/>
+	</start-state>
+
+	<!-- current it is not possible to cancel when in this subflow -->
+	<process-state name="selectFacility">
+		<sub-process name="selectFacility"/>
+		<transition to="basicCourseInfo"/>
+	</process-state>
+
+	<page name="basicCourseInfo" view-id="/coursewizard/basicCourseInfo.xhtml" no-conversation-view-id="/CourseList.xhtml">
+		<description>Course wizard (New course @ #{newCourse.facility.name}): Basic information</description>
+		<redirect /> <!-- defining redirect using attribute on <page> has same affect -->
+		<!--
+		<event type="node-enter">
+			<action expression="#{courseWizard.sayHeyAction}"/>
+		</event>
+		-->
+		<transition name="cancel" to="cancel"/>
+		<transition name="next" to="description"/>
+		<!-- has same affect as node-enter event -->
+		<!--
+		<action expression="#{courseWizard.sayHeyAction}"/>
+		-->
+	</page>
+
+	<page name="description" view-id="/coursewizard/description.xhtml" back="enabled" no-conversation-view-id="/CourseList.xhtml">
+		<description>Course wizard (#{newCourse.name} @ #{newCourse.facility.name}): Description</description>
+		<redirect />
+		<transition name="cancel" to="cancel"/>
+		<transition name="next" to="holeData">
+			<action expression="#{courseWizard.prepareHoleData}"/>
+		</transition>
+	</page>
+	
+	<page name="holeData" view-id="/coursewizard/holeData.xhtml" no-conversation-view-id="/CourseList.xhtml">
+		<description>Course wizard (#{newCourse.name} @ #{newCourse.facility.name}): Hole data - #{gender}</description>
+		<redirect />
+		<transition name="cancel" to="cancel"/>
+		<transition name="Men" to="decideHoleData">
+			<action expression="#{courseWizard.submitMensHoleData}"/>
+		</transition>
+		<transition name="Ladies" to="review">
+			<action expression="#{courseWizard.submitLadiesHoleData}"/>
+		</transition>
+	</page>
+
+	<decision name="decideHoleData" expression="#{courseWizard.ladiesHoleDataRequired}">
+		<transition name="true" to="holeData"/>
+		<transition name="false" to="review"/>
+	</decision>
+
+	<page name="review" view-id="/coursewizard/review.xhtml" no-conversation-view-id="/CourseList.xhtml">
+		<description>Course wizard (#{newCourse.name} @ #{newCourse.facility.name}): Review</description>
+		<redirect />
+		<transition name="cancel" to="cancel"/>
+		<!--
+		<transition name="success" to="end"/>
+		-->
+		<transition name="success" to="end">
+			<!-- force page parameter to be used on redirect to Course.xhtml -->
+			<action expression="#{courseHome.setCourseId(newCourse.id)}"/>
+		</transition>
+		<transition name="failure" to="review"/>
+	</page>
+
+	<page name="end" view-id="/Course.xhtml">
+		<end-conversation/>
+		<redirect/>
+	</page>
+
+	<!--
+	<page name="end" view-id="/coursewizard/summary.xhtml">
+		<end-conversation/>
+		<redirect/>
+	</page>
+	-->
+
+	<!-- could redirect back to facility since we have facilityHome -->
+	<!--
+	<page name="cancel" view-id="/CourseList.xhtml">
+		<end-conversation before-redirect="true"/>
+		<redirect/>
+	</page>
+	-->
+	
+	<decision name="cancel" expression="#{facilityHome.definedInstance eq null}">
+		<transition name="true" to="cancelAndReturnToCourseList"/>
+		<transition name="false" to="cancelAndReturnToFacility"/>
+	</decision>
+
+	<page name="cancelAndReturnToFacility" view-id="/Facility.xhtml">
+		<end-conversation/>
+		<redirect/>
+	</page>
+
+	<page name="cancelAndReturnToCourseList" view-id="/CourseList.xhtml">
+		<end-conversation before-redirect="true"/>
+		<redirect/>
+	</page>
+
+</pageflow-definition>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:m="http://jboss.com/products/seam/mail"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:s="http://jboss.com/products/seam/taglib"
+  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+  charset="UTF-8"
+  importance="normal">
+  <m:header name="X-Powered-By" value="JBoss Seam #{seamVersion}"/>
+  <m:header name="X-Open18-Notify" value="registration; id=#{newGolfer.id}"/>
+  <s:fragment rendered="#{mailSession.getProperty('mail.smtp.port') eq 2525}">
+    <m:from name="Open 18 Member Services" address="members@open18.org"/>
+  </s:fragment>
+  <s:fragment rendered="#{mailSession.getProperty('mail.smtp.port') ne 2525}">
+    <m:from name="Open 18 Member Services" address="dan.j.allen@gmail.com"/>
+  </s:fragment>
+  <m:replyTo address="noreply@open18.org"/>
+  <m:to name="#{newGolfer.name}">#{newGolfer.emailAddress}</m:to>
+  <m:subject>Open 18 - Registration Information</m:subject>
+  <m:attachment value="#{newGolfer.image}"
+    contentType="#{newGolfer.imageContentType}"
+    fileName="#{newGolfer.username}.#{fn:substringAfter(newGolfer.imageContentType, 'image/')}"
+    disposition="inline"
+    status="profileImageRef"
+    rendered="#{newGolfer.image ne null}"/>
+  <m:body>
+    <html>
+      <body>
+        <p>#{newGolfer.name},</p>
+
+        <p><strong>Welcome to the <span style="color: green;">Open 18</span> community!</strong></p>
+        
+        <p>Thank you for registering. On behalf of the other members, I would
+        like to welcome you and let you know that we look forward to your
+        participation in the Open 18 community.</p>
+        
+        <p>Below is your account information. Please keep it for your records.</p>
+        
+        <table border="0" cellpadding="3" cellspacing="0">
+          <tr>
+            <th>Username</th><td>#{newGolfer.username}</td>
+          </tr>
+          <tr>
+            <th>Password</th><td>#{passwordBean.password}</td>
+          </tr>
+        </table>
+        
+        <s:fragment rendered="#{newGolfer.image ne null}">
+        <p><img src="cid:#{profileImageRef.contentId}"/></p>
+        </s:fragment>
+        
+        <p>Your password has been encrypted in our database and we cannot
+        retrieve it for you after this point. If you should lose this email
+        and forget your password, you can reset the password on your account
+        from the login screen.</p>
+        
+        <div>
+          <strong style="color: green;">Open 18</strong><br />
+          <strong style="color: gray;">...a place for golfers</strong><br />
+          Member Services
+        </div>
+      </body>
+    </html>
+    <f:facet name="alternative">#{newGolfer.name},
+
+Welcome to the Open 18 community!
+
+Thank you for registering. On behalf of the other members, I would
+like to say that we look forward to your participation in the Open
+18 community.
+
+Below is your account information. Please keep it for your records.
+
+Username: #{newGolfer.username}
+Password: #{passwordBean.password}
+
+Your password has been encrypted in our database and we cannot
+retrieve it for you after this point. If you should lose this email
+and forget your password, you can reset the password on your account
+from the login screen.
+
+Open 18
+...a place for golfers
+Member Services</f:facet>
+  </m:body>
+</m:message>

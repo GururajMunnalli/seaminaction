@@ -1,0 +1,63 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+<style type="text/css">
+div.colorbox {
+	float: left;
+	width: 15px;
+	height: 15px;
+	border: 1px solid black;
+}
+</style>
+		<h:messages globalOnly="true" styleClass="message"/>
+	
+		<h1>RichFaces Theme Viewer</h1>
+		<rich:panel>
+		<f:facet name="header">Theme colors</f:facet>
+			<h:panelGrid columns="10">
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.headerBackgroundColor};" title="headerBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.headerGradientColor};" title="headerGradientColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.headerTextColor};" title="headerTextColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.generalBackgroundColor};" title="generalBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.generalTextColor};" title="generalTextColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.controlTextColor};" title="controlTextColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.controlBackgroundColor};" title="controlBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.additionalBackgroundColor};" title="additionalBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.shadowBackgroundColor};" title="shadowBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.panelBorderColor};" title="panelBorderColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.subBorderColor};" title="subBorderColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tabBackgroundColor};" title="tabBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tabDisabledTextColor};" title="tabDisabledTextColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.trimColor};" title="trimColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tipBackgroundColor};" title="tipBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tipBorderColor};" title="tipBorderColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.selectControlColor};" title="selectControlColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.generalLinkColor};" title="generalLinkColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.hoverLinkColor};" title="hoverLinkColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.visitedLinkColor};" title="visitedLinkColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tableBackgroundColor};" title="tableBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tableFooterBackgroundColor};" title="tableFooterBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tableSubfooterBackgroundColor};" title="tableSubfooterBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.tableBorderColor};" title="tableBorderColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarWeekBackgroundColor};" title="calendarWeekBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarHolidaysBackgroundColor};" title="calendarHolidaysBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarHolidaysTextColor};" title="calendarHolidaysTextColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarCurrentBackgroundColor};" title="calendarCurrentBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarCurrentTextColor};" title="calendarCurrentTextColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarSpecBackgroundColor};" title="calendarSpecBackgroundColor"/></h:panelGroup>
+				<h:panelGroup><div class="colorbox" style="background-color: #{a4jSkin.calendarSpecTextColor};" title="calendarSpecTextColor"/></h:panelGroup>
+			</h:panelGrid>
+		</rich:panel>
+	
+	</ui:define> 
+</ui:composition>

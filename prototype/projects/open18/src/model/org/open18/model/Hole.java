@@ -122,6 +122,7 @@ public class Hole implements java.io.Serializable {
 	public void setLadiesHandicap(Integer ladiesHandicap) {
 		this.ladiesHandicap = ladiesHandicap;
 	}
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hole")
 	public Set<Tee> getTees() {
 		return this.tees;
@@ -131,4 +132,23 @@ public class Hole implements java.io.Serializable {
 		this.tees = tees;
 	}
 
+	@javax.persistence.Transient
+	public int getPar(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? this.mensPar : this.ladiesPar;
+	}
+
+	@javax.persistence.Transient
+	public int getHandicap(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? this.mensHandicap : this.ladiesHandicap;
+	}
+
+	@javax.persistence.Transient
+	public boolean isPar3(Gender gender) {
+		if (gender == null || gender == Gender.MALE) {
+			return this.mensPar == 3;
+		}
+		else {
+			return this.ladiesPar == 3;
+		}
+	}
 }

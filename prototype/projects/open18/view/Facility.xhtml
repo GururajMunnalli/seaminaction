@@ -16,7 +16,9 @@
     <rich:panel>
         <f:facet name="header">Facility</f:facet>
 
-
+        <s:div rendered="#{facilityHome.instance.logo ne null}">
+            <s:graphicImage value="#{facilityHome.instance.logo}" fileName="facility-logo-#{facilityHome.id}"/>
+        </s:div>
 
         <s:decorate id="address" template="layout/display.xhtml">
             <ui:define name="label">address</ui:define>
@@ -48,6 +50,12 @@
         </s:decorate>
 
 
+        <s:decorate id="drivingRange" template="layout/display.xhtml">
+            <ui:define name="label">drivingRange</ui:define>
+            #{facilityHome.instance.drivingRange}
+        </s:decorate>
+
+
         <s:decorate id="name" template="layout/display.xhtml">
             <ui:define name="label">name</ui:define>
             #{facilityHome.instance.name}
@@ -57,6 +65,30 @@
         <s:decorate id="phone" template="layout/display.xhtml">
             <ui:define name="label">phone</ui:define>
             #{facilityHome.instance.phone}
+        </s:decorate>
+
+
+        <s:decorate id="proShop" template="layout/display.xhtml">
+            <ui:define name="label">proShop</ui:define>
+            #{facilityHome.instance.proShop}
+        </s:decorate>
+
+
+        <s:decorate id="rentsClubs" template="layout/display.xhtml">
+            <ui:define name="label">rentsClubs</ui:define>
+            #{facilityHome.instance.rentsClubs}
+        </s:decorate>
+
+
+        <s:decorate id="restaurant" template="layout/display.xhtml">
+            <ui:define name="label">restaurant</ui:define>
+            #{facilityHome.instance.restaurant}
+        </s:decorate>
+
+
+        <s:decorate id="snackBar" template="layout/display.xhtml">
+            <ui:define name="label">snackBar</ui:define>
+            #{facilityHome.instance.snackBar}
         </s:decorate>
 
 
@@ -78,6 +110,12 @@
         </s:decorate>
 
 
+        <s:decorate id="priceRange" template="layout/display.xhtml">
+            <ui:define name="label">priceRange</ui:define>
+            #{facilityHome.instance.priceRange}
+        </s:decorate>
+
+
         <s:decorate id="zip" template="layout/display.xhtml">
             <ui:define name="label">zip</ui:define>
             #{facilityHome.instance.zip}
@@ -90,10 +128,12 @@
     <div class="actionButtons">      
 
         <s:button view="/FacilityEdit.xhtml" 
+             accesskey="e"
                     id="edit" 
                  value="Edit"/>
 
         <s:button view="/#{empty facilityFrom ? 'FacilityList' : facilityFrom}.xhtml"
+             accesskey="q"
                     id="done"
                  value="Done"/>
 
@@ -169,6 +209,10 @@
             <f:param name="facilityId" 
                     value="#{facilityHome.instance.id}"/>
             <f:param name="courseFrom" value="Facility"/>
+        </s:button>
+        <s:button action="#{courseWizard.addCourse}"
+          value="Add course..." >
+          <f:param name="facilityId" value="#{facilityHome.instance.id}"/>
         </s:button>
     </div>        
     </rich:tab>

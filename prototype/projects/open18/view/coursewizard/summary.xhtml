@@ -1,0 +1,34 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+    
+		<rich:panel>
+			<f:facet name="header">Course summary</f:facet>
+			<p>Below is the information about the course that you just entered.</p>
+
+			<s:decorate id="name" template="/layout/display.xhtml">
+			<ui:define name="label">Name</ui:define>
+			#{newCourse.name}
+			</s:decorate>
+			
+			<div style="clear:both"/>
+
+		</rich:panel>
+		<div class="actionButtons">
+			<s:button id="toFacility" view="/Facility.xhtml" value="Go to facility">
+				<f:param name="facilityId" value="#{newCourse.facility.id}"/>
+			</s:button>
+		</div>
+
+	</ui:define> 
+</ui:composition>

@@ -7,11 +7,13 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:rich="http://richfaces.org/rich"
                 template="layout/template.xhtml">
-
+<ui:define name="head">
+    <rich:jQuery selector="#login:username" query="focus()" timing="onload"/>
+</ui:define>
 <ui:define name="body">
     
     <h:messages styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-    
+
     <h:form id="login">
     
         <rich:panel>
@@ -36,7 +38,7 @@
         </rich:panel>
             
         <div class="actionButtons">
-            <h:commandButton value="Login" action="#{identity.login}"/>
+            <h:commandButton value="Login" action="#{identity.login}" accesskey="l"/>
         </div>
           
     </h:form>

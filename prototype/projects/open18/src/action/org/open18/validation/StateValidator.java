@@ -1,4 +1,4 @@
-package org.open18.validator;
+package org.open18.validation;
 
 import org.open18.lookup.StateLookup;
 
@@ -19,7 +19,7 @@ import org.jboss.seam.annotations.faces.Validator;
  * <pre>
  * &lt;validator>
  *   &lt;validator-id>org.open18.StateValidator&lt;/validator>
- *   &lt;validator-class>org.open18.validator.StateValidator&lt;/validator>
+ *   &lt;validator-class>org.open18.validation.StateValidator&lt;/validator>
  * &lt;/validator></pre>
  * <p>
  * However, if you choose to use the faces-config.xml descriptor, this class
