@@ -51,7 +51,7 @@
                     <f:selectItems value="#{themeSelector.themes}"/>
                 </h:selectOneMenu>
 								<ui:remove><!-- Ideally we need to have a navigation event following a timezone change--></ui:remove>
-                <span>Timezone: </span>
+                <span>Time zone: </span>
                 <h:selectOneMenu value="#{timeZoneSelector.timeZoneId}"
                     valueChangeListener="#{timeZoneSelector.select}"
                     onchange="submit();">
