@@ -15,6 +15,13 @@ The purpose of this page is to give you an idea of what is going on in SVN witho
 ||05||not yet available||
 ||06||partially available||
 ||07 - 15||not yet available||
+||prototype||mostly complete, should be able to match up most examples from book||
+
+== Certified versions of Seam ==
+
+ * JBoss Seam 2.0.1.CR1
+
+Unfortunately, there was a bug in JBoss Seam 2.0.0.GA that prevented seam-gen from properly reverse engineering an H2 database. This is now fixed in the 2.0.1 series.
 
 == Notes to reviewers ==
 
@@ -22,4 +29,5 @@ I encourage you to file bug reports using the [http://code.google.com/p/seaminac
 
 == Log ==
 
+Jan 29, 2008 - A major commit of the prototype. The prototype contains just about all of the source code from the book and then some. However, several patches must be made to Seam in order to get it working correctly.
 Jan 07, 2008 - Working on getting basic information up on project site; uploaded source code sent to final reviewers
