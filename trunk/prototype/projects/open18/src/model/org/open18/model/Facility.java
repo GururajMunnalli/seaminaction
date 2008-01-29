@@ -1,17 +1,24 @@
 package org.open18.model;
 // Generated Dec 7, 2007 7:31:33 PM by Hibernate Tools 3.2.0.CR1
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
@@ -23,6 +30,7 @@ import org.hibernate.validator.NotNull;
 public class Facility implements java.io.Serializable {
 
 	private Long id;
+	private Member agent;
 	private String name;
 	private String description;
 	private String type;
@@ -34,19 +42,36 @@ public class Facility implements java.io.Serializable {
 	private String country;
 	private String phone;
 	private String uri;
+	private Integer priceRange;
+	private boolean drivingRange;
+	private boolean proShop;
+	private boolean rentsClubs;
+	private boolean snackBar;
+	private boolean restaurant;
 	private Set<Course> courses = new HashSet<Course>(0);
+	private byte[] logo;
+	private String logoContentType;
 
 	public Facility() {
 	}
 
-	public Facility(String name, String type) {
+	public Facility(String name, String type, boolean drivingRange,
+        boolean proShop, boolean rentsClubs, boolean snackBar,
+        boolean restaurant) {
 		this.name = name;
 		this.type = type;
+		this.drivingRange = drivingRange;
+        this.proShop = proShop;
+        this.rentsClubs = rentsClubs;
+        this.snackBar = snackBar;
+        this.restaurant = restaurant;
 	}
 	public Facility(String name, String description, String type,
 			String address, String city, String state, String zip,
 			String county, String country, String phone, String uri,
-			Set<Course> courses) {
+			Integer priceRange, boolean drivingRange,
+            boolean proShop, boolean rentsClubs, boolean snackBar,
+            boolean restaurant,	Set<Course> courses) {
 		this.name = name;
 		this.description = description;
 		this.type = type;
@@ -58,7 +83,24 @@ public class Facility implements java.io.Serializable {
 		this.country = country;
 		this.phone = phone;
 		this.uri = uri;
+		this.priceRange = priceRange;
+		this.drivingRange = drivingRange;
+		this.proShop = proShop;
+		this.rentsClubs = rentsClubs;
+		this.snackBar = snackBar;
+		this.restaurant = restaurant;
 		this.courses = courses;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "AGENT_ID")
+	@NotNull
+	public Member getAgent() {
+		return this.agent;
+	}
+
+	public void setAgent(Member agent) {
+		this.agent = agent;
 	}
 
 	@Id
@@ -181,6 +223,65 @@ public class Facility implements java.io.Serializable {
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+
+	@Column(name = "PRICE_RANGE")
+	public Integer getPriceRange() {
+		return this.priceRange;
+	}
+
+	public void setPriceRange(Integer priceRange) {
+		this.priceRange = priceRange;
+	}
+
+	@Column(name = "DRIVING_RANGE", nullable = false)
+	@NotNull
+	public boolean isDrivingRange() {
+		return this.drivingRange;
+	}
+
+	public void setDrivingRange(boolean drivingRange) {
+		this.drivingRange = drivingRange;
+	}
+
+	@Column(name = "PRO_SHOP", nullable = false)
+	@NotNull
+	public boolean isProShop() {
+		return this.proShop;
+	}
+
+	public void setProShop(boolean proShop) {
+		this.proShop = proShop;
+	}
+
+	@Column(name = "RENTS_CLUBS", nullable = false)
+	@NotNull
+	public boolean isRentsClubs() {
+		return this.rentsClubs;
+	}
+
+	public void setRentsClubs(boolean rentsClubs) {
+		this.rentsClubs = rentsClubs;
+	}
+
+	@Column(name = "SNACK_BAR", nullable = false)
+	@NotNull
+	public boolean isSnackBar() {
+		return this.snackBar;
+	}
+
+	public void setSnackBar(boolean snackBar) {
+		this.snackBar = snackBar;
+	}
+
+	@Column(name = "RESTAURANT", nullable = false)
+	@NotNull
+	public boolean isRestaurant() {
+		return this.restaurant;
+	}
+
+	public void setRestaurant(boolean restaurant) {
+		this.restaurant = restaurant;
+	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "facility")
 	public Set<Course> getCourses() {
 		return this.courses;
@@ -190,4 +291,23 @@ public class Facility implements java.io.Serializable {
 		this.courses = courses;
 	}
 
+	@Lob
+	@Column(name = "logo_data")
+	@Basic(fetch = FetchType.LAZY)
+	public byte[] getLogo() {
+		return logo;
+	}
+
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
+	}
+
+	@Column(name = "logo_content_data")
+	public String getLogoContentType() {
+		return logoContentType;
+	}
+
+	public void setLogoContentType(String logoContentType) {
+		this.logoContentType = logoContentType;
+	}
 }

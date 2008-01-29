@@ -1,0 +1,21 @@
+<process-definition xmlns="urn:jbpm.org:jpdl-3.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		urn:jbpm.org:jpdl-3.1
+		http://jbpm.org/xsd/jpdl-3.1.xsd"
+	name="Broadcast">
+
+	<start-state name="create">
+		<transition name="send" to="group-inbox"/>
+	</start-state>
+
+	<task-node name="group-inbox">
+		<task name="receive" description="#{dispatchedMessage.content}">
+			<assignment pooled-actors="#{dispatchedMessage.recipient}"/>
+		</task>
+		<transition name="acknowledge" to="acknowledged"/>
+	</task-node>
+
+	<end-state name="acknowledged"/>
+
+</process-definition>

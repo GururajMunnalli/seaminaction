@@ -5,16 +5,24 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:s="http://jboss.com/products/seam/taglib"
     xmlns:rich="http://richfaces.org/rich">
-    <rich:toolBarGroup>
-        <h:outputText value="#{projectName}:"/>
-        <s:link view="/home.xhtml" value="Home"/>
-    </rich:toolBarGroup>
+    <s:link view="/home.xhtml" value="#{projectName}:" propagation="none" style="text-decoration: none;"/>
+    <ui:remove><!-- combining Home with app name to save space -->
+    <h:outputText value="#{projectName}:"/>
+    <s:link view="/home.xhtml" value="Home" propagation="none"/>
+    </ui:remove>
+    <s:link view="/profile.xhtml"
+           value="Profile"
+     propagation="none"
+        rendered="#{s:hasRole('golfer')}">
+        <f:param name="golferId" value="#{currentGolfer.id}"/>
+    </s:link>
     <s:link view="/FacilityList.xhtml" 
            value="Facility List" 
      propagation="none"/>
     <s:link view="/CourseList.xhtml" 
            value="Course List" 
      propagation="none"/>
+    <ui:remove>
     <s:link view="/HoleList.xhtml" 
            value="Hole List" 
      propagation="none"/>
@@ -24,11 +32,56 @@
     <s:link view="/TeeList.xhtml" 
            value="Tee List" 
      propagation="none"/>
-    <s:link view="/GolferList.xhtml" value="Golfer List" propagation="none"/>
-    <!-- @newMenuItem@ -->
+    </ui:remove>
+    <s:link view="/RoundList.xhtml" 
+           value="Round List" 
+     propagation="none"/>
+    <s:link view="/GolferList.xhtml"
+           value="Golfer List"
+     propagation="none"/>
+    <s:link view="/workspaces.xhtml" value="Workspaces" propagation="none"/>
+    <ui:remove><!-- @newMenuItem@ --></ui:remove>
     <rich:toolBarGroup location="right">
-        <h:outputText value="Welcome, #{identity.username}!" rendered="#{identity.loggedIn}"/>
-        <s:link view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}"/>
-        <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}"/>
+        <h:panelGroup>
+            <h:form id="localeSettings">
+                <span>Theme: </span>
+                <h:selectOneMenu value="#{themeSelector.theme}"
+                    valueChangeListener="#{themeSelector.select}"
+                    onchange="submit();">
+                    <f:selectItems value="#{themeSelector.themes}"/>
+                </h:selectOneMenu>
+								<ui:remove><!-- Ideally we need to have a navigation event following a timezone change--></ui:remove>
+                <span>Timezone: </span>
+                <h:selectOneMenu value="#{timeZoneSelector.timeZoneId}"
+                    valueChangeListener="#{timeZoneSelector.select}"
+                    onchange="submit();">
+                    <f:selectItem itemValue="America/New_York" itemLabel="America/New_York"/>
+                    <f:selectItem itemValue="America/Chicago" itemLabel="America/Chicago"/>
+                    <f:selectItem itemValue="America/Denver" itemLabel="America/Denver"/>
+                    <f:selectItem itemValue="America/Los_Angeles" itemLabel="America/Los_Angeles"/>
+                    <ui:remove>
+                    <s:selectItems var="_timeZoneId" value="#{timeZone.getAvailableIDs()}" label="#{timeZone.getTimeZone(_timeZoneId).displayName}"/>
+                    </ui:remove>
+                </h:selectOneMenu>
+                <ui:remove>
+                <span>Locale ( <h:commandLink action="#{localeSelector.select}" value="select"/> ) </span>
+                <h:selectOneMenu value="#{localeSelector.localeString}">
+                    <f:selectItems value="#{localeSelector.supportedLocales}"/>
+                </h:selectOneMenu>
+                </ui:remove>
+                <span>Locale: </span>
+                <h:selectOneMenu value="#{localeSelector.localeString}"
+                    valueChangeListener="#{localeSelector.select}"
+                    onchange="submit();">
+                    <f:selectItems value="#{localeSelector.supportedLocales}"/>
+                </h:selectOneMenu>
+            </h:form>
+        </h:panelGroup>
+        <h:outputText value="#{identity.loggedIn ? identity.username : 'guest'}"/>
+        <ui:remove><h:outputText value="Welcome, #{identity.username}!" rendered="#{identity.loggedIn}"/></ui:remove>
+				<h:panelGroup><ui:remove>panelGroup needed while waiting on RichFaces fix</ui:remove>
+            <s:link view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}"/>
+            <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+		    </h:panelGroup>
     </rich:toolBarGroup>
 </rich:toolBar>

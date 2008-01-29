@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/pages
+		http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<param name="friendId" value="#{friendHome.id}" converterId="javax.faces.Long"/>
+
+	<!-- 
+	if the user is already on the add friend page when the request issue by another process:
+	- check for duplicate, add faces message, return null
+	- attempt to redisplay page
+	- calls page action
+	- adds second faces message
+	- redirects to home
+	
+	<action execute="#{friendAction.checkForPendingRequest}" />
+	-->
+	<!--
+	<action execute="#{friendAction.checkForPendingRequest}" if="#{facesContext.externalContext.request.method eq 'GET'}" />
+	-->
+	<action execute="#{friendAction.checkForDuplicateRequest}" if="#{not duplicateCheckPerformed}"/>
+
+	<!-- FIXME: navigate back to profile on failed addFriend() -->
+
+	<navigation>
+		<rule if-outcome="true">
+			<redirect view-id="/profile.xhtml"/>
+		</rule>
+	</navigation>
+	
+	<navigation from-action="#{friendAction.addFriend}">
+		<rule>
+			<redirect view-id="/profile.xhtml"/>
+		</rule>
+	</navigation>
+</page>

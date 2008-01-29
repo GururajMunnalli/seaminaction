@@ -5,7 +5,9 @@
       no-conversation-view-id="/FacilityList.xhtml"
       login-required="true">
    
-   <begin-conversation join="true"/>
+   <restrict>#{s:hasPermission('/FacilityEdit.xhtml', null, facilityHome.instance)}</restrict>
+
+   <begin-conversation nested="true" if="#{!conversation.nested}"/>
    
    <action execute="#{facilityHome.validateEntityFound}"
       if="#{facilityHome.facilityId ne null}"/>

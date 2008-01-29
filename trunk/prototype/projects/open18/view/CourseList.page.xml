@@ -2,7 +2,11 @@
 <page xmlns="http://jboss.com/products/seam/pages"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
-      
+
+   <description>Course search results (#{courseList.resultList.size})</description>
+
+   <begin-conversation join="true"/>
+
    <param name="firstResult" value="#{courseList.firstResult}"/>
    <param name="order" value="#{courseList.order}"/>
    <param name="from"/>
@@ -12,4 +16,21 @@
    <param name="greens" value="#{courseList.course.greens}"/>
    <param name="name" value="#{courseList.course.name}"/>
 
+   <navigation>
+			<!-- reset blanks out the comparison stuff -->
+      <rule if-outcome="reset">
+         <!--<end-conversation before-redirect="true"/>-->
+				 <!-- * remove conversation-scoped courseList component -->
+         <!--<out name="courseList" value="#{null}"/>-->
+         <!-- * clear the swizzled entity reference (see ManagedEntityIdentityInterceptor) -->
+         <!--<out name="courseList.course" value="#{null}"/>-->
+         <!-- * clear the example object used to back the search -->
+         <out name="courseExample" value="#{null}"/>
+         <redirect />
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{courseList.reset}">
+      <redirect/>
+   </navigation>
 </page>

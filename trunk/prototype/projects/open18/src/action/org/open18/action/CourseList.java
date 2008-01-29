@@ -1,13 +1,20 @@
 package org.open18.action;
 
-import org.open18.model.*;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.framework.EntityQuery;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.End;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.framework.EntityQuery;
+import org.open18.model.Course;
 
 @Name("courseList")
-public class CourseList extends EntityQuery {
+@Scope(ScopeType.PAGE)
+public class CourseList extends EntityQuery<Course> {
 
 	private static final String[] RESTRICTIONS = {
 			"lower(course.description) like concat(lower(#{courseList.course.description}),'%')",
@@ -16,8 +23,21 @@ public class CourseList extends EntityQuery {
 			"lower(course.greens) like concat(lower(#{courseList.course.greens}),'%')",
 			"lower(course.name) like concat(lower(#{courseList.course.name}),'%')",};
 
-	private Course course = new Course();
+	@In(value = "courseExample", create = true)
+	//@Out(value = "courseExample", scope = ScopeType.CONVERSATION, required = false)
+	@Out(value = "courseExample", required = false)
+	private Course course;
 
+	@In
+	private QueryState queryState;
+	
+	@Override
+    public void validate() {
+	    super.validate();
+	    super.setOrder(queryState.getOrder());
+	    super.setFirstResult(queryState.getFirstResult());
+	}
+	
 	@Override
 	public String getEjbql() {
 		return "select course from Course course";
@@ -36,13 +56,53 @@ public class CourseList extends EntityQuery {
 		return super.getOrder();
 	}
 
+	@Override
+	public void setOrder(String order) {
+	    String prevOrder = super.getOrder();
+	    if ((prevOrder == null && order != null)
+            || (prevOrder != null && order == null)
+            || (prevOrder != null && !prevOrder.equals(order))) {
+            super.setOrder(order);
+        }
+	    queryState.setOrder(order);
+	}
+	
+	@Override
+	public void setFirstResult(Integer firstResult) {
+	    Integer prevFirstResult = super.getFirstResult();
+	    if ((prevFirstResult == null && firstResult != null
+            || (prevFirstResult != null && firstResult == null)
+            || (prevFirstResult != null && !prevFirstResult
+            .equals(firstResult)))) {
+            super.setFirstResult(firstResult);
+        }
+	    queryState.setFirstResult(firstResult);
+	}
+	
 	public Course getCourse() {
 		return course;
 	}
-
+	
+	public void clearSearch() {
+	    super.refresh();
+	    course = null;
+	    setOrder(null);
+	    first();
+	}
+	
+	@End(beforeRedirect = true)
+	public void reset() {
+	    clearSearch();
+	}
+	
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
 	}
+	
+//	@Factory(value = "courseExample", autoCreate = true, scope = ScopeType.CONVERSATION)
+//	public Course createCourseExample() {
+//	    return new Course();
+//	}
 
 }

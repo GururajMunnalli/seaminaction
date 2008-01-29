@@ -1,7 +1,7 @@
 package org.open18.model;
 // Generated Dec 7, 2007 7:31:33 PM by Hibernate Tools 3.2.0.CR1
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -34,8 +35,8 @@ public class Course implements java.io.Serializable {
 	private Integer yearBuilt;
 	private int numHoles;
 	private Long signatureHole;
-	private Set<TeeSet> teeSets = new HashSet<TeeSet>(0);
-	private Set<Hole> holes = new HashSet<Hole>(0);
+	private Set<TeeSet> teeSets = new LinkedHashSet<TeeSet>(0);
+	private Set<Hole> holes = new LinkedHashSet<Hole>(0);
 
 	public Course() {
 	}
@@ -159,6 +160,7 @@ public class Course implements java.io.Serializable {
 		this.signatureHole = signatureHole;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
+	@OrderBy("position asc")
 	public Set<TeeSet> getTeeSets() {
 		return this.teeSets;
 	}
@@ -167,6 +169,7 @@ public class Course implements java.io.Serializable {
 		this.teeSets = teeSets;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
+	@OrderBy("number asc")
 	public Set<Hole> getHoles() {
 		return this.holes;
 	}
@@ -252,6 +255,23 @@ public class Course implements java.io.Serializable {
 		}
 
 		return false;
+	}
+
+	/**
+	 * might want to make a generic function for this
+	 */
+	@javax.persistence.Transient
+	public String getRestfulUrlHandle() {
+		StringBuffer handle = new StringBuffer(50);
+		handle.append(id);
+		if (name != null && name.trim().length() > 0) {
+			try {
+				handle.append("-");
+				handle.append(java.net.URLEncoder.encode(name.trim().replace(" ", "-").replace("/", "-").toLowerCase(), "UTF-8"));
+			}
+			catch (Exception e) {}
+		}
+		return handle.toString();
 	}
 
 	// end of extra code specified in the hbm.xml files

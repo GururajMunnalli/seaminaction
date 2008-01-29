@@ -1,15 +1,21 @@
 package org.open18.action;
 
-import org.open18.model.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Collections;
-import java.util.List;
-import javax.faces.context.FacesContext;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.framework.EntityNotFoundException;
+import org.open18.model.Course;
+import org.open18.model.Facility;
+import org.open18.model.Hole;
+import org.open18.model.TeeSet;
+
+import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Name("courseHome")
 public class CourseHome extends EntityHome<Course> {
@@ -47,6 +53,22 @@ public class CourseHome extends EntityHome<Course> {
 	public Course getDefinedInstance() {
 		return isIdDefined() ? getInstance() : null;
 	}
+
+	@Factory(value = "course", scope = ScopeType.EVENT)
+	@Override
+	public Course getInstance() {
+		return super.getInstance();
+	}
+
+//	@Override
+//	public void create() {
+//		setCreatedMessage("You have successfully added #{course.name}. "
+//			+ "Thanks for contributing!");
+//		setUpdatedMessage("You have successfully updated #{course.name}. "
+//			+ "Your careful eye is appreciated!");
+//		setDeletedMessage("#{course.name} has been removed. "
+//			+ "I never liked it anyway.");
+//	}
 
 	/**
 	 * <p>Order the holes according to the value of the number property.</p>

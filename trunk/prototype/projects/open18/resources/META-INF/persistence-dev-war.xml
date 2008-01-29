@@ -19,5 +19,23 @@
          -->
       </properties>
    </persistence-unit>
+
+   <persistence-unit name="open18-hql-console" transaction-type="RESOURCE_LOCAL">
+      <provider>org.hibernate.ejb.HibernatePersistence</provider>
+      <non-jta-data-source>this_space_intentially_left_blank</non-jta-data-source>
+      <class>org.open18.model.Facility</class>
+      <class>org.open18.model.Course</class>
+      <class>org.open18.model.Hole</class>
+      <class>org.open18.model.TeeSet</class>
+      <class>org.open18.model.Tee</class>
+      <class>org.open18.model.Member</class>
+      <class>org.open18.model.Golfer</class>
+      <properties>
+         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+         <property name="hibernate.hbm2ddl.auto" value="update"/>
+         <property name="hibernate.format_sql" value="true"/>
+         <property name="hibernate.show_sql" value="true"/>
+      </properties>
+   </persistence-unit>
     
 </persistence>

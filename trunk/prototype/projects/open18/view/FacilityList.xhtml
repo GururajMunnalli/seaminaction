@@ -7,6 +7,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:rich="http://richfaces.org/rich"
                 template="layout/template.xhtml">
                        
@@ -18,6 +20,19 @@
     
         <rich:simpleTogglePanel label="Facility search parameters" switchType="ajax">
         
+					<s:decorate template="layout/display.xhtml">
+						<ui:define name="label">Max price range</ui:define>
+						<rich:inputNumberSlider
+							value="#{facilityList.facility.priceRange}"
+							enableManualInput="false"
+							maxValue="5"
+							inputStyle="width: 1.5em; text-align: center;"
+							width="138px">
+							<a4j:support event="onchange" ajaxSingle="true"/>
+						</rich:inputNumberSlider>
+						<div style="margin-top: 5px;"><strong>0</strong> = disabled, <strong>1</strong> = $30 or less, <strong>2</strong> = $31-60, <strong>3</strong> = $61-90, <strong>4</strong> = $91-120, <strong>5</strong> = $120 or more</div>
+					</s:decorate>
+
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">address</ui:define>
                 <h:inputText id="address" value="#{facilityList.facility.address}"/>
@@ -77,13 +92,15 @@
         </rich:simpleTogglePanel>
         
         <div class="actionButtons">
-            <h:commandButton id="search" value="Search" action="/FacilityList.xhtml"/>
+            <h:commandButton id="search" accesskey="s" value="Search" action="/FacilityList.xhtml"/>
+            <s:button id="reset" accesskey="r" value="Reset" action="reset"/>
         </div>
         
     </h:form>
     
-    <rich:panel>
-        <f:facet name="header">Facility search results</f:facet>
+		<a4j:outputPanel id="facilityListBranch" layout="none" ajaxRendered="true">
+    <rich:panel id="facilityListPanel">
+        <f:facet name="header">Facility search results (#{facilityList.resultList.size})</f:facet>
     <div class="results" id="facilityList">
 
     <h:outputText value="No facility exists" 
@@ -138,7 +155,7 @@
             </f:facet>
             #{facility.county}
         </h:column>
-        <h:column>
+        <h:column rendered="false">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
                              value="description #{facilityList.order=='description asc' ? messages.down : ( facilityList.order=='description desc' ? messages.up : '' )}">
@@ -146,6 +163,15 @@
                 </s:link>
             </f:facet>
             #{facility.description}
+        </h:column>
+        <h:column rendered="false">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="drivingRange #{facilityList.order=='drivingRange asc' ? messages.down : ( facilityList.order=='drivingRange desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='drivingRange asc' ? 'drivingRange desc' : 'drivingRange asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.drivingRange}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -164,6 +190,42 @@
                 </s:link>
             </f:facet>
             #{facility.phone}
+        </h:column>
+        <h:column rendered="false">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="proShop #{facilityList.order=='proShop asc' ? messages.down : ( facilityList.order=='proShop desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='proShop asc' ? 'proShop desc' : 'proShop asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.proShop}
+        </h:column>
+        <h:column rendered="false">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="rentsClubs #{facilityList.order=='rentsClubs asc' ? messages.down : ( facilityList.order=='rentsClubs desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='rentsClubs asc' ? 'rentsClubs desc' : 'rentsClubs asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.rentsClubs}
+        </h:column>
+        <h:column rendered="false">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="restaurant #{facilityList.order=='restaurant asc' ? messages.down : ( facilityList.order=='restaurant desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='restaurant asc' ? 'restaurant desc' : 'restaurant asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.restaurant}
+        </h:column>
+        <h:column rendered="false">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="snackBar #{facilityList.order=='snackBar asc' ? messages.down : ( facilityList.order=='snackBar desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='snackBar asc' ? 'snackBar desc' : 'snackBar asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.snackBar}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -190,7 +252,21 @@
                     <f:param name="order" value="#{facilityList.order=='uri asc' ? 'uri desc' : 'uri asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.uri}
+						<h:outputLink value="#{facility.uri}">#{facility.uri}</h:outputLink>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="priceRange #{facilityList.order=='priceRange asc' ? messages.down : ( facilityList.order=='priceRange desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='priceRange asc' ? 'priceRange desc' : 'priceRange asc'}"/>
+                </s:link>
+            </f:facet>
+						<h:outputText value="$" rendered="#{facility.priceRange eq 1}"/>
+						<h:outputText value="$$" rendered="#{facility.priceRange eq 2}"/>
+						<h:outputText value="$$$" rendered="#{facility.priceRange eq 3}"/>
+						<h:outputText value="$$$$" rendered="#{facility.priceRange eq 4}"/>
+						<h:outputText value="$$$$$" rendered="#{facility.priceRange eq 5}"/>
+						<ui:remove>#{facility.priceRange}</ui:remove>
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -205,9 +281,12 @@
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Facility' : from}.xhtml" 
                    value="Select" 
-                      id="facility">
+                      id="facility" rendered="#{not pageflow.inProcess}">
                 <f:param name="facilityId" 
                         value="#{facility.id}"/>
+            </s:link>
+            <s:link action="select" value="Select" rendered="#{pageflow.inProcess}">
+              <f:param name="facilityId" value="#{facility.id}"/>
             </s:link>
         </h:column>
     </rich:dataTable>
@@ -215,7 +294,7 @@
     </div>
     </rich:panel>
     
-    <div class="tableControl">
+    <s:div id="facilityListNav" styleClass="tableControl">
       
         <s:link view="/FacilityList.xhtml" 
             rendered="#{facilityList.previousExists}" 
@@ -248,7 +327,8 @@
                     value="#{facilityList.lastFirstResult}"/>
         </s:link>
         
-    </div>
+    </s:div>
+		</a4j:outputPanel>
     
     <s:div styleClass="actionButtons" rendered="#{empty from}">
         <s:button view="/FacilityEdit.xhtml"

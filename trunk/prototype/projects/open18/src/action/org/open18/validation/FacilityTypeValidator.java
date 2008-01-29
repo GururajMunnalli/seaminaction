@@ -1,4 +1,4 @@
-package org.open18.validator;
+package org.open18.validation;
 
 import org.open18.lookup.StateLookup;
 
@@ -20,7 +20,7 @@ import org.open18.lookup.FacilityTypeLookup;
  * <pre>
  * &lt;validator>
  *   &lt;validator-id>org.open18.FacilityTypeValidator&lt;/validator>
- *   &lt;validator-class>org.open18.validator.FacilityTypeValidator&lt;/validator>
+ *   &lt;validator-class>org.open18.validation.FacilityTypeValidator&lt;/validator>
  * &lt;/validator></pre>
  * <p>
  * However, if you choose to use the faces-config.xml descriptor, this class

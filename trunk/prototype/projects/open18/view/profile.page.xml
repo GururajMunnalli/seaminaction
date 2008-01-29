@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/pages
+		http://jboss.com/products/seam/pages-2.0.xsd"
+	conversation="ViewProfile">
+
+	<description>View profile (#{selectedGolfer.name})</description>
+
+	<begin-conversation join="true"/>
+
+	<action execute="#{profileAction.loadProfile}"/>
+	<!-- could optionally pass the param as an argument rather than use @RequestParameter -->
+	<!--
+	<action execute="#{profileAction.loadProfile(param.golferId)}"/>
+	-->
+
+	<!-- FIXME: this is leaving behind a conversation and messing up Ajax4jsf tabs (actually, not now) -->
+	<navigation from-action="#{profileAction.loadProfile}">
+		<rule if="#{not empty param.username}">
+			<redirect view-id="/profile.xhtml">
+				<param name="golferId" value="#{selectedGolfer.id}"/>
+			</redirect>
+		</rule>
+	</navigation>
+
+</page>

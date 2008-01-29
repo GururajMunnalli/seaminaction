@@ -1,0 +1,293 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+		
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+		
+		<rich:panel>
+				<f:facet name="header">Round</f:facet>
+
+				<s:decorate id="golfer" template="layout/display.xhtml">
+						<ui:define name="label">Golfer</ui:define>
+						#{round.golfer.name}
+				</s:decorate>
+
+				<s:decorate id="name" template="layout/display.xhtml">
+						<ui:define name="label">Date</ui:define>
+						<h:outputText value="#{round.date}">
+							<s:convertDateTime type="date" />
+						</h:outputText>
+				</s:decorate>
+
+				<s:decorate id="totalScore" template="layout/display.xhtml">
+						<ui:define name="label">Total score</ui:define>
+						#{round.totalScore}
+				</s:decorate>
+
+				<s:decorate id="weather" template="layout/display.xhtml">
+						<ui:define name="label">Weather</ui:define>
+						#{round.weather}
+				</s:decorate>
+
+				<s:decorate id="notes" template="layout/display.xhtml">
+						<ui:define name="label">Notes</ui:define>
+						#{round.notes}
+				</s:decorate>
+
+				<div style="clear:both"/>
+		</rich:panel>
+		
+		<div class="actionButtons">			
+				<s:button id="edit" view="/RoundEdit.xhtml" value="Edit"/>
+				<s:button id="done" view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml" value="Done"/>
+		</div>
+
+		<rich:tabPanel switchType="ajax">
+
+			<rich:tab label="Scorecard">
+				<div class="association" id="teeSetParent">
+				
+					<h:outputText value="No tee set" rendered="#{round.teeSet == null}"/>
+
+<ui:remove><!-- having problem with end on c:forEach when teeSet has not been selected...hardcoding 18 for now--></ui:remove>
+<s:fragment rendered="#{round.teeSet != null}">
+<table class="dr-table rich-table " id="teeSetTable" border="0" cellpadding="0" cellspacing="0">
+		<colgroup span="19"/>
+		<thead>
+				<tr class="dr-table-header rich-table-header">
+						<th class="dr-table-headercell rich-table-headercell" colspan="19" scope="colgroup">#{round.teeSet.course.name}</th>
+				</tr>
+				<tr class="dr-table-subheader rich-table-subheader">
+						<th class="dr-table-subheadercell rich-table-subheadercell" style="text-align: left;" scope="col">
+								<div style="float: left; margin-right: 5px;">HOLE</div>
+								<div title="#{round.teeSet.color}" style="float: left; background-color: #{round.teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+								<div style="float: right; font-weight: normal; font-size: smaller; margin-top: 2px;">
+									<s:fragment rendered="#{round.golfer.gender eq 'MALE'}">
+											<h:outputText value="#{round.teeSet.mensCourseRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+											#{' / '}
+											<h:outputText value="#{round.teeSet.mensSlopeRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+									</s:fragment>
+									<s:fragment rendered="#{round.golfer.gender eq 'FEMALE'}">
+											<h:outputText value="#{round.teeSet.ladiesCourseRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+											#{' / '}
+											<h:outputText value="#{round.teeSet.ladiesSlopeRating}"><f:convertNumber pattern="###.#"/></h:outputText>
+									</s:fragment>
+								</div>
+						</th>
+						<ui:repeat var="_score" value="#{roundHome.scores}">
+								<th class="dr-table-subheadercell rich-table-subheadercell" scope="col" style="width: 3em;">#{_score.hole.number}</th>
+						</ui:repeat>
+				</tr>
+		</thead>
+		<tbody>
+				<tr class="dr-table-firstrow rich-table-firstrow">
+						<th class="dr-table-cell rich-table-cell" style="text-align: left;">Par</th>
+						<ui:repeat var="_score" value="#{roundHome.scores}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center; color: #A0A0A0">
+										#{_score.hole.getPar(round.golfer.gender)}
+								</td>
+						</ui:repeat>
+				</tr>
+				<tr class="dr-table-firstrow rich-table-firstrow">
+						<th class="dr-table-cell rich-table-cell" style="text-align: left;">Score</th>
+						<ui:repeat var="_score" value="#{roundHome.scores}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+										#{_score.strokes}
+								</td>
+						</ui:repeat>
+				</tr>
+				<tr class="dr-table-firstrow rich-table-firstrow">
+						<th class="dr-table-cell rich-table-cell" style="text-align: left;">Fairway</th>
+						<ui:repeat var="_score" value="#{roundHome.scores}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+										<h:graphicImage value="/img/check.png" rendered="#{_score.fairway}"/>
+                    <h:outputText value="n/a" rendered="#{_score.hole.isPar3(round.golfer.gender)}"/>
+                    <h:outputText value="-" rendered="#{_score.fairway eq null and not _score.hole.isPar3(round.golfer.gender)}"/>
+								</td>
+						</ui:repeat>
+				</tr>
+				<tr class="dr-table-firstrow rich-table-firstrow">
+						<th class="dr-table-cell rich-table-cell" style="text-align: left;">Green in regulation</th>
+						<ui:repeat var="_score" value="#{roundHome.scores}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+										<h:graphicImage value="/img/check.png" rendered="#{_score.greenInRegulation}"/>
+                    <h:outputText value="-" rendered="#{_score.greenInRegulation eq null}"/>
+								</td>
+						</ui:repeat>
+				</tr>
+				<tr class="dr-table-firstrow rich-table-firstrow">
+						<th class="dr-table-cell rich-table-cell" style="text-align: left;">Putts</th>
+						<ui:repeat var="_score" value="#{roundHome.scores}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+									#{_score.putts ne null ? _score.putts : '-'}
+								</td>
+						</ui:repeat>
+				</tr>
+		</tbody>
+</table>
+</s:fragment>
+				
+				<!-- need this to load styles for use in custom table
+				FIXME - better to use: <a:loadStyle src="resource:///css/table.xcss"/> FIXME -->
+				<div style="display: none;"><rich:dataTable/></div>
+
+				<ui:remove>
+				<rich:dataTable var="teeSet" 
+									 value="#{round.teeSet}" 
+								rendered="#{round.teeSet != null}"
+							rowClasses="rvgRowOne,rvgRowTwo"
+											id="teeSetTable">
+						<h:column>
+								<f:facet name="header">id</f:facet>
+								#{teeSet.id}
+						</h:column>
+						<h:column>
+								<f:facet name="header">name</f:facet>
+								#{teeSet.name}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Course</f:facet>
+								#{teeSet.course.name}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Color</f:facet>
+								<div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+						</h:column>
+						<h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
+								<f:facet name="header">Course Rating</f:facet>
+								#{teeSet.ladiesCourseRating}
+						</h:column>
+						<h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
+								<f:facet name="header">Slope Rating</f:facet>
+								#{teeSet.ladiesSlopeRating}
+						</h:column>
+						<h:column rendered="#{currentGolfer.gender == 'MALE'}">
+								<f:facet name="header">Course Rating</f:facet>
+								#{teeSet.mensCourseRating}
+						</h:column>
+						<h:column rendered="#{currentGolfer.gender == 'MALE'}">
+								<f:facet name="header">Slope Rating</f:facet>
+								#{teeSet.mensSlopeRating}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Position</f:facet>
+								#{teeSet.position}
+						</h:column>
+						<h:column>
+								<f:facet name="header">action</f:facet>
+								<s:link id="viewteeSet" 
+										 value="View" 
+											view="/TeeSet.xhtml">
+										<f:param name="teeSetId" 
+													 value="#{teeSet.id}"/>
+								</s:link>
+						</h:column>
+				</rich:dataTable>
+				</ui:remove>
+				
+		</div>
+		</rich:tab>
+
+		</rich:tabPanel>
+
+		<rich:tabPanel switchType="ajax" style="margin-top: 5px;">
+
+			<rich:tab label="Avg. Score vs. Par">
+				<p:barchart title="Average Score vs. Par" rangeAxisLabel="Average Score" legend="true"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<p:series key="#{round.date}" seriesPaint="0xFFBF4F" seriesOutlinePaint="0xA0A0A0">
+						<p:data key="Par 3" value="#{roundHome.getAverageScore(3)}"/>
+						<p:data key="Par 4" value="#{roundHome.getAverageScore(4)}"/>
+						<p:data key="Par 5" value="#{roundHome.getAverageScore(5)}"/>
+					</p:series>
+					<p:series key="#{round.golfer.username}'s rounds" seriesPaint="0xA6C78E" seriesOutlinePaint="0xA0A0A0">
+						<p:data key="Par 3" value="#{golferRounds.getAverageScore(3)}"/>
+						<p:data key="Par 4" value="#{golferRounds.getAverageScore(4)}"/>
+						<p:data key="Par 5" value="#{golferRounds.getAverageScore(5)}"/>
+					</p:series>
+				</p:barchart>
+			</rich:tab>
+			<rich:tab label="Putting Average">
+				<p:barchart title="Putting Average" rangeAxisLabel="Putts" legend="true"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<p:series key="#{round.golfer.username}" seriesPaint="0xFFBF4F" seriesOutlinePaint="0xA0A0A0">
+						<p:data key="#{round.date}" value="#{roundHome.averagePutts}"/>
+					</p:series>
+				</p:barchart>
+			</rich:tab>
+			<rich:tab label="Putt Analysis">
+				<p:piechart title="Putt Analysis" legend="false" circular="true" labelGap="0.04"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<ui:repeat var="freq" value="#{dataModels.getDataModel(roundHome.puttFrequencies)}">
+						<p:data key="#{freq.key} putt" value="#{freq.value}"/>
+					</ui:repeat>
+				</p:piechart>
+			</rich:tab>
+			<rich:tab label="Fairway %">
+				<p:piechart title="Fairway Hit %" legend="true"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white"
+					labelGap="0" labelBackgroundPaint="white" labelLinksVisible="false" labelShadowPaint="white" labelOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<p:data key="Hit #{roundHome.fairwayPercentage}%" value="#{roundHome.fairwayPercentage}" sectionPaint="0xFFBF4F"/>
+					<p:data key="Missed #{100 - roundHome.fairwayPercentage}%" value="#{100 - roundHome.fairwayPercentage}" sectionPaint="0xA6C78E"/>
+				</p:piechart>
+			</rich:tab>
+			<rich:tab label="GIR %">
+				<p:piechart title="Greens in Regulation %" legend="true"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white"
+					labelGap="0" labelBackgroundPaint="white" labelLinksVisible="false" labelShadowPaint="white" labelOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<p:data key="Hit #{roundHome.girPercentage}%" value="#{roundHome.girPercentage}" sectionPaint="0xFFBF4F"/>
+					<p:data key="Missed #{100 - roundHome.girPercentage}%" value="#{100 - roundHome.girPercentage}" sectionPaint="0xA6C78E"/>
+				</p:piechart>
+			</rich:tab>
+			<rich:tab label="GIR % vs. Par">
+				<p:barchart title="Greens in Regulation % vs. Par" rangeAxisLabel="Greens in Regulation" legend="true"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<p:series key="#{round.golfer.username}" seriesPaint="0xFFBF4F" seriesOutlinePaint="0xA0A0A0">
+						<p:data key="Par 3" value="#{roundHome.getGirPercentage(3)}"/>
+						<p:data key="Par 4" value="#{roundHome.getGirPercentage(4)}"/>
+						<p:data key="Par 5" value="#{roundHome.getGirPercentage(5)}"/>
+					</p:series>
+				</p:barchart>
+			</rich:tab>
+			<rich:tab label="Game Analysis">
+				<p:linechart title="Game Analysis" domainAxisLabel="Date of round"
+					legend="true" width="600"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white">
+					<p:series key="Putting average">
+						<ui:repeat var="_round" value="#{golferRounds.resultList}">
+							<p:data key="#{_round.date}" value="#{_round.averagePutts}"/>
+						</ui:repeat>
+					</p:series>
+					<p:series key="Strokes over Par">
+						<ui:repeat var="_round" value="#{golferRounds.resultList}">
+							<p:data key="#{_round.date}" value="#{_round.strokesOverPar}"/>
+						</ui:repeat>
+					</p:series>
+					<ui:remove>
+					<p:series key="Handicap" seriesPaint="0xA6C78E">
+						<ui:repeat var="_round" value="#{golferRounds.resultList}">
+							<p:data key="#{_round.date}" value="#{_round.handicap}"/>
+						</ui:repeat>
+					</p:series>
+					</ui:remove>
+				</p:linechart>
+			</rich:tab>
+		</rich:tabPanel>
+	</ui:define>
+
+</ui:composition>

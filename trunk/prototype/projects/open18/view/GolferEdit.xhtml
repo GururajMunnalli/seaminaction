@@ -1,0 +1,85 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+                       
+	<ui:define name="body">
+    
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+    
+		<h:form id="golfer" styleClass="edit">
+
+			<rich:panel>
+
+				<f:facet name="header">Edit Profile</f:facet>
+    
+				<s:decorate id="usernameField" template="/layout/display.xhtml">
+					<ui:define name="label">Username</ui:define>
+					#{golferHome.instance.username}
+				</s:decorate>
+
+				<s:decorate id="nameField" template="/layout/edit.xhtml">
+					<ui:define name="label">Name</ui:define>
+					<h:inputText id="name" size="40" value="#{golferHome.instance.name}" required="true"/>
+				</s:decorate>
+
+				<s:decorate id="locationField" template="/layout/edit.xhtml">
+					<ui:define name="label">Location</ui:define>
+					<h:inputText id="location" value="#{golferHome.instance.location}"/>
+				</s:decorate>
+
+				<s:decorate id="dateOfBirthField" template="/layout/edit.xhtml">
+					<ui:define name="label">Date of birth</ui:define>
+					<rich:calendar id="dateOfBirth" value="#{golferHome.instance.dateOfBirth}"/>
+				</s:decorate>
+
+				<s:decorate id="genderField" template="/layout/edit.xhtml">
+					<ui:define name="label">Gender</ui:define>
+					<h:selectOneRadio id="gender" value="#{golferHome.instance.gender}" styleClass="radio" required="true">
+						<s:convertEnum/>
+						<s:enumItem enumValue="MALE" label="Male"/>
+						<s:enumItem enumValue="FEMALE" label="Female"/>
+					</h:selectOneRadio>
+				</s:decorate>
+
+				<ui:remove>
+				<s:decorate id="proStatusField" template="/layout/edit.xhtml">
+					<ui:define name="label">Pro status</ui:define>
+					<h:selectOneRadio id="proStatus" value="#{golferHome.instance.proStatus}" styleClass="radio">
+						<s:selectItems var="t" label="#{t}"
+							value="#{registerAction.proStatusTypes}"/>
+					</h:selectOneRadio>
+				</s:decorate>
+
+				<s:decorate id="specialtyField" template="/layout/edit.xhtml">
+					<ui:define name="label">Specialty</ui:define>
+					<h:selectOneMenu id="specialty" value="#{golferHome.instance.specialty}">
+						<s:selectItems var="t" label="#{t}" noSelectionLabel="-- Select --" 
+							value="#{registerAction.specialtyTypes}"/>
+					</h:selectOneMenu>
+				</s:decorate>
+				</ui:remove>
+            
+				<div style="clear:both"/>
+            
+			</rich:panel>
+
+			<div class="actionButtons">
+				<h:commandButton id="update" value="Save" action="#{golferHome.update}"/>                  
+				<h:commandButton id="delete" value="Delete" action="#{golferHome.remove}"/>
+				<s:button id="discard" value="Discard changes" view="/GolferList.xhtml" propagation="end"/>
+				<ui:remove>
+				<h:commandButton id="revert" value="Discard changes" action="#{golferHome.revert}"/>
+				</ui:remove>
+			</div>
+        
+		</h:form>
+    
+	</ui:define>
+
+</ui:composition>

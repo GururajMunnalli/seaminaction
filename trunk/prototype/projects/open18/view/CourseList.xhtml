@@ -48,17 +48,38 @@
         
         <div class="actionButtons">
             <h:commandButton id="search" value="Search" action="/CourseList.xhtml"/>
+						<ui:remove>
+            <s:button id="clearSearch" value="Clear search" action="reset"/>
+						</ui:remove>
+            <s:button id="clearSearch" value="Clear search" action="#{courseList.clearSearch}"/>
+            <s:button id="reset" value="Reset" action="#{courseList.reset}"/>
+						<s:button id="enableCompare" action="#{courseComparison.enable}" value="Enable comparison mode" rendered="#{not comparisonModeEnabled}"/>
+						<s:button id="disableCompare" action="#{courseComparison.disable}" value="Disable comparison mode" rendered="#{comparisonModeEnabled}"/>
+						<s:button value="Compare" view="/CompareCourses.xhtml" rendered="#{comparisonModeEnabled and courseComparison.courses.size gt 1}"/>#{' '}
         </div>
         
+				<s:fragment rendered="#{comparisonModeEnabled and courseComparison.courses.size gt 0}">
+					<rich:simpleTogglePanel label="Courses selected for comparison" switchType="client" style="margin-bottom: 5px;">
+					<span style="display: none;"><h:commandLink action="#{courseComparison.unselect(null)}"/></span>
+					<ui:repeat var="_queuedCourse" value="#{courseComparison.courses}">
+						<div>#{_queuedCourse.name}#{' '}(<h:commandLink action="#{courseComparison.unselect(_queuedCourse)}" value="remove" style="text-decoration: none;"/>)</div>
+					</ui:repeat>
+					<div style="margin-top: 5px;">
+					<s:link value="Clear all" action="#{courseComparison.reset}"/>
+					</div>
+					</rich:simpleTogglePanel>
+				</s:fragment>
+
     </h:form>
     
     <rich:panel>
-        <f:facet name="header">Course search results</f:facet>
+        <f:facet name="header">Course search results (#{courseList.resultList.size})</f:facet>
     <div class="results" id="courseList">
 
     <h:outputText value="No course exists" 
                rendered="#{empty courseList.resultList}"/>
                
+		<h:form>
     <rich:dataTable id="courseList" 
                 var="course"
               value="#{courseList.resultList}" 
@@ -157,12 +178,18 @@
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Course' : from}.xhtml" 
                    value="Select" 
-                      id="course">
-                <f:param name="courseId" 
+                      id="course" rendered="#{not comparisonModeEnabled}">
+                <f:param name="courseId"
                         value="#{course.id}"/>
             </s:link>
+						#{' '}
+						<h:commandLink value="Select" action="#{courseComparison.select(course)}" rendered="#{comparisonModeEnabled}"/>
+						<ui:remove>
+						<h:commandLink value="Select" action="#{courseComparison.select(course.id)}"/>
+						</ui:remove>
         </h:column>
     </rich:dataTable>
+		</h:form>
 
     </div>
     </rich:panel>
@@ -208,6 +235,7 @@
                  value="Create course">
             <f:param name="courseId"/>
         </s:button>
+        <s:button action="#{courseWizard.addCourse}" value="Add course..."/>
     </s:div>
     
 </ui:define>

@@ -1,0 +1,36 @@
+<process-definition xmlns="urn:jbpm.org:jpdl-3.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		urn:jbpm.org:jpdl-3.1
+		http://jbpm.org/xsd/jpdl-3.1.xsd"
+	name="Add Friend">
+
+	<start-state name="add friend">
+		<transition name="notify" to="friend request"/>
+	</start-state>
+
+	<task-node name="friend request">
+		<task name="confirm friend" description="Friend request from #{initiator}">
+			<assignment actor-id="#{eventContext.prospect}"/>
+			<!--
+			<assignment actor-id="#{prospect}"/>
+			-->
+		</task>
+		<transition name="approve" to="approved">
+			<!--
+			<action expression="#{courier.send}"/>
+			-->
+		</transition>
+		<transition name="reject" to="rejected"/>
+	</task-node>
+
+	<end-state name="approved">
+		<!--
+		<event type="node-enter">
+			<action expression="#{courier.send}"/>
+		</event>
+		-->
+	</end-state>
+	<end-state name="rejected"/>
+
+</process-definition>

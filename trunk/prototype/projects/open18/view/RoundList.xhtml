@@ -1,0 +1,277 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+	
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+		
+		<h:form id="roundSearch" styleClass="edit">
+		
+			<rich:simpleTogglePanel label="Round search parameters" switchType="ajax">
+	 
+				<s:decorate template="layout/display.xhtml" rendered="#{currentGolfer ne null}">
+					<ui:define name="label">My rounds only</ui:define>
+					<h:selectBooleanCheckbox id="selfFilter" value="#{roundExample.golfer.selfFilter}"/>
+				</s:decorate>
+	
+				<ui:remove>
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">First Name</ui:define>
+					<h:inputText id="firstName" value="#{roundExample.golfer.firstName}"/>
+				</s:decorate>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Last name</ui:define>
+					<h:inputText id="lastName" value="#{roundExample.golfer.lastName}"/>
+				</s:decorate>
+				</ui:remove>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">After</ui:define>
+					<rich:calendar id="afterDate" datePattern="MMM dd, yyyy" value="#{roundExample.afterDateFilter}" />
+				</s:decorate>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Before</ui:define>
+					<rich:calendar id="beforeDate" datePattern="MMM dd, yyyy" value="#{roundExample.beforeDateFilter}" />
+				</s:decorate>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Total score</ui:define>
+					low: <h:inputText value="#{roundExample.lowScoreFilter}" size="3" />
+					high: <h:inputText value="#{roundExample.highScoreFilter}" size="3" />
+				</s:decorate>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Golfer</ui:define>
+					<h:inputText id="nameFilter" value="#{roundExample.golfer.nameFilter}"/>
+				</s:decorate>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Course</ui:define>
+					<h:selectManyListbox size="10" value="#{roundExample.courseFilter}">
+						<s:selectItems var="_course" value="#{availableCourses}" label="#{_course.facility.state} - #{_course.name}" />
+						<s:convertEntity />
+					</h:selectManyListbox>
+				</s:decorate>
+	
+				<ui:remove>
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Course</ui:define>
+					<h:inputText id="course" value="#{roundExample.teeSet.course.name}"/>
+				</s:decorate>
+				</ui:remove>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Tee (color)</ui:define>
+					<h:inputText id="tee" value="#{roundExample.teeSet.color}"/>
+				</s:decorate>
+	
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Weather</ui:define>
+					<h:selectManyListbox id="weather" value="#{roundExample.weatherFilter}" size="5">
+						<f:selectItem itemValue="Sunny"/>
+						<f:selectItem itemValue="Mostly Sunny"/>
+						<f:selectItem itemValue="Partly Cloudy"/>
+						<f:selectItem itemValue="Mostly Cloudy"/>
+						<f:selectItem itemValue="Cloudy"/>
+						<f:selectItem itemValue="Fair"/>
+						<f:selectItem itemValue="Scattered Showers"/>
+						<f:selectItem itemValue="Scattered T-Storms"/>
+						<f:selectItem itemValue="Showers"/>
+						<f:selectItem itemValue="Rain"/>
+						<f:selectItem itemValue="T-Storms"/>
+					</h:selectManyListbox>
+				</s:decorate>
+	
+				<ui:remove>
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Weather</ui:define>
+					<h:inputText id="weather" value="#{roundExample.weather}"/>
+				</s:decorate>
+				</ui:remove>
+			
+			</rich:simpleTogglePanel>
+			
+			<div class="actionButtons">
+				<!-- #{queryHelper.zero} inserts an Integer 0 value (the default in JSF is a long) -->
+				<h:commandButton id="search" value="Search" action="/RoundList.xhtml">
+					<f:setPropertyActionListener target="#{roundList.firstResult}" value="#{queryHelper.zero}" />
+				</h:commandButton>
+			</div>
+			
+		</h:form>
+		
+		<rich:panel>
+			<f:facet name="header">Round search results (#{roundList.resultList.size})</f:facet>
+				<div class="results" id="roundList">
+	
+					<h:outputText value="No rounds found." rendered="#{empty roundList.resultList}"/>
+					   
+					<ui:remove><!-- a bug in ManagedEntityIdentityInterceptor (or UISelection) is preventing us from using #{roundList.dataModel} --></ui:remove>
+					<rich:dataTable id="roundList" var="_round" value="#{roundList.resultList}" rendered="#{not empty roundList.resultList}">
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Id #{roundList.order=='id asc' ? messages.down : ( roundList.order=='id desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='id asc' ? 'id desc' : 'id asc'}"/>
+							</s:link>
+						</f:facet>
+						#{_round.id}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Golfer #{roundList.order=='golfer.lastName asc, golfer.firstName asc' ? messages.down : ( roundList.order=='golfer.lastName desc, golfer.firstName desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='golfer.lastName asc, golfer.firstName asc' ? 'golfer.lastName desc, golfer.firstName desc' : 'golfer.lastName asc, golfer.firstName asc'}"/>
+							</s:link>
+						</f:facet>
+						<ui:remove>#{_round.golfer.nameLastFirst}</ui:remove>
+						#{_round.golfer.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Date #{roundList.order=='date asc' ? messages.down : ( roundList.order=='date desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='date asc' ? 'date desc' : 'date asc'}"/>
+							</s:link>
+						</f:facet>
+						<h:outputText value="#{_round.date}">
+							<s:convertDateTime type="date" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Course #{roundList.order=='course.name asc' ? messages.down : ( roundList.order=='course.name desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='course.name asc' ? 'course.name desc' : 'course.name asc'}"/>
+							</s:link>
+						</f:facet>
+						#{_round.teeSet.course.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Tees #{roundList.order=='teeSet.color asc' ? messages.down : ( roundList.order=='teeSet.color desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='teeSet.color asc' ? 'teeSet.color desc' : 'teeSet.color asc'}"/>
+							</s:link>
+						</f:facet>
+						<div title="#{_round.teeSet.color}" style="background-color: #{_round.teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Total score #{roundList.order=='totalScore asc' ? messages.down : ( roundList.order=='totalScore desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='totalScore asc' ? 'totalScore desc' : 'totalScore asc'}"/>
+							</s:link>
+						</f:facet>
+						#{_round.totalScore}
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Weather #{roundList.order=='weather asc' ? messages.down : ( roundList.order=='weather desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='weather asc' ? 'weather desc' : 'weather asc'}"/>
+							</s:link>
+						</f:facet>
+						#{_round.weather}
+					</h:column>
+					<ui:remove>
+					<h:column>
+						<f:facet name="header">
+							<s:link styleClass="columnHeader"
+								value="Notes #{roundList.order=='notes asc' ? messages.down : ( roundList.order=='notes desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='notes asc' ? 'notes desc' : 'notes asc'}"/>
+							</s:link>
+						</f:facet>
+						#{_round.notes}
+					</h:column>
+					</ui:remove>
+					<h:column>
+						<f:facet name="header">action</f:facet>
+						<s:link id="round" view="/#{empty from ? 'Round' : from}.seam" 
+							value="Select">
+							<f:param name="roundId" value="#{_round.id}"/>
+						</s:link>
+					</h:column>
+				</rich:dataTable>
+		
+				<s:div styleClass="actionButtons" rendered="#{empty from}">
+					<s:button view="/RoundEdit.xhtml"
+								id="create" 
+							 value="Create round" propagation="none">
+						<f:param name="roundId"/>
+					</s:button>
+				</s:div>
+	
+			</div>
+		</rich:panel>
+		
+		<ui:remove><!-- using action-based pagination controls requires RoundList to be scoped to the conversation (or page scope, but then these need to be <h:commandButtons> --></ui:remove>
+		<div class="tableControl">
+		  
+			<h:form><!-- required for setting max page -->
+	
+				<s:button id="first" action="#{roundList.first}" rendered="#{roundList.previousExists}" 
+					value="#{messages.left}#{messages.left} First Page" />
+				
+				<s:button id="previous" action="#{roundList.previous}" rendered="#{roundList.previousExists}" 
+					value="#{messages.left} Previous Page" />
+
+				<h:selectOneMenu id="pageSize" value="#{roundList.maxResults}" onchange="this.form.submit();">
+					<f:selectItem itemValue="5" />
+					<f:selectItem itemValue="10" />
+					<f:selectItem itemValue="15" />
+					<f:selectItem itemValue="20" />
+					<f:selectItem itemValue="25" />
+					<f:selectItem itemValue="50" />
+					<f:selectItem itemValue="75" />
+					<f:selectItem itemValue="100" /><!-- this would be a nice feature for Query -->
+				</h:selectOneMenu>
+				
+				<s:button id="next" action="#{roundList.next}" rendered="#{roundList.nextExists}" 
+					value="Next Page #{messages.right}" />
+				
+				<s:button id="last" action="#{roundList.last}" rendered="#{roundList.nextExists}" 
+				value="Last Page #{messages.right}#{messages.right}" />
+			
+			</h:form>
+		</div>
+	
+		<ui:remove>
+		<div class="tableControl">
+		  
+			<s:link id="first" view="/RoundList.xhtml" rendered="#{roundList.previousExists}" 
+				value="#{messages.left}#{messages.left} First Page">
+			  <f:param name="firstResult" value="0"/>
+			</s:link>
+			
+			<s:link id="previous" view="/RoundList.xhtml" rendered="#{roundList.previousExists}" 
+				value="#{messages.left} Previous Page">
+				<f:param name="firstResult" value="#{roundList.previousFirstResult}"/>
+			</s:link>
+			
+			<s:link id="next" view="/RoundList.xhtml" rendered="#{roundList.nextExists}" 
+				value="Next Page #{messages.right}">
+				<f:param name="firstResult" value="#{roundList.nextFirstResult}"/>
+			</s:link>
+			
+			<s:link id="last" view="/RoundList.xhtml" rendered="#{roundList.nextExists}" 
+				value="Last Page #{messages.right}#{messages.right}">
+				<f:param name="firstResult" value="#{roundList.lastFirstResult}"/>
+			</s:link>
+			
+		</div>
+		</ui:remove>
+		
+	</ui:define>
+
+</ui:composition>
+

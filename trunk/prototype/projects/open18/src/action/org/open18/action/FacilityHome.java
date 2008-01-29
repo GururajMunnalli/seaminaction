@@ -1,15 +1,24 @@
 package org.open18.action;
 
-import org.open18.model.*;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.context.FacesContext;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.framework.EntityNotFoundException;
+import org.open18.model.Course;
+import org.open18.model.Facility;
+import org.open18.util.UIComponentLocator;
+
+import javax.faces.component.EditableValueHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 @Name("facilityHome")
 public class FacilityHome extends EntityHome<Facility> {
+
+	private byte[] newLogo;
+
+	private String newLogoContentType;
 
 	public void setFacilityId(Long id) {
 		setId(id);
@@ -23,6 +32,12 @@ public class FacilityHome extends EntityHome<Facility> {
 	protected Facility createInstance() {
 		Facility facility = new Facility();
 		return facility;
+	}
+
+	public void setInstance(Facility facility) {
+		super.setInstance(facility);
+		newLogo = null;
+		newLogoContentType = null;
 	}
 
 	public void wire() {
@@ -39,6 +54,29 @@ public class FacilityHome extends EntityHome<Facility> {
 	public List<Course> getCourses() {
 		return getInstance() == null ? null : new ArrayList<Course>(
 				getInstance().getCourses());
+	}
+
+	public String update() {
+		if (getNewLogo() != null && getNewLogoContentType() != null) {
+			getInstance().setLogo(getNewLogo());
+			getInstance().setLogoContentType(getNewLogoContentType());
+			newLogo = null;
+			newLogoContentType = null;
+		}
+
+		return super.update();
+	}
+
+	public void updateCityAndState(ValueChangeEvent e) {
+		String zipCode = (String) e.getNewValue();
+		//EditableValueHolder city = (EditableValueHolder) e.getComponent().findComponent(":facility:cityDecoration:city");
+		//EditableValueHolder state = (EditableValueHolder) e.getComponent().findComponent(":facility:stateDecoration:state");
+		EditableValueHolder city = (EditableValueHolder) UIComponentLocator.instance().findComponent("city");
+		EditableValueHolder state = (EditableValueHolder) UIComponentLocator.instance().findComponent("state");
+		if ("20724".equals(zipCode)) {
+			city.setValue("Laurel");
+			state.setValue("MD");
+		}
 	}
 	
 	public String validateEntityFound() {
@@ -70,4 +108,19 @@ public class FacilityHome extends EntityHome<Facility> {
 		}
 	}
 
+	public byte[] getNewLogo() {
+		return newLogo;
+	}
+
+	public void setNewLogo(byte[] newLogo) {
+		this.newLogo = newLogo;
+	}
+
+	public String getNewLogoContentType() {
+		return newLogoContentType;
+	}
+
+	public void setNewLogoContentType(String newLogoContentType) {
+		this.newLogoContentType = newLogoContentType;
+	}
 }

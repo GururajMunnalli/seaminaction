@@ -6,24 +6,36 @@
             xmlns:bpm="http://jboss.com/products/seam/bpm"
             xmlns:security="http://jboss.com/products/seam/security"
             xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:framework="http://jboss.com/products/seam/framework"
+            xmlns:pdf="http://jboss.com/products/seam/pdf"
+            xmlns:i18n="http://jboss.com/products/seam/international"
+            xmlns:theme="http://jboss.com/products/seam/theme"
+            xmlns:web="http://jboss.com/products/seam/web"
             xmlns:auth="http://open18.org/components/auth"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
-                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
-                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.0.xsd 
+                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.0.xsd
                  http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.0.xsd
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
-				 http://open18.org/components/auth-1.0.xsd
+                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
+                 http://jboss.com/products/seam/pdf http://jboss.com/products/seam/pdf-2.0.xsd
+                 http://jboss.com/products/seam/international http://jboss.com/products/seam/international-2.0.xsd
+                 http://jboss.com/products/seam/theme http://jboss.com/products/seam/theme-2.0.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.0.xsd
+                 http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
    <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
      
-   <core:manager concurrent-request-timeout="500" 
+   <core:manager concurrent-request-timeout="500"
                  conversation-timeout="120000" 
                  conversation-id-parameter="cid"/>
     
+   <web:redirect-filter disabled="true"/>
+
    <persistence:managed-persistence-context name="entityManager"
                                      auto-create="true"
                           entity-manager-factory="#{open18EntityManagerFactory}"/>
@@ -31,14 +43,29 @@
    <persistence:entity-manager-factory name="open18EntityManagerFactory" 
                       persistence-unit-name="open18"/>
    
-   <drools:rule-base name="securityRules">
-       <drools:rule-files><value>/security.drl</value></drools:rule-files>
-   </drools:rule-base>
+   <drools:rule-base name="securityRules" rule-files="/security.drl"/>
 
    <security:identity authenticate-method="#{authenticator.authenticate}"
                            security-rules="#{securityRules}"
                               remember-me="true"/>
-                              
+
+   <pdf:document-store use-extensions="true"/>
+   <i18n:locale-selector cookie-enabled="true"/>
+   <i18n:time-zone-selector cookie-enabled="true" time-zone-id="America/New_York"/>
+   <theme:theme-selector cookie-enabled="true" theme="blueSky">
+      <theme:available-themes>
+         <value>blueSky</value>
+         <value>japanCherry</value>
+         <value>classic</value>
+         <value>deepMarine</value>
+         <value>emeraldTown</value>
+         <value>DEFAULT</value>
+         <value>ruby</value>
+         <value>wine</value>
+         <value>plain</value>
+      </theme:available-themes>
+   </theme:theme-selector>
+
    <!-- bug in Pages.java that forces us to have to use the deprecated events -->
    <event type="org.jboss.seam.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>
@@ -46,18 +73,46 @@
    <event type="org.jboss.seam.loginSuccessful">
        <action execute="#{redirect.returnToCapturedView}"/>
    </event>
-   
-   <mail:mail-session host="localhost" port="2525" username="test" password="test" />
-        
-   <!-- For use with jBPM pageflow or process management -->
-   <!--  
-   <bpm:jbpm>
-      <bpm:process-definitions></bpm:process-definitions>
-      <bpm:pageflow-definitions></bpm:pageflow-definitions>
-   </bpm:jbpm>
+
+   <!--
+   <mail:meldware-user name="mailUser_open18" username="open18" password="tiger"/>
+
+   <mail:meldware>
+      <mail:users>
+         <value>#{mailUser_open18}</value>
+      </mail:users>
+   </mail:meldware>
    -->
 
+   <!--
+   <mail:mail-session host="localhost" port="2525" username="open18" password="tiger"/>
+   <mail:mail-session host="smtp.gmail.com" port="587" username="dan.j.allen@gmail.com" password="[LiNuX320]170" tls="true"/>
+   -->
+   <mail:mail-session session-jndi-name="java:/Mail"/>
+        
+   <bpm:jbpm>
+      <bpm:pageflow-definitions>
+         <value>selectFacility.jpdl.xml</value>
+         <value>courseWizard.jpdl.xml</value>
+      </bpm:pageflow-definitions>
+      <bpm:process-definitions>
+         <value>courier.jpdl.xml</value>
+         <value>broadcast.jpdl.xml</value>
+         <value>add-friend.jpdl.xml</value>
+      </bpm:process-definitions>
+   </bpm:jbpm>
+
    <!-- ===== Open 18 component definitions and configurations ===== -->
+
+   <component name="currentGolfer" class="org.open18.model.Golfer" scope="session"/>
+
+   <!-- the currentGolferManaged is used when we need an instance that is managed by the current entity manager -->
+   <factory name="currentGolferManaged" value="#{currentGolferHome.instance}" auto-create="true"/>
+   <framework:entity-home name="currentGolferHome" entity-class="org.open18.model.Golfer">
+      <framework:id>#{currentGolfer.id}</framework:id>
+   </framework:entity-home>
+
+   <!--<component name="selectedGolfer" class="org.open18.model.Golfer" />-->
 
    <!-- newGolfer | generic-style component *definition* -->
    <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
@@ -68,6 +123,8 @@
    <!--
    <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}" />
    -->
+
+   <component name="courseExample" class="org.open18.model.Course"/>
 
    <!-- passwordBean | generic-style component *definition* -->
    <!--
@@ -89,7 +146,7 @@
    <!--
    <component name="passwordManager">
       <digestAlgorithm>SHA-1</digestAlgorithm>
-	  <charset>UTF-8</charset>
+      <charset>UTF-8</charset>
    </component>
    -->
    
@@ -101,5 +158,160 @@
       <auth:charset>UTF-8</auth:charset>
    </auth:password-manager>
    -->
+
+   <component name="registerAction">
+      <property name="pro-status-types">amateur pro semi-pro</property>
+      <property name="specialtyTypes">
+         <value>Driving</value>
+         <value>Chipping</value>
+         <value>Putting</value>
+         <value>Iron play</value>
+         <value>Lookin' good</value>
+      </property>
+   </component>
+
+   <component name="newCourseReview" class="org.open18.model.Review" scope="event">
+      <property name="entityId">#{courseHome.instance.id}</property>
+      <property name="entityName">Course</property>
+      <property name="dateCreated">#{currentDatetime}</property>
+      <property name="reviewer">#{currentGolfer}</property>
+      <property name="useWikiText">true</property>
+   </component>
+
+   <framework:entity-home name="courseReviewHome" entity-class="org.open18.model.Review"
+      new-instance="#{newCourseReview}"
+      created-message="Your review has been added. Thank you for your participation."/>
+
+   <factory name="courseReviews" value="#{courseReviewsQuery.resultList}" scope="stateless"/>
+   <framework:entity-query name="courseReviewsQuery"
+      ejbql="select r from Review r join fetch r.reviewer where r.entityName = 'Course'"
+      order="r.dateCreated desc">
+      <framework:restrictions>
+         <value>r.entityId = #{courseHome.instance.id}</value>
+      </framework:restrictions>
+   </framework:entity-query>
+
+   <event type="org.jboss.seam.afterTransactionSuccess.Review">
+      <action execute="#{courseReviewHome.clearInstance}"/>
+   </event>
+
+   <!-- waiting on JBSEAM-2133 to allow evaluation (and escaping) of inline EL; currently, EL only supported if value begins with #{ -->
+   <!--
+   <framework:entity-home name="courseHome" class="org.open18.action.CourseHome">
+      <framework:id>#{param.courseId}</framework:id>
+      <framework:created-message>You have successfully added \#{course.name}. Thanks for contributing!</framework:created-message>
+      <framework:updated-message>You have successfully updated \#{course.name}. Your careful eye is appreciated!</framework:updated-message>
+      <framework:deleted-message>\#{course.name} has been removed. I never liked it anyway.</framework:deleted-message>
+   </framework:entity-home>
+   -->
+
+   <!-- &#8205; is a dirty hack to get the value to not begin with #{ -->
+   <framework:entity-home name="courseHome" class="org.open18.action.CourseHome">
+      <property name="created-message">You have successfully added #{course.name}. Thanks for contributing!</property>
+      <property name="updated-message">You have successfully updated #{course.name}. Your careful eye is appreciated!</property>
+      <property name="deleted-message">&#8205;#{course.name} has been removed. I never liked it anyway.</property>
+   </framework:entity-home>
+
+    <component name="teeSetExample">
+        <property name="course">#{courseExample}</property>
+    </component>
+
+    <component name="roundExample">
+        <property name="golfer">#{golferExample}</property>
+        <property name="teeSet">#{teeSetExample}</property>
+    </component>
+
+	<!-- if JBSEAM-2133 is accepted, need to escape these expressions -->
+    <framework:entity-query name="roundList"
+        ejbql="select r from Round r
+          join fetch r.golfer golfer
+          join fetch r.teeSet teeSet
+          join fetch teeSet.course course"
+        max-results="5"
+        order="date desc"
+        scope="conversation">
+        <framework:restrictions>
+            <!--<value>lower(golfer.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>-->
+            <!--<value>lower(golfer.firstName) like concat(lower(#{roundExample.golfer.firstName}),'%')</value>-->
+            <value>
+                lower(golfer.lastName) like concat(lower(#{roundExample.golfer.nameFilter}),'%') or
+                lower(golfer.firstName) like concat(lower(:el1),'%')
+            </value>
+            <value>golfer = #{roundExample.golfer.selfFilter ? currentGolfer : null}</value>
+            <!--<value>lower(course.name) like concat(lower(#{roundExample.teeSet.course.name}),'%')</value>-->
+            <value>course IN(#{not empty roundExample.courseFilter ? roundExample.courseFilter : null})</value>
+            <value>lower(teeSet.color) = lower(#{roundExample.teeSet.color})</value>
+            <!--<value>lower(r.weather) = lower(#{roundExample.weather})</value>-->
+            <value>r.weather IN(#{not empty roundExample.weatherFilter ? roundExample.weatherFilter : null})</value>
+            <value>r.date &gt;= #{roundExample.afterDateFilter}</value>
+            <value>r.date &lt;= #{roundExample.beforeDateFilter}</value>
+            <value>r.totalScore &gt;= #{roundExample.lowScoreFilter}</value>
+            <value>r.totalScore &lt;= #{roundExample.highScoreFilter}</value>
+        </framework:restrictions>
+    </framework:entity-query>
+
+	<!-- If a round is changed, we have to assume that the result set is stale (could lead to LIE otherwise) -->
+    <event type="org.jboss.seam.afterTransactionSuccess.Round">
+        <action execute="#{roundList.refresh}"/>
+		<!-- It is necessary to fetch the result list to deal with swizzled result list -->
+        <action execute="#{roundList.resultList}"/>
+    </event>
+
+    <framework:entity-query name="availableCourses"
+        ejbql="select c from Course c join fetch c.facility f"
+        order="f.state asc, c.name asc"
+        scope="conversation" />
+    <framework:entity-home />
+
+   <factory name="friend" value="#{friendHome.instance}" auto-create="true"/>
+   <framework:entity-home name="friendHome" entity-class="org.open18.model.Golfer"/>
+   
+   <factory name="otherGolfers" value="#{otherGolfersQuery.resultList}" scope="page"/>
+   <framework:entity-query name="otherGolfersQuery"
+      ejbql="select g from Golfer g"
+      order="g.name asc">
+      <framework:restrictions>
+         <value>g.username != #{identity.username}</value>
+         <!--
+         <value>g.username != \#{identity.username}</value>
+         -->
+      </framework:restrictions>
+   </framework:entity-query>
+   
+   <factory name="availableActorIds" value="#{availableActorIdsQuery.resultList}" scope="event"/>
+   <framework:entity-query name="availableActorIdsQuery"
+      ejbql="select m.username from Member m"
+      order="m.username asc">
+      <framework:restrictions>
+         <value>m.username != #{identity.username}</value>
+         <!--
+         <value>g.username != \#{identity.username}</value>
+         -->
+      </framework:restrictions>
+   </framework:entity-query>
+   
+   <framework:entity-query name="nonFriendsQuery"
+      ejbql="select g from Golfer g"
+      scope="page">
+      <framework:restrictions>
+         <value>g NOT IN(select f.friend from GolferFriend f where f.golfer.username = #{identity.username})</value>
+         <value>g.username != #{identity.username}</value>
+         <!--
+         <value>g NOT IN(select f.friend from GolferFriend f where f.golfer.username = \#{identity.username})</value>
+         <value>g.username != \#{identity.username}</value>
+         -->
+      </framework:restrictions>
+   </framework:entity-query>
+   <!--
+   <factory name="selectedFriend" value="#{nonFriendsQuery.dataModelSelection}" scope="stateless" auto-create="true"/>
+   -->
+
+   <!--
+   <factory name="nonFriends" value="#{nonFriendsQuery.resultList}" scope="page" />
+   -->
+   
+   <component name="currentGolferFriends" scope="event" class="org.jboss.seam.jsf.SetDataModel">
+      <property name="wrappedData">#{currentGolfer.friends}</property>
+   </component>
 
 </components>

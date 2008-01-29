@@ -1,0 +1,26 @@
+<p:document
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	title="#{course.name} Scorecard"
+	creator="Open 18"
+	pageSize="LETTER"
+    type="#{not empty param.type ? param.type : 'pdf'}">
+	<p:image value="#{course.facility.logo}" rendered="#{course.facility.logo ne null}">
+		<s:transformImageSize height="96" maintainRatio="true"/>
+	</p:image>
+	<p:font size="18">
+		<p:paragraph>#{course.name}</p:paragraph>
+	</p:font>
+	<p:font size="8" color="darkgray">
+		<p:paragraph>Designed by #{course.designer}</p:paragraph>
+		<p:paragraph spacingAfter="4">
+			<p:font style="bold">#{course.numHoles}</p:font> HOLES #{' - '} <p:font style="bold">PAR</p:font> #{course.totalMensPar}
+		</p:paragraph>
+		<p:list listSymbol="-">
+			<ui:repeat var="ts" value="#{teeSets}">
+				<p:listItem>#{ts.name} (#{ts.totalDistance} yds)</p:listItem>
+			</ui:repeat>
+		</p:list>
+	</p:font>
+</p:document>

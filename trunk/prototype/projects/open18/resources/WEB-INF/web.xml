@@ -8,9 +8,12 @@
     
     <context-param>
         <param-name>org.richfaces.SKIN</param-name>
+        <!--
         <param-value>blueSky</param-value>
+        -->
+        <param-value>#{sessionScope['org.jboss.seam.theme.themeSelector'] ne null ? sessionScope['org.jboss.seam.theme.themeSelector'].theme : 'blueSky'}</param-value>
     </context-param>
- 
+
    <!-- Seam -->
     
    <listener>
@@ -45,6 +48,21 @@
    <servlet-mapping>
       <servlet-name>Seam Resource Servlet</servlet-name>
       <url-pattern>/seam/resource/*</url-pattern>
+   </servlet-mapping>
+
+   <servlet>
+      <servlet-name>Document Store Servlet</servlet-name>
+      <servlet-class>org.jboss.seam.pdf.DocumentStoreServlet</servlet-class>
+   </servlet>
+   
+   <servlet-mapping>
+      <servlet-name>Document Store Servlet</servlet-name>
+      <url-pattern>*.pdf</url-pattern>
+   </servlet-mapping>
+   
+   <servlet-mapping>
+      <servlet-name>Document Store Servlet</servlet-name>
+      <url-pattern>*.rtf</url-pattern>
    </servlet-mapping>
    
    <!-- Facelets development mode (disable in production) -->
