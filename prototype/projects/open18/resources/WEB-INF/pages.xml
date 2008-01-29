@@ -110,7 +110,7 @@
     <page view-id="/coursewizard/*" conversation-required="true" no-conversation-view-id="/CourseList.xhtml"
         action="#{pageflow.isInProcess}">
         <navigation>
-            <rule if="#{pageflow.processInstance.processDefinition.name ne 'courseWizard'}">
+            <rule if="#{pageflow.processInstance.processDefinition.name ne 'Course Wizard'}">
                 <redirect view-id="/CourseList.xhtml"/>
             </rule>
         </navigation>

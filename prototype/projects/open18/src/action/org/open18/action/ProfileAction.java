@@ -102,7 +102,6 @@ public class ProfileAction {
     // QUESTION: I am still considering if a factory is the right approach here
 	@Factory(value = "selectedGolferFriends", scope = ScopeType.PAGE)
     public List<GolferFriend> getFriends() {
-		System.out.println("called me");
         if (selectedGolfer == null) {
             return null;
         }
