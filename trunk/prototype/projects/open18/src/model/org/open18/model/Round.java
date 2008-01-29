@@ -78,7 +78,7 @@ public class Round implements java.io.Serializable {
 	}
 
 	@NotNull
-	@Past
+	//@Past
 	@Temporal(DATE)
 	@Column(name = "DATE", length = 8)
 	public Date getDate() {
