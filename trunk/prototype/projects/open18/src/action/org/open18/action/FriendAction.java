@@ -73,17 +73,19 @@ public class FriendAction {
 		this.personalMessage = message;
 	}
 	
+	@Transactional
 	public boolean checkForDuplicateRequest() {
 		initActors();
 		return isExistingFriendOrOutstandingRequest();
 	}
 	
-	// INFO: a null return value will prevent business process from starting
 	@CreateProcess(definition = ADD_FRIEND_PROCESS_NAME)
+	@Transactional
 	public Boolean addFriend() {
 		initActors();
 		if (isExistingFriendOrOutstandingRequest()) {
-			return false;
+			// INFO: a null return value will prevent business process from starting
+			return null;
 		}
 		else {
 			facesMessages.add("A friend request has been sent to #{prospect} for approval.");
@@ -129,7 +131,6 @@ public class FriendAction {
 		return false;
 	}
 	
-	@Transactional
 	protected boolean isOutstandingRequest() {
 		@SuppressWarnings("unchecked")
 		List<TaskInstance> taskInstances = jbpmContext.getTaskList(prospect);
