@@ -3,7 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://jboss.com/products/seam/pages
-		http://jboss.com/products/seam/pages-2.0.xsd">
+		http://jboss.com/products/seam/pages-2.0.xsd"
+	login-required="true">
 
 	<param name="friendId" value="#{friendHome.id}" converterId="javax.faces.Long"/>
 
@@ -22,15 +23,17 @@
 	-->
 	<action execute="#{friendAction.checkForDuplicateRequest}" if="#{not duplicateCheckPerformed}"/>
 
-	<!-- FIXME: navigate back to profile on failed addFriend() -->
-
-	<navigation>
+	<!-- QUESTION: is it possible to have default <navigation> handle all true outcomes
+	     and a action-specific navigation handle the addFriend() false case? -->
+	<navigation from-action="#{friendAction.checkForDuplicateRequest}">
 		<rule if-outcome="true">
 			<redirect view-id="/profile.xhtml"/>
 		</rule>
 	</navigation>
 	
+	<!-- INFO: this demonstrates handling the null outcome and a non-null outcome in the same navigation -->
 	<navigation from-action="#{friendAction.addFriend}">
+		<redirect view-id="/profile.xhtml"/>
 		<rule>
 			<redirect view-id="/profile.xhtml"/>
 		</rule>

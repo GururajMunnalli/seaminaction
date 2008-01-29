@@ -3,7 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://jboss.com/products/seam/pages
-		http://jboss.com/products/seam/pages-2.0.xsd">
+		http://jboss.com/products/seam/pages-2.0.xsd"
+	login-required="true">
 
 	<param name="friendId" value="#{friendHome.id}" converterId="javax.faces.Long" />
 	<action execute="#{friendAction.removeFriend}" />
