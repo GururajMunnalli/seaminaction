@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 14, 2007 4:39:39 PM by Hibernate Tools 3.2.0.CR1
+// Generated Mar 24, 2008 3:06:07 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,6 +34,7 @@ public class Facility implements java.io.Serializable {
 	private String country;
 	private String phone;
 	private String uri;
+	private Integer priceRange;
 	private Set<Course> courses = new HashSet<Course>(0);
 
 	public Facility() {
@@ -46,7 +47,7 @@ public class Facility implements java.io.Serializable {
 	public Facility(String name, String description, String type,
 			String address, String city, String state, String zip,
 			String county, String country, String phone, String uri,
-			Set<Course> courses) {
+			Integer priceRange, Set<Course> courses) {
 		this.name = name;
 		this.description = description;
 		this.type = type;
@@ -58,6 +59,7 @@ public class Facility implements java.io.Serializable {
 		this.country = country;
 		this.phone = phone;
 		this.uri = uri;
+		this.priceRange = priceRange;
 		this.courses = courses;
 	}
 
@@ -180,6 +182,15 @@ public class Facility implements java.io.Serializable {
 
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+
+	@Column(name = "PRICE_RANGE")
+	public Integer getPriceRange() {
+		return this.priceRange;
+	}
+
+	public void setPriceRange(Integer priceRange) {
+		this.priceRange = priceRange;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "facility")
 	public Set<Course> getCourses() {

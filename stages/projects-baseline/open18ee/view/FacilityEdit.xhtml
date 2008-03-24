@@ -27,7 +27,7 @@
                            size="50"
                       maxlength="50"
                           value="#{facilityHome.instance.address}">
-                    <a:support event="onblur" reRender="addressDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="addressDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -38,7 +38,7 @@
                            size="30"
                       maxlength="30"
                           value="#{facilityHome.instance.city}">
-                    <a:support event="onblur" reRender="cityDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="cityDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -49,7 +49,7 @@
                            size="30"
                       maxlength="30"
                           value="#{facilityHome.instance.country}">
-                    <a:support event="onblur" reRender="countryDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="countryDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -60,7 +60,7 @@
                            size="30"
                       maxlength="30"
                           value="#{facilityHome.instance.county}">
-                    <a:support event="onblur" reRender="countyDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="countyDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -82,7 +82,7 @@
                            size="50"
                       maxlength="50"
                           value="#{facilityHome.instance.name}">
-                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -93,7 +93,16 @@
                            size="10"
                       maxlength="10"
                           value="#{facilityHome.instance.phone}">
-                    <a:support event="onblur" reRender="phoneDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="phoneDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="priceRangeDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">priceRange</ui:define>
+                <h:inputText id="priceRange"
+                          value="#{facilityHome.instance.priceRange}">
+                    <a:support event="onblur" reRender="priceRangeDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -104,7 +113,7 @@
                            size="2"
                       maxlength="2"
                           value="#{facilityHome.instance.state}">
-                    <a:support event="onblur" reRender="stateDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="stateDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -116,7 +125,7 @@
                            size="15"
                       maxlength="15"
                           value="#{facilityHome.instance.type}">
-                    <a:support event="onblur" reRender="typeDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="typeDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -136,7 +145,7 @@
                            size="5"
                       maxlength="5"
                           value="#{facilityHome.instance.zip}">
-                    <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
         
@@ -163,6 +172,7 @@
             <h:commandButton id="delete" 
                           value="Delete" 
                          action="#{facilityHome.remove}"
+                      immediate="true"
                        rendered="#{facilityHome.managed}"/>
                     
             <s:button id="done" 
@@ -185,7 +195,7 @@
     <rich:tab label="courses">
         <div class="association" id="coursesChildren">
         
-            <h:outputText value="No courses" 
+            <h:outputText value="There are no courses associated with this facility." 
                        rendered="#{empty facilityHome.courses}"/>
         
             <rich:dataTable value="#{facilityHome.courses}" 

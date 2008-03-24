@@ -68,7 +68,7 @@
     <rich:tab label="course">
     <div class="association" id="courseParent">
         
-        <h:outputText value="No course" 
+        <h:outputText value="There is no course associated with this hole." 
                    rendered="#{holeHome.instance.course == null}"/>
         
         <rich:dataTable var="course" 
@@ -133,7 +133,7 @@
     <rich:tab label="tees">
     <div class="association" id="teesChildren">
         
-        <h:outputText value="No tees" 
+        <h:outputText value="There are no tees associated with this hole."
                    rendered="#{empty holeHome.tees}"/>
         
         <rich:dataTable value="#{holeHome.tees}" 

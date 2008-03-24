@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 14, 2007 2:37:35 AM by Hibernate Tools 3.2.0.CR1
+// Generated Mar 24, 2008 2:36:04 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
