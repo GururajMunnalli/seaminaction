@@ -60,6 +60,12 @@
         </s:decorate>
 
 
+        <s:decorate id="priceRange" template="layout/display.xhtml">
+            <ui:define name="label">priceRange</ui:define>
+            #{facilityHome.instance.priceRange}
+        </s:decorate>
+
+
         <s:decorate id="state" template="layout/display.xhtml">
             <ui:define name="label">state</ui:define>
             #{facilityHome.instance.state}
@@ -104,7 +110,7 @@
     <rich:tab label="courses">
     <div class="association" id="coursesChildren">
         
-        <h:outputText value="No courses" 
+        <h:outputText value="There are no courses associated with this facility."
                    rendered="#{empty facilityHome.courses}"/>
         
         <rich:dataTable value="#{facilityHome.courses}" 

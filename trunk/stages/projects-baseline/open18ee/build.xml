@@ -81,6 +81,7 @@
                 <copy todir="${jar.dir}">
                         <fileset dir="${basedir}/resources">
                                 <include name="seam.properties" />
+                                <include name="*.drl" />
                         </fileset>
                 </copy>
                 <copy todir="${jar.dir}/META-INF">
@@ -110,7 +111,6 @@
                         <filterset>
                             <filter token="debug" value="${debug}" />
                             <filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
-                            <filter token="embeddedEjb" value="false" />
                         </filterset>
                 </copy>         
                 <copy todir="${war.dir}/WEB-INF">
@@ -144,7 +144,6 @@
                                 <include name="*jpdl.xml" />
                                 <include name="*hibernate.cfg.xml" />
                                 <include name="jbpm.cfg.xml" />
-                                <include name="*.drl" />
                         </fileset>
                 		<fileset dir="${lib.dir}">
                 				<include name="jboss-seam.jar" />
@@ -153,6 +152,7 @@
                                 <include name="lib/jbpm*.jar" />
                                 <include name="lib/jboss-el.jar" />
                                 <include name="lib/drools-*.jar"/>
+                                <include name="lib/core.jar"/>
                                 <include name="lib/janino*.jar"/>
                                 <include name="lib/antlr-*.jar"/>
                                 <include name="lib/mvel*.jar"/>

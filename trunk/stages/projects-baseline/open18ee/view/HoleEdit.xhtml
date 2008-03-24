@@ -26,7 +26,7 @@
                 <ui:define name="label">ladiesHandicap</ui:define>
                 <h:inputText id="ladiesHandicap"
                           value="#{holeHome.instance.ladiesHandicap}">
-                    <a:support event="onblur" reRender="ladiesHandicapDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="ladiesHandicapDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -36,7 +36,7 @@
                 <h:inputText id="ladiesPar"
                        required="true"
                           value="#{holeHome.instance.ladiesPar}">
-                    <a:support event="onblur" reRender="ladiesParDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="ladiesParDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -45,7 +45,7 @@
                 <ui:define name="label">mensHandicap</ui:define>
                 <h:inputText id="mensHandicap"
                           value="#{holeHome.instance.mensHandicap}">
-                    <a:support event="onblur" reRender="mensHandicapDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="mensHandicapDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -55,7 +55,7 @@
                 <h:inputText id="mensPar"
                        required="true"
                           value="#{holeHome.instance.mensPar}">
-                    <a:support event="onblur" reRender="mensParDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="mensParDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -65,7 +65,7 @@
                 <h:inputText id="number"
                        required="true"
                           value="#{holeHome.instance.number}">
-                    <a:support event="onblur" reRender="numberDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="numberDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -93,6 +93,7 @@
             <h:commandButton id="delete" 
                           value="Delete" 
                          action="#{holeHome.remove}"
+                      immediate="true"
                        rendered="#{holeHome.managed}"/>
                     
             <s:button id="done" 
@@ -115,7 +116,7 @@
     <rich:tab label="course *" labelClass="required">
     <div class="association" id="courseParent">
     
-        <h:outputText value="No course" 
+        <h:outputText value="There is no course associated with this hole." 
                    rendered="#{holeHome.instance.course == null}"/>
         
         <rich:dataTable var="course" 
@@ -188,7 +189,7 @@
     <rich:tab label="tees">
         <div class="association" id="teesChildren">
         
-            <h:outputText value="No tees" 
+            <h:outputText value="There are no tees associated with this hole." 
                        rendered="#{empty holeHome.tees}"/>
         
             <rich:dataTable value="#{holeHome.tees}" 

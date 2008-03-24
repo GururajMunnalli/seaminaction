@@ -80,7 +80,7 @@
     <rich:tab label="course">
     <div class="association" id="courseParent">
         
-        <h:outputText value="No course" 
+        <h:outputText value="There is no course associated with this teeSet." 
                    rendered="#{teeSetHome.instance.course == null}"/>
         
         <rich:dataTable var="course" 
@@ -145,7 +145,7 @@
     <rich:tab label="tees">
     <div class="association" id="teesChildren">
         
-        <h:outputText value="No tees" 
+        <h:outputText value="There are no tees associated with this teeSet."
                    rendered="#{empty teeSetHome.tees}"/>
         
         <rich:dataTable value="#{teeSetHome.tees}" 

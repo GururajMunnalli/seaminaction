@@ -1,5 +1,5 @@
 package org.open18.model;
-// Generated Dec 14, 2007 4:39:39 PM by Hibernate Tools 3.2.0.CR1
+// Generated Mar 24, 2008 3:06:07 PM by Hibernate Tools 3.2.0.CR1
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
