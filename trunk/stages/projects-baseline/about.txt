@@ -1,6 +1,6 @@
 --------------------------------- DISCLAIMER ---------------------------------
 You do NOT need to use this directory for testing the source code in the book!
-It won't really be that useful to you.
+It just a reference point for me to keep track of the changes in Seam.
 --------------------------------- DISCLAIMER ---------------------------------
 
 This directory contains projects that are the raw output of seam-gen. The only
@@ -11,5 +11,5 @@ are consistent with the example source code.
 The purpose of this stage is that it allows me to see what has changed in
 seam-gen's output so that I can port those changes across the stages. It's
 already a lot of work to maintain the stages and this gives me the flexibility
-of letting diff to most of that work for me.
+of letting `diff' handle most of that work for me.
 
