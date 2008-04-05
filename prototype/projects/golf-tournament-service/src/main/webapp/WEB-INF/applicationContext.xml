@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <bean id="golfTournamentService"
+        class="org.open18.partner.service.impl.GolfTournamentServiceImpl" />
+
+    <bean id="httpGolfTournamentService" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+        <property name="service" ref="golfTournamentService" />
+        <property name="serviceInterface" value="org.open18.partner.service.GolfTournamentService" />
+    </bean>
+    
+    <!-- 
+    <bean id="golfTournamentClient" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+    	<property name="serviceUrl">http://localhost:9090/golf-tournaments/tournament.service</property>
+    	<property name="serviceInterface">org.open18.partner.service.GolfTournamentService</property>
+    </bean>
+    -->
+</beans>
