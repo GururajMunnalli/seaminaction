@@ -37,7 +37,7 @@
 	<!-- Facelets development mode (disable in production) -->
 	<context-param>
 		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>true</param-value>
+		<param-value>false</param-value>
 	</context-param>
 	
 	<context-param>

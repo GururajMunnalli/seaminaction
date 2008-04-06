@@ -56,6 +56,12 @@
 			<message>The conversation ended, timed out or was processing another request</message>
 		</redirect>
 	</exception>
+
+	<exception class="org.springframework.remoting.RemoteAccessException">
+		<redirect view-id="/error.xhtml">
+			<message severity="ERROR">#{org.jboss.seam.handledException.message}</message>
+		</redirect>
+	</exception>
 	 
 	<exception>
 		<redirect view-id="/error.xhtml">
