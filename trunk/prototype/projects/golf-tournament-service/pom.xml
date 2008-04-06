@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.open18.partner</groupId>
-	<artifactId>golf-tournament-service</artifactId>
+	<artifactId>golf-tournament-project</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Golf Tournament Service Project</name>
-	<description>A partner web service that provides a list of golf tournaments for the Open 18 application.</description>
+	<name>Golf Tournament Project</name>
+	<description>A project demonstrating the use of an HTTPInvoker Spring service from a Seam application. This project includes the API, implementation, and endpoint of the service and a sample client.</description>
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<pluginManagement>
@@ -26,5 +26,6 @@
 		<module>golf-tournament-service-api</module>
 		<module>golf-tournament-service-impl</module>
 		<module>golf-tournament-service-endpoint</module>
+		<module>golf-tournament-client</module>
 	</modules>
 </project>
