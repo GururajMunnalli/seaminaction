@@ -8,4 +8,9 @@
  * groovy -cp h2.jar h2version 
  */
 
-println "H2 " + org.h2.engine.Constants.version
+try {
+	println "H2 " + org.h2.engine.Constants.version
+}
+catch (e) {
+	println "H2 " + org.h2.engine.Constants.VERSION
+}
