@@ -3,7 +3,7 @@ body {
 }
 
 a:active, a:link, a:visited {
-	color: #0D5798;    
+	color: #0D5798;
 }
 a:hover {
 	color: #8CAFCD;
@@ -41,7 +41,7 @@ input[type='submit'], input[type='button'] {
 }
 
 .rich-table {
-    width:100%;
+	width:100%;
 }
 
 h1 {
@@ -63,7 +63,7 @@ body {
 
 .columnHeader:hover
 {
-    color: #FF6600;
+	color: #FF6600;
 }
 
 .message {
@@ -112,54 +112,133 @@ img.errors {
 	padding-left: 2px;
 }
 
+.rich-stglpanel-body {
+	overflow: auto;
+} 
+
 /** Open 18 style overrides **/
 
 /* improve display of JSF messages (JBSEAM-2033) */
 .message {
-    list-style: none;
-    border: 0;
-    background: none;
-    padding: 0;
-    color: #000000;
-    margin: 5px 0 8px 0;
-    font-size: 12px;
+	list-style: none;
+	border: 0;
+	background: none;
+	padding: 0;
+	color: #000000;
+	margin: 5px 0 8px 0;
+	font-size: 12px;
 }
 
 .message li {
-    background: no-repeat left center;
-    padding-top: 1px;
-    padding-left: 20px;
-    margin-left: 3px;
+	background: no-repeat left center;
+	padding-top: 1px;
+	padding-left: 20px;
+	margin-left: 3px;
 }
 
 .message li.infomsg {
-    background-image: url(../img/msg_info.png);
+	background-image: url(../img/msg_info.png);
 }
 
 .message li.errormsg {
-    background-image: url(../img/msg_error.png);
+	background-image: url(../img/msg_error.png);
 }
 
 .message li.warnmsg {
-    background-image: url(../img/msg_warn.png);
+	background-image: url(../img/msg_warn.png);
 }
 
 /* let's not make us go blind */
+/*
 .rich-panel-header,
 .rich-panel-body,
+.rich-tabpanel-content,
 .rich-stglpanel-header,
 .rich-stglpanel-body,
 .rich-table-cell,
 .rich-table-subheadercell,
 .rich-tab-header {
-    font-size: 12px;
+	font-size: 12px;
+}*/
+
+/* the specificity here is necessary to override the defaults */
+.rich-panel .rich-panel-header,
+.rich-stglpanel .rich-stglpanel-header {
+	padding: 2px 3px;
 }
 
-.rich-panel-header,
-.rich-stglpanel-header {
-    padding: 3px;
+/*select {
+	border: 1px solid #BBBBBB;
+}*/
+
+/*form.edit select {
+	background: #F0F8FF;
+}*/
+
+input[type='text'], input[type='password'], textarea {
+	font-size: 11px;
+	padding-left: 1px;
 }
 
-input, textarea, .footer {
-    font-size: 11px;
+select {
+	font-size: 12px;
 }
+
+input[type='submit'], input[type='button'] {
+	margin: 5px 5px 5px 0;
+	cursor: pointer;
+}
+
+.rich-panel input[type='submit'], .rich-panel input[type='button'],
+.rich-tabpanel input[type='submit'], .rich-tabpanel input[type='button'] {
+	margin-bottom: 0;
+}
+
+.tableControl input[type='submit'], .tableControl input[type='button'], .tableControl select {
+	margin: 5px 0 5px 5px;
+}
+
+/* I don't know why this is necessary, but the select is off by a pixel on the top and is padding too much on the left */
+.tableControl select {
+	margin-left: 2px;
+	position: relative;
+	top: 1px;
+}
+
+.actionButtons {
+	padding-left: 1px;
+}
+
+.actionButtons select {
+	margin: 5px 5px 5px 0;
+	vertical-align: bottom;
+}
+
+.footer {
+	font-size: 11px;
+	margin-bottom: 10px;
+}
+
+.challenge {
+	vertical-align: middle;
+	margin-bottom: 2px;
+	margin-right: 2px;
+}
+
+/* candidate for seam-gen */
+html {
+	overflow-y: scroll;
+}
+
+/* maybe going to go with this */
+/*
+a {
+	text-decoration: none;	
+}
+a:hover {
+	text-decoration: underline;
+}
+.rich-toolbar a {
+	text-decoration: underline;
+}
+*/
