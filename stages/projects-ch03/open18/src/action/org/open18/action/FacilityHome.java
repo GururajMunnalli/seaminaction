@@ -11,6 +11,16 @@ import org.jboss.seam.framework.EntityNotFoundException;
 @Name("facilityHome")
 public class FacilityHome extends EntityHome<Facility> {
 
+	private boolean addCourse = true;
+	
+	public void setAddCourse(boolean addCourse) {
+		this.addCourse = addCourse;
+	}	
+	
+	public boolean isAddCourse() {
+		return addCourse;
+	}
+
 	public void setFacilityId(Long id) {
 		setId(id);
 	}

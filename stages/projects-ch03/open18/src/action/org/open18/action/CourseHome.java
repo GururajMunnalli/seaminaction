@@ -31,6 +31,19 @@ public class CourseHome extends EntityHome<Course> {
 		return course;
 	}
 
+	/**
+	 * Add the course to the courses collection on facility so that
+	 * it is reflected in the UI immediately. Once the conversation ends
+	 * the collection will be refreshed, but before then the new course
+	 * won't be visible.
+	 */
+	@Override
+	public String persist() {
+		String result = super.persist();
+		getInstance().getFacility().getCourses().add(getInstance());
+		return result;
+	}
+
 	public void wire() {
 		Facility facility = facilityHome.getDefinedInstance();
 		if (facility != null) {
