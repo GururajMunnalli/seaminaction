@@ -47,7 +47,7 @@ public class Golfer extends Member {
 	}
 
 	@Temporal(TIMESTAMP)
-	@Column(name = "joined", nullable = false)
+	@Column(name = "joined", nullable = false, updatable = false)
 	@NotNull
 	public Date getDateJoined() {
 		return dateJoined;
