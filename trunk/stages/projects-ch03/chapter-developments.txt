@@ -1,10 +1,14 @@
-Developments made to the application source code in chapter 3.
-Please note that the enhancements described here go slightly beyond what is
+Seam in Action: Chapter 03
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
+
+Seam version used: 2.0.2.GA
 
 open18:
 
   - add UrlRewriteFilter to build; it is used to parse friendly urls for course and facility; it also eliminated the need for index.html
   - course and facility pages are protected against bogus entity IDs using page actions
   - two example page parameter validators are installed, one for state and one for facility type
-  - the reference to the stylesheet in the master template has been fixed to be fully qualified - /#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css
+  - the reference to the stylesheet in the master template has been fixed to be fully qualified using <a4j:loadStyle src="/stylesheet/theme.css"/>
