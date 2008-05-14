@@ -42,6 +42,12 @@
         </s:decorate>
 
 
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">name</ui:define>
+            #{holeHome.instance.name}
+        </s:decorate>
+
+
         <s:decorate id="number" template="layout/display.xhtml">
             <ui:define name="label">number</ui:define>
             #{holeHome.instance.number}
