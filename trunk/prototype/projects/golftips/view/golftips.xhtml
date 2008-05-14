@@ -1,0 +1,69 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h1>Share your golf wisdom!</h1>
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+  
+		<h:form id="golfTips" styleClass="edit">
+
+			<rich:panel>
+				<f:facet name="header">Golf tips</f:facet>
+				<rich:dataGrid var="_tip" value="#{tips}" columns="1" elements="5">
+		    		<rich:panel>
+						<f:facet name="header">#{_tip.author} on #{_tip.category}</f:facet>
+						<h:panelGrid cellspacing="0" cellpadding="0" columns="2" width="100%">
+							#{_tip.content}
+							<s:div style="text-align: right;">
+							<h:commandLink action="#{tipAction.delete}"><h:graphicImage value="img/delete.png" style="border: 0;"/></h:commandLink>
+							</s:div>
+						</h:panelGrid>
+		    		</rich:panel>
+		    	<f:facet name="footer"><rich:datascroller renderIfSinglePage="false"/></f:facet>
+				</rich:dataGrid>
+			</rich:panel>
+		</h:form>
+
+		<h:form id="golfTip" styleClass="edit" style="margin-top: 10px;">
+			<rich:simpleTogglePanel switchType="client" opened="false">
+				<f:facet name="header">Do you have golf wisdom to share?</f:facet>
+
+				<s:decorate id="authorField" template="layout/edit.xhtml">
+					<ui:define name="label">Author</ui:define>
+					<h:inputText id="author" value="#{tip.author}" required="true" style="width: 150px;"/>
+				</s:decorate>
+
+				<s:decorate id="categoryField" template="layout/edit.xhtml">
+					<ui:define name="label">Category</ui:define>
+					<h:selectOneMenu id="category" value="#{tip.category}" required="true" style="width: 153px;">
+						<s:selectItems value="#{tipCategories}" var="category" label="#{category}" noSelectionLabel="-- Select --"/>
+					</h:selectOneMenu>
+				</s:decorate>
+
+				<s:decorate id="contentField" template="layout/edit.xhtml">
+					<ui:define name="label">Content</ui:define>
+					<h:inputTextarea id="content" value="#{tip.content}" cols="20" rows="4" style="width: 200px;" required="true"/>
+				</s:decorate>
+
+				<div style="clear: both;">
+					<span class="required">*</span> required fields
+				</div>
+
+				<div class="actionButtons">
+					<h:commandButton id="addTip" action="#{tipAction.add(tip)}" value="Submit Tip"/>
+				</div>
+				
+			</rich:simpleTogglePanel>
+		</h:form>
+
+	</ui:define> 
+</ui:composition>
