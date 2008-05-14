@@ -60,6 +60,17 @@
             </s:decorate>
 
 
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" 
+                           size="25"
+                      maxlength="25"
+                          value="#{holeHome.instance.name}">
+                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
             <s:decorate id="numberDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">number</ui:define>
                 <h:inputText id="number"

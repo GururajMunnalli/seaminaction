@@ -9,7 +9,7 @@ import java.util.Arrays;
 @Name("holeList")
 public class HoleList extends EntityQuery {
 
-	private static final String[] RESTRICTIONS = {};
+	private static final String[] RESTRICTIONS = {"lower(hole.name) like concat(lower(#{holeList.hole.name}),'%')",};
 
 	private Hole hole = new Hole();
 

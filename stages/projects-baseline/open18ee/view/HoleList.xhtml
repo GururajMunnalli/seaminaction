@@ -18,6 +18,11 @@
     
         <rich:simpleTogglePanel label="Hole search parameters" switchType="ajax">
         
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" value="#{holeList.hole.name}"/>
+            </s:decorate>
+
         
         </rich:simpleTogglePanel>
         
@@ -91,6 +96,15 @@
                 </s:link>
             </f:facet>
             #{hole.mensPar}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="name #{holeList.order=='name asc' ? messages.down : ( holeList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='name asc' ? 'name desc' : 'name asc'}"/>
+                </s:link>
+            </f:facet>
+            #{hole.name}
         </h:column>
         <h:column>
             <f:facet name="header">

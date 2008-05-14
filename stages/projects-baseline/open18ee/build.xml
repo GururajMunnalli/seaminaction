@@ -121,13 +121,7 @@
                 </copy>         
                 <copy todir="${war.dir}/WEB-INF/lib">
                         <fileset dir="${lib.dir}">
-                                <include name="richfaces-impl*.jar" />
-                        		<include name="richfaces-ui*.jar" />
-                                <include name="oscache*.jar" />
-                                <include name="commons-digester.jar" />
-                                <include name="commons-beanutils.jar" />
-                                <include name="jsf-facelets.jar" />
-                                <include name="jboss-seam-*.jar" />
+                                <includesfile name="deployed-jars-war.list" />
                                 <exclude name="jboss-seam-gen.jar" />
                         </fileset>
                 </copy>
@@ -148,15 +142,10 @@
                 		<fileset dir="${lib.dir}">
                 				<include name="jboss-seam.jar" />
                 		</fileset>
-                        <fileset dir="${basedir}">
-                                <include name="lib/jbpm*.jar" />
-                                <include name="lib/jboss-el.jar" />
-                                <include name="lib/drools-*.jar"/>
-                                <include name="lib/core.jar"/>
-                                <include name="lib/janino*.jar"/>
-                                <include name="lib/antlr-*.jar"/>
-                                <include name="lib/mvel*.jar"/>
-                        		<include name="lib/richfaces-api*.jar" />
+                 </copy>
+                 <copy todir="${ear.dir}/lib">
+                        <fileset dir="${lib.dir}">
+                                <includesfile name="deployed-jars-ear.list" />
                         </fileset>
                 </copy>
                 <copy todir="${ear.dir}/META-INF">
