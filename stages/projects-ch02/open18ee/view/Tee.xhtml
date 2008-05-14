@@ -54,7 +54,7 @@
     <rich:tab label="hole">
     <div class="association" id="holeParent">
         
-        <h:outputText value="No hole" 
+        <h:outputText value="There is no hole associated with this tee." 
                    rendered="#{teeHome.instance.hole == null}"/>
         
         <rich:dataTable var="hole" 
@@ -87,6 +87,10 @@
                 #{hole.mensPar}
             </h:column>
             <h:column>
+                <f:facet name="header">name</f:facet>
+                #{hole.name}
+            </h:column>
+            <h:column>
                 <f:facet name="header">number</f:facet>
                 #{hole.number}
             </h:column>
@@ -107,7 +111,7 @@
     <rich:tab label="teeSet">
     <div class="association" id="teeSetParent">
         
-        <h:outputText value="No teeSet" 
+        <h:outputText value="There is no teeSet associated with this tee." 
                    rendered="#{teeHome.instance.teeSet == null}"/>
         
         <rich:dataTable var="teeSet" 
