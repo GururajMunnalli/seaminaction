@@ -1,6 +1,10 @@
-Developments made to the application source code in chapter 2.
-Please note that the enhancements described here go slightly beyond what is
+Seam in Action: Chapter 02
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
+
+Seam version used: 2.0.2.GA
 
 open18-db:
 
@@ -12,16 +16,17 @@ java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db
 open18:
 
   - a WAR seam-gen project for the Open 18 application
+  - note that seam-gen.properties in root of project contains the responses used during setup
   - reverse engineered initial schema to create standard seam-gen CRUD application (fields are sorted alphabetically)
-  - had to patch resources/WEB-INF/components.xml to use correct security events (notLoggedIn/loginSuccessful)
-  - put seam-gen.properties in root of project containing responses used during setup
+    - final reverse engineering configuration can be found here: etc/reveng/open18-seam-gen.reveng.xml
   - customized various entity property names and added supplemental methods using seam-gen.reveng.xml
   - set the default sort order to the name property for both Course and Facility listings
   - add color to the tee sets whereever they are displayed
   - sort the tee sets and holes displayed on the course page (CourseHome)
   - modified the style of messages to make them more attractive (JBSEAM-2033)
-  - modified the build to accomodate GlassFish (change exploded archive folder name, disabled java:/ prefix on DataSource) (JBSEAM-1619)
-  - build.xml had to be modified to support detection of Groovy files using Ant 1.7 (JBSEAM-2319)
+  - added RichFaces style customizations (style.xcss) and special overrides for the emeraldTown skin
+  - added favicon and the corresponding <link> in layout/template.xhtml
+  - prepared project so that it can be deployed to GlassFish
 
 open18ee:
 
