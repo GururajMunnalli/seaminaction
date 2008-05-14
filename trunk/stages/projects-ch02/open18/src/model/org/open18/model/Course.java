@@ -1,5 +1,4 @@
 package org.open18.model;
-// Generated Dec 7, 2007 7:31:33 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,8 +39,11 @@ public class Course implements java.io.Serializable {
 	public Course() {
 	}
 
-	public Course(Facility facility, int numHoles) {
+	public Course(Facility facility, String fairways, String greens,
+			int numHoles) {
 		this.facility = facility;
+		this.fairways = fairways;
+		this.greens = greens;
 		this.numHoles = numHoles;
 	}
 	public Course(Facility facility, String name, String description,
@@ -111,7 +113,8 @@ public class Course implements java.io.Serializable {
 		this.designer = designer;
 	}
 
-	@Column(name = "FAIRWAYS", length = 15)
+	@Column(name = "FAIRWAYS", nullable = false, length = 15)
+	@NotNull
 	@Length(max = 15)
 	public String getFairways() {
 		return this.fairways;
@@ -121,7 +124,8 @@ public class Course implements java.io.Serializable {
 		this.fairways = fairways;
 	}
 
-	@Column(name = "GREENS", length = 15)
+	@Column(name = "GREENS", nullable = false, length = 15)
+	@NotNull
 	@Length(max = 15)
 	public String getGreens() {
 		return this.greens;

@@ -26,7 +26,7 @@
                        required="true"
                        disabled="#{teeHome.managed}"
                           value="#{teeHome.instance.id.holeId}">
-                    <a:support event="onblur" reRender="holeIdDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="holeIdDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -36,7 +36,7 @@
                        required="true"
                        disabled="#{teeHome.managed}"
                           value="#{teeHome.instance.id.teeSetId}">
-                    <a:support event="onblur" reRender="teeSetIdDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="teeSetIdDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -46,7 +46,7 @@
                 <h:inputText id="distance"
                        required="true"
                           value="#{teeHome.instance.distance}">
-                    <a:support event="onblur" reRender="distanceDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="distanceDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -75,6 +75,7 @@
             <h:commandButton id="delete" 
                           value="Delete" 
                          action="#{teeHome.remove}"
+                      immediate="true"
                        rendered="#{teeHome.managed}"/>
                     
             <s:button id="done" 
@@ -97,7 +98,7 @@
     <rich:tab label="hole *" labelClass="required">
     <div class="association" id="holeParent">
     
-        <h:outputText value="No hole" 
+        <h:outputText value="There is no hole associated with this tee." 
                    rendered="#{teeHome.instance.hole == null}"/>
         
         <rich:dataTable var="hole" 
@@ -130,6 +131,10 @@
                 #{hole.mensPar}
             </h:column>
             <h:column>
+                <f:facet name="header">name</f:facet>
+                #{hole.name}
+            </h:column>
+            <h:column>
                 <f:facet name="header">number</f:facet>
                 #{hole.number}
             </h:column>
@@ -158,7 +163,7 @@
     <rich:tab label="teeSet *" labelClass="required">
     <div class="association" id="teeSetParent">
     
-        <h:outputText value="No teeSet" 
+        <h:outputText value="There is no teeSet associated with this tee." 
                    rendered="#{teeHome.instance.teeSet == null}"/>
         
         <rich:dataTable var="teeSet" 
