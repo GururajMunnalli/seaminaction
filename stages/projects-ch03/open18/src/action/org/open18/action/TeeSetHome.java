@@ -28,6 +28,7 @@ public class TeeSetHome extends EntityHome<TeeSet> {
 	}
 
 	public void wire() {
+		getInstance();
 		Course course = courseHome.getDefinedInstance();
 		if (course != null) {
 			getInstance().setCourse(course);

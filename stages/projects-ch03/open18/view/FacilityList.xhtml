@@ -86,7 +86,7 @@
         <f:facet name="header">Facility search results</f:facet>
     <div class="results" id="facilityList">
 
-    <h:outputText value="No facility exists" 
+    <h:outputText value="The facility search returned no results." 
                rendered="#{empty facilityList.resultList}"/>
                
     <rich:dataTable id="facilityList" 
@@ -164,6 +164,15 @@
                 </s:link>
             </f:facet>
             #{facility.phone}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+                             value="priceRange #{facilityList.order=='priceRange asc' ? messages.down : ( facilityList.order=='priceRange desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='priceRange asc' ? 'priceRange desc' : 'priceRange asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.priceRange}
         </h:column>
         <h:column>
             <f:facet name="header">
