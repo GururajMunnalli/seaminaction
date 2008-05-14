@@ -20,7 +20,8 @@
      
    <core:manager concurrent-request-timeout="500" 
                  conversation-timeout="120000" 
-                 conversation-id-parameter="cid"/>
+                 conversation-id-parameter="cid"
+                 parent-conversation-id-parameter="pid"/>
     
    <persistence:managed-persistence-context name="entityManager"
                                      auto-create="true"
@@ -41,9 +42,7 @@
        <drools:rule-files><value>/security.drl</value></drools:rule-files>
    </drools:rule-base>
 
-   <security:identity authenticate-method="#{authenticator.authenticate}"
-                           security-rules="#{securityRules}"
-                              remember-me="true"/>
+   <security:identity security-rules="#{securityRules}" authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
    
    <!-- bug in Pages.java that forces us to have to use the deprecated events -->
    <event type="org.jboss.seam.notLoggedIn">
