@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Hibernate Console launch configuration -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType">
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="open18"/>
-<stringAttribute key="org.hibernate.eclipse.launch.PROPERTY_FILE" value="/open18/hibernate-console.properties"/>
 <stringAttribute key="org.hibernate.eclipse.launch.CONFIGURATION_FACTORY" value="JPA"/>
+<listAttribute key="org.hibernate.eclipse.launch.FILE_MAPPINGS"/>
+<stringAttribute key="org.hibernate.eclipse.launch.PERSISTENCE_UNIT_NAME" value="open18"/>
+<stringAttribute key="org.hibernate.eclipse.launch.PROPERTY_FILE" value="/open18/hibernate-console.properties"/>
 </launchConfiguration>

@@ -30,6 +30,7 @@ public class CourseHome extends EntityHome<Course> {
 	}
 
 	public void wire() {
+		getInstance();
 		Facility facility = facilityHome.getDefinedInstance();
 		if (facility != null) {
 			getInstance().setFacility(facility);
