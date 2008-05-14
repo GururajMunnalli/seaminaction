@@ -15,12 +15,30 @@
    <param name="facilityId" value="#{facilityHome.facilityId}"/>
 
 
-
+   <!--
    <navigation from-action="#{courseHome.persist}">
        <end-conversation/>
        <redirect view-id="/Course.xhtml"/>
    </navigation>
+   -->
    
+   <navigation from-action="#{courseHome.persist}">
+       <rule if-outcome="persisted"
+          if="#{courseFrom ne null}">
+          <end-conversation/>
+          <redirect view-id="/#{courseFrom}.xhtml">
+              <message severity="INFO">
+                  The data entry for #{courseFrom} is complete.
+              </message>
+          </redirect>
+       </rule>
+       <rule if-outcome="persisted"
+          if="#{courseFrom eq null}">
+          <end-conversation/>
+          <redirect view-id="/Course.xhtml"/>
+       </rule>
+   </navigation>
+
    <navigation from-action="#{courseHome.update}">
        <end-conversation/>
        <redirect view-id="/Course.xhtml"/>

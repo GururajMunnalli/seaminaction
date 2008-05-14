@@ -139,6 +139,13 @@
                     <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true"/>
                 </h:inputText>
             </s:decorate>
+
+
+            <s:decorate id="addCourseDecoration" template="layout/edit.xhtml" rendered="#{!facilityHome.managed}">
+                <ui:define name="label">add course next?</ui:define>
+                <h:selectBooleanCheckbox id="continueDataEntry"
+                                value="#{facilityHome.addCourse}" />
+            </s:decorate>
         
             <div style="clear:both">
                 <span class="required">*</span> 
