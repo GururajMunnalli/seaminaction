@@ -6,6 +6,11 @@ covered in the book.
 
 Seam version used: 2.0.2.GA
 
+NOTE: I intentially did not use <s:decorate> in this example to make the
+component markup easier for beginners to follow. I cover <s:decorate> in
+chapter 3 and include use it in the development of the registration form.
+Feel free to use <s:decorate> liberally in your own application.
+
 golftips:
 
   - Get started by running:
@@ -32,4 +37,5 @@ golftips:
 	- add a tip
 	- ensure there is one tip
 	- ensure that the user was notified of success
-  - Applied by standard RichFaces style fixes to seam-gen
+  - create golftips.xhtml to list existing tips and accept a new tip via a form
+  - Applied by standard RichFaces style fixes to seam-gen and some styles needed for golftips.xhtml
