@@ -1,0 +1,87 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h1>Share your golf wisdom!</h1>
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+  
+		<h:form id="golfTips">
+			<rich:panel>
+				<f:facet name="header">Golf tips</f:facet>
+				<rich:dataGrid var="_tip" value="#{tips}" columns="1" elements="5">
+		    		<rich:panel>
+						<f:facet name="header">#{_tip.author} on #{_tip.category}</f:facet>
+						<h:panelGrid class="item" cellspacing="0" cellpadding="0" columns="2" columnClasses=",action">
+							<h:outputText value="#{_tip.content}"/>
+							<h:commandLink action="#{tipAction.delete}"><h:graphicImage value="img/delete.png" style="border: 0;"/></h:commandLink>
+						</h:panelGrid>
+		    		</rich:panel>
+		    	<f:facet name="footer"><rich:datascroller renderIfSinglePage="false"/></f:facet>
+				</rich:dataGrid>
+			</rich:panel>
+		</h:form>
+
+		<h:form id="golfTip">
+			<rich:simpleTogglePanel switchType="client" opened="false">
+				<f:facet name="header">Do you have golf wisdom to share?</f:facet>
+
+				<div class="prop">
+					<h:outputLabel styleClass="name" for="author">Author <span class="required">*</span></h:outputLabel>
+					<span class="value">
+						<h:inputText id="author" value="#{tip.author}" required="true" style="width: 150px;"/>
+					</span>
+					<span class="error">
+						<h:graphicImage value="/img/error.gif" rendered="#{not empty facesMessages.getCurrentMessagesForControl('author')}" styleClass="errors"/>
+						<h:message for="author" styleClass="errors"/>
+					</span>
+				</div>
+
+				<div class="prop">
+					<h:outputLabel styleClass="name" for="category">Category <span class="required">*</span></h:outputLabel>
+					<span class="value">
+						<h:selectOneMenu id="category" value="#{tip.category}" required="true" style="width: 153px;">
+							<f:selectItem itemValue="" itemLabel="-- Select --"/>
+							<f:selectItem itemValue="The Swing"/>
+							<f:selectItem itemValue="Putting"/>
+							<f:selectItem itemValue="Attitude"/>
+						</h:selectOneMenu>
+					</span>
+					<span class="error">
+						<h:graphicImage value="/img/error.gif" rendered="#{not empty facesMessages.getCurrentMessagesForControl('category')}" styleClass="errors"/>
+						<h:message for="category" styleClass="errors"/>
+					</span>
+				</div>
+
+				<div class="prop">
+					<h:outputLabel styleClass="name" for="content">Content <span class="required">*</span></h:outputLabel>
+					<span class="value">
+						<h:inputTextarea id="content" value="#{tip.content}" cols="20" rows="4" style="width: 200px;" required="true"/>
+					</span>
+					<span class="error">
+						<h:graphicImage value="/img/error.gif" rendered="#{not empty facesMessages.getCurrentMessagesForControl('content')}" styleClass="errors"/>
+						<h:message for="content" styleClass="errors"/>
+					</span>
+				</div>
+
+				<div style="clear: both;">
+					<span class="required">*</span> required fields
+				</div>
+
+				<div class="actionButtons">
+					<h:commandButton action="#{tipAction.add(tip)}" value="Submit Tip"/>
+				</div>
+				
+			</rich:simpleTogglePanel>
+		</h:form>
+
+	</ui:define> 
+</ui:composition>
