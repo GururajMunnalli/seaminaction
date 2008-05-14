@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd">
+<suite name="Golf tips test suite" verbose="2" parallel="false">
+	<test name="Golf tips test">
+	  <classes>
+		 <class name="org.open18.golftips.test.GolfTipsTest"/>
+	  </classes>
+	</test>
+</suite>

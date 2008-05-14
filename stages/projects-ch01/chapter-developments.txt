@@ -1,0 +1,35 @@
+Seam in Action: Chapter 01
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+Seam version used: 2.0.2.GA
+
+golftips:
+
+  - Get started by running:
+
+  ./seam new-form
+
+  using the following responses:
+
+  * Seam component name: tipAction
+  * Bean class name: TipAction
+  * Action method name: add
+  * Page name: golftips
+
+  - Create entity class named GolfTip, make it a Seam component named "tip"
+  - Populate import-dev.sql to seed the database with 3 sample records
+  - In the TipAction component:
+    - wire in the EntityManager
+	- create factory for "tips" that retrieve all tips
+	- tips should be exported using @DataModel into the page scope
+	- implement add(GolfTip) method that validates and persists the tip and notifies user of success
+	- implement delete() to delete tip in activated row
+  - In the GolfTipsTest test class:
+    - ensure there are no tips to begin
+	- add a tip
+	- ensure there is one tip
+	- ensure that the user was notified of success
+  - Applied by standard RichFaces style fixes to seam-gen
