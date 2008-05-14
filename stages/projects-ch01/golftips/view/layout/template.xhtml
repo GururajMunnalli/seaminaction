@@ -9,10 +9,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>golftips</title>
-    <ui:remove><!-- a:loadStyle doesn't work when urlrewriting is used -->
-    <link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" />
-    </ui:remove>
+	<!-- NOTE: <a:loadStyle> doesn't work correctly when urlrewriting is used -->
     <a:loadStyle src="/stylesheet/theme.css"/>
+
+	<!-- an alternative approach to <a:loadStyle> is to specify the context path manually -->
+    <!-- <link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" /> -->
+
     <a:loadStyle src="resource:///org/jboss/seam/ui/richfaces/styles.xcss"/>
 </head>
 

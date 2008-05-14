@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -6,11 +6,15 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a="http://richfaces.org/a4j"
       xmlns:s="http://jboss.com/products/seam/taglib">
-<head>    
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>open18ee</title>
+    <title>open18</title>
     <link rel="shortcut icon" href="favicon.ico"/> 
+	<!-- the relative stylesheet has problems if the main page is not in the root folder -->
     <ui:remove><link href="stylesheet/theme.css" rel="stylesheet" type="text/css" /></ui:remove>
+	<!-- an alternative approach to <a:loadStyle> is to specify the context path manually -->
+    <ui:remove><link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" /></ui:remove>
+	<!-- <a:loadStyle> doesn't work correctly when urlrewriting is used -->
     <a:loadStyle src="/stylesheet/theme.css"/>
     <a:loadStyle src="resource:///org/jboss/seam/ui/richfaces/styles.xcss"/>
 </head>
@@ -18,7 +22,7 @@
 <body>
 
     <ui:include src="menu.xhtml">
-        <ui:param name="projectName" value="open18ee"/>
+        <ui:param name="projectName" value="open18"/>
     </ui:include>
 
 	<div class="body">
