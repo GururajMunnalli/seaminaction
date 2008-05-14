@@ -26,6 +26,7 @@ public class FacilityHome extends EntityHome<Facility> {
 	}
 
 	public void wire() {
+		getInstance();
 	}
 
 	public boolean isWired() {
