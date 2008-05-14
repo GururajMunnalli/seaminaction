@@ -31,6 +31,7 @@ public class TeeHome extends EntityHome<Tee> {
 			return false;
 		if (getTeeId().getTeeSetId() == 0)
 			return false;
+
 		return true;
 	}
 
@@ -42,6 +43,7 @@ public class TeeHome extends EntityHome<Tee> {
 	}
 
 	public void wire() {
+		getInstance();
 		Hole hole = holeHome.getDefinedInstance();
 		if (hole != null) {
 			getInstance().setHole(hole);
