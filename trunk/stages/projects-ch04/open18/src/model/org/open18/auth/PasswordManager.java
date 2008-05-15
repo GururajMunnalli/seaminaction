@@ -5,8 +5,8 @@ import org.jboss.seam.annotations.Name;
 
 @Name("passwordManager")
 public class PasswordManager {
-	private String digestAlgorithm;
-	private String charset;
+	private String digestAlgorithm = "SHA-1";
+	private String charset = "UTF-8";
 
 	public String getDigestAlgorithm() {
 		return this.digestAlgorithm;
