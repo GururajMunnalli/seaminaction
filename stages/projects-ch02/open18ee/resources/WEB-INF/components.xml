@@ -39,16 +39,17 @@
 
 
    <drools:rule-base name="securityRules">
-       <drools:rule-files><value>/security.drl</value></drools:rule-files>
+       <drools:rule-files>
+           <value>/security.drl</value>
+       </drools:rule-files>
    </drools:rule-base>
 
    <security:identity security-rules="#{securityRules}" authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
    
-   <!-- bug in Pages.java that forces us to have to use the deprecated events -->
-   <event type="org.jboss.seam.notLoggedIn">
+   <event type="org.jboss.seam.security.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>
    </event>
-   <event type="org.jboss.seam.loginSuccessful">
+   <event type="org.jboss.seam.security.loginSuccessful">
        <action execute="#{redirect.returnToCapturedView}"/>
    </event>
    
