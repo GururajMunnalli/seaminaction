@@ -18,8 +18,8 @@ import org.jboss.seam.annotations.faces.Validator;
  * </p>
  * <pre>
  * &lt;validator>
- *   &lt;validator-id>org.open18.StateValidator&lt;/validator>
- *   &lt;validator-class>org.open18.validator.StateValidator&lt;/validator>
+ *   &lt;validator-id>org.open18.StateValidator&lt;/validator-id>
+ *   &lt;validator-class>org.open18.validator.StateValidator&lt;/validator-class>
  * &lt;/validator></pre>
  * <p>
  * However, if you choose to use the faces-config.xml descriptor, this class

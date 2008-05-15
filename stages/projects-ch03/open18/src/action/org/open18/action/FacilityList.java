@@ -5,10 +5,16 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityQuery;
 import java.util.List;
 import java.util.Arrays;
+import org.jboss.seam.annotations.Logger;
+import org.jboss.seam.contexts.FacesLifecycle;
+import org.jboss.seam.log.Log;
 
 @Name("facilityList")
 public class FacilityList extends EntityQuery {
 
+	@Logger
+	private Log log;
+	
 	private static final String[] RESTRICTIONS = {
 			"lower(facility.address) like concat(lower(#{facilityList.facility.address}),'%')",
 			"lower(facility.city) like concat(lower(#{facilityList.facility.city}),'%')",
@@ -49,6 +55,13 @@ public class FacilityList extends EntityQuery {
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
+	}
+	
+	public void preloadFacilities() {
+		log.debug("begin preloading facilities (current phase: " + FacesLifecycle.getPhaseId() + ")");
+		getResultList();
+		getResultCount();
+		log.debug("finished preloading facilities");
 	}
 
 }

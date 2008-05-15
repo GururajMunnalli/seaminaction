@@ -8,6 +8,7 @@
    <begin-conversation join="true"/>
    
    <action execute="#{courseHome.wire}"/>
+   <!-- see /WEB-INF/pages.xml for page actions matching /Course* -->
    
    <param name="courseFrom"/>
    <param name="courseId" value="#{courseHome.courseId}"/>
@@ -15,16 +16,10 @@
    <param name="facilityId" value="#{facilityHome.facilityId}"/>
 
 
-   <!--
    <navigation from-action="#{courseHome.persist}">
-       <end-conversation/>
-       <redirect view-id="/Course.xhtml"/>
-   </navigation>
-   -->
-   
-   <navigation from-action="#{courseHome.persist}">
-       <rule if-outcome="persisted"
-          if="#{courseFrom ne null}">
+       <rule if-outcome="persisted" if="#{courseFrom != null}">
+		  <!-- seam-gen uses a conversation to manage the edit process -->
+		  <!-- you learn about conversations in chapter 7 -->
           <end-conversation/>
           <redirect view-id="/#{courseFrom}.xhtml">
               <message severity="INFO">
@@ -32,8 +27,9 @@
               </message>
           </redirect>
        </rule>
-       <rule if-outcome="persisted"
-          if="#{courseFrom eq null}">
+       <rule if-outcome="persisted" if="#{courseFrom == null}">
+		  <!-- seam-gen uses a conversation to manage the edit process -->
+		  <!-- you learn about conversations in chapter 7 --> 
           <end-conversation/>
           <redirect view-id="/Course.xhtml"/>
        </rule>
