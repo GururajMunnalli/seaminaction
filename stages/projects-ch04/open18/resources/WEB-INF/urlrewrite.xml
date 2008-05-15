@@ -32,4 +32,27 @@
 		<to>/home.seam</to>
 	</rule>
 
+	<!-- note that these friendly URLs are knowingly discarding the cid parameter -->
+	<!-- assuming that the parameters are placed into the url in insertion order -->
+	
+	<outbound-rule>
+		<from>^(/.+)?/Facility.seam\?facilityId=(\d+)(&amp;cid=\d+)?$</from>
+		<to>$1/facility/view/$2</to>
+    </outbound-rule>
+	
+	<outbound-rule>
+		<from>^(/.+)?/FacilityEdit.seam\?facilityId=(\d+)(&amp;cid=\d+)?$</from>
+		<to>$1/facility/edit/$2</to>
+    </outbound-rule>
+	
+	<outbound-rule>
+		<from>^(/.+)?/Course.seam\?courseId=(\d+)(&amp;cid=\d+)?$</from>
+		<to>$1/course/view/$2</to>
+    </outbound-rule>
+	
+	<outbound-rule>
+		<from>^(/.+)?/CourseEdit.seam\?courseId=(\d+)(&amp;facilityId=\d+)?(&amp;cid=\d+)?$</from>
+		<to>$1/course/edit/$2</to>
+    </outbound-rule>
+
 </urlrewrite>
