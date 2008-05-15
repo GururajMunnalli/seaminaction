@@ -8,7 +8,7 @@
     
     <context-param>
         <param-name>org.richfaces.SKIN</param-name>
-        <param-value>blueSky</param-value>
+        <param-value>emeraldTown</param-value>
     </context-param>
  
    <!-- Seam -->
@@ -16,16 +16,6 @@
    <listener>
       <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
    </listener>
-
-    <filter>
-        <filter-name>UrlRewriteFilter</filter-name>
-        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-       <filter-name>UrlRewriteFilter</filter-name>
-       <url-pattern>/*</url-pattern>
-    </filter-mapping>
     
     <filter>
         <filter-name>Seam Filter</filter-name>
@@ -35,6 +25,16 @@
     <filter-mapping>
         <filter-name>Seam Filter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+       <filter-name>UrlRewriteFilter</filter-name>
+       <url-pattern>/*</url-pattern>
     </filter-mapping>
         
    <servlet>

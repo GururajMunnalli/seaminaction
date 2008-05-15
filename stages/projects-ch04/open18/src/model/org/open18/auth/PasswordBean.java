@@ -2,14 +2,16 @@ package org.open18.auth;
 
 import org.jboss.seam.annotations.Name;
 
-//@Name("passwordBean")
+@Name("passwordBean")
 public class PasswordBean {
+
 	private String password;
 	private String confirm;
 
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -17,6 +19,7 @@ public class PasswordBean {
 	public String getConfirm() {
 		return confirm;
 	}
+
 	public void setConfirm(String confirm) {
 		this.confirm = confirm;
 	}
