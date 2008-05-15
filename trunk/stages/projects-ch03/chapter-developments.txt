@@ -8,7 +8,11 @@ Seam version used: 2.0.2.GA
 
 open18:
 
-  - add UrlRewriteFilter to build; it is used to parse friendly urls for course and facility; it also eliminated the need for index.html
+  - add UrlRewriteFilter to web.xml, urlrewritefilter.jar to deployed-jars.list, and urlrewrite.xml to WEB-INF;
+    - interprets friendly urls for course and facility
+	- generates friendly urls for course and facility
+	- eliminates the need for index.html
   - course and facility pages are protected against bogus entity IDs using page actions
   - two example page parameter validators are installed, one for state and one for facility type
-  - the reference to the stylesheet in the master template has been fixed to be fully qualified using <a4j:loadStyle src="/stylesheet/theme.css"/>
+  - one example page parameter converter is installed, to strip erronous characters from phone number
+  - the reference to the stylesheet in the master template has been fixed to be fully qualified using <a:loadStyle src="/stylesheet/theme.css"/>
