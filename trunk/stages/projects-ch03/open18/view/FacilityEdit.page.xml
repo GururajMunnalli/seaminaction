@@ -24,15 +24,8 @@
       </rule>
    </navigation>
 
-   <!--
-   <navigation from-action="#{facilityHome.persist}">
-       <end-conversation/>
-       <redirect view-id="/Facility.xhtml"/>
-   </navigation>
-   -->
-
-   <navigation from-action="#{facilityHome.persist}">
-      <rule if-outcome="persisted" if="#{facilityHome.addCourse}">
+   <navigation from-action="#{facilityHome.persist}" evaluate="#{facilityHome.lastStateChange}">
+      <rule if-outcome="persisted" if="#{facilityHome.enterCourse}">
          <redirect view-id="/CourseEdit.xhtml">
             <param name="courseFrom" value="Facility"/>
             <message severity="INFO">   
@@ -40,9 +33,10 @@
             </message>
          </redirect>
       </rule>
-      <rule if-outcome="persisted"
-         if="#{!facilityHome.addCourse}">
-         <end-conversation/>
+      <rule if-outcome="persisted" if="#{!facilityHome.enterCourse}">
+		 <!-- seam-gen uses a conversation to manage the edit process -->
+		 <!-- you learn about conversations in chapter 7 -->
+         <end-conversation/> 
          <redirect view-id="/Facility.xhtml"/>
       </rule>
    </navigation>

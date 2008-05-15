@@ -1,7 +1,5 @@
 package org.open18.validator;
 
-import org.open18.lookup.StateLookup;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -19,8 +17,8 @@ import org.open18.lookup.FacilityTypeLookup;
  * </p>
  * <pre>
  * &lt;validator>
- *   &lt;validator-id>org.open18.FacilityTypeValidator&lt;/validator>
- *   &lt;validator-class>org.open18.validator.FacilityTypeValidator&lt;/validator>
+ *   &lt;validator-id>org.open18.FacilityTypeValidator&lt;/validator-id>
+ *   &lt;validator-class>org.open18.validator.FacilityTypeValidator&lt;/validator-class>
  * &lt;/validator></pre>
  * <p>
  * However, if you choose to use the faces-config.xml descriptor, this class
