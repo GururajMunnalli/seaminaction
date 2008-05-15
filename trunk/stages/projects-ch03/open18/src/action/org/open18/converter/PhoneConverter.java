@@ -1,4 +1,4 @@
-package org.open18.action.converter;
+package org.open18.converter;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
