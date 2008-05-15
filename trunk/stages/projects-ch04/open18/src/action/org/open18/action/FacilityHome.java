@@ -3,13 +3,28 @@ package org.open18.action;
 import org.open18.model.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.context.FacesContext;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.framework.EntityNotFoundException;
 
 @Name("facilityHome")
 public class FacilityHome extends EntityHome<Facility> {
+
+	private boolean enterCourse = true;
+	
+	private String lastStateChange;
+	
+	public String getLastStateChange() {
+		return this.lastStateChange;
+	}
+	
+	public void setEnterCourse(boolean enterCourse) {
+		this.enterCourse = enterCourse;
+	}	
+	
+	public boolean isEnterCourse() {
+		return enterCourse;
+	}
 
 	public void setFacilityId(Long id) {
 		setId(id);
@@ -52,23 +67,22 @@ public class FacilityHome extends EntityHome<Facility> {
 		return this.isManaged() ? "valid" : "invalid";
 	}
 	
-	public String parseRestfulUrl() {
-		String viewId =
-			FacesContext.getCurrentInstance().getViewRoot().getViewId();
-		try {
-			String[] segments = viewId.split("/");
-			assert segments.length >= 2;
-			String action = segments[segments.length - 2];
-			String resourceId = segments[segments.length - 1];
-			if (resourceId.contains(".")) {
-				resourceId = resourceId.substring(0, resourceId.lastIndexOf('.'));
-			}
-			Long facilityId = Long.parseLong(resourceId);
-			setFacilityId(facilityId);
-			return validateEntityFound().equals("valid") ? action : "invalid";
-		} catch (Exception e) {
-			return "invalid";
+	@Override
+	public String persist() {
+		lastStateChange = super.persist();
+		return lastStateChange;
+	}
+
+	@Override
+	public String remove() {
+		lastStateChange = super.remove();
+		return lastStateChange;
 		}
+
+	@Override
+	public String update() {
+		lastStateChange = super.update();
+		return lastStateChange;
 	}
 
 }
