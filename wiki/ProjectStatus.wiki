@@ -29,6 +29,6 @@ I encourage you to file bug reports using the [http://code.google.com/p/seaminac
 
 == Log ==
 
-May 13, 2008 - The source code commits have been on hold while frantically getting the manuscript polished. I just committed the source code that accompanies chapter 01. More commits to come.
-Jan 29, 2008 - A major commit of the prototype. The prototype contains just about all of the source code from the book and then some. However, several patches must be made to Seam in order to get it working correctly.
-Jan 07, 2008 - Working on getting basic information up on project site; uploaded source code sent to final reviewers
+* May 13, 2008 - The source code commits have been on hold while frantically getting the manuscript polished. I just committed the source code that accompanies chapter 01. More commits to come.
+* Jan 29, 2008 - A major commit of the prototype. The prototype contains just about all of the source code from the book and then some. However, several patches must be made to Seam in order to get it working correctly.
+* Jan 07, 2008 - Working on getting basic information up on project site; uploaded source code sent to final reviewers
