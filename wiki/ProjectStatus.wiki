@@ -9,10 +9,10 @@ The purpose of this page is to give you an idea of what is going on in SVN witho
 
 ||*Chapter*||*SVN Status*||
 ||01||available||
-||02||available; book also provides enough information to create on your own||
+||02||available; the book provides information necessary to create from scratch||
 ||03||available||
-||04||partially available||
-||05||not yet available||
+||04||available||
+||05||available||
 ||06||partially available||
 ||07 - 15||not yet available||
 ||prototype||mostly complete, should be able to match up most examples from book||
