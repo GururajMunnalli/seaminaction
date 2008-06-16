@@ -5,6 +5,8 @@ Due to the quota of 550 pages for Seam in Action, there is some auxiliary inform
 
 = Seam =
 
+== Terms ==
+
 *component* - a reusable object that can be called upon by client code to perform work as defined by its interface (even if only implied); it is characterized by its service interface, the configurable properties it exposes, its transactional boundaries, and the events it can fire and/or process; it can be assembled with other components by an infrastructural container to form a complete working system
 
 *interceptor* - a class that can be used to intercept runtime events that occur in a program to "advise" the code by weaving in cross-cutting concerns; the main event to which an interceptor is applied is a method invocation.
@@ -32,7 +34,13 @@ also: Unit of work ( http://www.martinfowler.com/eaaCatalog/unitOfWork.html ) - 
 
 *EAR* (Enterprise Archive file : .ear extension) are intended to contain complete Enterprise applications. In this context, an enterprise application is defined as a collection of .jar files, resources, classes, and multiple Web applications.
 
+== Resources ==
+
+[http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/architecture.html Glossary for Hibernate EntityManager]
+
 = Golf =
+
+== Terms ==
 
 *golf facility* - the place of business and conglomerate of courses
 
