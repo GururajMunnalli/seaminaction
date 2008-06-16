@@ -1,4 +1,4 @@
-#summary A glossary of terms used in Seam in Action and which pertain to golf
+#summary A glossary of terms used in Seam in Action
 #labels Addendum
 
 Due to the quota of 550 pages for Seam in Action, there is some auxiliary information that I wanted to shared but I could not justify putting in the book. One of those addendum is this glossary. There are two sections, one of Seam terms and of golf terms. You should know from reading the book that there is an underlying theme of golf weaved through each chapter. I did this both for entertainment and for demonstration. However, for those people who haven't had a lot of exposure to golf, you may find this glossary useful. 
