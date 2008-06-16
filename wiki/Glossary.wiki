@@ -5,9 +5,7 @@
 
 Due to the quota of 550 pages for Seam in Action, there is some auxiliary information that I wanted to shared but I could not justify putting in the book. One of those addendum is this glossary. There are two sections, one of Seam terms and of golf terms. You should know from reading the book that there is an underlying theme of golf weaved through each chapter. I did this both for entertainment and for demonstration. However, for those people who haven't had a lot of exposure to golf, you may find this glossary useful. 
 
-= Seam =
-
-== Terms ==
+= Seam-related Terms =
 
 *component* - a reusable object that can be called upon by client code to perform work as defined by its interface (even if only implied); it is characterized by its service interface, the configurable properties it exposes, its transactional boundaries, and the events it can fire and/or process; it can be assembled with other components by an infrastructural container to form a complete working system
 
@@ -36,13 +34,11 @@ also: Unit of work ( http://www.martinfowler.com/eaaCatalog/unitOfWork.html ) - 
 
 *EAR* (Enterprise Archive file : .ear extension) are intended to contain complete Enterprise applications. In this context, an enterprise application is defined as a collection of .jar files, resources, classes, and multiple Web applications.
 
-== Resources ==
+== External Seam-related Glossaries ==
 
 [http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/architecture.html Glossary for Hibernate EntityManager]
 
-= Golf =
-
-== Terms ==
+= Golf-related Terms =
 
 *golf facility* - the place of business and conglomerate of courses
 
