@@ -9,6 +9,8 @@ Due to the quota of 550 pages for Seam in Action, there is some auxiliary inform
 
 *component* - a reusable object that can be called upon by client code to perform work as defined by its interface (even if only implied); it is characterized by its service interface, the configurable properties it exposes, its transactional boundaries, and the events it can fire and/or process; it can be assembled with other components by an infrastructural container to form a complete working system
 
+*host component* - the component on which the subject property or method resides. This term often comes up when discussing outjection and factory methods, which inherit the scope of the component in which they are defined if a scope is not specified. Could also be thought of as the current or owning component.
+
 *interceptor* - a class that can be used to intercept runtime events that occur in a program to "advise" the code by weaving in cross-cutting concerns; the main event to which an interceptor is applied is a method invocation.
 
 *meta-annotation* - an annotation that is applied to an annotation interface (ElementType.ANNOTATION_TYPE). Thus, the annotation is applied to a concrete type by way of the annotation on which it is defined.
