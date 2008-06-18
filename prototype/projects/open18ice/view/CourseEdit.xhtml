@@ -1,0 +1,386 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <ice:form id="courseeditForm" styleClass="edit">
+     <ice:panelGroup  id="editcourseGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="editTextBoxId" value="#{courseHome.managed ? 'Edit' : 'Add'} course"/>
+                  </td>
+              </tr>
+          </table>
+
+        <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+
+
+
+            <s:decorate id="descriptionDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">description</ui:define>
+                <h:inputTextarea id="description"
+                               cols="80"
+                               rows="3"
+                              value="#{courseHome.instance.description}"/>
+            </s:decorate>
+
+
+            <s:decorate id="designerDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">designer</ui:define>
+                        <ice:inputText id="designerId" 
+			    partialSubmit="true"
+                                   size="50"
+                              maxlength="50"
+                                  value="#{courseHome.instance.designer}">
+                        </ice:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="fairwaysDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">fairways</ui:define>
+                        <ice:inputText id="fairwaysId" 
+			    partialSubmit="true"
+                       required="true"
+                                   size="15"
+                              maxlength="15"
+                                  value="#{courseHome.instance.fairways}">
+                        </ice:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="greensDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">greens</ui:define>
+                        <ice:inputText id="greensId" 
+			    partialSubmit="true"
+                       required="true"
+                                   size="15"
+                              maxlength="15"
+                                  value="#{courseHome.instance.greens}">
+                        </ice:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">name</ui:define>
+                        <ice:inputText id="nameId" 
+			    partialSubmit="true"
+                                   size="50"
+                              maxlength="50"
+                                  value="#{courseHome.instance.name}">
+                        </ice:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="numHolesDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">numHoles</ui:define>
+                        <ice:inputText id="numHolesId"
+			    partialSubmit="true"
+                       required="true"
+                                    value="#{courseHome.instance.numHoles}">
+                        </ice:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="signatureHoleDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">signatureHole</ui:define>
+                        <ice:inputText id="signatureHoleId"
+			    partialSubmit="true"
+                                    value="#{courseHome.instance.signatureHole}">
+                        </ice:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="yearBuiltDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">yearBuilt</ui:define>
+                        <ice:inputText id="yearBuiltId"
+			    partialSubmit="true"
+                                    value="#{courseHome.instance.yearBuilt}">
+                        </ice:inputText>
+            </s:decorate>
+            <div style="clear:both">
+                <span class="required">*</span> 
+                required fields
+            </div>
+          </ice:panelGroup>
+       </ice:panelGroup>
+                  
+       <div class="actionButtons">
+        
+            <h:commandButton id="savecourseHome" 
+                          value="Save" 
+                         action="#{courseHome.persist}"
+                       disabled="#{!courseHome.wired}"
+                       rendered="#{!courseHome.managed}"/>  
+                          			  
+            <h:commandButton id="updatecourseHome" 
+                          value="Save" 
+                         action="#{courseHome.update}"
+                       rendered="#{courseHome.managed}"/>
+                        			  
+            <h:commandButton id="deletecourseHome" 
+                          value="Delete" 
+                         action="#{courseHome.remove}"
+                      immediate="true"
+                       rendered="#{courseHome.managed}"/>
+                    
+            <s:button id="donecourseHome" 
+                   value="Done"
+             propagation="end"
+                    view="/Course.xhtml"
+                rendered="#{courseHome.managed}"/>
+                
+            <s:button id="cancelcourseHome" 
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty courseFrom ? 'CourseList' : courseFrom}.xhtml"
+                rendered="#{!courseHome.managed}"/>
+                
+        </div>
+        
+    </ice:form>
+
+ <ice:form id="form2courseHome">  
+        <ice:panelTabSet id="editPanelTabcourseHomeId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+   
+ 	<ice:panelTab id="editTabfacilityId" label="facility *" >
+		<div class="association" id="facilityParent">
+    
+        	<h:outputText id="editfacilityTextId" value="There is no facility associated with this course." 
+                   rendered="#{courseHome.instance.facility == null}"/>
+       	<ice:dataTable var="facility" 
+                   value="#{courseHome.instance.facility}" 
+                rendered="#{courseHome.instance.facility != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+		  columnClasses="allCols"
+                      id="editfacilityTableId">
+            <ice:column id="$editColumnidId">
+                <f:facet name="header">id</f:facet>
+                #{facility.id}
+            </ice:column>
+            <ice:column id="$editColumnaddressId">
+                <f:facet name="header">address</f:facet>
+                #{facility.address}
+            </ice:column>
+            <ice:column id="$editColumncityId">
+                <f:facet name="header">city</f:facet>
+                #{facility.city}
+            </ice:column>
+            <ice:column id="$editColumncountryId">
+                <f:facet name="header">country</f:facet>
+                #{facility.country}
+            </ice:column>
+            <ice:column id="$editColumncountyId">
+                <f:facet name="header">county</f:facet>
+                #{facility.county}
+            </ice:column>
+            <ice:column id="$editColumndescriptionId">
+                <f:facet name="header">description</f:facet>
+                #{facility.description}
+            </ice:column>
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">name</f:facet>
+                #{facility.name}
+            </ice:column>
+            <ice:column id="$editColumnphoneId">
+                <f:facet name="header">phone</f:facet>
+                #{facility.phone}
+            </ice:column>
+            <ice:column id="$editColumnpriceRangeId">
+                <f:facet name="header">priceRange</f:facet>
+                #{facility.priceRange}
+            </ice:column>
+            <ice:column id="$editColumnstateId">
+                <f:facet name="header">state</f:facet>
+                #{facility.state}
+            </ice:column>
+            <ice:column id="$editColumntypeId">
+                <f:facet name="header">type</f:facet>
+                #{facility.type}
+            </ice:column>
+            <ice:column id="$editColumnuriId">
+                <f:facet name="header">uri</f:facet>
+                #{facility.uri}
+            </ice:column>
+            <ice:column id="$editColumnzipId">
+                <f:facet name="header">zip</f:facet>
+                #{facility.zip}
+            </ice:column>
+            <ice:column id="editColumnfacilityLinkId">
+                <f:facet name="header">action</f:facet>
+                <s:link view="/Facility.xhtml" 
+                         id="viewfacility" 
+                      value="View" 
+                propagation="none">
+                    <f:param name="facilityId" 
+                           value="#{facility.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+        <div class="actionButtons">
+            <s:button value="Select facility"
+	              id="editSelectButtonfacilityId"
+                      view="/FacilityList.xhtml">
+                <f:param name="from" value="CourseEdit"/>
+            </s:button>
+        </div>
+        
+    </div>
+    </ice:panelTab>
+ 	<ice:panelTab id="editPanelTabholesId" label="holes">
+        <div class="association" id="holesChildren">
+        
+            <h:outputText value="There are no holes associated with this course." 
+	                     id="editholesTextId"
+                       rendered="#{empty courseHome.holes}"/>
+           <ice:dataTable value="#{courseHome.holes}" 
+                           var="hole" 
+                      rendered="#{not empty courseHome.holes}" 
+                    rowClasses="rvgRowOne,rvgRowTwo"
+			  columnClasses="allCols"
+                            id="editholesTable">
+                <ice:column id="editidId">
+                    <f:facet name="header">id</f:facet>
+                    <h:outputText id="editidTextId" value="#{hole.id}"/>
+                </ice:column>
+                <ice:column id="editladiesHandicapId">
+                    <f:facet name="header">ladiesHandicap</f:facet>
+                    <h:outputText id="editladiesHandicapTextId" value="#{hole.ladiesHandicap}"/>
+                </ice:column>
+                <ice:column id="editladiesParId">
+                    <f:facet name="header">ladiesPar</f:facet>
+                    <h:outputText id="editladiesParTextId" value="#{hole.ladiesPar}"/>
+                </ice:column>
+                <ice:column id="editmensHandicapId">
+                    <f:facet name="header">mensHandicap</f:facet>
+                    <h:outputText id="editmensHandicapTextId" value="#{hole.mensHandicap}"/>
+                </ice:column>
+                <ice:column id="editmensParId">
+                    <f:facet name="header">mensPar</f:facet>
+                    <h:outputText id="editmensParTextId" value="#{hole.mensPar}"/>
+                </ice:column>
+                <ice:column id="editnameId">
+                    <f:facet name="header">name</f:facet>
+                    <h:outputText id="editnameTextId" value="#{hole.name}"/>
+                </ice:column>
+                <ice:column id="editnumberId">
+                    <f:facet name="header">number</f:facet>
+                    <h:outputText id="editnumberTextId" value="#{hole.number}"/>
+                </ice:column>
+                <ice:column id="editholeId">
+                    <f:facet name="header">action</f:facet>
+                    <s:link view="/Hole.xhtml" 
+                              id="selecthole" 
+                           value="Select"
+                     propagation="none">
+                        <f:param name="holeId" 
+                                value="#{hole.id}"/>
+                        <f:param name="holeFrom" value="Course"/>
+                    </s:link>
+                </ice:column>
+           </ice:dataTable>
+      </div>
+        <f:subview rendered="#{courseHome.managed}" id="holesId">
+        <div class="actionButtons">
+            <s:button id="addholeId" 
+                   value="Add hole"
+                    view="/HoleEdit.xhtml"
+             propagation="none">
+                 <f:param name="courseId" 
+                         value="#{courseHome.instance.id}"/>
+                 <f:param name="holeFrom" value="Course"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </ice:panelTab>
+ 	<ice:panelTab id="editPanelTabteeSetsId" label="teeSets">
+        <div class="association" id="teeSetsChildren">
+        
+            <h:outputText value="There are no teeSets associated with this course." 
+	                     id="editteeSetsTextId"
+                       rendered="#{empty courseHome.teeSets}"/>
+           <ice:dataTable value="#{courseHome.teeSets}" 
+                           var="teeSet" 
+                      rendered="#{not empty courseHome.teeSets}" 
+                    rowClasses="rvgRowOne,rvgRowTwo"
+			  columnClasses="allCols"
+                            id="editteeSetsTable">
+                <ice:column id="editidId">
+                    <f:facet name="header">id</f:facet>
+                    <h:outputText id="editidTextId" value="#{teeSet.id}"/>
+                </ice:column>
+                <ice:column id="editcolorId">
+                    <f:facet name="header">color</f:facet>
+                    <h:outputText id="editcolorTextId" value="#{teeSet.color}"/>
+                </ice:column>
+                <ice:column id="editladiesCourseRatingId">
+                    <f:facet name="header">ladiesCourseRating</f:facet>
+                    <h:outputText id="editladiesCourseRatingTextId" value="#{teeSet.ladiesCourseRating}"/>
+                </ice:column>
+                <ice:column id="editladiesSlopeRatingId">
+                    <f:facet name="header">ladiesSlopeRating</f:facet>
+                    <h:outputText id="editladiesSlopeRatingTextId" value="#{teeSet.ladiesSlopeRating}"/>
+                </ice:column>
+                <ice:column id="editmensCourseRatingId">
+                    <f:facet name="header">mensCourseRating</f:facet>
+                    <h:outputText id="editmensCourseRatingTextId" value="#{teeSet.mensCourseRating}"/>
+                </ice:column>
+                <ice:column id="editmensSlopeRatingId">
+                    <f:facet name="header">mensSlopeRating</f:facet>
+                    <h:outputText id="editmensSlopeRatingTextId" value="#{teeSet.mensSlopeRating}"/>
+                </ice:column>
+                <ice:column id="editnameId">
+                    <f:facet name="header">name</f:facet>
+                    <h:outputText id="editnameTextId" value="#{teeSet.name}"/>
+                </ice:column>
+                <ice:column id="editpositionId">
+                    <f:facet name="header">position</f:facet>
+                    <h:outputText id="editpositionTextId" value="#{teeSet.position}"/>
+                </ice:column>
+                <ice:column id="editteeSetId">
+                    <f:facet name="header">action</f:facet>
+                    <s:link view="/TeeSet.xhtml" 
+                              id="selectteeSet" 
+                           value="Select"
+                     propagation="none">
+                        <f:param name="teeSetId" 
+                                value="#{teeSet.id}"/>
+                        <f:param name="teeSetFrom" value="Course"/>
+                    </s:link>
+                </ice:column>
+           </ice:dataTable>
+      </div>
+        <f:subview rendered="#{courseHome.managed}" id="teeSetsId">
+        <div class="actionButtons">
+            <s:button id="addteeSetId" 
+                   value="Add teeSet"
+                    view="/TeeSetEdit.xhtml"
+             propagation="none">
+                 <f:param name="courseId" 
+                         value="#{courseHome.instance.id}"/>
+                 <f:param name="teeSetFrom" value="Course"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </ice:panelTab>
+</ice:panelTabSet>
+</ice:form>
+</ui:define>
+
+</ui:composition>
+
+
+
