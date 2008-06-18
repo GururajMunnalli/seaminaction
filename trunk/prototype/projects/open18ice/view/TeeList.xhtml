@@ -1,0 +1,154 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <ice:form id="listteeFormId" styleClass="edit">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                    <ice:outputText id="listTeeId" value="Tee search"/>
+                 </td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="listPanelGroupTeeId" styleClass="edit">
+		
+          
+   
+	  </ice:panelGroup>
+  
+        
+        <div class="actionButtons">
+            <ice:commandButton id="listSearchButtonId" value="Search" action="/TeeList.xhtml"/>
+        </div>
+      </ice:panelGroup> 
+    </ice:form>
+    
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>tee  search results</h3>
+
+    <div class="searchResults" id="listteeResults">
+    <ice:outputText value="The tee search returned no results." 
+               rendered="#{empty teeList.resultList}"/>
+               
+    <ice:dataTable id="teeListTableId" 
+                  var="tee"
+                value="#{teeList.resultList}" 
+            resizable="true"
+        columnClasses="allCols"
+             rendered="#{not empty teeList.resultList}">
+        <ice:column id="listholeIdId">
+            <f:facet name="header">holeId</f:facet>
+            #{tee.id.holeId}
+        </ice:column>
+        <ice:column id="listteeSetIdId">
+            <f:facet name="header">teeSetId</f:facet>
+            #{tee.id.teeSetId}
+        </ice:column>
+        <ice:column id="listdistanceId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listdistanceLinkId"
+                             value="distance #{teeList.order=='distance asc' ? messages.down : ( teeList.order=='distance desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='distance asc' ? 'distance desc' : 'distance asc'}"/>
+                </s:link>
+            </f:facet>
+            #{tee.distance}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listColumnholeId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		                id="listcolumnHeaderholeId"
+                             value="hole id #{teeList.order=='hole.id asc' ? messages.down : ( teeList.order=='hole.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='hole.id asc' ? 'hole.id desc' : 'hole.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{tee.hole.id}
+        </ice:column>
+        <ice:column id="listColumnteeSetId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		                id="listcolumnHeaderteeSetId"
+                             value="teeSet id #{teeList.order=='teeSet.id asc' ? messages.down : ( teeList.order=='teeSet.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='teeSet.id asc' ? 'teeSet.id desc' : 'teeSet.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{tee.teeSet.id}
+        </ice:column>
+        <ice:column id="listColumnTeeId">
+            <f:facet name="header">action</f:facet>
+            <s:link view="/#{empty from ? 'Tee' : from}.xhtml" 
+                   value="Select" 
+                      id="listteeLinkId">
+                <f:param name="teeHoleId" 
+                        value="#{tee.id.holeId}"/>
+                <f:param name="teeTeeSetId" 
+                        value="#{tee.id.teeSetId}"/>
+            </s:link>
+        </ice:column>
+    </ice:dataTable>
+
+    </div>
+</ice:panelGroup>
+
+    <div class="tableControl">
+      
+        <s:link view="/TeeList.xhtml" 
+            rendered="#{teeList.previousExists}" 
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPageteeListId">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/TeeList.xhtml" 
+            rendered="#{teeList.previousExists}" 
+               value="#{messages.left} Previous Page"
+                  id="previousPageteeListId">
+            <f:param name="firstResult" 
+                    value="#{teeList.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/TeeList.xhtml" 
+            rendered="#{teeList.nextExists}" 
+               value="Next Page #{messages.right}"
+                  id="nextPageteeListId">
+            <f:param name="firstResult" 
+                    value="#{teeList.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/TeeList.xhtml" 
+            rendered="#{teeList.nextExists}" 
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPageteeListId">
+            <f:param name="firstResult" 
+                    value="#{teeList.lastFirstResult}"/>
+        </s:link>
+        
+    </div>
+    
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TeeEdit.xhtml"
+                    id="listCreateteeId" 
+                 value="Create tee">
+            <f:param name="teeHoleId"/>
+            <f:param name="teeTeeSetId"/>
+        </s:button>
+    </s:div>
+    
+</ui:define>
+
+</ui:composition>
+
