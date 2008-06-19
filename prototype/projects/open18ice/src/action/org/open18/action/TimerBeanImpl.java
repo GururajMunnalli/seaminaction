@@ -37,12 +37,12 @@ import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.core.Manager;
+import org.jboss.seam.log.Log;
 
 import javax.faces.context.FacesContext;
-import javax.ejb.Stateful;
-import javax.ejb.Remove;
 import java.util.Date;
 import java.text.DateFormat;
 import java.io.Serializable;
@@ -57,9 +57,6 @@ import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.BlindDown;
 import com.icesoft.faces.context.effects.BlindUp;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author ICEsoft Technologies, Inc.
@@ -77,7 +74,8 @@ public class TimerBeanImpl implements Renderable, Serializable {
 	private boolean expanded = false;
 
 	private DateFormat dateFormatter;
-	private static Log log = LogFactory.getLog(TimerBeanImpl.class);
+	@Logger
+	private Log log;
 
 	@In
 	private RenderManager renderManager;
@@ -211,7 +209,6 @@ public class TimerBeanImpl implements Renderable, Serializable {
 		return Boolean.toString(m.isLongRunningConversation());
 	}
 
-	@Remove
 	@Destroy
 	public void remove() {
 		if (log.isTraceEnabled()) {
