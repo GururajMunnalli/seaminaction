@@ -28,6 +28,14 @@ public class CourseList extends EntityQuery {
 		return 25;
 	}
 
+	@Override
+	public String getOrder() {
+		if (super.getOrder() == null) {
+			setOrder("name asc");
+		}
+		return super.getOrder();
+	}
+
 	public Course getCourse() {
 		return course;
 	}

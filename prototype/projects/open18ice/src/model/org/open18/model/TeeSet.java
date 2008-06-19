@@ -1,5 +1,4 @@
 package org.open18.model;
-// Generated Jun 18, 2008 3:37:56 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -156,6 +155,11 @@ public class TeeSet implements java.io.Serializable {
 	}
 
 	// The following is extra code specified in the hbm.xml files
+
+	@javax.persistence.Transient
+	public String getNameOrColor() {
+		return name != null ? name : color;
+	}
 
 	@javax.persistence.Transient
 	public int getDistanceOut() {

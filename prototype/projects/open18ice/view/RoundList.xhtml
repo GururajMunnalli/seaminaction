@@ -1,0 +1,249 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"  
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+	
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+		
+		<h:form id="roundSearchForm" styleClass="edit">
+		
+			<ice:panelGroup id="roundSearchGroup" styleClass="formBorderHighlight">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="iceDatTblColHdr2">Round Search</td>
+					</tr>
+				</table>	
+	 
+				<ui:remove>
+				<s:decorate id="selfFilterField" template="layout/display.xhtml" rendered="#{currentGolfer ne null}">
+					<ui:define name="label">My rounds only</ui:define>
+					<h:selectBooleanCheckbox id="selfFilter" value="#{roundExample.golfer.selfFilter}"/>
+				</s:decorate>
+				</ui:remove>
+	
+				<s:decorate id="firstNameField" template="layout/display.xhtml">
+					<ui:define name="label">First Name</ui:define>
+					<ice:inputText id="firstName" value="#{roundExample.golfer.firstName}" partialSubmit="true"/>
+				</s:decorate>
+	
+				<s:decorate id="lastNameField" template="layout/display.xhtml">
+					<ui:define name="label">Last name</ui:define>
+					<ice:inputText id="lastName" value="#{roundExample.golfer.lastName}" partialSubmit="true"/>
+				</s:decorate>
+	
+				<s:decorate id="dateField" template="layout/display.xhtml">
+					<ui:define name="label">Date</ui:define>
+					<ice:selectInputDate id="date" value="#{roundExample.date}"/>
+				</s:decorate>
+	
+				<s:decorate id="totalScoreField" template="layout/display.xhtml">
+					<ui:define name="label">Total score</ui:define>
+					<ice:inputText value="#{roundExample.totalScore}" size="3" partialSubmit="true"/>
+				</s:decorate>
+	
+				<ui:remove>
+				<s:decorate id="courseField" template="layout/display.xhtml">
+					<ui:define name="label">Course</ui:define>
+					<ice:selectOneListbox size="10" value="#{roundExample.teeSet.course}" partialSubmit="true">
+						<s:selectItems var="_course" value="#{courses}" label="#{_course.facility.state} - #{_course.name}" />
+						<s:convertEntity />
+					</ice:selectOneListbox>
+				</s:decorate>
+				</ui:remove>
+	
+				<s:decorate id="teeSetField" template="layout/display.xhtml">
+					<ui:define name="label">Tee Set (color)</ui:define>
+					<ice:inputText id="tee" value="#{roundExample.teeSet.color}" partialSubmit="true"/>
+				</s:decorate>
+	
+				<s:decorate id="weatherField" template="layout/display.xhtml">
+					<ui:define name="label">Weather</ui:define>
+					<ice:selectOneListbox id="weather" value="#{roundExample.weather}" size="5" partialSubmit="true">
+						<f:selectItem itemValue="Sunny"/>
+						<f:selectItem itemValue="Mostly Sunny"/>
+						<f:selectItem itemValue="Partly Cloudy"/>
+						<f:selectItem itemValue="Mostly Cloudy"/>
+						<f:selectItem itemValue="Cloudy"/>
+						<f:selectItem itemValue="Fair"/>
+						<f:selectItem itemValue="Scattered Showers"/>
+						<f:selectItem itemValue="Scattered T-Storms"/>
+						<f:selectItem itemValue="Showers"/>
+						<f:selectItem itemValue="Rain"/>
+						<f:selectItem itemValue="T-Storms"/>
+					</ice:selectOneListbox>
+				</s:decorate>
+	
+			</ice:panelGroup>
+			
+			<div class="actionButtons">
+				<!-- #{queryHelper.zero} inserts an Integer 0 value (the default in JSF is a long) -->
+				<h:commandButton id="search" value="Search" action="/RoundList.xhtml"> <!-- actionListener="#{roundList.first}">-->
+					<f:setPropertyActionListener target="#{roundList.firstResult}" value="#{queryHelper.zero}" />
+				</h:commandButton>
+			</div>
+			
+		</h:form>
+		
+		<ice:panelGroup styleClass="formBorderHighlight">
+			<ui:remove><h3>Round Search Results (#{roundList.resultList.size} of #{roundList.resultCount})</h3></ui:remove>
+			<h3>Round Search Results</h3>
+				<div class="results" id="roundListResults">
+	
+					<h:outputText value="No rounds found." rendered="#{empty roundList.resultList}"/>
+					   
+					<ice:dataTable id="roundList" var="_round" value="#{roundList.resultList}" rendered="#{not empty roundList.resultList}" resizable="true" columnClasses="allCols">
+					<c:set var="entitylist" value="#{roundList}"/>
+					<ice:column id="idColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Id"/>
+								<ui:param name="property" value="r.id"/>
+							</ui:decorate>
+						</f:facet>
+						#{_round.id}
+					</ice:column>
+					<ice:column id="golferColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Golfer"/>
+								<ui:param name="property" value="g.lastName asc"/>
+							</ui:decorate>
+						</f:facet>
+						#{_round.golfer.name}
+					</ice:column>
+					<ice:column id="dateColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Date"/>
+								<ui:param name="property" value="r.date"/>
+							</ui:decorate>
+						</f:facet>
+						<h:outputText value="#{_round.date}">
+							<s:convertDateTime type="date" />
+						</h:outputText>
+					</ice:column>
+					<ice:column id="courseColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Course"/>
+								<ui:param name="property" value="c.name"/>
+							</ui:decorate>
+						</f:facet>
+						#{_round.teeSet.course.name}
+					</ice:column>
+					<ice:column id="teeSetColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Tees"/>
+								<ui:param name="property" value="ts.position"/>
+							</ui:decorate>
+						</f:facet>
+						<div title="#{_round.teeSet.color}" class="teeMarker" style="background-color: #{_round.teeSet.color};" />
+					</ice:column>
+					<ice:column id="totalScoreColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Score"/>
+								<ui:param name="property" value="r.totalScore"/>
+							</ui:decorate>
+						</f:facet>
+						#{_round.totalScore}
+					</ice:column>
+					<ice:column id="weatherColumn">
+						<f:facet name="header">
+							<ui:decorate template="layout/sort.xhtml">
+								<ui:param name="label" value="Weather"/>
+								<ui:param name="property" value="r.weather"/>
+							</ui:decorate>
+						</f:facet>
+						#{_round.weather}
+					</ice:column>
+					<ice:column id="actionColumn">
+						<f:facet name="header">Action</f:facet>
+						<s:link id="round" view="/#{empty from ? 'Round' : from}.xhtml" 
+							value="Select">
+							<f:param name="roundId" value="#{_round.id}"/>
+						</s:link>
+					</ice:column>
+				</ice:dataTable>
+		
+				<s:div styleClass="actionButtons" rendered="#{empty from}">
+					<s:button view="/RoundEdit.xhtml"
+								id="create" 
+							 value="Create round" propagation="none">
+						<f:param name="roundId"/>
+					</s:button>
+				</s:div>
+	
+			</div>
+		</ice:panelGroup>
+		
+		<ui:remove><!-- using action-based pagination controls requires RoundList to be scoped to the conversation (or page scope, but then these need to be <h:commandButtons> --></ui:remove>
+		<ui:remove>
+		<div class="tableControl">
+		  
+			<h:form><!-- required for setting max page -->
+	
+				<s:button id="first" action="#{roundList.first}" rendered="#{roundList.previousExists}" 
+					value="#{messages.left}#{messages.left} First Page" />
+				
+				<s:button id="previous" action="#{roundList.previous}" rendered="#{roundList.previousExists}" 
+					value="#{messages.left} Previous Page" />
+
+				<h:selectOneMenu id="pageSize" value="#{roundList.maxResults}" valueChangeListener="#{roundList.first}" onchange="this.form.submit();">
+					<f:selectItem itemValue="5" />
+					<f:selectItem itemValue="10" />
+					<f:selectItem itemValue="15" />
+					<f:selectItem itemValue="20" />
+					<f:selectItem itemValue="25" />
+					<f:selectItem itemValue="50" />
+					<f:selectItem itemValue="75" />
+					<f:selectItem itemValue="100" /><!-- this would be a nice feature for Query -->
+				</h:selectOneMenu>
+				
+				<s:button id="next" action="#{roundList.next}" rendered="#{roundList.nextExists}" 
+					value="Next Page #{messages.right}" />
+				
+				<s:button id="last" action="#{roundList.last}" rendered="#{roundList.nextExists}" 
+				value="Last Page #{messages.right}#{messages.right}" />
+			
+			</h:form>
+		</div>
+		</ui:remove>
+	
+		<div class="tableControl">
+		  
+			<s:link id="first" view="/RoundList.xhtml" rendered="#{roundList.previousExists}" 
+				value="#{messages.left}#{messages.left} First Page">
+			  <f:param name="firstResult" value="0"/>
+			</s:link>
+			
+			<s:link id="previous" view="/RoundList.xhtml" rendered="#{roundList.previousExists}" 
+				value="#{messages.left} Previous Page">
+				<f:param name="firstResult" value="#{roundList.previousFirstResult}"/>
+			</s:link>
+			
+			<s:link id="next" view="/RoundList.xhtml" rendered="#{roundList.nextExists}" 
+				value="Next Page #{messages.right}">
+				<f:param name="firstResult" value="#{roundList.nextFirstResult}"/>
+			</s:link>
+			
+			<s:link id="last" view="/RoundList.xhtml" rendered="#{roundList.nextExists}" 
+				value="Last Page #{messages.right}#{messages.right}">
+				<f:param name="firstResult" value="#{roundList.lastFirstResult}"/>
+			</s:link>
+			
+		</div>
+		
+	</ui:define>
+
+</ui:composition>
+

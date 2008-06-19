@@ -12,23 +12,22 @@
 
      <h:messages globalOnly="true" styleClass="message"/>
     
+		<div id="banner">
+			<h1>#{messages['application.title']}</h1>
+			<h2>...#{messages['application.tagline']}</h2>
+			<s:fragment rendered="#{not identity.loggedIn}">
+				<p>Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" /></p>
+			</s:fragment>
+		</div>
+
         <ice:panelGrid id="homePanelGrid" columns="2" columnClasses="leftMenu,leftMenu">
              <img src="img/ICEfaces-logo.gif" alt="Icefaces and Seam: framework demo"/>   
              <ice:panelGroup id="homePanelGroup">
-                    <p>This ICEfaces and Seam enabled Application includes:</p>
-                        <ul>
-                            <li>Ant build script</li>
-                            <li>Deployment to JBoss AS (EAR or WAR)</li>
-                            <li>Development and production profiles</li>
-                            <li>Integration testing using TestNG and Embedded JBoss</li>
-                            <li>JavaBean or EJB 3.0 Seam components</li>
-                            <li>JPA entity classes</li>
-                            <li>A configurable DataSource and JPA EntityManager</li>
-                            <li>Templated Facelets views</li>
-                            <li>ICEFaces panels and tables with resizable columns</li>
-                            <li>Default CSS stylesheet</li>
-                            <li>Internationalization support</li>
-                        </ul>
+				<p>Open 18 is a golf course directory and community site for golf players.</p>
+				<p><strong>Golf course directory:</strong></p>
+				<p>The golf course directory allows you to browse for golf facilities and courses or search for one in your area. The information available includes the facility, the course, the holes, the tee sets and the tees.</p>
+				<p><strong>The clubhouse:</strong></p>
+				<p>The clubhouse is a social utility that allows you to connect with other golfers. When you register to become a golfer, you will get a profile, which you can share with others. Along with that profile, you can track your golf rounds and publish personal experiences.</p>
             </ice:panelGroup>
         </ice:panelGrid>
     
