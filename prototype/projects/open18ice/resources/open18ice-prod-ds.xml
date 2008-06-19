@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE datasources
-    PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
-    "http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
-    
+	PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
+	"http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
 <datasources>
-   
-   <local-tx-datasource>
-      <jndi-name>open18iceDatasource</jndi-name>
-      <connection-url>jdbc:h2:file:/home/twoputt/databases/open18-db/h2</connection-url>
-      <driver-class>org.h2.Driver</driver-class>
-      <user-name>open18</user-name>
-      <password>tiger</password>
-<!-- 
-      <exception-sorter-class-name>
-         org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter
-      </exception-sorter-class-name>
-      <metadata>
-         <type-mapping>mySQL</type-mapping>
-      </metadata>
--->
-   </local-tx-datasource>
-    
+	<local-tx-datasource>
+		<jndi-name>open18iceDatasource</jndi-name>
+		<connection-url>jdbc:h2:file:/home/twoputt/prototype/projects/open18ice/database/h2</connection-url>
+		<driver-class>org.h2.Driver</driver-class>
+		<user-name>open18</user-name>
+		<password>tiger</password>
+	</local-tx-datasource>
 </datasources>
 
