@@ -1,5 +1,4 @@
 package org.open18.model;
-// Generated Jun 18, 2008 3:37:56 PM by Hibernate Tools 3.2.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -144,5 +143,29 @@ public class Hole implements java.io.Serializable {
 	public void setTees(Set<Tee> tees) {
 		this.tees = tees;
 	}
+
+	// The following is extra code specified in the hbm.xml files
+
+	@javax.persistence.Transient
+	public int getPar(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? this.mensPar : this.ladiesPar;
+	}
+	
+	@javax.persistence.Transient
+	public int getHandicap(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? this.mensHandicap : this.ladiesHandicap;
+	}
+	
+	@javax.persistence.Transient
+	public boolean isPar3(Gender gender) {
+		if (gender == null || gender == Gender.MALE) {
+			return this.mensPar == 3;
+		}
+		else {
+			return this.ladiesPar == 3;
+		}
+	}
+
+	// end of extra code specified in the hbm.xml files
 
 }

@@ -6,11 +6,16 @@
        no-conversation-view-id="/home.xhtml"
        login-view-id="/login.xhtml">
 
+    <conversation name="ViewProfile" parameter-name="golferId" parameter-value="#{selectedGolfer != null ? selectedGolfer.id : 0}"/>
+
     <page view-id="*">
         <navigation>
             <rule if-outcome="home">
                 <redirect view-id="/home.xhtml"/>
             </rule>
+        </navigation>
+        <navigation from-action="#{webSession.invalidate}">
+            <redirect view-id="/home.xhtml"/>
         </navigation>
     </page> 
 

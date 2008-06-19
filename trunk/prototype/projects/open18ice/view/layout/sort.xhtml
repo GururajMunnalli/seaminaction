@@ -1,0 +1,11 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+
+	<s:link id="sort#{label.replace(' ','')}" styleClass="columnHeader" value="#{empty label ? property : label} #{entitylist.order == property.concat(' asc') ? messages.up : (entitylist.order == property.concat(' desc') ? messages.down : '')}">
+		<f:param name="order" value="#{entitylist.order == property.concat(' asc') ? property.concat(' desc') : property.concat(' asc')}"/>
+	</s:link>
+
+</ui:composition>

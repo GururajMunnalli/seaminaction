@@ -2,6 +2,7 @@
 <components xmlns="http://jboss.com/products/seam/components"
             xmlns:core="http://jboss.com/products/seam/core"
             xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:framework="http://jboss.com/products/seam/framework"
             xmlns:drools="http://jboss.com/products/seam/drools"
             xmlns:bpm="http://jboss.com/products/seam/bpm"
             xmlns:security="http://jboss.com/products/seam/security"
@@ -9,14 +10,13 @@
             xsi:schemaLocation=
                 "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
                  http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.0.xsd 
+                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd 
                  http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.0.xsd
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
    <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
-     
-   <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" />
 
    <core:manager concurrent-request-timeout="500" 
                  conversation-timeout="120000" 
@@ -34,9 +34,7 @@
        <drools:rule-files><value>/security.drl</value></drools:rule-files>
    </drools:rule-base>
 
-   <security:identity authenticate-method="#{authenticator.authenticate}"
-                           security-rules="#{securityRules}"
-                              remember-me="true"/>
+   <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
                               
    <event type="org.jboss.seam.security.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>
@@ -45,12 +43,106 @@
        <action execute="#{redirect.returnToCapturedView}"/>
    </event>
         
-   <!-- For use with jBPM pageflow or process management -->
-   <!--  
-   <bpm:jbpm>
-      <bpm:process-definitions></bpm:process-definitions>
-      <bpm:pageflow-definitions></bpm:pageflow-definitions>
-   </bpm:jbpm>
-   -->
+   <!-- ===== Registration and member management ===== -->
       
+   <component name="passwordManager">
+      <property name="digestAlgorithm">SHA-1</property>
+      <property name="charset">UTF-8</property>
+      <property name="encoding">base64</property>
+   </component>
+
+   <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
+      <property name="dateJoined">#{currentDatetime}</property>
+   </component>
+
+   <component name="registerAction">
+      <property name="pro-status-types">amateur pro semi-pro</property>
+      <property name="specialtyTypes">
+         <value>#{messages['specialty.drive']}</value>
+         <value>#{messages['specialty.chip']}</value>
+         <value>#{messages['specialty.putt']}</value>
+         <value>#{messages['specialty.iron']}</value>
+         <value>#{messages['specialty.looks']}</value>
+      </property>
+   </component>
+
+   <!-- ===== Golfer ===== -->
+
+   <!-- may want to make these @Roles on Golfer class -->
+   <component name="currentGolfer" class="org.open18.model.Golfer" scope="session"/>
+   <component name="golferExample" class="org.open18.model.Golfer" scope="event"/>
+
+   <framework:entity-query name="golferList"
+      ejbql="select g from Golfer g"
+      order="g.lastName asc, g.firstName asc">
+      <framework:restrictions>
+         <value>g.id = #{golferExample.id}</value>
+         <value>lower(g.lastName) like concat(lower(#{golferExample.lastName}),'%')</value>
+         <value>lower(g.firstName) like concat(lower(#{golferExample.firstName}),'%')</value>
+      </framework:restrictions>
+   </framework:entity-query>
+
+   <!-- ===== Round ===== -->
+
+   <component name="courseExample" class="org.open18.model.Course" scope="event"/>
+   <component name="teeSetExample" class="org.open18.model.TeeSet" scope="event">
+      <property name="course">#{courseExample}</property>
+   </component>
+   <component name="roundExample" class="org.open18.model.Round" scope="event">
+      <property name="golfer">#{golferExample}</property>
+      <property name="teeSet">#{teeSetExample}</property>
+   </component>
+
+   <component name="roundPrototype" class="org.open18.model.Round">
+      <property name="golfer">#{currentGolfer}</property>
+      <property name="date">#{currentDate}</property>
+   </component>
+
+   <framework:entity-home name="roundHome" class="org.open18.action.RoundHome" new-instance="#{roundPrototype}"/>
+
+   <!--
+   <framework:entity-query name="roundList"
+      ejbql="select r from Round r join fetch r.golfer g join fetch r.teeSet ts join fetch ts.course c"
+      max-results="5"
+      order="r.date desc"
+      scope="conversation">
+   </framework:entity-query>
+   -->
+   <!-- @see org.open18.action.RoundList for the count query override logic -->
+   <component name="roundList">
+      <property name="ejbql">select r from Round r join fetch r.golfer g join fetch r.teeSet ts join fetch ts.course c</property>
+      <property name="countEjbql">select count(r) from Round r</property>
+      <property name="maxResults">5</property>
+      <property name="order">r.date desc</property>
+      <property name="restrictions">
+	     <value>lower(g.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>
+	     <value>lower(g.firstName) like concat(lower(#{roundExample.golfer.firstName}),'%')</value>
+	     <value>r.date = #{roundExample.date}</value>
+	     <value>r.totalScore = #{roundExample.totalScore}</value>
+	     <value>c.id = #{roundExample.teeSet.course.id}</value>
+	     <value>lower(ts.color) like concat(lower(#{roundExample.teeSet.color}),'%')</value>
+	     <value>r.weather = #{roundExample.weather}</value>
+	  </property>
+   </component>
+
+   <!-- ===== General Use ===== -->
+
+   <factory name="_" value=" " scope="application"/>
+   <factory name="org.jboss.seam.web.webSession" value="#{org.jboss.seam.web.session}" scope="stateless"/>
+   <component name="renderManager" class="com.icesoft.faces.async.render.RenderManager" scope="application" auto-create="true"/>
+
+   <factory name="teeSets" value="#{teeSetsQuery.resultList}" scope="stateless"/>
+
+   <framework:entity-query name="teeSetsQuery"
+      ejbql="select ts from TeeSet ts join fetch ts.course c"
+      order="c.name asc, ts.position asc"
+      scope="conversation" />
+
+   <factory name="courses" value="#{coursesQuery.resultList}" scope="stateless"/>
+
+   <framework:entity-query name="coursesQuery"
+      ejbql="select c from Course c join fetch c.facility f"
+      order="f.state asc, c.name asc"
+      scope="conversation" />
+
 </components>

@@ -32,17 +32,28 @@ input[type='submit'], input[type='button'] {
 }
 
 
-.error {
+/*.error {
   color: red;
   border: solid red;
   padding: .4em;
   margin: 10px
+}*/
+.error {
+    padding: 5px;
+}
+.errors {
+    color: red;
+    vertical-align: middle;
+}
+img.errors {
+	padding-right: 5px;
 }
 
 .formBorderHighlight{
     vertical-align: top; /*width: 100%;*/
     border: 1px solid #bed6f8;
     padding: 5px;
+    margin-top: 2px; /* give some space between search panel and list */
 }
 .menuButtons {
    font-size: 12px;
@@ -62,14 +73,14 @@ input[type='submit'], input[type='button'] {
     padding-right: 15px;
 }
 
-.searchResults {
+/*.searchResults {
      border-top: 1px solid #bed6f8;
       border-bottom:1px solid #bed6f8;
      border-left:1px solid #bed6f8;
      border-right:1px solid #bed6f8;
      padding: 5px;
 
-}
+}*/ /* looks better without this border */
 .leftMenu {
    padding: 5px;
    vertical-align: middle;
@@ -101,7 +112,7 @@ input[type='submit'], input[type='button'] {
 
 .footer {
 	text-align: center;
-	/*font-size: 0.8em;*/ /* I don't want to go blind */
+	/*font-size: 0.8em;*/ /* removed to prevent blindness */
 }
 
 .actionButtons {
@@ -126,6 +137,20 @@ input[type='submit'], input[type='button'] {
 .iceDataTblOutline {
     width: 98%;
 }
+/* BEGIN: make the resizable handle prettier */
+.iceDatTblResHdlr, .iceDatTblResBor, .iceDatTblBlkTd {
+	width: 1px;
+	background-color: #FFFFFF;
+}
+.iceDatTblBlkTd {
+	/*border-top: none;*/
+	border-right: 1px solid #CCCCCC;
+	/*border-bottom: none;*/
+}
+.iceDatTblBlkTd img {
+	display: none;
+}
+/* END */
 .iceTblHeader {
   font-size:11px;
    color: #000000;
@@ -170,11 +195,11 @@ body {
 	margin: 0px;
 	font-family: Arial,sans-serif;
 	color: #616161;
-	font-size: 11px;
+	font-size: 12px; /* changed to prevent blindness */
 }
 
 .body {
-	padding: 30px;
+	padding: 0 30px 30px 30px;
 }
 
 
@@ -225,7 +250,8 @@ td {
 
 .columnHeader:hover
 {
-    color: white;
+    /*color: white;*/ /* breaks theme */
+	text-decoration: underline;
 }
 
 .message {
@@ -255,12 +281,12 @@ td {
         color: red;
         text-align: left;	
 }
-.prop .errors {
+/*.prop .errors {
 	color: red;
 	text-align: left;
-}
+}*/
 
-.errors input {
+.errors input, .errors textarea {
 	border: 1px solid red;
 }
 
@@ -310,4 +336,15 @@ td {
 
 .iceSelInpDate {
     width: 90px;
+}
+
+.teeMarker {
+	height: 1em;
+	width: 1em;
+	outline: 1px solid black;
+	margin: 0 auto;
+}
+
+table.radio {
+	width: auto;
 }

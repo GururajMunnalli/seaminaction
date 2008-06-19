@@ -266,8 +266,7 @@
             </ice:column>
             <ice:column id="viewcolorId">
                 <f:facet name="header">color</f:facet>
-                <h:outputText id="viewcolorTextId" 
-		           value="#{teeSet.color}"/>
+                <s:div id="viewcolorTextId" styleClass="teeMarker" title="#{teeSet.color}" style="background-color: #{teeSet.color}"/>
             </ice:column>
             <ice:column id="viewladiesCourseRatingId">
                 <f:facet name="header">ladiesCourseRating</f:facet>

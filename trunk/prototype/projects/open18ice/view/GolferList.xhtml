@@ -1,0 +1,161 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <ice:form id="golferSearchForm" styleClass="edit">
+      <ice:panelGroup id="golferSearchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">Golfer Search</td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="golferSearchFields" styleClass="edit">
+
+            <s:decorate id="idField" template="layout/display.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <ice:inputText id="id" 
+                          value="#{golferExample.id}"
+				  partialSubmit="true"/>
+            </s:decorate>
+		
+            <s:decorate id="lastNameField" template="layout/display.xhtml">
+                <ui:define name="label">Last Name</ui:define>
+                <ice:inputText id="lastName" 
+                          value="#{golferExample.lastName}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="firstNameField" template="layout/display.xhtml">
+                <ui:define name="label">First Name</ui:define>
+                <ice:inputText id="firstName" 
+                          value="#{golferExample.firstName}"
+				  partialSubmit="true"/>
+            </s:decorate>
+   
+	  </ice:panelGroup>
+        
+        <div class="actionButtons">
+            <ice:commandButton id="golferSearchButton" value="Search" action="/GolferList.xhtml"/>
+        </div>
+      </ice:panelGroup> 
+    </ice:form>
+    
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>Golfer Search Results</h3>
+
+    <div class="searchResults" id="listgolferResults">
+    <ice:outputText value="The golfer search returned no results." 
+               rendered="#{empty golferList.resultList}"/>
+               
+    <ice:dataTable id="golferListTableId" 
+                  var="_golfer"
+                value="#{golferList.resultList}" 
+            resizable="true"
+        columnClasses="allCols"
+             rendered="#{not empty golferList.resultList}">
+        <ice:column id="listidId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listidLinkId"
+                             value="Id #{golferList.order=='id asc' ? messages.down : ( golferList.order=='id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{golferList.order=='id asc' ? 'id desc' : 'id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{_golfer.id}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listlastNameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listlastNameLinkId"
+                             value="Last Name #{golferList.order=='lastName asc' ? messages.down : ( golferList.order=='lastName desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{golferList.order=='lastName asc' ? 'lastName desc' : 'lastName asc'}"/>
+                </s:link>
+            </f:facet>
+            #{_golfer.lastName}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listfirstNameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listfirstNameLinkId"
+                             value="First Name #{golferList.order=='firstName asc' ? messages.down : ( golferList.order=='firstName desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{golferList.order=='firstName asc' ? 'firstName desc' : 'firstName asc'}"/>
+                </s:link>
+            </f:facet>
+            #{_golfer.firstName}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listColumnGolferId">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/profile.xhtml" 
+                   value="Select" 
+                      id="listgolferLinkId">
+                <f:param name="golferId" 
+                        value="#{_golfer.id}"/>
+            </s:link>
+        </ice:column>
+    </ice:dataTable>
+
+    </div>
+</ice:panelGroup>
+
+    <div class="tableControl">
+      
+        <s:link view="/GolferList.xhtml" 
+            rendered="#{golferList.previousExists}" 
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPagegolferListId">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+        
+        <s:link view="/GolferList.xhtml" 
+            rendered="#{golferList.previousExists}" 
+               value="#{messages.left} Previous Page"
+                  id="previousPagegolferListId">
+            <f:param name="firstResult" 
+                    value="#{golferList.previousFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/GolferList.xhtml" 
+            rendered="#{golferList.nextExists}" 
+               value="Next Page #{messages.right}"
+                  id="nextPagegolferListId">
+            <f:param name="firstResult" 
+                    value="#{golferList.nextFirstResult}"/>
+        </s:link>
+        
+        <s:link view="/GolferList.xhtml" 
+            rendered="#{golferList.nextExists}" 
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPagegolferListId">
+            <f:param name="firstResult" 
+                    value="#{golferList.lastFirstResult}"/>
+        </s:link>
+        
+    </div>
+    
+	<ui:remove>
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/GolferEdit.xhtml"
+                    id="listCreategolferId" 
+                 value="Create golfer">
+            <f:param name="golferId"/>
+        </s:button>
+    </s:div>
+	</ui:remove>
+    
+</ui:define>
+
+</ui:composition>
+
