@@ -95,6 +95,7 @@
             </f:facet>
             #{course.id}&amp;nbsp;
         </ice:column>
+        <ui:remove><!-- Hiding the description -->
         <ice:column id="listdescriptionId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -105,6 +106,7 @@
             </f:facet>
             #{course.description}&amp;nbsp;
         </ice:column>
+        </ui:remove>
         <ice:column id="listdesignerId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
