@@ -203,15 +203,15 @@
     </div>
     
     <div class="actionButtons">
-        <s:button 
+        <s:button id="addCourse"
                value="Add course"
                 view="/CourseEdit.xhtml">
             <f:param name="facilityId" 
                     value="#{facilityHome.instance.id}"/>
             <f:param name="courseFrom" value="Facility"/>
         </s:button>
-        <s:button action="#{courseWizard.addCourse}"
-          value="Add course..." >
+        <s:button id="addCourseWizard" action="#{courseWizard.addCourse}" propagation="none"
+          value="Add course...">
           <f:param name="facilityId" value="#{facilityHome.instance.id}"/>
         </s:button>
     </div>        

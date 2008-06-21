@@ -8,6 +8,7 @@
    <restrict>#{s:hasPermission('/FacilityEdit.xhtml', null, facilityHome.instance)}</restrict>
 
    <begin-conversation nested="true" if="#{!conversation.nested}"/>
+   <!--<begin-conversation nested="true" if="#{empty param['javax.faces.ViewState']}"/>-->
    
    <action execute="#{facilityHome.validateEntityFound}"
       if="#{facilityHome.facilityId ne null}"/>

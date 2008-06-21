@@ -16,6 +16,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.faces.FacesMessages;
 import org.open18.model.Course;
 import org.open18.model.Hole;
@@ -40,8 +41,11 @@ public class CourseWizard implements Serializable {
     private FacesMessages facesMessages;
     
     @In(required = false)
-	@Out(required = false) // this isn't working
+    @Out(required = false) // this isn't working
     private FacilityHome facilityHome;
+
+    @RequestParameter // only way the select facility will work
+    private Long facilityId;
     
     @Out
     private Course newCourse;
@@ -56,19 +60,20 @@ public class CourseWizard implements Serializable {
     
     private boolean ladiesHandicapUnique = false;
 
-    @Begin(pageflow = "Course Wizard", nested = true)
+    @Begin(pageflow = "Course Wizard")
     public String addCourse() {
         newCourse = new Course();
         newCourse.setFacility(facilityHome.getDefinedInstance());
-		newCourse.setNumHoles(18);
-		//facilityHome = null; // cleanup
-		return newCourse.getFacility() != null ? "facilitySelected" : "facilityNotSelected";
-	}
+        newCourse.setNumHoles(18);
+        //facilityHome = null; // cleanup
+        return newCourse.getFacility() != null ? "facilitySelected" : "facilityNotSelected";
+    }
 
-	public void assignFacility() {
-        newCourse.setFacility(facilityHome.getDefinedInstance());
-		//facilityHome = null; // cleanup
-	}
+    public void assignFacility() {
+        facilityHome.setFacilityId(facilityId);
+        newCourse.setFacility(facilityHome.getInstance());
+        //facilityHome = null; // cleanup
+    }
     
     public void prepareHoleData() {
         holes = new ArrayList<Hole>();
@@ -102,9 +107,9 @@ public class CourseWizard implements Serializable {
         return gender;
     }
 
-	public boolean isLadiesHoleDataRequired() {
-		return ladiesParUnique || ladiesHandicapUnique;
-	}
+    public boolean isLadiesHoleDataRequired() {
+        return ladiesParUnique || ladiesHandicapUnique;
+    }
     
     public void submitLadiesHoleData() {
         gender = null;
@@ -113,7 +118,7 @@ public class CourseWizard implements Serializable {
     }
     
     @End
-	@Conversational
+    @Conversational
     public String save() {
         try {
             entityManager.persist(newCourse);
@@ -122,7 +127,9 @@ public class CourseWizard implements Serializable {
         }
         catch (Exception e) {
             facesMessages.add("The course could not be saved.");
-            return "failure";
+            // returning null indicates failure and will not end the conversation
+            return null;
+            //return "failure";
         }
     }
 

@@ -12,6 +12,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
+import org.jboss.seam.annotations.Observer;
+import org.jboss.seam.core.Conversation;
 
 @Name("facilityHome")
 public class FacilityHome extends EntityHome<Facility> {
@@ -107,6 +109,12 @@ public class FacilityHome extends EntityHome<Facility> {
 			return "invalid";
 		}
 	}
+	
+	// FIXME: won't work with pageflow
+//	@Observer("org.jboss.seam.afterTransactionSuccess.Facility")
+//	public void restoreParentView() {
+//		Conversation.instance().redirect();
+//	}
 
 	public byte[] getNewLogo() {
 		return newLogo;

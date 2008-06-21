@@ -195,6 +195,8 @@
                 <include name="jfreechart.jar"/>
                 <include name="jcommon.jar"/>
                 <include name="jcaptcha*.jar"/>
+                <include name="spring.jar"/>
+                <include name="golf-tournament-service-api.jar"/>
                 <include name="groovy-*.jar" if="groovy.present"/>
             </fileset>
         </copy>

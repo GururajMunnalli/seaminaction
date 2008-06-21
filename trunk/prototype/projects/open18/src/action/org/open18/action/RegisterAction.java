@@ -6,18 +6,15 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
-import org.jboss.seam.ui.graphicImage.Image;
+//import org.jboss.seam.ui.graphicImage.Image;
 import org.open18.auth.PasswordBean;
 import org.open18.auth.PasswordManager;
 import org.open18.model.Golfer;
 import org.open18.validation.GolferValidator;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
-import java.io.IOException;
 
 @Name("registerAction")
 public class RegisterAction {
@@ -79,41 +76,42 @@ public class RegisterAction {
 			return null;
 		}
 
-		if (newGolfer.getImage() != null) {
-			try {
-				Image image = new Image();
-				image.setInput(newGolfer.getImage());
-				if (image.getBufferedImage() == null) {
-					throw new IOException("An image could not be read from the file data");
-				}
-
-				if (!image.getContentType().getMimeType().matches("image/(png|gif|jpeg)")) {
-					facesMessages.addToControl(
-						"image",
-						"Invalid image type: " + image.getContentType()
-					);
-				}
-				if (image.getHeight() > maxImageDimension || image.getWidth() > maxImageDimension) {
-					if (image.getHeight() > image.getWidth()) {
-						image.scaleToHeight(maxImageDimension);
-					}
-					else {
-						image.scaleToWidth(maxImageDimension);
-					}
-
-					newGolfer.setImage(image.getImage());
-				}
-			} catch (IOException ioe) {
-				log.error("An error occurred while processing the profile image for #{newGolfer.username}", ioe);
-				facesMessages.addToControl(
-					"image",
-					FacesMessage.SEVERITY_ERROR,
-					"An error occurred while processing the profile image.");
-				newGolfer.setImage(null);
-				newGolfer.setImageContentType(null);
-				return null;
-			}
-		}
+		// FIXME: requires a patch in Seam
+//		if (newGolfer.getImage() != null) {
+//			try {
+//				Image image = new Image();
+//				image.setInput(newGolfer.getImage());
+//				if (image.getBufferedImage() == null) {
+//					throw new IOException("An image could not be read from the file data");
+//				}
+//
+//				if (!image.getContentType().getMimeType().matches("image/(png|gif|jpeg)")) {
+//					facesMessages.addToControl(
+//						"image",
+//						"Invalid image type: " + image.getContentType()
+//					);
+//				}
+//				if (image.getHeight() > maxImageDimension || image.getWidth() > maxImageDimension) {
+//					if (image.getHeight() > image.getWidth()) {
+//						image.scaleToHeight(maxImageDimension);
+//					}
+//					else {
+//						image.scaleToWidth(maxImageDimension);
+//					}
+//
+//					newGolfer.setImage(image.getImage());
+//				}
+//			} catch (IOException ioe) {
+//				log.error("An error occurred while processing the profile image for #{newGolfer.username}", ioe);
+//				facesMessages.addToControl(
+//					"image",
+//					FacesMessage.SEVERITY_ERROR,
+//					"An error occurred while processing the profile image.");
+//				newGolfer.setImage(null);
+//				newGolfer.setImageContentType(null);
+//				return null;
+//			}
+//		}
 
 		newGolfer.setPasswordHash(passwordManager
 			.hash(passwordBean.getPassword()));
@@ -143,15 +141,13 @@ public class RegisterAction {
 
 	public boolean isUsernameAvailable(String username) {
 		return entityManager.createQuery(
-			"from Golfer where username = :username")
-			.setParameter("username", username)
-			.getResultList().size() == 0;
+			"select m from Member m where m.username = ?1")
+			.setParameter(1, username).getResultList().size() == 0;
 	}
 
 	public boolean isEmailRegistered(String email) {
 		return entityManager.createQuery(
-			"from Golfer where emailAddress = :email")
-			.setParameter("email", email)
-			.getResultList().size() > 0;
+			"select m from Member m where m.emailAddress = ?1")
+			.setParameter(1, email).getResultList().size() > 0;
 	}
 }

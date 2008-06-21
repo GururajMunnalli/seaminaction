@@ -118,15 +118,16 @@
 					</s:div>
 	
 					<h:form rendered="#{newGolfers.size ge 0}">
-						<rich:dataList var="_golfer" value="#{newGolfers.wrappedData}"> <!-- use wrappedData to prevent dataModelSelection parameter on s:link -->
+						<rich:dataList var="_golfer" value="#{newGolfers}"> <!-- use wrappedData to prevent dataModelSelection parameter on s:link -->
 							<ui:remove>
 							<h:commandLink action="#{profileAction.view(_golfer)}" value="#{_golfer.name} (#{_golfer.username})"/>
-							<s:link action="#{profileAction.view}" value="#{_golfer.name} (#{_golfer.username})"/>
 							<s:link action="#{profileAction.view(_golfer)}" value="#{_golfer.name} (#{_golfer.username})"/>
-							</ui:remove>
 							<s:link view="/profile.xhtml" value="#{_golfer.name}">
 								<f:param name="golferId" value="#{_golfer.id}"/>
-							</s:link><ui:remove>(#{_golfer.username})</ui:remove>
+							</s:link>
+							</ui:remove>
+							<s:link action="#{profileAction.view}" value="#{_golfer.name} (#{_golfer.username})"/>
+							<ui:remove>(#{_golfer.username})</ui:remove>
 						</rich:dataList>
 					</h:form>
 				</rich:panel>

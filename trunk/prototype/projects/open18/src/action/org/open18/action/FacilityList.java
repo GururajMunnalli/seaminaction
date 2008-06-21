@@ -63,5 +63,4 @@ public class FacilityList extends EntityQuery {
 	public Facility createFacilityExample() {
 	    return new Facility();
 	}
-
 }

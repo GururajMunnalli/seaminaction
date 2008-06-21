@@ -8,7 +8,7 @@
     <s:link view="/home.xhtml" value="#{projectName}:" propagation="none" style="text-decoration: none;"/>
     <ui:remove><!-- combining Home with app name to save space -->
     <h:outputText value="#{projectName}:"/>
-    <s:link view="/home.xhtml" value="Home" propagation="none"/>
+    <s:link id="home" view="/home.xhtml" value="Home" propagation="none"/>
     </ui:remove>
     <s:link view="/profile.xhtml"
            value="Profile"
@@ -80,8 +80,8 @@
         <h:outputText value="#{identity.loggedIn ? identity.username : 'guest'}"/>
         <ui:remove><h:outputText value="Welcome, #{identity.username}!" rendered="#{identity.loggedIn}"/></ui:remove>
 				<h:panelGroup><ui:remove>panelGroup needed while waiting on RichFaces fix</ui:remove>
-            <s:link view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}"/>
-            <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
+            <s:link id="login" view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}"/>
+            <s:link id="logout" view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
 		    </h:panelGroup>
     </rich:toolBarGroup>
 </rich:toolBar>

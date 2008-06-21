@@ -21,7 +21,8 @@ public class RegisterGolferIntegrationTest extends SeamTest {
                 Golfer newGolfer = (Golfer)
                     Component.getInstance("newGolfer");
                 assert newGolfer.getDateJoined() != null;
-                newGolfer.setName("Tommy Twoputt");
+                newGolfer.setFirstName("Tommy");
+				newGolfer.setLastName("Twoputt");
                 newGolfer.setUsername("twoputt");
                 newGolfer.setEmailAddress("twoputt@open18.org");
                 PasswordBean passwordBean = (PasswordBean)

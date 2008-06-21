@@ -1,5 +1,7 @@
 package org.open18.action;
 
+import java.io.Serializable;
+
 import org.jboss.seam.Component;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.*;
@@ -21,7 +23,7 @@ import java.util.Random;
 
 @Name("profileAction")
 @Scope(ScopeType.CONVERSATION) // let's us redirect without losing @Out
-public class ProfileAction {
+public class ProfileAction implements Serializable {
     @Logger private Log log;
 
     @In protected EntityManager entityManager;

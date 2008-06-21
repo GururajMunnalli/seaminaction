@@ -44,7 +44,7 @@
 							<f:facet name="header">Action</f:facet>
 							<h:commandLink action="#{_entry.select}" value="Select"
 								rendered="#{not _entry.current}"/>
-							#{' '}
+							#{not _entry.current ? ' | ' : ' '}
 							<h:commandLink action="#{_entry.destroy}" value="Destroy"/>
 						</h:column>
 					</rich:dataTable>

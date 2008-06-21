@@ -107,9 +107,12 @@
       </navigation>
     </page>
 
-    <page view-id="/coursewizard/*" conversation-required="true" no-conversation-view-id="/CourseList.xhtml"
-        action="#{pageflow.isInProcess}">
-        <navigation>
+	<!-- ensure the course wizard pages are only used when in the process -->
+	<!-- the page action is used to trigger the navigation rules; IDEA: might want a generic #{pages.triggerRules} -->
+	<!-- NOTE: conversation-required cannot be used here if you want to be able to postback/redirect
+	     out of the page flow -->
+    <page view-id="/coursewizard/*" action="#{pageflow.isInProcess}">
+        <navigation from-action="#{pageflow.isInProcess}">
             <rule if="#{pageflow.processInstance.processDefinition.name ne 'Course Wizard'}">
                 <redirect view-id="/CourseList.xhtml"/>
             </rule>

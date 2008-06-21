@@ -3,7 +3,7 @@ body {
 }
 
 a:active, a:link, a:visited {
-    color: #0D5798;    
+    color: #0D5798;
 }
 a:hover {
     color: #8CAFCD;
@@ -142,6 +142,16 @@ img.errors {
 
 .message li.warnmsg {
     background-image: url(../img/msg_warn.png);
+}
+
+.rich-datalist {
+	list-style: square;
+	margin: 10px 0 2px 0;
+	padding-left: 25px;
+}
+
+.rich-list-item {
+	padding-bottom: 4px;
 }
 
 /* home page */

@@ -19,7 +19,7 @@
 		<transition name="facilitySelected" to="basicCourseInfo"/>
 	</start-state>
 
-	<!-- current it is not possible to cancel when in this subflow -->
+	<!-- currently it is not possible to cancel when in this subflow -->
 	<process-state name="selectFacility">
 		<sub-process name="Select Facility"/>
 		<transition to="basicCourseInfo"/>
@@ -78,7 +78,10 @@
 			<!-- force page parameter to be used on redirect to Course.xhtml -->
 			<action expression="#{courseHome.setCourseId(newCourse.id)}"/>
 		</transition>
+		<!--
 		<transition name="failure" to="review"/>
+		-->
+		<transition to="review"/> <!-- failure case -->
 	</page>
 
 	<page name="end" view-id="/Course.xhtml">

@@ -1,5 +1,7 @@
 package org.open18.action;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import org.open18.model.Course;
  */
 @Name("courseComparison")
 @Scope(ScopeType.CONVERSATION)
-public class CourseComparison {
+public class CourseComparison implements Serializable {
     
     private int maxCourses = 4;
     

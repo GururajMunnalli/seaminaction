@@ -9,4 +9,11 @@
             <loader-repository-config>java2ParentDelegation=false</loader-repository-config>
         </loader-repository>
     </class-loading>
+	<!-- another option to mapping to the JBoss-specific JNDI name in *-ds.xml  -->
+	<!--
+	<resource-ref>
+		<res-ref-name>jdbc/open18Datasource</res-ref-name>
+		<jndi-name>java:/open18Datasource</jndi-name>
+	</resource-ref>
+	-->
 </jboss-web>

@@ -106,160 +106,145 @@
     <h:outputText value="No facility exists" 
                rendered="#{empty facilityList.resultList}"/>
                
+	<h:form>
     <rich:dataTable id="facilityList" 
                 var="facility"
               value="#{facilityList.resultList}" 
            rendered="#{not empty facilityList.resultList}">
+        <c:set var="entitylist" value="#{facilityList}"/>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="id #{facilityList.order=='id asc' ? messages.down : ( facilityList.order=='id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='id asc' ? 'id desc' : 'id asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="id"/>
+                </ui:decorate>
             </f:facet>
             #{facility.id}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="address #{facilityList.order=='address asc' ? messages.down : ( facilityList.order=='address desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='address asc' ? 'address desc' : 'address asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="address"/>
+                </ui:decorate>
             </f:facet>
             #{facility.address}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="city #{facilityList.order=='city asc' ? messages.down : ( facilityList.order=='city desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='city asc' ? 'city desc' : 'city asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="city"/>
+                </ui:decorate>
             </f:facet>
             #{facility.city}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="country #{facilityList.order=='country asc' ? messages.down : ( facilityList.order=='country desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='country asc' ? 'country desc' : 'country asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="country"/>
+                </ui:decorate>
             </f:facet>
             #{facility.country}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="county #{facilityList.order=='county asc' ? messages.down : ( facilityList.order=='county desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='county asc' ? 'county desc' : 'county asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="county"/>
+                </ui:decorate>
             </f:facet>
             #{facility.county}
         </h:column>
         <h:column rendered="false">
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="description #{facilityList.order=='description asc' ? messages.down : ( facilityList.order=='description desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='description asc' ? 'description desc' : 'description asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="description"/>
+                </ui:decorate>
             </f:facet>
             #{facility.description}
         </h:column>
         <h:column rendered="false">
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="drivingRange #{facilityList.order=='drivingRange asc' ? messages.down : ( facilityList.order=='drivingRange desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='drivingRange asc' ? 'drivingRange desc' : 'drivingRange asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="drivingRange"/>
+                </ui:decorate>
             </f:facet>
             #{facility.drivingRange}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="name #{facilityList.order=='name asc' ? messages.down : ( facilityList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="name"/>
+                </ui:decorate>
             </f:facet>
             #{facility.name}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="phone #{facilityList.order=='phone asc' ? messages.down : ( facilityList.order=='phone desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='phone asc' ? 'phone desc' : 'phone asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="phone"/>
+                </ui:decorate>
             </f:facet>
             #{facility.phone}
         </h:column>
         <h:column rendered="false">
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="proShop #{facilityList.order=='proShop asc' ? messages.down : ( facilityList.order=='proShop desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='proShop asc' ? 'proShop desc' : 'proShop asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="proShop"/>
+                </ui:decorate>
             </f:facet>
             #{facility.proShop}
         </h:column>
         <h:column rendered="false">
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="rentsClubs #{facilityList.order=='rentsClubs asc' ? messages.down : ( facilityList.order=='rentsClubs desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='rentsClubs asc' ? 'rentsClubs desc' : 'rentsClubs asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="rentsClubs"/>
+                </ui:decorate>
             </f:facet>
             #{facility.rentsClubs}
         </h:column>
         <h:column rendered="false">
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="restaurant #{facilityList.order=='restaurant asc' ? messages.down : ( facilityList.order=='restaurant desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='restaurant asc' ? 'restaurant desc' : 'restaurant asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="restaurant"/>
+                </ui:decorate>
             </f:facet>
             #{facility.restaurant}
         </h:column>
         <h:column rendered="false">
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="snackBar #{facilityList.order=='snackBar asc' ? messages.down : ( facilityList.order=='snackBar desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='snackBar asc' ? 'snackBar desc' : 'snackBar asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="snackBar"/>
+                </ui:decorate>
             </f:facet>
             #{facility.snackBar}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="state #{facilityList.order=='state asc' ? messages.down : ( facilityList.order=='state desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='state asc' ? 'state desc' : 'state asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="state"/>
+                </ui:decorate>
             </f:facet>
             #{facility.state}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="type #{facilityList.order=='type asc' ? messages.down : ( facilityList.order=='type desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='type asc' ? 'type desc' : 'type asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="type"/>
+                </ui:decorate>
             </f:facet>
             #{facility.type}
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="uri #{facilityList.order=='uri asc' ? messages.down : ( facilityList.order=='uri desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='uri asc' ? 'uri desc' : 'uri asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="uri"/>
+                </ui:decorate>
             </f:facet>
 						<h:outputLink value="#{facility.uri}">#{facility.uri}</h:outputLink>
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="priceRange #{facilityList.order=='priceRange asc' ? messages.down : ( facilityList.order=='priceRange desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='priceRange asc' ? 'priceRange desc' : 'priceRange asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="priceRange"/>
+                </ui:decorate>
             </f:facet>
 						<h:outputText value="$" rendered="#{facility.priceRange eq 1}"/>
 						<h:outputText value="$$" rendered="#{facility.priceRange eq 2}"/>
@@ -270,10 +255,9 @@
         </h:column>
         <h:column>
             <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="zip #{facilityList.order=='zip asc' ? messages.down : ( facilityList.order=='zip desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='zip asc' ? 'zip desc' : 'zip asc'}"/>
-                </s:link>
+                <ui:decorate template="layout/sort.xhtml">
+				    <ui:param name="property" value="zip"/>
+                </ui:decorate>
             </f:facet>
             #{facility.zip}
         </h:column>
@@ -290,7 +274,7 @@
             </s:link>
         </h:column>
     </rich:dataTable>
-
+</h:form>
     </div>
     </rich:panel>
     

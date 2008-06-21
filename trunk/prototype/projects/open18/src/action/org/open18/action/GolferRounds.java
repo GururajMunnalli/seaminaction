@@ -15,7 +15,7 @@ import org.open18.model.Golfer;
 
 @Name("golferRounds")
 public class GolferRounds extends EntityQuery<Round> {
-    private static final String EJBQL =
+    private static final String JPQL =
         "select r from Round r join fetch r.scores";
     
     private static final List<String> RESTRICTIONS = Arrays.asList(
@@ -32,7 +32,7 @@ public class GolferRounds extends EntityQuery<Round> {
 	public Golfer selectedGolfer;
 
     public GolferRounds() {
-        setEjbql(EJBQL);
+        setEjbql(JPQL);
         setRestrictions(RESTRICTIONS);
         setOrder(ORDER);
     }

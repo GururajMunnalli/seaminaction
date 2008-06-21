@@ -102,7 +102,7 @@
 			
 			<div class="actionButtons">
 				<!-- #{queryHelper.zero} inserts an Integer 0 value (the default in JSF is a long) -->
-				<h:commandButton id="search" value="Search" action="/RoundList.xhtml">
+				<h:commandButton id="search" value="Search" action="/RoundList.xhtml"><ui:remove><!-- actionListener="#{roundList.first}">--></ui:remove>
 					<f:setPropertyActionListener target="#{roundList.firstResult}" value="#{queryHelper.zero}" />
 				</h:commandButton>
 			</div>
@@ -110,7 +110,7 @@
 		</h:form>
 		
 		<rich:panel>
-			<f:facet name="header">Round search results (#{roundList.resultList.size})</f:facet>
+			<f:facet name="header">Round search results</f:facet>
 				<div class="results" id="roundList">
 	
 					<h:outputText value="No rounds found." rendered="#{empty roundList.resultList}"/>
@@ -139,8 +139,8 @@
 					<h:column>
 						<f:facet name="header">
 							<s:link styleClass="columnHeader"
-								value="Date #{roundList.order=='date asc' ? messages.down : ( roundList.order=='date desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='date asc' ? 'date desc' : 'date asc'}"/>
+								value="Date #{roundList.order=='r.date asc' ? messages.down : ( roundList.order=='r.date desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='r.date asc' ? 'r.date desc' : 'r.date asc'}"/>
 							</s:link>
 						</f:facet>
 						<h:outputText value="#{_round.date}">
@@ -177,8 +177,8 @@
 					<h:column>
 						<f:facet name="header">
 							<s:link styleClass="columnHeader"
-								value="Weather #{roundList.order=='weather asc' ? messages.down : ( roundList.order=='weather desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='weather asc' ? 'weather desc' : 'weather asc'}"/>
+								value="Weather #{roundList.order=='r.weather asc' ? messages.down : ( roundList.order=='r.weather desc' ? messages.up : '' )}">
+								<f:param name="order" value="#{roundList.order=='r.weather asc' ? 'r.weather desc' : 'r.weather asc'}"/>
 							</s:link>
 						</f:facet>
 						#{_round.weather}
@@ -225,7 +225,7 @@
 				<s:button id="previous" action="#{roundList.previous}" rendered="#{roundList.previousExists}" 
 					value="#{messages.left} Previous Page" />
 
-				<h:selectOneMenu id="pageSize" value="#{roundList.maxResults}" onchange="this.form.submit();">
+				<h:selectOneMenu id="pageSize" value="#{roundList.maxResults}" valueChangeListener="#{roundList.first}" onchange="this.form.submit();">
 					<f:selectItem itemValue="5" />
 					<f:selectItem itemValue="10" />
 					<f:selectItem itemValue="15" />
