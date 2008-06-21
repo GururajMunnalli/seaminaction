@@ -58,19 +58,17 @@ img.errors {
 .menuButtons {
    font-size: 12px;
    font-weight: bold;
-   border-colour: #bed6f8;
    background-color: #BED6F8;
    background-position: top left;
-  
+   border-bottom: 1px solid #CCCCCC;  
 }
 .menuButtons a {
     font-size: 11px;
-    colour: #000000;
     font-weight: bold;
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /*.searchResults {
@@ -82,13 +80,13 @@ img.errors {
 
 }*/ /* looks better without this border */
 .leftMenu {
-   padding: 5px;
+   padding: 3px 5px;
    vertical-align: middle;
    text-align: left;
    background-color: transparent;
 }
 .rightMenu{
-   padding: 5px;
+   padding: 3px 5px;
    vertical-align: middle;
    text-align: right;
    background-color: transparent;
@@ -347,4 +345,9 @@ td {
 
 table.radio {
 	width: auto;
+}
+
+a.external {
+	background: url("../img/external.png") center right no-repeat;
+	padding-right: 13px;
 }

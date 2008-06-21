@@ -88,12 +88,14 @@
 				  partialSubmit="true"/>
             </s:decorate>
 
+            <ui:remove><!-- removing search for uri -->
             <s:decorate id="uridecId" template="layout/display.xhtml">
                 <ui:define name="label">uri</ui:define>
                 <ice:inputText id="listuriTextId" 
                           value="#{facilityList.facility.uri}"
 				  partialSubmit="true"/>
             </s:decorate>
+            </ui:remove>
 
             <s:decorate id="zipdecId" template="layout/display.xhtml">
                 <ui:define name="label">zip</ui:define>
@@ -137,6 +139,7 @@
             </f:facet>
             #{facility.id}&amp;nbsp;
         </ice:column>
+        <ui:remove><!-- Hiding address -->
         <ice:column id="listaddressId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -147,6 +150,7 @@
             </f:facet>
             #{facility.address}&amp;nbsp;
         </ice:column>
+        </ui:remove>
         <ice:column id="listcityId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -177,6 +181,7 @@
             </f:facet>
             #{facility.county}&amp;nbsp;
         </ice:column>
+        <ui:remove><!-- Hiding description -->
         <ice:column id="listdescriptionId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -187,6 +192,7 @@
             </f:facet>
             #{facility.description}&amp;nbsp;
         </ice:column>
+        </ui:remove>
         <ice:column id="listnameId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -195,7 +201,7 @@
                     <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.name}&amp;nbsp;
+            <h:outputLink styleClass="external" value="#{facility.uri}" rendered="#{not empty facility.uri}">#{facility.name}</h:outputLink><h:outputText value="#{facility.uri}" rendered="#{empty facility.uri}"/>&amp;nbsp;
         </ice:column>
         <ice:column id="listphoneId">
             <f:facet name="header">
@@ -237,6 +243,7 @@
             </f:facet>
             #{facility.type}&amp;nbsp;
         </ice:column>
+        <ui:remove><!-- Hiding uri and making name a link -->
         <ice:column id="listuriId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -247,6 +254,7 @@
             </f:facet>
             #{facility.uri}&amp;nbsp;
         </ice:column>
+        </ui:remove>
         <ice:column id="listzipId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
