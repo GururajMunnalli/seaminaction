@@ -87,7 +87,7 @@
 
    <!--
    <mail:mail-session host="localhost" port="2525" username="open18" password="tiger"/>
-   <mail:mail-session host="smtp.gmail.com" port="587" username="dan.j.allen@gmail.com" password="*****" tls="true"/>
+   <mail:mail-session host="smtp.gmail.com" port="587" username="dan.j.allen@gmail.com" password="[LiNuX320]170" tls="true"/>
    -->
    <mail:mail-session session-jndi-name="java:/Mail"/>
         
@@ -108,6 +108,8 @@
    <component name="currentGolfer" class="org.open18.model.Golfer" scope="session"/>
 
    <!-- the currentGolferManaged is used when we need an instance that is managed by the current entity manager -->
+   <!-- http://alpha.seamframework.org:9999/Documentation/UsingEntityHomeForEntitiesInLongrunningContexts (perhaps good to write about) -->
+   <!-- thinking about making this managedCurrentGolfer -->
    <factory name="currentGolferManaged" value="#{currentGolferHome.instance}" auto-create="true"/>
    <framework:entity-home name="currentGolferHome" entity-class="org.open18.model.Golfer">
       <framework:id>#{currentGolfer.id}</framework:id>
@@ -213,6 +215,13 @@
       <property name="deleted-message">&#8205;#{course.name} has been removed. I never liked it anyway.</property>
    </framework:entity-home>
 
+    <component name="roundPrototype" class="org.open18.model.Round">
+        <property name="golfer">#{currentGolfer}</property>
+        <property name="date">#{currentDate}</property>
+	</component>
+
+    <framework:entity-home name="roundHome" class="org.open18.action.RoundHome" new-instance="#{roundPrototype}"/>
+
     <component name="teeSetExample">
         <property name="course">#{courseExample}</property>
     </component>
@@ -222,14 +231,14 @@
         <property name="teeSet">#{teeSetExample}</property>
     </component>
 
-	<!-- if JBSEAM-2133 is accepted, need to escape these expressions -->
+    <!-- if JBSEAM-2133 is accepted, need to escape these expressions -->
     <framework:entity-query name="roundList"
         ejbql="select r from Round r
           join fetch r.golfer golfer
           join fetch r.teeSet teeSet
           join fetch teeSet.course course"
         max-results="5"
-        order="date desc"
+        order="r.date desc"
         scope="conversation">
         <framework:restrictions>
             <!--<value>lower(golfer.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>-->
@@ -251,10 +260,10 @@
         </framework:restrictions>
     </framework:entity-query>
 
-	<!-- If a round is changed, we have to assume that the result set is stale (could lead to LIE otherwise) -->
+    <!-- If a round is changed, we have to assume that the result set is stale (could lead to LIE otherwise) -->
     <event type="org.jboss.seam.afterTransactionSuccess.Round">
         <action execute="#{roundList.refresh}"/>
-		<!-- It is necessary to fetch the result list to deal with swizzled result list -->
+        <!-- It is necessary to fetch the result list to deal with swizzled result list -->
         <action execute="#{roundList.resultList}"/>
     </event>
 
@@ -311,8 +320,17 @@
    <factory name="nonFriends" value="#{nonFriendsQuery.resultList}" scope="page" />
    -->
    
+   <!--
    <component name="currentGolferFriends" scope="event" class="org.jboss.seam.jsf.SetDataModel">
       <property name="wrappedData">#{currentGolfer.friends}</property>
    </component>
+   -->
+
+   <component name="golfTournamentService" class="org.open18.spring.adapter.HttpInvokerProxyFactoryBeanAdapter" auto-create="true">
+      <property name="serviceUrl">http://localhost:9090/golf-tournament-service/tournament.service</property>
+      <property name="serviceInterface">org.open18.partner.service.GolfTournamentService</property>
+   </component>
+
+   <factory name="futureTournaments2" value="#{golfTournamentService.futureTournaments}" scope="event" />
 
 </components>

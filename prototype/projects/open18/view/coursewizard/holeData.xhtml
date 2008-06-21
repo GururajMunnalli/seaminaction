@@ -69,6 +69,23 @@
 				<h:commandButton id="nextLadies" action="Ladies" value="Next &gt; &gt;" rendered="#{gender eq 'Ladies'}"/>
 			</div>
 		</h:form>
+		<p>
+			<h:form id="workspaceSwitcher">
+				<strong style="color: #000000;">Workspace: </strong>
+				<h:selectOneMenu id="target" value="#{switcher.conversationIdOrOutcome}" style="vertical-align: bottom;">
+					<f:selectItem itemLabel="Return home" itemValue="home"/>
+					<ui:remove><f:selectItem itemLabel="Enter new course" itemValue="addCourse"/></ui:remove>
+					<f:selectItems value="#{switcher.selectItems}"/>
+				</h:selectOneMenu>
+				<h:commandButton id="switch" action="#{switcher.select}" value="Switch" style="margin: 0 0 0 3px;">
+					<s:conversationPropagation type="none"/>
+				</h:commandButton>
+				<!-- make the add course button of the conversation switcher is very complicated -->
+				<s:button id="addCourse" action="#{courseWizard.addCourse}" propagation="none" value="Add course...">
+          			<f:param name="facilityId" value="#{newCourse.facility.id}"/>
+        		</s:button>
+			</h:form>	
+		</p>
 
 	</ui:define> 
 </ui:composition>

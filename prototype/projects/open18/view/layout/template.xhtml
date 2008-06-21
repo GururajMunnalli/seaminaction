@@ -36,6 +36,8 @@
 		#{' | '}
 		<s:link id="debugConsole" view="/debug.xhtml" value="Debug console" target="debugConsole"/>
 		#{' ]'}
+		<br/>
+		<strong>conversation:</strong> id = #{conversation.id}, long running? #{conversation.longRunning}, nested? #{conversation.nested ? 'yes' : 'no'}, parent id = #{conversation.nested ? conversation.parentId : 'n/a'}
 		</s:fragment>
 	</div>
 

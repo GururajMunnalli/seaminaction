@@ -10,7 +10,11 @@
 		<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property>
 		<property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+		<!-- only need "update" hbm2ddl value the first time -->
+		<!--
 		<property name="hibernate.hbm2ddl.auto">update</property>
+		-->
+		<property name="hibernate.hbm2ddl.auto">none</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
 		<!--property name="transaction.flush_before_completion">true</property-->
 

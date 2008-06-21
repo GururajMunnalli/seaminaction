@@ -28,8 +28,8 @@ public class Authenticator {
     @In
     private Identity identity;
 
-	@In
-	private Actor actor;
+    @In
+    private Actor actor;
 
     @In
     private PasswordManager passwordManager;
@@ -38,7 +38,7 @@ public class Authenticator {
     @Out(required = false)
     private Golfer currentGolfer;
 
-	@Transactional
+    @Transactional
     public boolean authenticate() {
         log.info("authenticating #0", identity.getUsername());
         try {
@@ -53,25 +53,25 @@ public class Authenticator {
                 return false;
             }
 
-			actor.setId(identity.getUsername());
+            actor.setId(identity.getUsername());
 
             identity.addRole("member");
-			actor.getGroupActorIds().add("member");
+            actor.getGroupActorIds().add("member");
 
-			if (member.getRoles() != null) {
-				for (Role r : member.getRoles()) {
-					identity.addRole(r.getName());
-					actor.getGroupActorIds().add(r.getName());
-				}
-			}
+            if (member.getRoles() != null) {
+                for (Role r : member.getRoles()) {
+                    identity.addRole(r.getName());
+                    actor.getGroupActorIds().add(r.getName());
+                }
+            }
 
-			if (member instanceof Golfer) {
-            	identity.addRole("golfer");
-				actor.getGroupActorIds().add("golfer");
-				currentGolfer = (Golfer) member;
-			}
+            if (member instanceof Golfer) {
+                identity.addRole("golfer");
+                actor.getGroupActorIds().add("golfer");
+                currentGolfer = (Golfer) member;
+            }
 
-			return true;
+            return true;
         } catch (NoResultException ex) {
             return false;
         }

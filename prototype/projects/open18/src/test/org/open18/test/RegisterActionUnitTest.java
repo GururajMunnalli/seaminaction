@@ -15,7 +15,7 @@ import org.jboss.seam.mock.MockServletContext;
 import org.jboss.seam.util.Reflections;
 import org.open18.action.RegisterAction;
 import org.open18.auth.PasswordBean;
-import org.open18.validator.GolferValidator;
+import org.open18.validation.GolferValidator;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;

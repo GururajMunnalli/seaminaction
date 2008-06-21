@@ -81,7 +81,7 @@
                
 		<h:form>
     <rich:dataTable id="courseList" 
-                var="course"
+                var="_course"
               value="#{courseList.resultList}" 
            rendered="#{not empty courseList.resultList}">
         <h:column>
@@ -91,7 +91,7 @@
                     <f:param name="order" value="#{courseList.order=='id asc' ? 'id desc' : 'id asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.id}
+            #{_course.id}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -100,7 +100,7 @@
                     <f:param name="order" value="#{courseList.order=='description asc' ? 'description desc' : 'description asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.description}
+            #{_course.description}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -109,7 +109,7 @@
                     <f:param name="order" value="#{courseList.order=='designer asc' ? 'designer desc' : 'designer asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.designer}
+            #{_course.designer}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -118,7 +118,7 @@
                     <f:param name="order" value="#{courseList.order=='facility.id asc' ? 'facility.id desc' : 'facility.id asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.facility.id}
+            #{_course.facility.id}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -127,7 +127,7 @@
                     <f:param name="order" value="#{courseList.order=='fairways asc' ? 'fairways desc' : 'fairways asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.fairways}
+            #{_course.fairways}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -136,7 +136,7 @@
                     <f:param name="order" value="#{courseList.order=='greens asc' ? 'greens desc' : 'greens asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.greens}
+            #{_course.greens}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -145,7 +145,7 @@
                     <f:param name="order" value="#{courseList.order=='name asc' ? 'name desc' : 'name asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.name}
+            #{_course.name}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -154,7 +154,7 @@
                     <f:param name="order" value="#{courseList.order=='numHoles asc' ? 'numHoles desc' : 'numHoles asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.numHoles}
+            #{_course.numHoles}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -163,7 +163,7 @@
                     <f:param name="order" value="#{courseList.order=='signatureHole asc' ? 'signatureHole desc' : 'signatureHole asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.signatureHole}
+            #{_course.signatureHole}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -172,7 +172,7 @@
                     <f:param name="order" value="#{courseList.order=='yearBuilt asc' ? 'yearBuilt desc' : 'yearBuilt asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.yearBuilt}
+            #{_course.yearBuilt}
         </h:column>
         <h:column>
             <f:facet name="header">action</f:facet>
@@ -180,12 +180,12 @@
                    value="Select" 
                       id="course" rendered="#{not comparisonModeEnabled}">
                 <f:param name="courseId"
-                        value="#{course.id}"/>
+                        value="#{_course.id}"/>
             </s:link>
 						#{' '}
-						<h:commandLink value="Select" action="#{courseComparison.select(course)}" rendered="#{comparisonModeEnabled}"/>
+						<h:commandLink value="Select" action="#{courseComparison.select(_course)}" rendered="#{comparisonModeEnabled}"/>
 						<ui:remove>
-						<h:commandLink value="Select" action="#{courseComparison.select(course.id)}"/>
+						<h:commandLink value="Select" action="#{courseComparison.select(_course.id)}"/>
 						</ui:remove>
         </h:column>
     </rich:dataTable>

@@ -37,14 +37,10 @@ public class RoundHome extends EntityHome<Round> {
 	// As an alternative to a page parameter, the courseId request
 	// parameter can be injected using the @RequestParameter annotation.
 	//@RequestParameter
-	public void setRoundId(Long id) {
-		setId(id);
-	}
+	//public void setRoundId(Long id) {
+	//	setId(id);
+	//}
 
-	public Long getRoundId() {
-		return (Long) getId();
-	}
-	
 	@Factory(value = "round", scope = ScopeType.EVENT)
 	@Override
 	public Round getInstance() {
@@ -62,15 +58,14 @@ public class RoundHome extends EntityHome<Round> {
 	}
 	
 	/**
-	 * For now just grab the scores...might be good to reach out to the golfer and course,
-	 * but really if we could like holes to score then we can just go grab the holes.
+	 * Grab the rounds as well as scores and associated holes. That should limit what we need to a single query.
 	 */
 	@Override
 	protected Round loadInstance() {
 		try {
-		return (Round) getEntityManager()
-			.createQuery("select distinct r from Round r join fetch r.scores where r.id = #{roundHome.id}")
-			.getSingleResult();
+			return (Round) getEntityManager()
+				.createQuery("select distinct r from Round r join fetch r.scores s join fetch s.hole where r.id = #{roundHome.id}")
+				.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}

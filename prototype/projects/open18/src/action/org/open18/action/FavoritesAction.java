@@ -19,7 +19,7 @@ import java.util.List;
 @Transactional
 public class FavoritesAction implements Serializable {
 	@In
-	EntityManager entityManager;
+	private EntityManager entityManager;
 
 	@WebRemote
 	//@Begin
@@ -47,6 +47,7 @@ public class FavoritesAction implements Serializable {
 		System.out.println("Managed? " + (entityManager.contains(favorite) ? "yes" : "no"));
 	}
 
+	// FIXME: should this only remove favorites of a given entityName?
 	@WebRemote
 	public void removeAllFavorites() {
 		entityManager.createQuery("delete from Favorite").executeUpdate();	

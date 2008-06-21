@@ -16,7 +16,7 @@
 	<begin-conversation nested="true" flush-mode="manual" if="#{!conversation.nested}"/>
 	
 	<param name="roundFrom"/> <!-- used to return us to the page where "Add round" was used -->
-	<param name="roundId" value="#{roundHome.roundId}"/>
+	<param name="roundId" value="#{roundHome.id}" converterId="javax.faces.Long"/>
 
 	<!--<param name="teeSetFrom"/>--> <!-- not sure what this is used for yet -->
 	<param name="teeSetId" value="#{teeSetHome.teeSetId}"/>

@@ -1,0 +1,33 @@
+TODO:
+----
+* complete registration with confirm page and activation page (http://linuxbeans.blogspot.com/2007/09/simple-registration-forms-with-email_23.html)
+	* could do active/non-active flag in database
+	* could use business process and persist on activation (or the business process flips the switch...I think I like that best; could even set a timeout)
+
+* make conversation required on friend actions (or do we want to allow it not, and have /profile.xhtml pull up self if golferId not set?)
+* change scope of round result to use conversation scoped (or page scoped) factory result set only (rather than roundList itself)
+* search is broken for rounds (need to have *Example roles put back in place)
+* cleanup trivia JavaScript (currently in simplehome.xhtml)
+* cleanup add to favorites JavaScript
+* courier action doesn't add any JSF messages (would be nice after sending)
+* add a page or control for admin to set agent for course
+* use hasPermission in UI to prevent Edit button from showing for private courses, etc.
+* perhaps make #{profileAction.self}
+* should we make profile.seam?golferId=3 just profile.seam?id=3
+* could use nested conversation to navigate between friends (see swf-phonebook-clone)
+* be able to edit one's own profile
+* need to better organize packages
+
+* course wizard doesn't save (this happened because grass type was required)
+
+* might want to create scoresForRound factory to prevent hammering of roundHome.scores
+
+* can use @Size restrictions on collections (getHoles(), getTees())
+
+* need to remove member from being an agent before deleting (and reverse friend relationship)
+
+* would like to change auth package to security, but I need a new XML namespace prefix (sec?)
+
+* put login box on homepage
+
+* make formating consistent (tabs or spaces)

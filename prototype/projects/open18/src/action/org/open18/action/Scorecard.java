@@ -24,7 +24,7 @@ import org.open18.model.Score;
 @Name("scorecard")
 public class Scorecard extends EntityController {
 
-	private static final String EJBQL =	"select distinct c from Course c " +
+	private static final String JPQL =	"select distinct c from Course c " +
 		"join fetch c.facility join fetch c.holes join fetch c.teeSets ts join fetch ts.tees " +
 		"where c.id = #{scorecard.courseId}";
 
@@ -101,7 +101,7 @@ public class Scorecard extends EntityController {
 	}
 
 	public void load() {
-		course = (Course) createQuery(EJBQL).getSingleResult();
+		course = (Course) createQuery(JPQL).getSingleResult();
 		teeSets = getTeeSets();
 		ladiesTeeSets = getLadiesTeeSets();
 		mensAndUnisexTeeSets = getMensAndUnisexTeeSets(ladiesTeeSets);

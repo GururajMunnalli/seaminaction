@@ -19,7 +19,7 @@
 	<page name="facilityList" view-id="/FacilityList.xhtml" no-conversation-view-id="/CourseList.xhtml">
 		<description>Facility search</description>
 		<redirect/>
-		<!-- if want to make this sub-process more generated, let the facility be assigned in parent flow-->
+		<!-- if want to make this sub-process more generic, let the facility be assigned in parent flow-->
 		<transition name="select" to="end">
 			<action expression="#{courseWizard.assignFacility}"/>	
 		</transition>

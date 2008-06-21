@@ -6,7 +6,7 @@
    <!--
    <param name="roundFrom"/>
    -->
-   <param name="roundId" value="#{roundHome.roundId}"/>
+   <param name="roundId" value="#{roundHome.id}" converterId="javax.faces.Long"/>
 
    <!--
    <param name="teeSetFrom"/>
