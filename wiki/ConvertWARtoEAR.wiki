@@ -1,4 +1,4 @@
-#summary Details the steps involved in converting a seam-gen WAR project (open18) to an EAR project (open18ee).
+#summary Details the steps involved in converting a seam-gen WAR project (open18) to an EAR project (open18ee)
 
 = Introduction =
 
