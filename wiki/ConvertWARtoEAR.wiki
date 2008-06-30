@@ -39,3 +39,5 @@ If you did change skins, copy the edits that were added at the end of the file.
 If you added urlrewritefilter.jar to deployed-jars.list, add it to deployed-jars-ear.list
 
 Note that there is no EJB code at this point. It's now possible to deploy open18ee and to work on the rest of the tutorial, including the EJB stuff.
+
+It's MUCH easier to make any such transition BEFORE you've created actions because actions in the ear want to be interface-and-Bean pairs. If you do have actions, use the steps outlined in 4.6.2 to convert each one.
