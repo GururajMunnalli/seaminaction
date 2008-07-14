@@ -36,7 +36,7 @@ public class RegisterAction {
 		EntityManager entityManager = (EntityManager) Component.getInstance("entityManager");
 		newGolfer.setDateJoined(new Date()); // could also do this in a @PrePersist method
 		entityManager.persist(newGolfer);
-		FacesMessages.instance().add("Welcome to the community, #{newGolfer.name}!");
+		FacesMessages.instance().add("Welcome to the club, #{newGolfer.name}!");
 		return "success";
 	}
 }
