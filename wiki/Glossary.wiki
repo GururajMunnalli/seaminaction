@@ -25,6 +25,8 @@ Due to the quota of 550 pages for Seam in Action, there is some auxiliary inform
 
 *persistence context* - a cache of persistent entity instances; has a one-to-one association with a persistence manager
 
+*persistent cookie* - a cookie that is not removed when the browser closes; typically used for an authentication token
+
 *Seam Application Framework* - a framework of classes for quickly building application components that perform CRUD and query operations on entities.
 
 *unit of work* - a set of operations, made atomic by a transaction; in this text, the operations are performed on the entity instance and the persistence manager
