@@ -19,16 +19,52 @@
         <rich:panel>
             <f:facet name="header">#{facilityHome.managed ? 'Edit' : 'Add'} Facility</f:facet>
 
-            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" 
-                       required="true"
+
+
+            <s:decorate id="addressDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">address</ui:define>
+                <h:inputText id="address" 
                            size="50"
                       maxlength="50"
-                          value="#{facilityHome.instance.name}">
-                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true"/>
+                          value="#{facilityHome.instance.address}">
+                    <a:support event="onblur" reRender="addressDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
+
+
+            <s:decorate id="cityDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">city</ui:define>
+                <h:inputText id="city" 
+                           size="30"
+                      maxlength="30"
+                          value="#{facilityHome.instance.city}">
+                    <a:support event="onblur" reRender="cityDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="countryDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">country</ui:define>
+                <h:inputText id="country" 
+                           size="30"
+                      maxlength="30"
+                          value="#{facilityHome.instance.country}">
+                    <a:support event="onblur" reRender="countryDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="countyDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">county</ui:define>
+                <h:inputText id="county" 
+                           size="30"
+                      maxlength="30"
+                          value="#{facilityHome.instance.county}">
+                    <a:support event="onblur" reRender="countyDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
 
             <s:decorate id="descriptionDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">description</ui:define>
@@ -38,76 +74,18 @@
                               value="#{facilityHome.instance.description}"/>
             </s:decorate>
 
-            <s:decorate id="typeDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">type</ui:define>
-                <h:inputText id="type" 
-                       required="true"
-                           size="15"
-                      maxlength="15"
-                          value="#{facilityHome.instance.type}">
-                    <a:support event="onblur" reRender="typeDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
 
-            <s:decorate id="addressDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">address</ui:define>
-                <h:inputText id="address" 
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" 
+                       required="true"
                            size="50"
                       maxlength="50"
-                          value="#{facilityHome.instance.address}">
-                    <a:support event="onblur" reRender="addressDecoration" bypassUpdates="true"/>
+                          value="#{facilityHome.instance.name}">
+                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
-            <s:decorate id="cityDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">city</ui:define>
-                <h:inputText id="city" 
-                           size="30"
-                      maxlength="30"
-                          value="#{facilityHome.instance.city}">
-                    <a:support event="onblur" reRender="cityDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
-
-            <s:decorate id="stateDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">state</ui:define>
-                <h:inputText id="state" 
-                           size="2"
-                      maxlength="2"
-                          value="#{facilityHome.instance.state}">
-                    <a:support event="onblur" reRender="stateDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
-
-            <s:decorate id="zipDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">zip</ui:define>
-                <h:inputText id="zip" 
-                           size="5"
-                      maxlength="5"
-                          value="#{facilityHome.instance.zip}">
-                    <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
-
-            <s:decorate id="countyDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">county</ui:define>
-                <h:inputText id="county" 
-                           size="30"
-                      maxlength="30"
-                          value="#{facilityHome.instance.county}">
-                    <a:support event="onblur" reRender="countyDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
-
-            <s:decorate id="countryDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">country</ui:define>
-                <h:inputText id="country" 
-                           size="30"
-                      maxlength="30"
-                          value="#{facilityHome.instance.country}">
-                    <a:support event="onblur" reRender="countryDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
 
             <s:decorate id="phoneDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">phone</ui:define>
@@ -115,9 +93,42 @@
                            size="10"
                       maxlength="10"
                           value="#{facilityHome.instance.phone}">
-                    <a:support event="onblur" reRender="phoneDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="phoneDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
+
+
+            <s:decorate id="priceRangeDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">priceRange</ui:define>
+                <h:inputText id="priceRange"
+                          value="#{facilityHome.instance.priceRange}">
+                    <a:support event="onblur" reRender="priceRangeDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="stateDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">state</ui:define>
+                <h:inputText id="state" 
+                           size="2"
+                      maxlength="2"
+                          value="#{facilityHome.instance.state}">
+                    <a:support event="onblur" reRender="stateDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="typeDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">type</ui:define>
+                <h:inputText id="type" 
+                       required="true"
+                           size="15"
+                      maxlength="15"
+                          value="#{facilityHome.instance.type}">
+                    <a:support event="onblur" reRender="typeDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
 
             <s:decorate id="uriDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">uri</ui:define>
@@ -125,6 +136,24 @@
                                cols="80"
                                rows="3"
                               value="#{facilityHome.instance.uri}"/>
+            </s:decorate>
+
+
+            <s:decorate id="zipDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">zip</ui:define>
+                <h:inputText id="zip" 
+                           size="5"
+                      maxlength="5"
+                          value="#{facilityHome.instance.zip}">
+                    <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+        
+
+            <s:decorate id="enterCourseDecoration" template="layout/edit.xhtml" rendered="#{!facilityHome.managed}">
+                <ui:define name="label">Enter course information?</ui:define>
+                <h:selectBooleanCheckbox id="enterCourse"
+                                value="#{facilityHome.enterCourse}" />
             </s:decorate>
         
             <div style="clear:both">
@@ -150,6 +179,7 @@
             <h:commandButton id="delete" 
                           value="Delete" 
                          action="#{facilityHome.remove}"
+                      immediate="true"
                        rendered="#{facilityHome.managed}"/>
                     
             <s:button id="done" 
@@ -172,7 +202,7 @@
     <rich:tab label="courses">
         <div class="association" id="coursesChildren">
         
-            <h:outputText value="No courses" 
+            <h:outputText value="There are no courses associated with this facility." 
                        rendered="#{empty facilityHome.courses}"/>
         
             <rich:dataTable value="#{facilityHome.courses}" 
@@ -183,10 +213,6 @@
                 <h:column>
                     <f:facet name="header">id</f:facet>
                     <h:outputText value="#{course.id}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">name</f:facet>
-                    <h:outputText value="#{course.name}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">description</f:facet>
@@ -205,8 +231,8 @@
                     <h:outputText value="#{course.greens}"/>
                 </h:column>
                 <h:column>
-                    <f:facet name="header">yearBuilt</f:facet>
-                    <h:outputText value="#{course.yearBuilt}"/>
+                    <f:facet name="header">name</f:facet>
+                    <h:outputText value="#{course.name}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">numHoles</f:facet>
@@ -217,10 +243,14 @@
                     <h:outputText value="#{course.signatureHole}"/>
                 </h:column>
                 <h:column>
+                    <f:facet name="header">yearBuilt</f:facet>
+                    <h:outputText value="#{course.yearBuilt}"/>
+                </h:column>
+                <h:column>
                     <f:facet name="header">action</f:facet>
                     <s:link view="/Course.xhtml" 
                               id="selectcourse" 
-                           value="Select"
+                           value="View"
                      propagation="none">
                         <f:param name="courseId" 
                                 value="#{course.id}"/>

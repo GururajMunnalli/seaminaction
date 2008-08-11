@@ -12,59 +12,80 @@
 
 		<div id="banner">
 			<h1>Join the Open 18 golfer community!</h1>
-			<p>Already a member?#{' '}<s:link id="signin" value="Click Here to Sign In" view="/login.xhtml" /></p>
+			<p>Already a member?#{' '}<s:link id="signin" value="Click Here to Sign In" view="/login.xhtml"/></p>
 		</div>
 
-		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" />
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
 	
 		<h:form id="registerActionForm" styleClass="edit">
 			<rich:panel>
 				<f:facet name="header">Open 18 Member Registration</f:facet>
 
-				<s:decorate id="decorateName" template="layout/edit.xhtml">
-					<ui:define name="label">Name</ui:define>
-					<h:inputText id="name" value="#{newGolfer.name}" size="40" required="true" />
+				<s:decorate id="firstNameField" template="layout/edit.xhtml">
+					<ui:define name="label">First Name</ui:define>
+					<h:inputText id="firstName" value="#{newGolfer.firstName}" size="40" required="true"/>
 				</s:decorate>
 		
-				<s:decorate id="decorateEmail" template="layout/edit.xhtml">
+				<s:decorate id="lastNameField" template="layout/edit.xhtml">
+					<ui:define name="label">Last Name</ui:define>
+					<h:inputText id="lastName" value="#{newGolfer.lastName}" size="40" required="true"/>
+				</s:decorate>
+		
+				<s:decorate id="emailAddressField" template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
-					<h:inputText id="emailAddress" value="#{newGolfer.emailAddress}" size="40" required="true" />
+					<h:inputText id="emailAddress" value="#{newGolfer.emailAddress}" size="40" required="true"/>
 				</s:decorate>
 		
-				<s:decorate id="decorateUsername" template="layout/edit.xhtml">
+				<s:decorate id="usernameField" template="layout/edit.xhtml">
 					<ui:define name="label">Username</ui:define>
 					<h:inputText id="username" value="#{newGolfer.username}" size="20" required="true"/>
 				</s:decorate>
 		
-				<s:decorate id="decoratePassword" template="layout/edit.xhtml">
+				<s:decorate id="passwordField" template="layout/edit.xhtml">
 					<ui:define name="label">Password</ui:define>
-					<h:inputSecret id="password" value="#{passwordBean.password}" size="20" required="true" redisplay="true" />
+					<h:inputSecret id="password" value="#{passwordBean.password}" size="20" required="true" redisplay="true"/>
 				</s:decorate>
 		
-				<s:decorate id="decorateConfirm" template="layout/edit.xhtml">
+				<s:decorate id="confirmField" template="layout/edit.xhtml">
 					<ui:define name="label">Confirm password</ui:define>
-					<h:inputSecret id="confirm" value="#{passwordBean.confirm}" size="20" required="true" redisplay="true" />
-				</s:decorate>
-
-				<s:decorate id="decorateLocation" template="layout/edit.xhtml">
-					<ui:define name="label">Location</ui:define>
-					<h:inputText id="location" value="#{newGolfer.location}" size="40" />
+					<h:inputSecret id="confirmField" value="#{passwordBean.confirm}" size="20" required="true" redisplay="true"/>
 				</s:decorate>
 		
-				<s:decorate id="decorateDateOfBirth" template="layout/edit.xhtml">
+				<s:decorate id="dateOfBirthField" template="layout/edit.xhtml">
 					<ui:define name="label">Date of birth</ui:define>
-					<rich:calendar id="dateOfBirth" value="#{newGolfer.dateOfBirth}" />
+					<rich:calendar id="dateOfBirth" value="#{newGolfer.dateOfBirth}"/>
 				</s:decorate>
 
-				<s:decorate id="decorateGender" template="layout/edit.xhtml">
+				<s:decorate id="genderField" template="layout/edit.xhtml">
 					<ui:define name="label">Gender</ui:define>
 					<h:selectOneRadio id="gender" value="#{newGolfer.gender}" styleClass="radio">
-						<s:convertEnum />
-						<s:enumItem enumValue="MALE" label="Male" />
-						<s:enumItem enumValue="FEMALE" label="Female" />
+						<s:convertEnum/>
+						<s:enumItem enumValue="MALE" label="Male"/>
+						<s:enumItem enumValue="FEMALE" label="Female"/>
 					</h:selectOneRadio>
 				</s:decorate>
 		
+				<s:decorate id="locationField" template="layout/edit.xhtml">
+					<ui:define name="label">Location</ui:define>
+					<h:inputText id="location" value="#{newGolfer.location}" size="40"/>
+				</s:decorate>
+
+				<s:decorate id="proStatusField" template="layout/edit.xhtml">
+					<ui:define name="label">Pro status</ui:define>
+					<h:selectOneRadio id="proStatus" value="#{newGolfer.proStatus}" styleClass="radio">
+						<s:selectItems var="t" label="#{t}"
+							value="#{registerAction.proStatusTypes}"/>
+					</h:selectOneRadio>
+				</s:decorate>
+
+				<s:decorate id="specialtyField" template="layout/edit.xhtml">
+					<ui:define name="label">Specialty</ui:define>
+					<h:selectOneMenu id="specialty" value="#{newGolfer.specialty}">
+						<s:selectItems var="t" label="#{t}" noSelectionLabel="-- Select --" 
+							value="#{registerAction.specialtyTypes}"/>
+					</h:selectOneMenu>
+				</s:decorate>
+
 				<div style="clear:both">
 					<span class="required">*</span> required fields
 				</div>
@@ -72,8 +93,10 @@
 			</rich:panel>
 
 			<div class="actionButtons">
-				<s:button id="cancel" value="Cancel" view="/home.xhtml" />
-				<h:commandButton id="register" value="Sign Up Now!" action="#{registerAction.register}" />
+				<h:commandButton id="cancel" value="Cancel" action="home" immediate="true"/>
+				<h:commandButton id="register" value="Register" action="#{registerAction.register}">
+					<s:defaultAction/>
+				</h:commandButton>
 			</div>
 		
 		</h:form>

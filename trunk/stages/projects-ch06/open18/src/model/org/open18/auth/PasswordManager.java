@@ -3,7 +3,7 @@ package org.open18.auth;
 import java.security.MessageDigest;
 import org.jboss.seam.annotations.Name;
 
-@Name("passwordManager")
+@Name("org.open18.auth.passwordManager")
 public class PasswordManager {
 	private String digestAlgorithm;
 	private String charset;

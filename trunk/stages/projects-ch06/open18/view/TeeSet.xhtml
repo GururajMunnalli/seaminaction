@@ -16,35 +16,43 @@
     <rich:panel>
         <f:facet name="header">TeeSet</f:facet>
 
-        <s:decorate id="name" template="layout/display.xhtml">
-            <ui:define name="label">name</ui:define>
-            #{teeSetHome.instance.name}
-        </s:decorate>
+
 
         <s:decorate id="color" template="layout/display.xhtml">
             <ui:define name="label">color</ui:define>
             #{teeSetHome.instance.color}
         </s:decorate>
 
+
         <s:decorate id="ladiesCourseRating" template="layout/display.xhtml">
             <ui:define name="label">ladiesCourseRating</ui:define>
             #{teeSetHome.instance.ladiesCourseRating}
         </s:decorate>
+
 
         <s:decorate id="ladiesSlopeRating" template="layout/display.xhtml">
             <ui:define name="label">ladiesSlopeRating</ui:define>
             #{teeSetHome.instance.ladiesSlopeRating}
         </s:decorate>
 
+
         <s:decorate id="mensCourseRating" template="layout/display.xhtml">
             <ui:define name="label">mensCourseRating</ui:define>
             #{teeSetHome.instance.mensCourseRating}
         </s:decorate>
 
+
         <s:decorate id="mensSlopeRating" template="layout/display.xhtml">
             <ui:define name="label">mensSlopeRating</ui:define>
             #{teeSetHome.instance.mensSlopeRating}
         </s:decorate>
+
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">name</ui:define>
+            #{teeSetHome.instance.name}
+        </s:decorate>
+
 
         <s:decorate id="position" template="layout/display.xhtml">
             <ui:define name="label">position</ui:define>
@@ -72,7 +80,7 @@
     <rich:tab label="course">
     <div class="association" id="courseParent">
         
-        <h:outputText value="No course" 
+        <h:outputText value="There is no course associated with this teeSet." 
                    rendered="#{teeSetHome.instance.course == null}"/>
         
         <rich:dataTable var="course" 
@@ -85,20 +93,16 @@
                 #{course.id}
             </h:column>
             <h:column>
-	    	    <f:facet name="header">facility id</f:facet>
-		    	#{course.facility.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">name</f:facet>
-                #{course.name}
-            </h:column>
-            <h:column>
                 <f:facet name="header">description</f:facet>
                 #{course.description}
             </h:column>
             <h:column>
                 <f:facet name="header">designer</f:facet>
                 #{course.designer}
+            </h:column>
+            <h:column>
+	    	    <f:facet name="header">facility id</f:facet>
+		    	#{course.facility.id}
             </h:column>
             <h:column>
                 <f:facet name="header">fairways</f:facet>
@@ -109,8 +113,8 @@
                 #{course.greens}
             </h:column>
             <h:column>
-                <f:facet name="header">yearBuilt</f:facet>
-                #{course.yearBuilt}
+                <f:facet name="header">name</f:facet>
+                #{course.name}
             </h:column>
             <h:column>
                 <f:facet name="header">numHoles</f:facet>
@@ -119,6 +123,10 @@
             <h:column>
                 <f:facet name="header">signatureHole</f:facet>
                 #{course.signatureHole}
+            </h:column>
+            <h:column>
+                <f:facet name="header">yearBuilt</f:facet>
+                #{course.yearBuilt}
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>
@@ -137,7 +145,7 @@
     <rich:tab label="tees">
     <div class="association" id="teesChildren">
         
-        <h:outputText value="No tees" 
+        <h:outputText value="There are no tees associated with this teeSet."
                    rendered="#{empty teeSetHome.tees}"/>
         
         <rich:dataTable value="#{teeSetHome.tees}" 
@@ -146,12 +154,12 @@
                 rowClasses="rvgRowOne,rvgRowTwo"
                         id="teesTable">
             <h:column>
-                <f:facet name="header">teeSetId</f:facet>
-                #{tee.id.teeSetId}
-            </h:column>
-            <h:column>
                 <f:facet name="header">holeId</f:facet>
                 #{tee.id.holeId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">teeSetId</f:facet>
+                #{tee.id.teeSetId}
             </h:column>
             <h:column>
                 <f:facet name="header">distance</f:facet>
@@ -160,12 +168,12 @@
             <h:column>
                 <f:facet name="header">action</f:facet>
                 <s:link id="selecttee" 
-                     value="Select" 
+                     value="View" 
                       view="/Tee.xhtml">
-                    <f:param name="teeTeeSetId" 
-                            value="#{tee.id.teeSetId}"/>
                     <f:param name="teeHoleId" 
                             value="#{tee.id.holeId}"/>
+                    <f:param name="teeTeeSetId" 
+                            value="#{tee.id.teeSetId}"/>
                     <f:param name="teeFrom" value="TeeSet"/>
                 </s:link>
             </h:column>

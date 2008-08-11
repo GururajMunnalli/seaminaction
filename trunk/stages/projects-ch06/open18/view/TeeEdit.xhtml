@@ -19,15 +19,6 @@
         <rich:panel>
             <f:facet name="header">#{teeHome.managed ? 'Edit' : 'Add'} Tee</f:facet>
 
-            <s:decorate id="teeSetIdDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">teeSetId</ui:define>
-                <h:inputText id="teeSetId"
-                       required="true"
-                       disabled="#{teeHome.managed}"
-                          value="#{teeHome.instance.id.teeSetId}">
-                    <a:support event="onblur" reRender="teeSetIdDecoration" bypassUpdates="true"/>
-                </h:inputText>
-            </s:decorate>
 
             <s:decorate id="holeIdDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">holeId</ui:define>
@@ -35,18 +26,31 @@
                        required="true"
                        disabled="#{teeHome.managed}"
                           value="#{teeHome.instance.id.holeId}">
-                    <a:support event="onblur" reRender="holeIdDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="holeIdDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
+
+            <s:decorate id="teeSetIdDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">teeSetId</ui:define>
+                <h:inputText id="teeSetId"
+                       required="true"
+                       disabled="#{teeHome.managed}"
+                          value="#{teeHome.instance.id.teeSetId}">
+                    <a:support event="onblur" reRender="teeSetIdDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
 
             <s:decorate id="distanceDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">distance</ui:define>
                 <h:inputText id="distance"
                        required="true"
                           value="#{teeHome.instance.distance}">
-                    <a:support event="onblur" reRender="distanceDecoration" bypassUpdates="true"/>
+                    <a:support event="onblur" reRender="distanceDecoration" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
+
+
         
             <div style="clear:both">
                 <span class="required">*</span> 
@@ -71,6 +75,7 @@
             <h:commandButton id="delete" 
                           value="Delete" 
                          action="#{teeHome.remove}"
+                      immediate="true"
                        rendered="#{teeHome.managed}"/>
                     
             <s:button id="done" 
@@ -90,10 +95,75 @@
 
 <rich:tabPanel switchType="ajax">
     
+    <rich:tab label="hole *" labelClass="required">
+    <div class="association" id="holeParent">
+    
+        <h:outputText value="There is no hole associated with this tee." 
+                   rendered="#{teeHome.instance.hole == null}"/>
+        
+        <rich:dataTable var="hole" 
+                   value="#{teeHome.instance.hole}" 
+                rendered="#{teeHome.instance.hole != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="holeTable">
+            <h:column>
+                <f:facet name="header">id</f:facet>
+                #{hole.id}
+            </h:column>
+            <h:column>
+	    	    <f:facet name="header">course id</f:facet>
+		    	#{hole.course.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">ladiesHandicap</f:facet>
+                #{hole.ladiesHandicap}
+            </h:column>
+            <h:column>
+                <f:facet name="header">ladiesPar</f:facet>
+                #{hole.ladiesPar}
+            </h:column>
+            <h:column>
+                <f:facet name="header">mensHandicap</f:facet>
+                #{hole.mensHandicap}
+            </h:column>
+            <h:column>
+                <f:facet name="header">mensPar</f:facet>
+                #{hole.mensPar}
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                #{hole.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">number</f:facet>
+                #{hole.number}
+            </h:column>
+            <h:column>
+                <f:facet name="header">action</f:facet>
+                <s:link view="/Hole.xhtml" 
+                         id="viewhole" 
+                      value="View" 
+                propagation="none">
+                    <f:param name="holeId" 
+                           value="#{hole.id}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button value="Select hole"
+                       view="/HoleList.xhtml">
+                <f:param name="from" value="TeeEdit"/>
+            </s:button>
+        </div>
+        
+    </div>
+    </rich:tab>
+    
     <rich:tab label="teeSet *" labelClass="required">
     <div class="association" id="teeSetParent">
     
-        <h:outputText value="No teeSet" 
+        <h:outputText value="There is no teeSet associated with this tee." 
                    rendered="#{teeHome.instance.teeSet == null}"/>
         
         <rich:dataTable var="teeSet" 
@@ -106,16 +176,12 @@
                 #{teeSet.id}
             </h:column>
             <h:column>
-	    	    <f:facet name="header">course id</f:facet>
-		    	#{teeSet.course.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">name</f:facet>
-                #{teeSet.name}
-            </h:column>
-            <h:column>
                 <f:facet name="header">color</f:facet>
                 <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+            </h:column>
+            <h:column>
+	    	    <f:facet name="header">course id</f:facet>
+		    	#{teeSet.course.id}
             </h:column>
             <h:column>
                 <f:facet name="header">ladiesCourseRating</f:facet>
@@ -132,6 +198,10 @@
             <h:column>
                 <f:facet name="header">mensSlopeRating</f:facet>
                 #{teeSet.mensSlopeRating}
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                #{teeSet.name}
             </h:column>
             <h:column>
                 <f:facet name="header">position</f:facet>
@@ -152,67 +222,6 @@
         <div class="actionButtons">
             <s:button value="Select teeSet"
                        view="/TeeSetList.xhtml">
-                <f:param name="from" value="TeeEdit"/>
-            </s:button>
-        </div>
-        
-    </div>
-    </rich:tab>
-    
-    <rich:tab label="hole *" labelClass="required">
-    <div class="association" id="holeParent">
-    
-        <h:outputText value="No hole" 
-                   rendered="#{teeHome.instance.hole == null}"/>
-        
-        <rich:dataTable var="hole" 
-                   value="#{teeHome.instance.hole}" 
-                rendered="#{teeHome.instance.hole != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-                      id="holeTable">
-            <h:column>
-                <f:facet name="header">id</f:facet>
-                #{hole.id}
-            </h:column>
-            <h:column>
-	    	    <f:facet name="header">course id</f:facet>
-		    	#{hole.course.id}
-            </h:column>
-            <h:column>
-                <f:facet name="header">number</f:facet>
-                #{hole.number}
-            </h:column>
-            <h:column>
-                <f:facet name="header">mensPar</f:facet>
-                #{hole.mensPar}
-            </h:column>
-            <h:column>
-                <f:facet name="header">mensHandicap</f:facet>
-                #{hole.mensHandicap}
-            </h:column>
-            <h:column>
-                <f:facet name="header">ladiesPar</f:facet>
-                #{hole.ladiesPar}
-            </h:column>
-            <h:column>
-                <f:facet name="header">ladiesHandicap</f:facet>
-                #{hole.ladiesHandicap}
-            </h:column>
-            <h:column>
-                <f:facet name="header">action</f:facet>
-                <s:link view="/Hole.xhtml" 
-                         id="viewhole" 
-                      value="View" 
-                propagation="none">
-                    <f:param name="holeId" 
-                           value="#{hole.id}"/>
-                </s:link>
-            </h:column>
-        </rich:dataTable>
-
-        <div class="actionButtons">
-            <s:button value="Select hole"
-                       view="/HoleList.xhtml">
                 <f:param name="from" value="TeeEdit"/>
             </s:button>
         </div>

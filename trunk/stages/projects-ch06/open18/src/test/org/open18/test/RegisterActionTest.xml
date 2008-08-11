@@ -2,9 +2,6 @@
 <suite name="RegisterAction Tests" verbose="2" parallel="false">
 	<test name="RegisterAction Test">
 	  <classes>
-		<!-- unit test is not currently working
-		 <class name="org.open18.test.RegisterActionTest"/>
-		-->
 		 <class name="org.open18.test.RegisterGolferIntegrationTest"/>
 	  </classes>
 	</test>	

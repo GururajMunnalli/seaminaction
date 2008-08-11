@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
 /**
@@ -26,6 +27,7 @@ public class Hole implements java.io.Serializable {
 
 	private Long id;
 	private Course course;
+	private String name;
 	private int number;
 	private int mensPar;
 	private Integer mensHandicap;
@@ -42,9 +44,11 @@ public class Hole implements java.io.Serializable {
 		this.mensPar = mensPar;
 		this.ladiesPar = ladiesPar;
 	}
-	public Hole(Course course, int number, int mensPar, Integer mensHandicap,
-			int ladiesPar, Integer ladiesHandicap, Set<Tee> tees) {
+	public Hole(Course course, String name, int number, int mensPar,
+			Integer mensHandicap, int ladiesPar, Integer ladiesHandicap,
+			Set<Tee> tees) {
 		this.course = course;
+		this.name = name;
 		this.number = number;
 		this.mensPar = mensPar;
 		this.mensHandicap = mensHandicap;
@@ -72,6 +76,16 @@ public class Hole implements java.io.Serializable {
 
 	public void setCourse(Course course) {
 		this.course = course;
+	}
+
+	@Column(name = "NAME", length = 25)
+	@Length(max = 25)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Column(name = "NUMBER", nullable = false)
