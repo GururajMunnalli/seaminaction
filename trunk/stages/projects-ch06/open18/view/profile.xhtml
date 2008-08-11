@@ -11,18 +11,14 @@
 						 
 	<ui:define name="body">
 
-		<s:div id="banner" rendered="#{profileLoaded}">
+		<s:div id="banner">
 			<h1>#{selectedGolfer.name}</h1>
 			<ui:remove><p>#{selectedGolfer.status}</p></ui:remove>
 		</s:div>
 	
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" />
 	
-		<s:div rendered="#{not profileLoaded}">
-			Sorry, but this golfer does not exist.
-		</s:div>
-
-		<rich:panel rendered="#{profileLoaded}">
+		<rich:panel>
 			<f:facet name="header">Profile</f:facet>
 		
 			<s:decorate template="layout/display.xhtml">

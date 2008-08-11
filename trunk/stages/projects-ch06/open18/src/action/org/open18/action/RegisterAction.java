@@ -1,40 +1,41 @@
 package org.open18.action;
 
-import java.util.Date;
+import org.jboss.seam.annotations.In;
 import java.util.List;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
 
-import org.jboss.seam.Component;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.contexts.Context;
-import org.jboss.seam.contexts.Contexts;
+import org.jboss.seam.annotations.RaiseEvent;
+import org.jboss.seam.core.Events;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
 import org.open18.auth.PasswordBean;
 import org.open18.auth.PasswordManager;
 import org.open18.model.Golfer;
+import org.open18.validation.GolferValidator;
 
 @Name("registerAction")
 public class RegisterAction {
 
-	@Logger
-	private Log log;
+	@Logger	private Log log;
 
-	private EntityManager entityManager;
+	@In protected EntityManager entityManager;
 
-	private FacesMessages facesMessages;
+	@In protected FacesMessages facesMessages;
 
-	private PasswordManager passwordManager;
+	@In protected PasswordManager passwordManager;
 
-	private Golfer newGolfer;
+	@In protected Golfer newGolfer;
 
-	private PasswordBean passwordBean;
+	@In protected PasswordBean passwordBean;
+	
+	@In protected GolferValidator golferValidator;
 
-	private String[] proStatusTypes = {};
+	protected String[] proStatusTypes = {};
 
-	private List<String> specialtyTypes = new ArrayList<String>();
+	protected List<String> specialtyTypes = new ArrayList<String>();
 
 	public String[] getProStatusTypes() {
 		return this.proStatusTypes;
@@ -52,16 +53,36 @@ public class RegisterAction {
 		this.specialtyTypes = specialtyTypes;
 	}
 	
+	//@RaiseEvent("golferRegistered") // not nearly as flexible
 	public String register() {
 		log.info("Registering golfer #{newGolfer.username}");
-		if (!passwordBean.verify()) {
-			facesMessages.addToControl("confirm", "value does not match password");
+
+		if (!golferValidator.validate(newGolfer, passwordBean)) {
+			log.info("Invalid registration request");
+			facesMessages.addToControls(golferValidator.getInvalidValues());
 			return null;
 		}
 
 		newGolfer.setPasswordHash(passwordManager.hash(passwordBean.getPassword()));
 		entityManager.persist(newGolfer);
+		if (Events.exists()) {
+			Events.instance().raiseTransactionSuccessEvent("golferRegistered", newGolfer);
+		}
 		facesMessages.addFromResourceBundle("registration.welcome", newGolfer.getName());
 		return "success";
 	}
+	
+	public boolean isUsernameAvailable(String username) {
+        return entityManager.createQuery(
+            "select m from Member m where m.username = :username")
+            .setParameter("username", username)
+            .getResultList().size() == 0;
+    }
+	
+	public boolean isEmailRegistered(String email) {
+        return entityManager.createQuery(
+            "select m from Member m where m.emailAddress = :email")
+            .setParameter("email", email)
+            .getResultList().size() > 0;
+    }
 }

@@ -1,5 +1,8 @@
 package org.open18.auth;
 
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
+
+@BypassInterceptors
 public class PasswordBean {
 	private String password;
 	private String confirm;
@@ -21,4 +24,14 @@ public class PasswordBean {
 	public boolean verify() {
 		return confirm != null && confirm.equals(password);
 	}
+	
+	@Override
+	public String toString() {
+		return new StringBuffer()
+			.append(getClass().getName()).append("[")
+			.append("password=").append(password).append(",")
+			.append("confirm=").append(confirm)
+			.append("]").toString();
+	}
+
 }

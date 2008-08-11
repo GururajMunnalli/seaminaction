@@ -9,4 +9,10 @@
 			<redirect view-id="/home.xhtml"/>
 		</rule>
 	</navigation>
+	<navigation>
+		<rule if-outcome="cancel">
+			<raise-event type="registrationCanceled"/>
+			<redirect view-id="/home.xhtml"/>
+		</rule>
+	</navigation>
 </page>
