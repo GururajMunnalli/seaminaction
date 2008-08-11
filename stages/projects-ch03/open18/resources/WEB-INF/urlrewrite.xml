@@ -34,6 +34,8 @@
 	
 	<!-- note that these friendly URLs are knowingly discarding the cid parameter -->
 	<!-- assuming that the parameters are placed into the url in insertion order -->
+
+	<!-- TODO: supposedly %{context-path} can be used in outbound-rule -->
 	
 	<outbound-rule>
 		<from>^(/.+)?/Facility.seam\?facilityId=(\d+)(&amp;cid=\d+)?$</from>
