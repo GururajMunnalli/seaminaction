@@ -28,6 +28,7 @@ public class HoleHome extends EntityHome<Hole> {
 	}
 
 	public void wire() {
+		getInstance();
 		Course course = courseHome.getDefinedInstance();
 		if (course != null) {
 			getInstance().setCourse(course);

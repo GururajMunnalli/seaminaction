@@ -15,14 +15,15 @@
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
-				 http://open18.org/components/auth-1.0.xsd
+                 http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
    <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
      
    <core:manager concurrent-request-timeout="500" 
                  conversation-timeout="120000" 
-                 conversation-id-parameter="cid"/>
+                 conversation-id-parameter="cid"
+                 parent-conversation-id-parameter="pid"/>
     
    <persistence:managed-persistence-context name="entityManager"
                                      auto-create="true"
@@ -39,14 +40,14 @@
                            security-rules="#{securityRules}"
                               remember-me="true"/>
                               
-   <event type="org.jboss.seam.notLoggedIn">
+   <event type="org.jboss.seam.security.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>
    </event>
-   <event type="org.jboss.seam.postAuthenticate">
+   <event type="org.jboss.seam.security.loginSuccessful">
        <action execute="#{redirect.returnToCapturedView}"/>
    </event>
    
-   <mail:mail-session host="localhost" port="2525" username="test" password="test" />
+   <mail:mail-session host="localhost" port="2525" username="test" password="test"/>
         
    <!-- For use with jBPM pageflow or process management -->
    <!--  
@@ -58,27 +59,25 @@
 
    <!-- ===== Open 18 component definitions and configurations ===== -->
 
+   <import>org.open18.auth</import>
+
    <!-- newGolfer | generic-style component *definition* -->
    <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
       <property name="dateJoined">#{currentDatetime}</property>
    </component>
 
-   <!--<component name="selectedGolfer" class="org.open18.model.Golfer" />-->
-
    <!-- newGolfer | namespace-style component *definition* -->
    <!--
-   <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}" />
+   <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}"/>
    -->
 
    <!-- passwordBean | generic-style component *definition* -->
    <!--
-   <component name="passwordBean" class="org.open18.auth.PasswordBean" scope="event" />
+   <component name="passwordBean" class="org.open18.auth.PasswordBean" scope="event"/>
    -->
 
    <!-- passwordBean | namespace-style component *definition* -->
-   <!--
-   <auth:password-bean name="passwordBean" scope="event" />
-   -->
+   <auth:password-bean name="passwordBean" scope="event"/>
    
    <!-- passwordManager | generic-style component *configuration* -->
    <!--
@@ -92,17 +91,36 @@
    <!--
    <component name="passwordManager">
       <digestAlgorithm>SHA-1</digestAlgorithm>
-	  <charset>UTF-8</charset>
+      <charset>UTF-8</charset>
    </component>
    -->
    
-   <!-- passwordManager | namespace-style component *configuration* variants -->
-   <auth:password-manager digest-algorithm="SHA-1" charset="UTF-8" />
+   <!-- passwordManager | namespace-style component *configuration* (attribute variant) -->
+   <auth:password-manager digest-algorithm="SHA-1" charset="UTF-8"/>
+
+   <!-- passwordManager | namespace-style component *configuration* (element variant) -->
    <!--
    <auth:password-manager>
       <auth:digest-algorithm>SHA-1</auth:digest-algorithm>
       <auth:charset>UTF-8</auth:charset>
    </auth:password-manager>
    -->
+
+   <!-- registerAction | property configuration (note that property names can use either hyphenated or humpback syntax) -->
+   <component name="registerAction">
+      <property name="entityManager">#{entityManager}</property>
+      <property name="facesMessages">#{facesMessages}</property>
+      <property name="password-manager">#{passwordManager}</property>
+      <property name="new-golfer">#{newGolfer}</property>
+      <property name="password-bean">#{passwordBean}</property>
+      <property name="pro-status-types">amateur pro semi-pro</property>
+      <property name="specialtyTypes">
+         <value>#{messages['specialty.drive']}</value>
+         <value>#{messages['specialty.chip']}</value>
+         <value>#{messages['specialty.putt']}</value>
+         <value>#{messages['specialty.iron']}</value>
+         <value>#{messages['specialty.looks']}</value>
+      </property>
+   </component>
 
 </components>

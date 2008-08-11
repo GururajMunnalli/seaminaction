@@ -16,44 +16,53 @@
     <rich:panel>
         <f:facet name="header">Course</f:facet>
 
-        <s:decorate id="name" template="layout/display.xhtml">
-            <ui:define name="label">name</ui:define>
-            #{courseHome.instance.name}
-        </s:decorate>
+
 
         <s:decorate id="description" template="layout/display.xhtml">
             <ui:define name="label">description</ui:define>
             #{courseHome.instance.description}
         </s:decorate>
 
+
         <s:decorate id="designer" template="layout/display.xhtml">
             <ui:define name="label">designer</ui:define>
             #{courseHome.instance.designer}
         </s:decorate>
+
 
         <s:decorate id="fairways" template="layout/display.xhtml">
             <ui:define name="label">fairways</ui:define>
             #{courseHome.instance.fairways}
         </s:decorate>
 
+
         <s:decorate id="greens" template="layout/display.xhtml">
             <ui:define name="label">greens</ui:define>
             #{courseHome.instance.greens}
         </s:decorate>
 
-        <s:decorate id="yearBuilt" template="layout/display.xhtml">
-            <ui:define name="label">yearBuilt</ui:define>
-            #{courseHome.instance.yearBuilt}
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">name</ui:define>
+            #{courseHome.instance.name}
         </s:decorate>
+
 
         <s:decorate id="numHoles" template="layout/display.xhtml">
             <ui:define name="label">numHoles</ui:define>
             #{courseHome.instance.numHoles}
         </s:decorate>
 
+
         <s:decorate id="signatureHole" template="layout/display.xhtml">
             <ui:define name="label">signatureHole</ui:define>
             #{courseHome.instance.signatureHole}
+        </s:decorate>
+
+
+        <s:decorate id="yearBuilt" template="layout/display.xhtml">
+            <ui:define name="label">yearBuilt</ui:define>
+            #{courseHome.instance.yearBuilt}
         </s:decorate>
 
         <div style="clear:both"/>
@@ -77,7 +86,7 @@
     <rich:tab label="facility">
     <div class="association" id="facilityParent">
         
-        <h:outputText value="No facility" 
+        <h:outputText value="There is no facility associated with this course." 
                    rendered="#{courseHome.instance.facility == null}"/>
         
         <rich:dataTable var="facility" 
@@ -90,18 +99,6 @@
                 #{facility.id}
             </h:column>
             <h:column>
-                <f:facet name="header">name</f:facet>
-                #{facility.name}
-            </h:column>
-            <h:column>
-                <f:facet name="header">description</f:facet>
-                #{facility.description}
-            </h:column>
-            <h:column>
-                <f:facet name="header">type</f:facet>
-                #{facility.type}
-            </h:column>
-            <h:column>
                 <f:facet name="header">address</f:facet>
                 #{facility.address}
             </h:column>
@@ -110,28 +107,44 @@
                 #{facility.city}
             </h:column>
             <h:column>
-                <f:facet name="header">state</f:facet>
-                #{facility.state}
-            </h:column>
-            <h:column>
-                <f:facet name="header">zip</f:facet>
-                #{facility.zip}
+                <f:facet name="header">country</f:facet>
+                #{facility.country}
             </h:column>
             <h:column>
                 <f:facet name="header">county</f:facet>
                 #{facility.county}
             </h:column>
             <h:column>
-                <f:facet name="header">country</f:facet>
-                #{facility.country}
+                <f:facet name="header">description</f:facet>
+                #{facility.description}
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                #{facility.name}
             </h:column>
             <h:column>
                 <f:facet name="header">phone</f:facet>
                 #{facility.phone}
             </h:column>
             <h:column>
+                <f:facet name="header">priceRange</f:facet>
+                #{facility.priceRange}
+            </h:column>
+            <h:column>
+                <f:facet name="header">state</f:facet>
+                #{facility.state}
+            </h:column>
+            <h:column>
+                <f:facet name="header">type</f:facet>
+                #{facility.type}
+            </h:column>
+            <h:column>
                 <f:facet name="header">uri</f:facet>
                 #{facility.uri}
+            </h:column>
+            <h:column>
+                <f:facet name="header">zip</f:facet>
+                #{facility.zip}
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>
@@ -147,10 +160,74 @@
     </div>
     </rich:tab>
 
+    <rich:tab label="holes">
+    <div class="association" id="holesChildren">
+        
+        <h:outputText value="There are no holes associated with this course."
+                   rendered="#{empty courseHome.holes}"/>
+        
+        <rich:dataTable value="#{courseHome.holes}" 
+                       var="hole" 
+                  rendered="#{not empty courseHome.holes}" 
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="holesTable">
+            <h:column>
+                <f:facet name="header">id</f:facet>
+                <h:outputText value="#{hole.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">ladiesHandicap</f:facet>
+                <h:outputText value="#{hole.ladiesHandicap}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">ladiesPar</f:facet>
+                <h:outputText value="#{hole.ladiesPar}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">mensHandicap</f:facet>
+                <h:outputText value="#{hole.mensHandicap}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">mensPar</f:facet>
+                <h:outputText value="#{hole.mensPar}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                <h:outputText value="#{hole.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">number</f:facet>
+                <h:outputText value="#{hole.number}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">action</f:facet>
+                <s:link id="selecthole" 
+                     value="View" 
+                      view="/Hole.xhtml">
+                    <f:param name="holeId" 
+                            value="#{hole.id}"/>
+                    <f:param name="holeFrom" value="Course"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+        
+    </div>
+    
+    <div class="actionButtons">
+        <s:button 
+               value="Add hole"
+                view="/HoleEdit.xhtml">
+            <f:param name="courseId" 
+                    value="#{courseHome.instance.id}"/>
+            <f:param name="holeFrom" value="Course"/>
+        </s:button>
+    </div>        
+    </rich:tab>
+
     <rich:tab label="teeSets">
     <div class="association" id="teeSetsChildren">
         
-        <h:outputText value="No teeSets" 
+        <h:outputText value="There are no teeSets associated with this course."
                    rendered="#{empty courseHome.teeSets}"/>
         
         <rich:dataTable value="#{courseHome.teeSets}" 
@@ -161,10 +238,6 @@
             <h:column>
                 <f:facet name="header">id</f:facet>
                 <h:outputText value="#{teeSet.id}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">name</f:facet>
-                <h:outputText value="#{teeSet.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">color</f:facet>
@@ -187,13 +260,17 @@
                 <h:outputText value="#{teeSet.mensSlopeRating}"/>
             </h:column>
             <h:column>
+                <f:facet name="header">name</f:facet>
+                <h:outputText value="#{teeSet.name}"/>
+            </h:column>
+            <h:column>
                 <f:facet name="header">position</f:facet>
                 <h:outputText value="#{teeSet.position}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">action</f:facet>
                 <s:link id="selectteeSet" 
-                     value="Select" 
+                     value="View" 
                       view="/TeeSet.xhtml">
                     <f:param name="teeSetId" 
                             value="#{teeSet.id}"/>
@@ -211,66 +288,6 @@
             <f:param name="courseId" 
                     value="#{courseHome.instance.id}"/>
             <f:param name="teeSetFrom" value="Course"/>
-        </s:button>
-    </div>        
-    </rich:tab>
-
-    <rich:tab label="holes">
-    <div class="association" id="holesChildren">
-        
-        <h:outputText value="No holes" 
-                   rendered="#{empty courseHome.holes}"/>
-        
-        <rich:dataTable value="#{courseHome.holes}" 
-                       var="hole" 
-                  rendered="#{not empty courseHome.holes}" 
-                rowClasses="rvgRowOne,rvgRowTwo"
-                        id="holesTable">
-            <h:column>
-                <f:facet name="header">id</f:facet>
-                <h:outputText value="#{hole.id}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">number</f:facet>
-                <h:outputText value="#{hole.number}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">mensPar</f:facet>
-                <h:outputText value="#{hole.mensPar}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">mensHandicap</f:facet>
-                <h:outputText value="#{hole.mensHandicap}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">ladiesPar</f:facet>
-                <h:outputText value="#{hole.ladiesPar}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">ladiesHandicap</f:facet>
-                <h:outputText value="#{hole.ladiesHandicap}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">action</f:facet>
-                <s:link id="selecthole" 
-                     value="Select" 
-                      view="/Hole.xhtml">
-                    <f:param name="holeId" 
-                            value="#{hole.id}"/>
-                    <f:param name="holeFrom" value="Course"/>
-                </s:link>
-            </h:column>
-        </rich:dataTable>
-        
-    </div>
-    
-    <div class="actionButtons">
-        <s:button 
-               value="Add hole"
-                view="/HoleEdit.xhtml">
-            <f:param name="courseId" 
-                    value="#{courseHome.instance.id}"/>
-            <f:param name="holeFrom" value="Course"/>
         </s:button>
     </div>        
     </rich:tab>
