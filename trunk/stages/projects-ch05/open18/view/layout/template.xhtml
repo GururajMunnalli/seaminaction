@@ -13,7 +13,7 @@
 	<!-- the relative stylesheet has problems if the main page is not in the root folder -->
     <ui:remove><link href="stylesheet/theme.css" rel="stylesheet" type="text/css" /></ui:remove>
 	<!-- an alternative approach to <a:loadStyle> is to specify the context path manually -->
-    <ui:remove><link href="#{facesContext.externalContext.requestContextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" /></ui:remove>
+    <ui:remove><link href="#{request.contextPath}/stylesheet/theme.css" rel="stylesheet" type="text/css" /></ui:remove>
 	<!-- <a:loadStyle> doesn't work correctly when urlrewriting is used -->
     <a:loadStyle src="/stylesheet/theme.css"/>
     <a:loadStyle src="resource:///org/jboss/seam/ui/richfaces/styles.xcss"/>
