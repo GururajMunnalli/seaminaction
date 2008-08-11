@@ -1,108 +1,76 @@
 package org.open18.action;
 
-import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.Factory;
+import java.util.List;
+import java.util.Random;
 import org.jboss.seam.annotations.In;
-import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
+import org.open18.model.Golfer;
+
+import javax.persistence.EntityManager;
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
-import org.jboss.seam.faces.FacesMessages;
-import org.jboss.seam.log.Log;
-import org.open18.model.Golfer;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Random;
+import org.jboss.seam.annotations.web.RequestParameter;
 import org.open18.ProfileNotFoundException;
 
 @Name("profileAction")
-@Scope(ScopeType.CONVERSATION) // let's us redirect without losing @Out
+@Scope(ScopeType.CONVERSATION) // required to survive redirect
 public class ProfileAction {
-    @Logger private Log log;
-
-    @In FacesMessages facesMessages;
-
-    protected int newGolferListDisplaySize = 3;
+	@In	protected EntityManager entityManager;
+	@RequestParameter protected Long golferId;
+	@In(create = true) protected List<Golfer> newGolfersList;
 	
-	protected int newGolferListPoolSize = 10;
-
-    @In
-    protected EntityManager entityManager;
-
-    @DataModelSelection
-    @Out(required=false)
-    protected Golfer selectedGolfer;
-
-	@Out
-	protected boolean profileLoaded = false;
+	@DataModelSelection
+	@Out(required = false)
+	protected Golfer selectedGolfer;
 
 	@DataModel(scope = ScopeType.PAGE)
-    protected List<Golfer> newGolfers;
+	protected List<Golfer> newGolfers;
 	
-    public String view() {
-        log.info("profileAction.view() action called");
+	// NOTE: getter/setter methods would need to declare @BypassInterceptors
+	// if bound to a JSF form to avoid outjections from being enforced
+	private int newGolferPoolSize = 25;
+	private int newGolferDisplaySize = 5;
+	
+	public String view() {
 		assert selectedGolfer != null && selectedGolfer.getId() != null;
-		profileLoaded = true;
-		//return "profile";
 		return "/profile.xhtml";
-    }
-
-	public void standaloneLoadProfile(Long id) throws ProfileNotFoundException {
-		assert selectedGolfer == null || selectedGolfer.getId() == null;
-		selectedGolfer = (Golfer) entityManager.find(Golfer.class, id);
-		if (selectedGolfer == null) {
-			throw new ProfileNotFoundException(id);
-		}
-		else {
-			profileLoaded = true;
-		}
 	}
-
-	public void blanketLoadProfile(Long id) throws ProfileNotFoundException {
+	
+	public void load() {           
 		if (selectedGolfer != null && selectedGolfer.getId() != null) {
 			return;
 		}
-
-		if (id > 0) {
-			selectedGolfer = (Golfer) entityManager.find(Golfer.class, id);
+		
+		if (golferId != null && golferId > 0) {
+			selectedGolfer = entityManager.find(Golfer.class, golferId);
 		}
-
+		
 		if (selectedGolfer == null) {
-			throw new ProfileNotFoundException(id);
-		}
-		else {
-			profileLoaded = true;
+			throw new ProfileNotFoundException(golferId);
 		}
 	}
-
-	@Factory("newGolfers")
-    public void findNewGolfers() {
-        newGolfers = entityManager
-          .createQuery("select g from Golfer g order by dateJoined desc")
-          .setMaxResults(newGolferListPoolSize)
-          .getResultList();
-
-        Random rnd = new Random(System.currentTimeMillis());
-
-        while (newGolfers.size() > newGolferListDisplaySize) {
-            newGolfers.remove(rnd.nextInt(newGolfers.size()));
-        }
-    }
-
-    public int getNewGolferListDisplaySize() {
-        return newGolferListDisplaySize;
-    }
-    public void setNewGolferListDisplaySize(int newGolferListDisplaySize) {
-        this.newGolferListDisplaySize = newGolferListDisplaySize;
-    }
 	
-	public int getNewGolferListPoolSize() {
-		return newGolferListPoolSize;
+	// NOTE: alternative to using a page action that invokes this method
+	//@Factory("newGolfers")
+	public void findNewGolfers() {
+		// option #1: fetch it here
+		/*
+		newGolfers = entityManager
+			.createQuery(
+				"select g from Golfer g order by g.dateJoined desc")
+			.setMaxResults(newGolferPoolSize)
+			.getResultList();
+		Random rnd = new Random(System.currentTimeMillis());
+		while (newGolfers.size() > newGolferDisplaySize) {
+			newGolfers.remove(rnd.nextInt(newGolfers.size()));
+		}
+		*/
+		
+		// option #2: use the one provided by the manager
+		newGolfers = newGolfersList;
 	}
-	public void setNewGolferListPoolSize(int newGolferListPoolSize) {
-		this.newGolferListPoolSize = newGolferListPoolSize;
-	}
+
 }

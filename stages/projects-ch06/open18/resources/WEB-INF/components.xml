@@ -108,11 +108,6 @@
 
    <!-- registerAction | property configuration (note that property names can use either hyphenated or humpback syntax) -->
    <component name="registerAction">
-      <property name="entityManager">#{entityManager}</property>
-      <property name="facesMessages">#{facesMessages}</property>
-      <property name="password-manager">#{passwordManager}</property>
-      <property name="new-golfer">#{newGolfer}</property>
-      <property name="password-bean">#{passwordBean}</property>
       <property name="pro-status-types">amateur pro semi-pro</property>
       <property name="specialtyTypes">
          <value>#{messages['specialty.drive']}</value>

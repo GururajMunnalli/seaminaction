@@ -242,3 +242,30 @@ a:hover {
 	text-decoration: underline;
 }
 */
+
+/* <backport me> */
+.rich-datalist {
+    list-style: square;
+    margin: 10px 0 2px 0;
+    padding-left: 25px;
+}
+
+.rich-list-item {
+    padding-bottom: 4px;
+}
+/* </backport me> */
+
+/* home page */
+.panel-column {
+	vertical-align: top;
+}
+
+.main-panel {
+	width: 450px;
+}
+
+.module-box {
+	width: 300px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+}
