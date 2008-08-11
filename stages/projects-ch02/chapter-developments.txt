@@ -27,6 +27,8 @@ open18:
   - added RichFaces style customizations (style.xcss) and special overrides for the emeraldTown skin
   - added favicon and the corresponding <link> in layout/template.xhtml
   - prepared project so that it can be deployed to GlassFish
+  - remove the description column from listing pages
+  - make the uri of facilities on listing page into links
 
 open18ee:
 
