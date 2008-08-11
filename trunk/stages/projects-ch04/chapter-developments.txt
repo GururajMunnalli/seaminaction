@@ -4,8 +4,6 @@ This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
 
-Seam version used: 2.0.2.GA
-
 NOTE: Not all of the features will be migrated from chapter to chapter. If I
 feel that I feature was just for demonstration purposes and not all that useful
 for the application itself, I don't migrate it. Thus, don't be suprised if

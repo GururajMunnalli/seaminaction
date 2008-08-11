@@ -4,8 +4,6 @@ This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
 
-Seam version used: 2.0.2.GA
-
 open18-db:
 
   - setup initial schema and import the seed data using the following two commands from the /home/twoputt directory:
