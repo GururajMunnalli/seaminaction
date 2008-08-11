@@ -1,0 +1,27 @@
+Seam in Action: Chapter 05
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+open18:
+
+  - used seam-gen to create a new action component with the following responses:
+
+./seam new-action
+
+Seam component name: profileAction
+local interface name: ProfileAction
+action method name: view
+page name: profile
+
+  - designed ProfileAction to support both bookmarkable URL and data model selection
+  - used bijection in RegisterAction
+  - moved validation in RegisterAction to GolferValidator
+  - raise the event golferRegistered when a golfer is registered
+  - split the home page into two columns and added style classes panel-column, main-column, and module-box to suit
+  - added styles to make RichFaces list look better
+  - add list of new golfers to the home page
+  - observer golferRegistered event to log when golfer is registered and to update list of new golfers
+  - added @BypassInterceptors to PasswordManager and PasswordBean
+

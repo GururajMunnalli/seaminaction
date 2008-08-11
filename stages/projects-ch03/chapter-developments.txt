@@ -4,8 +4,6 @@ This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
 
-Seam version used: 2.0.2.GA
-
 open18:
 
   - add UrlRewriteFilter to web.xml, urlrewritefilter.jar to deployed-jars.list, and urlrewrite.xml to WEB-INF;

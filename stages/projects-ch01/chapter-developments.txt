@@ -4,8 +4,6 @@ This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is
 covered in the book.
 
-Seam version used: 2.0.2.GA
-
 NOTE: I intentially did not use <s:decorate> in this example to make the
 component markup easier for beginners to follow. I cover <s:decorate> in
 chapter 3 and include use it in the development of the registration form.
