@@ -28,6 +28,7 @@ open18:
   - added PasswordBean for capturing password and PasswordManager for validating password entry and encrypting password
   - added RegisterActionTest to serve as unit test for RegisterAction component
   - added RegisterGolferIntegerationTest for doing in-container testing of registration logic; currently test must be run with Java 5
+  - added note on login page that the authentication is not hooked up to member registration 
   - the seam-gen command was used twice in this chapter, with the following responses
 
 ./seam new-entity
