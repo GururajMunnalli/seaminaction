@@ -138,6 +138,7 @@
             </f:facet>
             #{facility.county}
         </h:column>
+        <ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -147,6 +148,7 @@
             </f:facet>
             #{facility.description}
         </h:column>
+        </ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -154,7 +156,8 @@
                     <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.name}
+            <h:outputLink value="#{facility.uri}" rendered="#{not empty facility.uri}">#{facility.name}</h:outputLink>
+            <h:outputText value="#{facility.uri}" rendered="#{empty facility.uri}">#{facility.name}</h:outputText>
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -192,6 +195,7 @@
             </f:facet>
             #{facility.type}
         </h:column>
+        <ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -201,6 +205,7 @@
             </f:facet>
             #{facility.uri}
         </h:column>
+        </ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -213,7 +218,7 @@
         <h:column>
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Facility' : from}.xhtml" 
-                   value="Select" 
+                   value="#{empty from ? 'View' : 'Select'}" 
                       id="facility">
                 <f:param name="facilityId" 
                         value="#{facility.id}"/>

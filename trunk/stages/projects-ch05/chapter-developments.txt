@@ -15,3 +15,5 @@ java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db
 
 open18:
 
+  - replace the application title and tagline with message keys from resource bundle
+  - use a message key to welcome the user to the application after registering

@@ -76,7 +76,7 @@
         <h:column>
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Tee' : from}.xhtml" 
-                   value="Select" 
+                   value="#{empty from ? 'View' : 'Select'}" 
                       id="tee">
                 <f:param name="teeHoleId" 
                         value="#{tee.id.holeId}"/>
