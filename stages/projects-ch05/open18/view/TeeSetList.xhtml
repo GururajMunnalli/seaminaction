@@ -132,7 +132,7 @@
         <h:column>
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'TeeSet' : from}.xhtml" 
-                   value="Select" 
+                   value="#{empty from ? 'View' : 'Select'}" 
                       id="teeSet">
                 <f:param name="teeSetId" 
                         value="#{teeSet.id}"/>
