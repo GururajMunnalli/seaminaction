@@ -1,8 +1,10 @@
 package org.open18.auth;
 
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
-//@Name("passwordBean")
+@Name("passwordBean")
+@BypassInterceptors
 public class PasswordBean {
 	private String password;
 	private String confirm;
