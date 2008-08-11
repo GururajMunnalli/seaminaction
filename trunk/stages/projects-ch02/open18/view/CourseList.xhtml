@@ -72,6 +72,7 @@
             </f:facet>
             #{course.id}
         </h:column>
+        <ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -81,6 +82,7 @@
             </f:facet>
             #{course.description}
         </h:column>
+        </ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -135,6 +137,7 @@
             </f:facet>
             #{course.numHoles}
         </h:column>
+        <ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -144,6 +147,7 @@
             </f:facet>
             #{course.signatureHole}
         </h:column>
+        </ui:remove>
         <h:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -156,7 +160,7 @@
         <h:column>
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Course' : from}.xhtml" 
-                   value="Select" 
+                   value="#{empty from ? 'View' : 'Select'}"
                       id="course">
                 <f:param name="courseId" 
                         value="#{course.id}"/>
