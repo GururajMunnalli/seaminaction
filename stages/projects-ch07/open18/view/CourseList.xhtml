@@ -47,20 +47,36 @@
         </rich:simpleTogglePanel>
         
         <div class="actionButtons">
-            <h:commandButton id="search" value="Search" action="/CourseList.xhtml"/>
+            <h:commandButton id="search" value="Search" action="/CourseList.xhtml">
+                <s:conversationPropagation type="join"/>
+            </h:commandButton>
         </div>
+
+        <s:fragment rendered="#{comparedCourses.rowCount gt 0}">
+            <rich:panel style="margin-bottom: 5px;">
+                <f:facet name="header">Courses marked for comparison</f:facet>
+                <ui:repeat var="_c" value="#{comparedCourses}">
+                    <div>#{_c.name}</div>
+                </ui:repeat>
+                <div style="margin-top: 5px;">
+                    <s:link value="Compare" view="/CompareCourses.xhtml" rendered="#{readyToCompare}"/>
+                    <h:outputText value="#{' '}" rendered="#{readyToCompare}"/>
+                    <s:link value="Clear selections" action="#{courseComparison.reset}"/>
+                </div>
+            </rich:panel>
+        </s:fragment>
         
     </h:form>
     
     <rich:panel>
-        <f:facet name="header">Course search results</f:facet>
+        <f:facet name="header">Course search results (#{courseList.resultList.size})</f:facet>
     <div class="results" id="courseList">
 
     <h:outputText value="The course search returned no results." 
                rendered="#{empty courseList.resultList}"/>
                
     <rich:dataTable id="courseList" 
-                var="course"
+                var="_course"
               value="#{courseList.resultList}" 
            rendered="#{not empty courseList.resultList}">
         <h:column>
@@ -70,7 +86,7 @@
                     <f:param name="order" value="#{courseList.order=='id asc' ? 'id desc' : 'id asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.id}
+            #{_course.id}
         </h:column>
         <ui:remove>
         <h:column>
@@ -80,7 +96,7 @@
                     <f:param name="order" value="#{courseList.order=='description asc' ? 'description desc' : 'description asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.description}
+            #{_course.description}
         </h:column>
         </ui:remove>
         <h:column>
@@ -90,7 +106,7 @@
                     <f:param name="order" value="#{courseList.order=='designer asc' ? 'designer desc' : 'designer asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.designer}
+            #{_course.designer}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -99,7 +115,7 @@
                     <f:param name="order" value="#{courseList.order=='facility.id asc' ? 'facility.id desc' : 'facility.id asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.facility.id}
+            #{_course.facility.id}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -108,7 +124,7 @@
                     <f:param name="order" value="#{courseList.order=='fairways asc' ? 'fairways desc' : 'fairways asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.fairways}
+            #{_course.fairways}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -117,7 +133,7 @@
                     <f:param name="order" value="#{courseList.order=='greens asc' ? 'greens desc' : 'greens asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.greens}
+            #{_course.greens}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -126,7 +142,7 @@
                     <f:param name="order" value="#{courseList.order=='name asc' ? 'name desc' : 'name asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.name}
+            #{_course.name}
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -135,7 +151,7 @@
                     <f:param name="order" value="#{courseList.order=='numHoles asc' ? 'numHoles desc' : 'numHoles asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.numHoles}
+            #{_course.numHoles}
         </h:column>
         <ui:remove>
         <h:column>
@@ -145,7 +161,7 @@
                     <f:param name="order" value="#{courseList.order=='signatureHole asc' ? 'signatureHole desc' : 'signatureHole asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.signatureHole}
+            #{_course.signatureHole}
         </h:column>
         </ui:remove>
         <h:column>
@@ -155,7 +171,7 @@
                     <f:param name="order" value="#{courseList.order=='yearBuilt asc' ? 'yearBuilt desc' : 'yearBuilt asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.yearBuilt}
+            #{_course.yearBuilt}
         </h:column>
         <h:column>
             <f:facet name="header">action</f:facet>
@@ -163,7 +179,12 @@
                    value="#{empty from ? 'View' : 'Select'}"
                       id="course">
                 <f:param name="courseId" 
-                        value="#{course.id}"/>
+                        value="#{_course.id}"/>
+            </s:link>
+            #{' '}
+            <s:link action="#{courseComparison.mark}" value="Mark" propagation="join"
+                rendered="#{not courseComparison.isMarked(_course)}">
+                <f:param name="courseId" value="#{_course.id}"/>
             </s:link>
         </h:column>
     </rich:dataTable>
@@ -212,6 +233,9 @@
                  value="Create course">
             <f:param name="courseId"/>
         </s:button>
+        <ui:remove>
+        <s:button value="Compare" view="/CompareCourses.xhtml" rendered="#{readyToCompare}"/>
+        </ui:remove>
     </s:div>
     
 </ui:define>

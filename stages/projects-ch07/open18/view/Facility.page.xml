@@ -18,4 +18,9 @@
          </redirect>
        </rule>
     </navigation>
+
+    <navigation from-action="#{courseWizard.addCourse}">
+       <redirect view-id="/coursewizard/basicCourseInfo.xhtml"/>
+    </navigation>
+
 </page>

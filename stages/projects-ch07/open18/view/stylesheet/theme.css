@@ -256,16 +256,19 @@ a:hover {
 /* </backport me> */
 
 /* home page */
+.panel-layout {
+	width: 100%;
+}
+
 .panel-column {
 	vertical-align: top;
 }
 
 .main-panel {
-	width: 450px;
 }
 
 .module-box {
-	width: 300px;
+	width: 250px;
 	margin-bottom: 5px;
 	margin-left: 5px;
 }

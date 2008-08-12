@@ -6,10 +6,20 @@
        no-conversation-view-id="/home.xhtml"
        login-view-id="/login.xhtml">
 
+    <!--<conversation name="Course" parameter-name="courseId"
+        parameter-value="#{redirect.parameters.courseId != null ? redirect.parameters.courseId : courseHome.instance.id}"/>-->
+    <conversation name="Course" parameter-name="courseId"
+        parameter-value="#{course != null ? course.id : (redirect.parameters.courseId != null ? redirect.parameters.courseId : courseHome.instance.id)}"/>
+
     <page view-id="*">
         <navigation>
             <rule if-outcome="home">
                 <redirect view-id="/home.xhtml"/>
+            </rule>
+        </navigation>
+        <navigation from-action="#{switcher.select}">
+            <rule if-outcome="addFacility">
+              <redirect view-id="/FacilityEdit.xhtml"/>
             </rule>
         </navigation>
     </page>
@@ -17,7 +27,7 @@
     <page view-id="/Course*">
         <action execute="#{courseHome.validateEntityFound}"
             if="#{view.viewId == '/Course.xhtml' or
-			    (view.viewId == '/CourseEdit.xhtml' and courseHome.courseId != null)}"/>
+                (view.viewId == '/CourseEdit.xhtml' and courseHome.courseId != null)}"/>
    
         <navigation from-action="#{courseHome.validateEntityFound}">
             <rule if-outcome="invalid">
@@ -29,7 +39,72 @@
             </rule>
         </navigation>
     </page>
-	
+
+    <!-- === Course Wizard: Stateful model === -->
+    <!--<page view-id="/coursewizard/*" login-required="true"/>-->
+
+    <!-- === Course Wizard: Ad hoc model === -->
+
+    <!--
+    <page view-id="/coursewizard/*" login-required="true" conversation-required="true" no-conversation-view-id="/FacilityList.xhtml">
+        <navigation>
+            <rule if-outcome="cancel" if="#{course.id == null}">
+                <end-conversation before-redirect="true"/>
+                <redirect view-id="/Facility.xhtml">
+                    <param name="facilityId" value="#{course.facility.id}"/>
+                </redirect>
+            </rule>
+            <rule if-outcome="cancel" if="#{course.id != null}">
+                <end-conversation before-redirect="true"/>
+                <redirect view-id="/Course.xhtml">
+                    <param name="courseId" value="#{course.id}"/>
+                </redirect>
+            </rule>
+        </navigation>
+    </page>
+
+    <page view-id="/coursewizard/basicCourseInfo.xhtml">
+        <description>Course wizard (#{course.name == null ? 'New course' : course.name} @ #{course.facility.name}): Basic information</description>
+        <navigation from-action="#{courseWizard.submitBasicInfo}">
+            <rule if-outcome="next">
+                <redirect view-id="/coursewizard/description.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+
+    <page view-id="/coursewizard/description.xhtml">
+        <description>Course wizard (#{course.name} @ #{course.facility.name}): Description</description>
+        <navigation from-action="#{courseWizard.submitDescription}">
+            <rule if-outcome="next">
+                <redirect view-id="/coursewizard/holeData.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+
+    <page view-id="/coursewizard/holeData.xhtml">
+        <description>Course wizard (#{course.name} @ #{course.facility.name}): Hole data - #{gender}</description>
+        <navigation from-action="#{courseWizard.submitHoleData}">
+            <rule if-outcome="Ladies">
+                <redirect view-id="/coursewizard/holeData.xhtml"/>
+            </rule>
+            <rule if-outcome="next">
+                <redirect view-id="/coursewizard/review.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+
+    <page view-id="/coursewizard/review.xhtml">
+        <description>Course wizard (#{course.name} @ #{course.facility.name}): Review</description>
+        <navigation from-action="#{courseWizard.save}">
+            <rule if-outcome="success">
+                <redirect view-id="/Course.xhtml">
+                    <param name="courseId" value="#{course.id}"/>
+                </redirect>
+            </rule>
+        </navigation>
+    </page>
+    -->
+    
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
             <message>Not found</message>

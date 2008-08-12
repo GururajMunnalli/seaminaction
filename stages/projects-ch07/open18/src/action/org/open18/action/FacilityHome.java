@@ -3,12 +3,16 @@ package org.open18.action;
 import org.open18.model.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.core.Conversation;
 import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.framework.EntityNotFoundException;
 
 @Name("facilityHome")
 public class FacilityHome extends EntityHome<Facility> {
+
+	@In private Conversation conversation;
 
 	private boolean enterCourse = true;
 	
@@ -82,6 +86,9 @@ public class FacilityHome extends EntityHome<Facility> {
 	@Override
 	public String update() {
 		lastStateChange = super.update();
+		if (conversation.isNested()) {
+			conversation.endAndRedirect();
+		}
 		return lastStateChange;
 	}
 
