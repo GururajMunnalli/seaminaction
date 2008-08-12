@@ -1,0 +1,7 @@
+Seam in Action: Chapter 10
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+open18:
