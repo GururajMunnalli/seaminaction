@@ -74,6 +74,9 @@
         <s:button view="/CourseEdit.xhtml" 
                     id="edit" 
                  value="Edit"/>
+        <s:button action="#{courseWizard.editCourse(courseHome.instance.id)}"
+                    id="courseWizard" 
+                 value="Edit..."/>
 
         <s:button view="/#{empty courseFrom ? 'CourseList' : courseFrom}.xhtml"
                     id="done"

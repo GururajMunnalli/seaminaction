@@ -158,7 +158,7 @@
                 <f:facet name="header">action</f:facet>
                 <s:link id="selectcourse" 
                      value="View" 
-                      view="/Course.xhtml">
+                      view="/Course.xhtml" propagation="none">
                     <f:param name="courseId" 
                             value="#{course.id}"/>
                     <f:param name="courseFrom" value="Facility"/>
@@ -171,10 +171,14 @@
     <div class="actionButtons">
         <s:button 
                value="Add course"
-                view="/CourseEdit.xhtml">
+                view="/CourseEdit.xhtml" propagation="none">
             <f:param name="facilityId" 
                     value="#{facilityHome.instance.id}"/>
             <f:param name="courseFrom" value="Facility"/>
+        </s:button>
+        <s:button id="courseWizard" action="#{courseWizard.addCourse}"
+          value="Add course..." propagation="none">
+          <f:param name="facilityId" value="#{facilityHome.instance.id}"/>
         </s:button>
     </div>        
     </rich:tab>
