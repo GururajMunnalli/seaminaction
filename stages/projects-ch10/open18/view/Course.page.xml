@@ -15,4 +15,9 @@
       <redirect view-id="/coursewizard/basicCourseInfo.xhtml"/>
    </navigation>
 
+   <!-- Redirect After Post pattern -->
+   <navigation from-action="#{courseCommentHome.persist}">
+      <redirect/>
+   </navigation>
+
 </page>

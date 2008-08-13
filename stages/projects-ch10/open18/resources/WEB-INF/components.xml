@@ -7,6 +7,7 @@
             xmlns:security="http://jboss.com/products/seam/security"
             xmlns:mail="http://jboss.com/products/seam/mail"
             xmlns:auth="http://open18.org/components/auth"
+            xmlns:framework="http://jboss.com/products/seam/framework"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
                 "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
@@ -15,6 +16,7 @@
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
+                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
                  http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
@@ -115,5 +117,102 @@
          <value>#{messages['specialty.looks']}</value>
       </property>
    </component>
+
+   <framework:entity-home name="courseHome" class="org.open18.action.CourseHome"
+      created-message="You have successfully added #{course.name}. Thanks for contributing!"
+      updated-message="You have successfully updated #{course.name}. Your careful eye is appreciated!"
+      deleted-message="&#8205;#{course.name} has been removed. We never liked it anyway."/>
+
+   <!-- currentGolfer | temporary (and optimistic) until we get to authentication in the next chapter -->
+   <framework:entity-query name="currentGolferQuery"
+      ejbql="select g from Golfer g where g.username = #{identity.username}"/>
+   <factory name="currentGolfer" scope="conversation" auto-create="true"
+      value="#{identity.loggedIn ? currentGolferQuery.singleResult : null}"/>
+
+   <component name="roundPrototype" class="org.open18.model.Round" scope="event">
+      <property name="golfer">#{currentGolfer}</property>
+      <property name="date">#{currentDate}</property>
+   </component>
+
+   <framework:entity-home name="roundHome" class="org.open18.action.RoundHome" new-instance="#{roundPrototype}"/>
+
+   <!-- If a round is changed, we have to assume that the result set is stale (could lead to LIE otherwise) -->
+   <event type="org.jboss.seam.afterTransactionSuccess.Round">
+      <action execute="#{roundList.refresh}"/>
+      <!-- It is necessary to fetch the result list to deal with swizzled result list (ManagedEntityIdentityInterceptor) -->
+      <action execute="#{roundList.resultList}"/>
+   </event>
+
+   <component name="golferExample" class="org.open18.model.Golfer"/>
+   <component name="teeSetExample" class="org.open18.model.TeeSet"/>
+   <component name="roundExample">
+      <property name="golfer">#{golferExample}</property>
+      <property name="teeSet">#{teeSetExample}</property>
+   </component>
+
+   <framework:entity-query name="roundList"
+      ejbql="select r from Round r
+         join fetch r.golfer g
+         join fetch r.teeSet ts
+         join fetch ts.course c"
+      max-results="5"
+      order="r.date desc"
+      scope="conversation">
+      <framework:hints>
+         <key>org.hibernate.comment</key>
+         <value>Query for rounds used on RoundList.xhtml</value>
+      </framework:hints>
+      <framework:restrictions>
+         <value>lower(golfer.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>
+         <value>lower(golfer.firstName) like concat(lower(#{roundExample.golfer.firstName}),'%')</value>
+         <!-- Uncomment the following to create a single filter that matches last name or first name -->
+         <!--
+         <value>
+            lower(golfer.lastName) like concat(lower(#{roundCriteria.golferName}),'%') or
+            lower(golfer.firstName) like concat(lower(:el1),'%')
+         </value>
+         -->
+         <value>golfer = #{roundCriteria.self ? currentGolfer : null}</value>
+         <!--<value>lower(course.name) like concat(lower(#{roundExample.teeSet.course.name}),'%')</value>-->
+         <value>course IN(#{not empty roundCriteria.courses ? roundCriteria.courses : null})</value>
+         <value>lower(teeSet.color) = lower(#{roundExample.teeSet.color})</value>
+         <!--
+         <value>lower(r.weather) = lower(#{roundExample.weather})</value>
+         <value>r.weather IN(#{not empty roundCriteria.weather ? roundCriteria.weather : null})</value>
+         -->
+         <value>r.date &gt;= #{roundCriteria.afterDate}</value>
+         <value>r.date &lt;= #{roundCriteria.beforeDate}</value>
+         <!--
+         <value>r.totalScore &gt;= #{roundCriteria.lowScore}</value>
+         <value>r.totalScore &lt;= #{roundCritiera.highScore}</value>
+         -->
+      </framework:restrictions>
+   </framework:entity-query>
+
+   <framework:entity-query name="coursesQuery"
+      ejbql="select c from Course c join fetch c.facility f"
+      order="f.state asc, c.name asc">
+      <framework:hints>
+         <key>org.hibernate.comment</key>
+         <value>Query for courses used in search criteria on RoundList.xhtml</value>
+      </framework:hints>
+   </framework:entity-query>
+   <factory name="courses" value="#{coursesQuery.resultList}" scope="conversation"/>
+
+   <component name="courseCommentPrototype" class="org.open18.model.CourseComment" scope="event">
+      <property name="datePosted">#{currentDatetime}</property>
+      <property name="course">#{courseHome.instance}</property>
+      <property name="golfer">#{currentGolfer}</property>
+   </component>
+
+   <framework:entity-home name="courseCommentHome"
+      entity-class="org.open18.model.CourseComment"
+      new-instance="#{courseCommentPrototype}"/>
+   <factory name="courseComment" value="#{courseCommentHome.instance}"/>
+
+   <framework:entity-query name="courseCommentsQuery"
+      ejbql="select c from CourseComment c join fetch c.golfer"
+      order="c.datePosted desc"/>
+   <factory name="courseComments" value="#{courseCommentsQuery.resultList}"/>
 
 </components>
