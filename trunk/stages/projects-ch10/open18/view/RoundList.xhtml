@@ -91,11 +91,11 @@
 		</h:form>
 		
 		<rich:panel>
-			<f:facet name="header">Round search results</f:facet>
+			<f:facet name="header">Round search results (#{roundList.resultList.size})</f:facet>
 				<h:form id="roundListForm">
 				<div class="results" id="roundList">
 	
-					<h:outputText value="No rounds found." rendered="#{empty roundList.resultList}"/>
+					<h:outputText value="The round search returned no results." rendered="#{empty roundList.resultList}"/>
 					   
 					<ui:remove><!-- a bug in ManagedEntityIdentityInterceptor (or UISelection) is preventing us from using #{roundList.dataModel} --></ui:remove>
 					<rich:dataTable id="roundList" var="_round" value="#{roundList.resultList}" rendered="#{not empty roundList.resultList}">
