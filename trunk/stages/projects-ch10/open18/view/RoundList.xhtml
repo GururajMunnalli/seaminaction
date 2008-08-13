@@ -18,7 +18,7 @@
 	 
 				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{currentGolfer != null}">
 					<ui:define name="label">My rounds:</ui:define>
-					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}"/>
+					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}" style="margin: 0;"/>
 				</s:decorate>
 	
 				<s:decorate id="firstNameField" template="layout/display.xhtml">
