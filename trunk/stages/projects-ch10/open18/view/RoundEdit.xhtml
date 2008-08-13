@@ -51,6 +51,17 @@
 					</h:selectOneMenu>
 				</s:decorate>
 
+				<ui:remove>
+				<s:decorate id="teeSetField" template="layout/edit.xhtml">
+					<ui:define name="label">Tee set</ui:define>
+					<h:selectOneMenu value="#{round.teeSet}">
+						<s:selectItems var="_teeSet" value="#{teeSets}"
+							label="#{_teeSet.course.name} - #{_teeSet.color}"/>
+						<s:convertEntity/>
+					</h:selectOneMenu>
+				</s:decorate>
+				</ui:remove>
+
 				<div style="clear:both">
 					<span class="required">*</span> 
 					required fields
