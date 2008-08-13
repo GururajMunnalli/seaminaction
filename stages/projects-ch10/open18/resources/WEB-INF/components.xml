@@ -199,6 +199,16 @@
    </framework:entity-query>
    <factory name="courses" value="#{coursesQuery.resultList}" scope="conversation"/>
 
+   <framework:entity-query name="teeSetsQuery"
+      ejbql="select ts from TeeSet ts join fetch ts.course c"
+      order="c.name asc, ts.position asc">
+      <framework:hints>
+         <key>org.hibernate.comment</key>
+         <value>Query for tee sets as options on RoundEdit.xhtml</value>
+      </framework:hints>
+   </framework:entity-query>
+   <factory name="teeSets" value="#{teeSetsQuery.resultList}" scope="conversation"/>
+
    <component name="courseCommentPrototype" class="org.open18.model.CourseComment" scope="event">
       <property name="datePosted">#{currentDatetime}</property>
       <property name="course">#{courseHome.instance}</property>
