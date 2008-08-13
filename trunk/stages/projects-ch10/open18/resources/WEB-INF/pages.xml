@@ -120,13 +120,19 @@
     <exception class="javax.persistence.OptimisticLockException">
         <end-conversation/>
         <redirect view-id="/error.xhtml">
-            <message>Another user changed the same data, please try again</message>
+            <message>The record was modified by another user</message>
         </redirect>
     </exception>
-    
+
+    <exception class="javax.persistence.PersistenceException">
+        <redirect view-id="/error.xhtml">
+            <message>The operation failed. Please try again.</message>
+        </redirect>
+    </exception>
+ 
     <exception class="org.jboss.seam.security.AuthorizationException">
         <redirect view-id="/error.xhtml">
-            <message>You don't have permission to do this</message>
+            <message>You don't have permission to perform the selected action</message>
         </redirect>
     </exception>
     
