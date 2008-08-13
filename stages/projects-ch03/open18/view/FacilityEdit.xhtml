@@ -214,10 +214,12 @@
                     <f:facet name="header">id</f:facet>
                     <h:outputText value="#{course.id}"/>
                 </h:column>
+                <ui:remove>
                 <h:column>
                     <f:facet name="header">description</f:facet>
                     <h:outputText value="#{course.description}"/>
                 </h:column>
+                </ui:remove>
                 <h:column>
                     <f:facet name="header">designer</f:facet>
                     <h:outputText value="#{course.designer}"/>
