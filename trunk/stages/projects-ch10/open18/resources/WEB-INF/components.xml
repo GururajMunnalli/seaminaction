@@ -143,9 +143,10 @@
       <action execute="#{roundList.resultList}"/>
    </event>
 
+   <!-- could optionally use @Role on the entity classes (requires @Name as well) -->
    <component name="golferExample" class="org.open18.model.Golfer"/>
    <component name="teeSetExample" class="org.open18.model.TeeSet"/>
-   <component name="roundExample">
+   <component name="roundExample" class="org.open18.model.Round">
       <property name="golfer">#{golferExample}</property>
       <property name="teeSet">#{teeSetExample}</property>
    </component>
@@ -163,8 +164,8 @@
          <value>Query for rounds used on RoundList.xhtml</value>
       </framework:hints>
       <framework:restrictions>
-         <value>lower(golfer.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>
-         <value>lower(golfer.firstName) like concat(lower(#{roundExample.golfer.firstName}),'%')</value>
+         <value>lower(g.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>
+         <value>lower(g.firstName) like concat(lower(#{roundExample.golfer.firstName}),'%')</value>
          <!-- Uncomment the following to create a single filter that matches last name or first name -->
          <!--
          <value>
@@ -172,12 +173,12 @@
             lower(golfer.firstName) like concat(lower(:el1),'%')
          </value>
          -->
-         <value>golfer = #{roundCriteria.self ? currentGolfer : null}</value>
+         <value>lower(ts.color) = lower(#{roundExample.teeSet.color})</value>
+         <value>g = #{roundCriteria.self ? currentGolfer : null}</value>
          <!--<value>lower(course.name) like concat(lower(#{roundExample.teeSet.course.name}),'%')</value>-->
-         <value>course IN(#{not empty roundCriteria.courses ? roundCriteria.courses : null})</value>
-         <value>lower(teeSet.color) = lower(#{roundExample.teeSet.color})</value>
+         <value>c IN(#{not empty roundCriteria.courses ? roundCriteria.courses : null})</value>
          <!--
-         <value>lower(r.weather) = lower(#{roundExample.weather})</value>
+         <value>r.weather = #{roundExample.weather}</value>
          <value>r.weather IN(#{not empty roundCriteria.weather ? roundCriteria.weather : null})</value>
          -->
          <value>r.date &gt;= #{roundCriteria.afterDate}</value>
