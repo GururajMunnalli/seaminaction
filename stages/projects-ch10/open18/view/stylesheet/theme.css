@@ -279,3 +279,13 @@ a:hover {
 	outline: 1px solid black;
 	margin: 0 auto;	
 }
+
+th a.asc {
+	background: url(../img/sort_asc.gif) no-repeat right;
+	padding-right: 15px;
+}
+
+th a.desc {
+	background: url(../img/sort_desc.gif) no-repeat right;
+	padding-right: 15px;
+}

@@ -12,6 +12,7 @@
 	
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 		
+		<div style="margin: 5px;"><strong>Average Score (#{roundCriteria.self ? 'Your' : 'All'} Rounds):</strong> #{averageScore.singleResult}</div>
 		<h:form id="roundSearch" styleClass="edit">
 		
 			<rich:simpleTogglePanel label="Round search parameters" switchType="ajax">
@@ -99,37 +100,28 @@
 					   
 					<ui:remove><!-- a bug in ManagedEntityIdentityInterceptor (or UISelection) is preventing us from using #{roundList.dataModel} --></ui:remove>
 					<rich:dataTable id="roundList" var="_round" value="#{roundList.resultList}" rendered="#{not empty roundList.resultList}">
-					<ui:remove>
-					<h:column>
-						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Id #{roundList.order=='id asc' ? messages.down : ( roundList.order=='id desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='id asc' ? 'id desc' : 'id asc'}"/>
-							</s:link>
-						</f:facet>
-						#{_round.id}
-					</h:column>
-					</ui:remove>
 					<rich:column style="text-align: center;">
 						<f:facet name="header">&#160;</f:facet>
 						<h:selectBooleanCheckbox value="#{_round.selected}" style="margin: 0;"/>
 					</rich:column>
 					<h:column>
 						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Golfer #{roundList.order=='golfer.lastName asc, golfer.firstName asc' ? messages.down : ( roundList.order=='golfer.lastName desc, golfer.firstName desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='golfer.lastName asc, golfer.firstName asc' ? 'golfer.lastName desc, golfer.firstName desc' : 'golfer.lastName asc, golfer.firstName asc'}"/>
-							</s:link>
+							<s:decorate template="layout/sort.xhtml">
+								<ui:param name="query" value="#{roundList}"/>
+								<ui:param name="name" value="Golfer"/>
+								<!-- doesn't support two sort fields -->
+								<ui:param name="property" value="g.lastName"/>
+							</s:decorate>
 						</f:facet>
-						<ui:remove>#{_round.golfer.nameLastFirst}</ui:remove>
 						#{_round.golfer.name}
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Date #{roundList.order=='r.date asc' ? messages.down : ( roundList.order=='r.date desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='r.date asc' ? 'r.date desc' : 'r.date asc'}"/>
-							</s:link>
+							<s:decorate template="layout/sort.xhtml">
+								<ui:param name="query" value="#{roundList}"/>
+								<ui:param name="name" value="Date"/>
+								<ui:param name="property" value="r.date"/>
+							</s:decorate>
 						</f:facet>
 						<h:outputText value="#{_round.date}">
 							<s:convertDateTime type="date" />
@@ -137,57 +129,50 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Course #{roundList.order=='course.name asc' ? messages.down : ( roundList.order=='course.name desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='course.name asc' ? 'course.name desc' : 'course.name asc'}"/>
-							</s:link>
+							<s:decorate template="layout/sort.xhtml">
+								<ui:param name="query" value="#{roundList}"/>
+								<ui:param name="name" value="Course"/>
+								<ui:param name="property" value="c.name"/>
+							</s:decorate>
 						</f:facet>
 						#{_round.teeSet.course.name}
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Tee set color #{roundList.order=='teeSet.color asc' ? messages.down : ( roundList.order=='teeSet.color desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='teeSet.color asc' ? 'teeSet.color desc' : 'teeSet.color asc'}"/>
-							</s:link>
+							<s:decorate template="layout/sort.xhtml">
+								<ui:param name="query" value="#{roundList}"/>
+								<ui:param name="name" value="Tee set (color)"/>
+								<ui:param name="property" value="ts.color"/>
+							</s:decorate>
 						</f:facet>
 						<div title="#{_round.teeSet.color}" class="colorSwatch" style="background-color: #{_round.teeSet.color};"/>
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Total score #{roundList.order=='totalScore asc' ? messages.down : ( roundList.order=='totalScore desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='totalScore asc' ? 'totalScore desc' : 'totalScore asc'}"/>
-							</s:link>
+							<s:decorate template="layout/sort.xhtml">
+								<ui:param name="query" value="#{roundList}"/>
+								<ui:param name="name" value="Total score"/>
+								<ui:param name="property" value="r.totalScore"/>
+							</s:decorate>
 						</f:facet>
 						#{_round.totalScore}
 					</h:column>
 					<h:column>
 						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Weather #{roundList.order=='r.weather asc' ? messages.down : ( roundList.order=='r.weather desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='r.weather asc' ? 'r.weather desc' : 'r.weather asc'}"/>
-							</s:link>
+							<s:decorate template="layout/sort.xhtml">
+								<ui:param name="query" value="#{roundList}"/>
+								<ui:param name="name" value="Weather"/>
+								<ui:param name="property" value="r.weather"/>
+							</s:decorate>
 						</f:facet>
-						#{_round.weather}
+						#{_round.weather.label}
 					</h:column>
-					<ui:remove>
-					<h:column>
-						<f:facet name="header">
-							<s:link styleClass="columnHeader"
-								value="Notes #{roundList.order=='notes asc' ? messages.down : ( roundList.order=='notes desc' ? messages.up : '' )}">
-								<f:param name="order" value="#{roundList.order=='notes asc' ? 'notes desc' : 'notes asc'}"/>
-							</s:link>
-						</f:facet>
-						#{_round.notes}
-					</h:column>
-					</ui:remove>
-					<h:column>
-						<f:facet name="header">action</f:facet>
+					<rich:column style="text-align: center;">
+						<f:facet name="header">Action</f:facet>
 						<s:link id="round" view="/#{empty from ? 'Round' : from}.xhtml" value="Select">
 							<f:param name="roundId" value="#{_round.id}"/>
 						</s:link>
-					</h:column>
+					</rich:column>
 				</rich:dataTable>
 		
 				<s:div styleClass="actionButtons" rendered="#{empty from}">
