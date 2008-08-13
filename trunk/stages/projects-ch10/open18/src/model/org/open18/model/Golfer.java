@@ -1,12 +1,15 @@
 package org.open18.model;
 
 import java.util.Date;
-
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.PrePersist;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,6 +32,7 @@ public class Golfer extends Member {
 	private String location;
 	private String specialty;
 	private String proStatus;
+	private Set<Round> rounds = new HashSet<Round>(0);
 
 	@Column(name = "last_name", nullable = false)
 	@NotNull
@@ -55,6 +59,11 @@ public class Golfer extends Member {
 	@Transient
 	public String getName() {
 		return firstName + ' ' + lastName;
+	}
+
+	@Transient
+	public String getNameLastFirst() {
+		return lastName + ", " + firstName;
 	}
 
 	@Enumerated(EnumType.STRING)
@@ -107,5 +116,14 @@ public class Golfer extends Member {
 	}
 	public void setProStatus(String proStatus) {
 		this.proStatus = proStatus;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "golfer")
+	public Set<Round> getRounds() {
+		return rounds;
+	}
+
+	public void setRounds(Set<Round> rounds) {
+		this.rounds = rounds;
 	}
 }

@@ -6,6 +6,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a="http://richfaces.org/a4j"
                 xmlns:rich="http://richfaces.org/rich"
                 template="layout/template.xhtml">
                        
@@ -117,10 +118,12 @@
                 <f:facet name="header">county</f:facet>
                 #{facility.county}
             </h:column>
+            <ui:remove>
             <h:column>
                 <f:facet name="header">description</f:facet>
                 #{facility.description}
             </h:column>
+            </ui:remove>
             <h:column>
                 <f:facet name="header">name</f:facet>
                 #{facility.name}
@@ -294,6 +297,38 @@
         </s:button>
     </div>        
     </rich:tab>
+</rich:tabPanel>
+<rich:tabPanel id="comments" switchType="client" style="margin-top: 5px;">
+	<rich:tab id="commentslist" label="Comments (#{courseComments.size})">
+		<h:outputText value="No one has commented on this course." rendered="#{courseComments.size == 0}"/>
+		<a:repeat var="_comment" value="#{courseComments}" rowKeyVar="index">
+			<div class="comment">
+				<s:link view="/profile.xhtml" value="#{_comment.golfer.username}" propagation="none">
+					<f:param name="golferId" value="#{_comment.golfer.id}"/>
+				</s:link>
+				#{' '}said on#{' '}
+				<h:outputText value="#{_comment.datePosted}">
+					<s:convertDateTime pattern="dd MMM yyyy"/>
+				</h:outputText>:
+				<em>#{_comment.text}</em>
+			</div>
+			<rich:separator height="1" rendered="#{index + 1 != courseComments.size}" lineType="dashed" style="height: 20px;"/>
+		</a:repeat>
+	</rich:tab>
+	<rich:tab id="postcomment" label="Leave a comment" rendered="#{currentGolfer != null}">
+		<h:form id="commentForm">
+			<!-- hidden field required to keep natural conversation going -->
+			<input type="hidden" name="courseId" value="#{courseHome.courseId}"/>
+			<s:decorate id="textField" template="layout/edit.xhtml">
+				<ui:define name="label">Comment:</ui:define>
+				<h:inputTextarea id="text" value="#{courseComment.text}" required="true"/>
+			</s:decorate>
+			<div style="clear: both;"/>
+			<div class="actionButtons">
+				<h:commandButton id="save" value="Post" action="#{courseCommentHome.persist}"/>
+			</div>
+		</h:form>
+	</rich:tab>
 </rich:tabPanel>
 </ui:define>
 

@@ -272,3 +272,10 @@ a:hover {
 	margin-bottom: 5px;
 	margin-left: 5px;
 }
+
+.colorSwatch {
+	height: 1em;
+	width: 1em;
+	outline: 1px solid black;
+	margin: 0 auto;	
+}
