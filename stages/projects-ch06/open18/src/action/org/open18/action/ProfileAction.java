@@ -1,5 +1,6 @@
 package org.open18.action;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 import org.jboss.seam.annotations.In;
@@ -17,7 +18,7 @@ import org.open18.ProfileNotFoundException;
 
 @Name("profileAction")
 @Scope(ScopeType.CONVERSATION) // required to survive redirect
-public class ProfileAction {
+public class ProfileAction implements Serializable {
 	@In	protected EntityManager entityManager;
 	@RequestParameter protected Long golferId;
 	@In(create = true) protected List<Golfer> newGolfersList;
