@@ -226,4 +226,11 @@
       order="c.datePosted desc"/>
    <factory name="courseComments" value="#{courseCommentsQuery.resultList}"/>
 
+   <framework:entity-query name="averageScore" scope="conversation"
+      ejbql="select avg(r.totalScore) from Round r join r.golfer g">
+      <framework:restrictions>
+         <value>g = #{roundCriteria.self ? currentGolfer : null}</value>
+      </framework:restrictions>
+   </framework:entity-query>
+
 </components>
