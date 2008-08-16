@@ -1,8 +1,42 @@
-Seam in Action: Chapter 02
---------------------------
+Seam in Action: Part 2
+----------------------
 This file details developments made to the application source code during this
-chapter. Please note that the enhancements described here my go beyond what is
-covered in the book.
+part of the book. Please note that the enhancements described here my go beyond
+what is covered in the book.
+
+golftips:
+
+NOTE: I intentially did not use <s:decorate> in this example to make the
+component markup easier for beginners to follow. I cover <s:decorate> in
+chapter 3 and include use it in the development of the registration form.
+Feel free to use <s:decorate> liberally in your own application.
+
+  - Get started by running:
+
+  ./seam new-form
+
+  using the following responses:
+
+  * Seam component name: tipAction
+  * Bean class name: TipAction
+  * Action method name: add
+  * Page name: golftips
+
+  - Create entity class named GolfTip, make it a Seam component named "tip"
+  - Populate import-dev.sql to seed the database with 3 sample records
+  - In the TipAction component:
+    - wire in the EntityManager
+	- create factory for "tips" that retrieve all tips
+	- tips should be exported using @DataModel into the page scope
+	- implement add(GolfTip) method that validates and persists the tip and notifies user of success
+	- implement delete() to delete tip in activated row
+  - In the GolfTipsTest test class:
+    - ensure there are no tips to begin
+	- add a tip
+	- ensure there is one tip
+	- ensure that the user was notified of success
+  - create golftips.xhtml to list existing tips and accept a new tip via a form
+  - Applied by standard RichFaces style fixes to seam-gen and some styles needed for golftips.xhtml
 
 open18-db:
 
