@@ -59,7 +59,11 @@ public class RoundHome extends EntityHome<Round> {
 		try {
 			return (Round) getEntityManager()
 				.createQuery(
-					"select r from Round r join fetch r.golfer where r.id = #{roundHome.id}")
+					"select r from Round r " +
+					"join fetch r.golfer g " +
+					"join fetch r.teeSet ts " +
+					"join fetch ts.course c " +
+					"where r.id = #{roundHome.id}")
 				.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
@@ -68,6 +72,7 @@ public class RoundHome extends EntityHome<Round> {
 
 	public void wire() {
 		TeeSet teeSet = teeSetHome.getDefinedInstance();
+		// only set it if the tee set does not share object identity (hence a real change)
 		if (teeSet != null && !teeSet.equals(getInstance().getTeeSet())) {
 			getInstance().setTeeSet(teeSet);
 		}
