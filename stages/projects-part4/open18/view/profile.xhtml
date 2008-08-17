@@ -22,27 +22,27 @@
 			<f:facet name="header">Profile</f:facet>
 		
 			<s:decorate template="layout/display.xhtml">
-					<ui:define name="label">Gender</ui:define>
-					#{selectedGolfer.gender}
+				<ui:define name="label">Gender</ui:define>
+				#{selectedGolfer.gender}
 			</s:decorate>
 
 			<s:decorate template="layout/display.xhtml">
-					<ui:define name="label">Birthday</ui:define>
-					<h:outputText value="#{selectedGolfer.dateOfBirth}">
-							<s:convertDateTime pattern="MMMM dd, yyyy" />
-					</h:outputText>
+				<ui:define name="label">Birthday</ui:define>
+				<h:outputText value="#{selectedGolfer.dateOfBirth}">
+					<s:convertDateTime pattern="MMMM dd, yyyy" />
+				</h:outputText>
 			</s:decorate>
 
 			<s:decorate template="layout/display.xhtml">
-					<ui:define name="label">Location</ui:define>
-					#{selectedGolfer.location}
+				<ui:define name="label">Location</ui:define>
+				#{selectedGolfer.location}
 			</s:decorate>
 
 			<s:decorate template="layout/display.xhtml">
-					<ui:define name="label">Member since</ui:define>
-					<h:outputText value="#{selectedGolfer.dateJoined}">
-							<s:convertDateTime pattern="MMMM dd, yyyy" />
-					</h:outputText>
+				<ui:define name="label">Member since</ui:define>
+				<h:outputText value="#{selectedGolfer.dateJoined}">
+					<s:convertDateTime pattern="MMMM dd, yyyy" />
+				</h:outputText>
 			</s:decorate>
 
 			<br style="clear: both;" />
