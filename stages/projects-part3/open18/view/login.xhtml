@@ -15,7 +15,9 @@
     <h:form id="login">
     
         <rich:panel>
-            <f:facet name="header">Login</f:facet>
+            <f:facet name="header">Login to Open18</f:facet>
+
+            <p>Please login using a registered username and any password. Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" propagation="end"/></p>
     
             <div class="dialog">
                 <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
@@ -31,8 +33,7 @@
                 </h:panelGrid>
             </div>
 
-            <p>Please login using any username and password. <strong>The authentication is not hooked up to the member registration system at this point. Please see the security chapter (chapter 11) for more details.</strong></p>
-                
+            <p>Note: <strong>The authentication is not hooked up to the member registration system at this point, though a temporary lookup based on the current username is used to retrieve to golfer to associate with a new round. See the security chapter (chapter 11) for the full authentication implementation.</strong></p> 
         </rich:panel>
             
         <div class="actionButtons">
