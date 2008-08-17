@@ -107,23 +107,23 @@
     
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
-            <message>Not found</message>
+            <message severity="warn">Record not found</message>
         </redirect>
     </exception>
     
     <exception class="javax.persistence.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
-            <message>Not found</message>
+            <message severity="warn">Record not found</message>
         </redirect>
     </exception>
     
     <exception class="javax.persistence.OptimisticLockException">
         <end-conversation/>
         <redirect view-id="/error.xhtml">
-            <message>The record was modified by another user</message>
+            <message severity="warn">The record was modified by another user</message>
         </redirect>
     </exception>
-
+    
     <exception class="javax.persistence.PersistenceException">
         <redirect view-id="/error.xhtml">
             <message>The operation failed. Please try again.</message>
@@ -132,25 +132,25 @@
  
     <exception class="org.jboss.seam.security.AuthorizationException">
         <redirect view-id="/error.xhtml">
-            <message>You don't have permission to perform the selected action</message>
+            <message severity="warn">You've been denied access to the resource</message>
         </redirect>
     </exception>
     
     <exception class="org.jboss.seam.security.NotLoggedInException">
         <redirect view-id="/login.xhtml">
-            <message>Please log in first</message>
+            <message severity="warn">#{messages['org.jboss.seam.NotLoggedIn']}</message>
         </redirect>
     </exception>
     
     <exception class="javax.faces.application.ViewExpiredException">
         <redirect view-id="/error.xhtml">
-            <message>Your session has timed out, please try again</message>
+            <message severity="warn">Your session has timed out, please try again</message>
         </redirect>
     </exception>
      
     <exception>
         <redirect view-id="/error.xhtml">
-            <message>Unexpected error, please try again</message>
+            <message severity="error">Unexpected error, please try again</message>
         </redirect>
     </exception>
     
