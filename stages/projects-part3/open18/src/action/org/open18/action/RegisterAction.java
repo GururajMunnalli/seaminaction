@@ -53,7 +53,7 @@ public class RegisterAction {
 		this.specialtyTypes = specialtyTypes;
 	}
 	
-	//@RaiseEvent("golferRegistered") // not nearly as flexible
+	//@RaiseEvent("golferRegistered") // not nearly as flexible as using the Events API
 	public String register() {
 		log.info("Registering golfer #{newGolfer.username}");
 
