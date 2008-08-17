@@ -69,7 +69,12 @@
      
     <exception>
         <redirect view-id="/error.xhtml">
-            <message severity="error">Unexpected error, please try again</message>
+            <message severity="error">
+                Sorry, an unexpected error occurred.
+                One of these messages may explain why:
+                #{org.jboss.seam.handledException.message};
+                #{org.jboss.seam.caughtException.message}
+			</message>
         </redirect>
     </exception>
     
