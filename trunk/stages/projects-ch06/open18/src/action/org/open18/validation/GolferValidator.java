@@ -32,7 +32,7 @@ public class GolferValidator {
 		
 		if (registerAction.isEmailRegistered(newGolfer.getEmailAddress())) {
 			addInvalidValue("emailAddress", Golfer.class,
-				"E-mail address is already registered");
+				"Email address is already registered");
 		}
 		
 		return !hasInvalidValues();
