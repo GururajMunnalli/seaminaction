@@ -8,6 +8,8 @@
             xmlns:mail="http://jboss.com/products/seam/mail"
             xmlns:auth="http://open18.org/components/auth"
             xmlns:framework="http://jboss.com/products/seam/framework"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:navigation="http://jboss.com/products/seam/navigation"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
                 "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
@@ -17,6 +19,8 @@
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
                  http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.0.xsd
+                 http://jboss.com/products/seam/navigation http://jboss.com/products/seam/navigation-2.0.xsd
                  http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
@@ -35,20 +39,46 @@
                       persistence-unit-name="open18"/>
    
    <drools:rule-base name="securityRules">
-       <drools:rule-files><value>/security.drl</value></drools:rule-files>
+      <drools:rule-files><value>/security.drl</value></drools:rule-files>
    </drools:rule-base>
 
-   <security:identity authenticate-method="#{authenticator.authenticate}"
-                           security-rules="#{securityRules}"
-                              remember-me="true"/>
+   <security:identity authenticate-method="#{authenticationManager.authenticate}" remember-me="true"/>
+
+   <framework:entity-query name="rolesQuery"
+      ejbql="select r from Role r"
+      order="r.name">
+      <framework:hints>
+         <key>org.hibernate.comment</key>
+         <value>Query for roles used in option list on /admin/Golfer.xhtml</value>
+      </framework:hints>
+   </framework:entity-query>
+   <factory name="roles" value="#{rolesQuery.resultList}" scope="conversation"/>
+
+   <!--
+   <web:authentication-filter url-pattern="*.seam" auth-type="basic"
+      realm="#{messages['application.title']}" startup="true"/>
+   -->
+
+   <!-- Enabling digest authenticator requires that the AuthenticationManager extends DigestAuthenticator
+        and that passwords are stored unhashed -->
+   <!--
+   <web:authentication-filter url-pattern="*.seam" auth-type="digest"
+      realm="#{messages['application.title']}" key="g0!f15f#n" startup="true"/>
+   -->
+
+   <factory name="currentSession" scope="stateless"
+      value="#{facesContext.externalContext.request.session}"/>
                               
    <event type="org.jboss.seam.security.notLoggedIn">
-       <action execute="#{redirect.captureCurrentView}"/>
+      <action execute="#{redirect.captureCurrentView}"/>
    </event>
    <event type="org.jboss.seam.security.loginSuccessful">
-       <action execute="#{redirect.returnToCapturedView}"/>
+      <action execute="#{currentSession.setMaxInactiveInterval(3600)}"/>
+      <action execute="#{redirect.returnToCapturedView}"/>
    </event>
-   
+
+   <navigation:pages http-port="8080" https-port="8443"/>
+
    <mail:mail-session host="localhost" port="2525" username="test" password="test"/>
         
    <bpm:jbpm>
@@ -123,12 +153,6 @@
       updated-message="You have successfully updated #{course.name}. Your careful eye is appreciated!"
       deleted-message="&#8205;#{course.name} has been removed. We never liked it anyway."/>
 
-   <!-- currentGolfer | temporary (and optimistic) until we get to authentication in the next chapter -->
-   <framework:entity-query name="currentGolferQuery"
-      ejbql="select g from Golfer g where g.username = #{identity.username}"/>
-   <factory name="currentGolfer" scope="conversation" auto-create="true"
-      value="#{identity.loggedIn ? currentGolferQuery.singleResult : null}"/>
-
    <component name="roundPrototype" class="org.open18.model.Round" scope="event">
       <property name="golfer">#{currentGolfer}</property>
       <property name="date">#{currentDate}</property>
@@ -161,7 +185,7 @@
       scope="conversation">
       <framework:hints>
          <key>org.hibernate.comment</key>
-         <value>Query for rounds used on RoundList.xhtml</value>
+         <value>Query for rounds as result of search on /RoundList.xhtml</value>
       </framework:hints>
       <framework:restrictions>
          <value>lower(g.lastName) like concat(lower(#{roundExample.golfer.lastName}),'%')</value>
@@ -195,7 +219,7 @@
       order="f.state asc, c.name asc">
       <framework:hints>
          <key>org.hibernate.comment</key>
-         <value>Query for courses used in search criteria on RoundList.xhtml</value>
+         <value>Query for courses used in search criteria on /RoundList.xhtml</value>
       </framework:hints>
    </framework:entity-query>
    <factory name="courses" value="#{coursesQuery.resultList}" scope="conversation"/>

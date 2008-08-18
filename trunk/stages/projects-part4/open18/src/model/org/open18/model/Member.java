@@ -2,12 +2,18 @@ package org.open18.model;
 
 import java.io.Serializable;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.hibernate.validator.Email;
@@ -20,12 +26,14 @@ import org.hibernate.validator.NotNull;
 	@UniqueConstraint(columnNames = "username"),
 	@UniqueConstraint(columnNames = "email_address")
 })
-public abstract class Member implements Serializable {
+public class Member implements Serializable {
 
 	private Long id;
 	private String username;
 	private String passwordHash;
 	private String emailAddress;
+	private boolean enabled = true;
+	private Set<Role> roles = new HashSet<Role>(0);
 
 	@Id
 	@GeneratedValue
@@ -67,5 +75,25 @@ public abstract class Member implements Serializable {
 
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "MEMBER_ROLE",
+		joinColumns = @JoinColumn(name = "member_id"),
+		inverseJoinColumns = @JoinColumn(name = "role_id"))
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 }

@@ -10,26 +10,29 @@
         <s:link view="/home.xhtml" value="Home" propagation="none"/>
     </rich:toolBarGroup>
     <s:link view="/FacilityList.xhtml" 
-           value="Facility List" 
+           value="Facilities" 
      propagation="none"/>
     <s:link view="/CourseList.xhtml" 
-           value="Course List" 
+           value="Courses" 
      propagation="none"/>
+    <ui:remove>
     <s:link view="/HoleList.xhtml" 
-           value="Hole List" 
+           value="Holes" 
      propagation="none"/>
     <s:link view="/TeeSetList.xhtml" 
-           value="TeeSet List" 
+           value="Tee Sets" 
      propagation="none"/>
     <s:link view="/TeeList.xhtml" 
-           value="Tee List" 
+           value="Tees" 
      propagation="none"/>
-    <s:link view="/GolferList.xhtml" value="Golfer List" propagation="none"/>
-    <s:link view="/RoundList.xhtml" value="Round List" propagation="none"/>
+    </ui:remove>
+    <s:link view="/RoundList.xhtml" value="Rounds" propagation="none"/>
+    <s:link view="/GolferList.xhtml" value="Golfers" propagation="none"/>
+    <s:link view="/admin/home.xhtml" value="Admin" propagation="none" rendered="#{s:hasRole('admin')}"/>
     <s:link view="/workspaces.xhtml" value="Workspaces" propagation="none"/>
     <!-- @newMenuItem@ -->
     <rich:toolBarGroup location="right">
-        <h:outputText value="Welcome, #{identity.username}!" rendered="#{identity.loggedIn}"/>
+        <h:outputText value="You are signed in as: #{identity.username}" rendered="#{identity.loggedIn}"/>
         <s:link view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
         <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}" propagation="none"/>
     </rich:toolBarGroup>

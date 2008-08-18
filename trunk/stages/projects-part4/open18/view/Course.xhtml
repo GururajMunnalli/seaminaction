@@ -315,7 +315,7 @@
 			<rich:separator height="1" rendered="#{index + 1 != courseComments.size}" lineType="dashed" style="height: 20px;"/>
 		</a:repeat>
 	</rich:tab>
-	<rich:tab id="postcomment" label="Leave a comment" rendered="#{currentGolfer != null}">
+	<rich:tab id="postcomment" label="Leave a comment" rendered="#{sessionContext.get('currentGolfer') != null}">
 		<h:form id="commentForm">
 			<!-- hidden field required to keep natural conversation going -->
 			<input type="hidden" name="courseId" value="#{courseHome.courseId}"/>
