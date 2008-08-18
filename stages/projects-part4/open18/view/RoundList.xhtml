@@ -17,7 +17,7 @@
 		
 			<rich:simpleTogglePanel label="Round search parameters" switchType="ajax">
 	 
-				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{currentGolfer != null}">
+				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{sessionContext.get('currentGolfer') != null}">
 					<ui:define name="label">My rounds:</ui:define>
 					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}" style="margin: 0;"/>
 				</s:decorate>
@@ -169,13 +169,13 @@
 					</h:column>
 					<rich:column style="text-align: center;">
 						<f:facet name="header">Action</f:facet>
-						<s:link id="round" view="/#{empty from ? 'Round' : from}.xhtml" value="Select">
+						<s:link id="round" view="/Round.xhtml" value="View">
 							<f:param name="roundId" value="#{_round.id}"/>
 						</s:link>
 					</rich:column>
 				</rich:dataTable>
 		
-				<s:div styleClass="actionButtons" rendered="#{empty from}">
+				<s:div styleClass="actionButtons">
 					<s:button view="/RoundEdit.xhtml"
 								id="create" 
 							 value="Create round" propagation="none">

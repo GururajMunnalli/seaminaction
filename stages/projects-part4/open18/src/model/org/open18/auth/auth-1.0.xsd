@@ -6,24 +6,32 @@
 
 	<xs:element name="password-manager">
 		<xs:complexType mixed="true">
-            <xs:sequence>
-            	<xs:choice minOccurs="0" maxOccurs="unbounded">
-    	            <xs:element ref="auth:digest-algorithm"/>
-	                <xs:element ref="auth:charset" />
-                </xs:choice>
-            </xs:sequence>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="auth:digest-algorithm"/>
+					<xs:element ref="auth:charset" />
+					<xs:element ref="auth:salt-phrase" />
+					<xs:element ref="auth:encoding" />
+				</xs:choice>
+			</xs:sequence>
 			<xs:attributeGroup ref="components:attlist.component"/>
 			<xs:attributeGroup ref="auth:attlist.passwordManager"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:attributeGroup name="attlist.passwordManager">
-		<xs:attribute name="digest-algorithm" />
-		<xs:attribute name="charset" />
+		<xs:attribute name="digest-algorithm" type="xs:string"/>
+		<xs:attribute name="charset" type="xs:string"/>
+		<xs:attribute name="salt-phrase" type="xs:string"/>
+		<xs:attribute name="encoding" type="auth:encodingType"/>
 	</xs:attributeGroup>
 
-    <xs:element name="digest-algorithm" type="xs:string" />
+	<xs:element name="digest-algorithm" type="xs:string" />
 
-    <xs:element name="charset" type="xs:string" />
+	<xs:element name="charset" type="xs:string" />
+
+	<xs:element name="salt-phrase" type="xs:string" />
+
+	<xs:element name="encoding" type="auth:encodingType"/>
 
 	<xs:element name="password-bean">
 		<xs:complexType mixed="true">
@@ -33,5 +41,12 @@
 	</xs:element>
 	<xs:attributeGroup name="attlist.passwordBean">
 	</xs:attributeGroup>
+
+	<xs:simpleType name="encodingType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="base64"/>
+			<xs:enumeration value="hex"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 </xs:schema>

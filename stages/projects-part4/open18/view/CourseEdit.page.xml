@@ -5,6 +5,8 @@
       no-conversation-view-id="/CourseList.xhtml"
       login-required="true"
       conversation="Course">
+
+   <restrict>#{s:hasPermission(view.viewId, null, courseHome.instance)}</restrict>
    
    <begin-conversation join="true"/>
    <!--<begin-conversation nested="true" if="#{!conversation.nested}"/>-->

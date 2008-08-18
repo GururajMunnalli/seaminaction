@@ -7,6 +7,8 @@
 	no-conversation-view-id="/RoundList.xhtml"
 	login-required="true">
 	
+	<restrict>#{s:hasRole('golfer')}</restrict>
+
 	<description>#{roundHome.managed ? 'Edit' : 'Add'} Round</description>
 
 	<!-- NOTE: flush() is called by the EntityHome CRUD action listeners -->

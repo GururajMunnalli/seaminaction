@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.validator.Length;
@@ -35,6 +37,7 @@ public class Facility implements java.io.Serializable {
 	private String uri;
 	private Integer priceRange;
 	private Set<Course> courses = new HashSet<Course>(0);
+	private Golfer owner;
 
 	public Facility() {
 	}
@@ -198,6 +201,16 @@ public class Facility implements java.io.Serializable {
 
 	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "OWNER_ID", nullable = true)
+	public Golfer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Golfer owner) {
+		this.owner = owner;
 	}
 
 }

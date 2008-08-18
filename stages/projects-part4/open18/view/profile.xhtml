@@ -20,6 +20,11 @@
 	
 		<rich:panel>
 			<f:facet name="header">Profile</f:facet>
+
+			<s:decorate template="layout/display.xhtml" rendered="#{s:hasRole('admin')}">
+				<ui:define name="label">Email address</ui:define>
+				#{selectedGolfer.emailAddress}
+			</s:decorate>
 		
 			<s:decorate template="layout/display.xhtml">
 				<ui:define name="label">Gender</ui:define>

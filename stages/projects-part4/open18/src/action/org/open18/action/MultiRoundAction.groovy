@@ -1,5 +1,8 @@
 package org.open18.action
 
+import org.jboss.seam.annotations.In
+import org.jboss.seam.annotations.Name
+
 @Name("multiRoundAction")
 class MultiRoundAction {
 	@In private def entityManager

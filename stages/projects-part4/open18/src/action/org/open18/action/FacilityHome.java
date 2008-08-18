@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.core.Conversation;
 import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.framework.EntityNotFoundException;
@@ -77,12 +78,14 @@ public class FacilityHome extends EntityHome<Facility> {
 		return lastStateChange;
 	}
 
+	@Restrict("#{s:hasPermission('facilityHome', 'remove', facilityHome.instance)}")
 	@Override
 	public String remove() {
 		lastStateChange = super.remove();
 		return lastStateChange;
 		}
 
+	@Restrict("#{s:hasPermission('facilityHome', 'update', facilityHome.instance)}")
 	@Override
 	public String update() {
 		lastStateChange = super.update();

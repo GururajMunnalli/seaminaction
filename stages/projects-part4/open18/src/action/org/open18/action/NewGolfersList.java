@@ -38,8 +38,8 @@ public class NewGolfersList {
     public List<Golfer> getNewGolfers() {
         return newGolfers;
     }
-                                                              
-    @Observer(value = "golferRegistered", create = false)
+             
+    @Observer(value = { "golferRegistered", "golferDeleted" }, create = false)
     synchronized public void fetchNewGolfers() {
         List<Golfer> results = entityManager
 			.createQuery(

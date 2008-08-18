@@ -11,17 +11,24 @@
     <conversation name="Course" parameter-name="courseId"
         parameter-value="#{course != null ? course.id : (redirect.parameters.courseId != null ? redirect.parameters.courseId : courseHome.instance.id)}"/>
 
-    <page view-id="*">
+    <page view-id="*" scheme="http">
         <navigation>
             <rule if-outcome="home">
                 <redirect view-id="/home.xhtml"/>
             </rule>
+        </navigation>
+        <navigation from-action="#{identity.logout}">
+            <redirect/>
         </navigation>
         <navigation from-action="#{switcher.select}">
             <rule if-outcome="addFacility">
               <redirect view-id="/FacilityEdit.xhtml"/>
             </rule>
         </navigation>
+    </page>
+
+    <page view-id="/admin/*">
+        <restrict>#{s:hasRole('admin')}</restrict>
     </page>
 
     <page view-id="/Course*">

@@ -13,7 +13,9 @@
 		<div id="banner">
 			<h1>#{messages['application.title']}</h1>
 			<h2>...#{messages['application.tagline']}</h2>
-			<p>Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" /></p>
+			<s:fragment rendered="#{not identity.loggedIn}">
+				<p>Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" /></p>
+			</s:fragment>
 		</div>
 
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>

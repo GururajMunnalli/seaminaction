@@ -13,7 +13,7 @@
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 
 		<rich:panel>
-			<f:facet name="header">Golfers</f:facet>
+			<f:facet name="header">Administer Golfers</f:facet>
 
 			<div class="results">
 
@@ -22,25 +22,37 @@
 				<rich:dataTable id="golferList" var="_golfer" value="#{golferList.resultList}"
 					rendered="#{not empty golferList.resultList}">
 					<h:column>
-						<f:facet name="header">Username</f:facet>
-						<s:link id="view" value="#{_golfer.username}" view="/profile.xhtml" propagation="none">
-							<f:param name="golferId" value="#{_golfer.id}"/>
-						</s:link>
+						<f:facet name="header">Id</f:facet>
+						#{_golfer.id}
 					</h:column>
 					<h:column>
 						<f:facet name="header">Name</f:facet>
 						#{_golfer.name}
 					</h:column>
 					<h:column>
-						<f:facet name="header">Date Joined</f:facet>
-						<h:outputText value="#{_golfer.dateJoined}">
-							<s:convertDateTime pattern="MMMM dd, yyyy" />
-						</h:outputText>
+						<f:facet name="header">Email address</f:facet>
+						#{_golfer.emailAddress}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<s:link id="profile" value="View" view="/profile.xhtml" propagation="none">
+							<f:param name="golferId" value="#{_golfer.id}"/>
+						</s:link>
+						#{' '}
+						<s:link id="edit" value="Edit" view="/admin/GolferEdit.xhtml" propagation="none">
+							<f:param name="golferId" value="#{_golfer.id}"/>
+						</s:link>
 					</h:column>
 				</rich:dataTable>
 			</div>
 
 		</rich:panel>
+
+		<ui:remove>
+			<div class="actionButtons">
+				<s:button id="done" value="Create golfer" view="/GolferEdit.xhtml"/>
+			</div>
+		</ui:remove>
 
 	</ui:define>
 

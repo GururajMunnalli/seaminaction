@@ -11,6 +11,7 @@ import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.core.Events;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
+import org.jboss.seam.security.Identity;
 import org.open18.auth.PasswordBean;
 import org.open18.auth.PasswordManager;
 import org.open18.model.Golfer;
@@ -32,7 +33,7 @@ public class RegisterAction {
 	@In protected PasswordBean passwordBean;
 	
 	@In protected GolferValidator golferValidator;
-
+	
 	protected String[] proStatusTypes = {};
 
 	protected List<String> specialtyTypes = new ArrayList<String>();
@@ -53,7 +54,7 @@ public class RegisterAction {
 		this.specialtyTypes = specialtyTypes;
 	}
 	
-	//@RaiseEvent("golferRegistered") // not nearly as flexible
+	//@RaiseEvent("golferRegistered") // not nearly as flexible as using the Events API
 	public String register() {
 		log.info("Registering golfer #{newGolfer.username}");
 
@@ -69,6 +70,11 @@ public class RegisterAction {
 			Events.instance().raiseTransactionSuccessEvent("golferRegistered", newGolfer);
 		}
 		facesMessages.addFromResourceBundle("registration.welcome", newGolfer.getName());
+		Identity identity = Identity.instance();
+		identity.setUsername(newGolfer.getUsername());
+		identity.setPassword(passwordBean.getPassword());
+		// could also do Events.instance().raiseTransactionSuccessEvent("attemptLogin"); and write an observer
+		identity.login();
 		return "success";
 	}
 	

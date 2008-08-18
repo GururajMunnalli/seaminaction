@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -22,6 +24,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
+import org.jboss.seam.annotations.security.Restrict;
 import org.open18.model.enums.Weather;
 
 @Entity
@@ -126,5 +129,9 @@ public class Round implements Serializable {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+
+	@PreUpdate @PreRemove
+	@Restrict
+	public void restrict() {}
 
 }
