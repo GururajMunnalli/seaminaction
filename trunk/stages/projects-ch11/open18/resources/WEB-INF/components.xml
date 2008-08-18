@@ -79,6 +79,9 @@
 
    <navigation:pages http-port="8080" https-port="8443"/>
 
+   <!-- Only want to invalidate session if remaining in https after login -->
+   <!-- <web:session invalidate-on-scheme-change="true"/> -->
+
    <mail:mail-session host="localhost" port="2525" username="test" password="test"/>
         
    <bpm:jbpm>
