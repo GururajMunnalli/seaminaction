@@ -5,8 +5,11 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityQuery;
 import java.util.List;
 import java.util.Arrays;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Scope;
 
 @Name("courseList")
+@Scope(ScopeType.CONVERSATION)
 public class CourseList extends EntityQuery {
 
 	private static final String[] RESTRICTIONS = {
