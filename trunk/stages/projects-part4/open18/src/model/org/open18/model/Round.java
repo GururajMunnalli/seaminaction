@@ -24,11 +24,13 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
+import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.security.Restrict;
 import org.open18.model.enums.Weather;
 
 @Entity
 @Table(name = "ROUND")
+@Name("round")
 public class Round implements Serializable {
 
 	private Long id;
