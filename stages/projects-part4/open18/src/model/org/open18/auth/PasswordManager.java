@@ -62,7 +62,6 @@ public class PasswordManager {
 			else {
 				digest.update(plainTextPassword.getBytes(charset));
 			}
-			digest.update(plainTextPassword.getBytes(charset));
 			byte[] rawHash = digest.digest();
 			if (encoding != null && encoding.equals(Encoding.base64)) {
 				return Base64.encodeBytes(rawHash);
