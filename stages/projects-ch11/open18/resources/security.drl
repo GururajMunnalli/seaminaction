@@ -103,7 +103,8 @@ end
 rule ModifyOwnRound
 	no-loop
 when
-	$perm: PermissionCheck(name == "org.open18.model.Round", action in ("update", "delete"), granted == false)
+	// NOTE: name is value of @Name on entity class or else the fully-qualified entity class name
+	$perm: PermissionCheck(name == "round", action in ("update", "delete"), granted == false)
 	Role(name == "member")
 	Principal($username: name)
 	Round($golfer: golfer)
