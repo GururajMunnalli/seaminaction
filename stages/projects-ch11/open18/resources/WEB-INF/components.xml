@@ -167,7 +167,7 @@
    <event type="org.jboss.seam.afterTransactionSuccess.Round">
       <action execute="#{roundList.refresh}"/>
       <!-- It is necessary to fetch the result list to deal with swizzled result list (ManagedEntityIdentityInterceptor) -->
-      <action execute="#{roundList.resultList}"/>
+      <action execute="#{roundList.getResultList}"/>
    </event>
 
    <!-- could optionally use @Role on the entity classes (requires @Name as well) -->
