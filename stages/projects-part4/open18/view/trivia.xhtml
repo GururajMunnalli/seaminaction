@@ -1,0 +1,93 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j"
+	template="/layout/template.xhtml">
+
+	<ui:param name="remoteComponentNames" value="trivia"/>
+	<ui:define name="body">
+
+		<script type="text/javascript">
+//<![CDATA[
+function getTriviaInstance() {
+	return Seam.Component.getInstance("trivia");
+}
+
+function fetchCategories() {
+	loadMessages();
+	getTriviaInstance().getCategories(showCategories);
+}
+
+function showCategories(categories) {
+	var content = document.getElementById("triviaContent");
+	if (categories.length == 0) {
+		alert("Sorry, there are no trivia categories.");
+		return;
+	}
+	content.innerHTML = '';
+	for (var i = 0, len = categories.length; i < len; i++) {
+		var category = categories[i];
+		var link = document.createElement("a");
+		link.href = "javascript: void(0);";
+		link.onclick = function() { selectQuiz(this.firstChild.nodeValue); }
+		link.appendChild(document.createTextNode(category));
+		var linkDiv = document.createElement("div");
+		linkDiv.appendChild(link);
+		content.appendChild(linkDiv);
+	}
+}
+
+function selectQuiz(category) {
+	getTriviaInstance().selectQuiz(category, startQuiz);
+}
+
+function startQuiz(ready, context) {
+	if (ready != true) {
+		alert("Sorry, there are no trivia questions.");
+		return;
+	}
+	Seam.Remoting.getContext().setConversationId(context.getConversationId());
+	drawNextQuestion();
+}
+
+function drawNextQuestion() {
+	getTriviaInstance().drawNextQuestion(presentQuestion);
+}
+
+function presentQuestion(triviaQuestion) {
+	if (triviaQuestion == null) {
+		getTriviaInstance().endQuiz(reportScore);
+	}
+	else if (triviaQuestion.getAnswer() != undefined) {
+		getTriviaInstance().endQuiz();
+		alert("This quiz has been compromised!");
+	}
+	else {
+		var response = window.prompt(triviaQuestion.question);
+		if (response) {
+			getTriviaInstance().answerQuestion(triviaQuestion.getId(), response, drawNextQuestion);
+		}
+	}
+}
+
+function reportScore(score) {
+	alert("Quiz Complete!\n\nYou scored " + score + "%");
+}
+
+// ]]>
+		</script>
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+    
+		<rich:panel>
+			<f:facet name="header">Golf Trivia</f:facet>
+			<p id="triviaContent"><a href="javascript: void(0);" onclick="fetchCategories();">Show categories</a></p>
+		</rich:panel>
+
+	</ui:define> 
+</ui:composition>

@@ -79,6 +79,9 @@
 
    <navigation:pages http-port="8080" https-port="8443"/>
 
+   <!-- Only want to invalidate session if remaining in https after login -->
+   <!-- <web:session invalidate-on-scheme-change="true"/> -->
+
    <mail:mail-session host="localhost" port="2525" username="test" password="test"/>
         
    <bpm:jbpm>
@@ -95,6 +98,10 @@
    <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
       <property name="dateJoined">#{currentDatetime}</property>
    </component>
+
+   <!-- currentGolfer | generic-style component *definition* -->
+   <!-- moved currentGolfer role to components.xml so that Seam remoting does not see Golfer as a component -->
+   <component name="currentGolfer" class="org.open18.model.Golfer" scope="session"/>
 
    <!-- newGolfer | namespace-style component *definition* -->
    <!--
@@ -164,7 +171,7 @@
    <event type="org.jboss.seam.afterTransactionSuccess.Round">
       <action execute="#{roundList.refresh}"/>
       <!-- It is necessary to fetch the result list to deal with swizzled result list (ManagedEntityIdentityInterceptor) -->
-      <action execute="#{roundList.resultList}"/>
+      <action execute="#{roundList.getResultList}"/>
    </event>
 
    <!-- could optionally use @Role on the entity classes (requires @Name as well) -->
@@ -256,5 +263,14 @@
          <value>g = #{roundCriteria.self ? currentGolfer : null}</value>
       </framework:restrictions>
    </framework:entity-query>
+
+   <framework:entity-query name="favoriteFacilitiesQuery"
+      ejbql="select f from Facility f, Favorite fav where fav.entityName = 'Facility' and fav.entityId = f.id"
+      order="f.name asc">
+      <framework:restrictions>
+         <value>fav.golfer = #{currentGolfer}</value>
+      </framework:restrictions>
+   </framework:entity-query>
+   <factory name="favoriteFacilities" value="#{favoriteFacilitiesQuery.resultList}"/>
 
 </components>

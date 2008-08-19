@@ -245,13 +245,13 @@ a:hover {
 
 /* <backport me> */
 .rich-datalist {
-    list-style: square;
-    margin: 10px 0 2px 0;
-    padding-left: 25px;
+	list-style: square;
+	margin: 6px 0 1px 0;
+	padding-left: 18px;
 }
 
 .rich-list-item {
-    padding-bottom: 4px;
+	padding-bottom: 4px;
 }
 /* </backport me> */
 

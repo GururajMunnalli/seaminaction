@@ -21,52 +21,52 @@
 
 
 
-            <s:decorate id="addressDecoration" template="layout/edit.xhtml">
+            <s:decorate id="addressField" template="layout/edit.xhtml">
                 <ui:define name="label">address</ui:define>
                 <h:inputText id="address" 
                            size="50"
                       maxlength="50"
                           value="#{facilityHome.instance.address}">
-                    <a:support event="onblur" reRender="addressDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="addressField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="cityDecoration" template="layout/edit.xhtml">
+            <s:decorate id="cityField" template="layout/edit.xhtml">
                 <ui:define name="label">city</ui:define>
                 <h:inputText id="city" 
                            size="30"
                       maxlength="30"
                           value="#{facilityHome.instance.city}">
-                    <a:support event="onblur" reRender="cityDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="cityField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="countryDecoration" template="layout/edit.xhtml">
+            <s:decorate id="countryField" template="layout/edit.xhtml">
                 <ui:define name="label">country</ui:define>
                 <h:inputText id="country" 
                            size="30"
                       maxlength="30"
                           value="#{facilityHome.instance.country}">
-                    <a:support event="onblur" reRender="countryDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="countryField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="countyDecoration" template="layout/edit.xhtml">
+            <s:decorate id="countyField" template="layout/edit.xhtml">
                 <ui:define name="label">county</ui:define>
                 <h:inputText id="county" 
                            size="30"
                       maxlength="30"
                           value="#{facilityHome.instance.county}">
-                    <a:support event="onblur" reRender="countyDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="countyField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
 
-            <s:decorate id="descriptionDecoration" template="layout/edit.xhtml">
+            <s:decorate id="descriptionField" template="layout/edit.xhtml">
                 <ui:define name="label">description</ui:define>
                 <h:inputTextarea id="description"
                                cols="80"
@@ -75,62 +75,62 @@
             </s:decorate>
 
 
-            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+            <s:decorate id="nameField" template="layout/edit.xhtml">
                 <ui:define name="label">name</ui:define>
                 <h:inputText id="name" 
                        required="true"
                            size="50"
                       maxlength="50"
                           value="#{facilityHome.instance.name}">
-                    <a:support event="onblur" reRender="nameDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="nameField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="phoneDecoration" template="layout/edit.xhtml">
+            <s:decorate id="phoneField" template="layout/edit.xhtml">
                 <ui:define name="label">phone</ui:define>
                 <h:inputText id="phone" 
                            size="10"
                       maxlength="10"
                           value="#{facilityHome.instance.phone}">
-                    <a:support event="onblur" reRender="phoneDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="phoneField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="priceRangeDecoration" template="layout/edit.xhtml">
+            <s:decorate id="priceRangeField" template="layout/edit.xhtml">
                 <ui:define name="label">priceRange</ui:define>
                 <h:inputText id="priceRange"
                           value="#{facilityHome.instance.priceRange}">
-                    <a:support event="onblur" reRender="priceRangeDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="priceRangeField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="stateDecoration" template="layout/edit.xhtml">
+            <s:decorate id="stateField" template="layout/edit.xhtml">
                 <ui:define name="label">state</ui:define>
                 <h:inputText id="state" 
                            size="2"
                       maxlength="2"
                           value="#{facilityHome.instance.state}">
-                    <a:support event="onblur" reRender="stateDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="stateField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="typeDecoration" template="layout/edit.xhtml">
+            <s:decorate id="typeField" template="layout/edit.xhtml">
                 <ui:define name="label">type</ui:define>
                 <h:inputText id="type" 
                        required="true"
                            size="15"
                       maxlength="15"
                           value="#{facilityHome.instance.type}">
-                    <a:support event="onblur" reRender="typeDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="typeField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
 
-            <s:decorate id="uriDecoration" template="layout/edit.xhtml">
+            <s:decorate id="uriField" template="layout/edit.xhtml">
                 <ui:define name="label">uri</ui:define>
                 <h:inputTextarea id="uri"
                                cols="80"
@@ -139,18 +139,18 @@
             </s:decorate>
 
 
-            <s:decorate id="zipDecoration" template="layout/edit.xhtml">
+            <s:decorate id="zipField" template="layout/edit.xhtml">
                 <ui:define name="label">zip</ui:define>
                 <h:inputText id="zip" 
                            size="5"
                       maxlength="5"
-                          value="#{facilityHome.instance.zip}">
-                    <a:support event="onblur" reRender="zipDecoration" bypassUpdates="true" ajaxSingle="true"/>
+                          value="#{facilityHome.instance.zip}" valueChangeListener="#{facilityHome.updateCityAndState}">
+                    <a:support event="onblur" reRender="zipField,cityField,stateField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
         
 
-            <s:decorate id="enterCourseDecoration" template="layout/edit.xhtml" rendered="#{!facilityHome.managed}">
+            <s:decorate id="enterCourseField" template="layout/edit.xhtml" rendered="#{!facilityHome.managed}">
                 <ui:define name="label">Enter course information?</ui:define>
                 <h:selectBooleanCheckbox id="enterCourse"
                                 value="#{facilityHome.enterCourse}" />

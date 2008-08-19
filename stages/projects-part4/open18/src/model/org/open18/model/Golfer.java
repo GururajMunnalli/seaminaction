@@ -18,15 +18,10 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Length;
-import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Role;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "MEMBER_ID")
 @Table(name = "GOLFER")
-@Name("golfer")
-@Role(name = "currentGolfer", scope = ScopeType.SESSION)
 public class Golfer extends Member {
 
 	private String lastName;

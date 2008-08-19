@@ -3,6 +3,10 @@ package org.open18.action;
 import org.open18.model.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.event.ValueChangeEvent;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.security.Restrict;
@@ -15,6 +19,8 @@ public class FacilityHome extends EntityHome<Facility> {
 
 	@In private Conversation conversation;
 
+	@In	Map<String, UIComponent> uiComponent;
+	
 	private boolean enterCourse = true;
 	
 	private String lastStateChange;
@@ -93,6 +99,16 @@ public class FacilityHome extends EntityHome<Facility> {
 			conversation.endAndRedirect();
 		}
 		return lastStateChange;
+	}
+	
+	public void updateCityAndState(ValueChangeEvent e) {
+		String zipCode = (String) e.getNewValue();
+		UIComponent city = e.getComponent().findComponent(":facility:cityField:city");
+		UIComponent state = uiComponent.get("facility:stateField:state");
+		if ("20724".equals(zipCode)) {
+			((EditableValueHolder) city).setSubmittedValue("Laurel");
+			((EditableValueHolder) state).setSubmittedValue("MD");
+		}
 	}
 
 }

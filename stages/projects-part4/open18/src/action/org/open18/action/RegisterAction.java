@@ -3,6 +3,7 @@ package org.open18.action;
 import org.jboss.seam.annotations.In;
 import java.util.List;
 import java.util.ArrayList;
+import javax.faces.event.ValueChangeEvent;
 import javax.persistence.EntityManager;
 
 import org.jboss.seam.annotations.Logger;
@@ -91,4 +92,21 @@ public class RegisterAction {
             .setParameter("email", email)
             .getResultList().size() > 0;
     }
+	
+	public void verifyUsernameAvailable(ValueChangeEvent e) {
+		String username = (String) e.getNewValue();
+		if (!isUsernameAvailable(username)) {
+			facesMessages.addToControl(e.getComponent().getId(),
+				"Sorry, username already taken");
+		}
+	}
+	
+	public void checkEmailRegistered(ValueChangeEvent e) {
+		String email = (String) e.getNewValue();
+		if (isEmailRegistered(email)) {
+			facesMessages.addToControl(e.getComponent().getId(),
+				"Sorry, email address is already registered");
+		}
+	}
+
 }

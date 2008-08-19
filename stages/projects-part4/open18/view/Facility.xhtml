@@ -9,8 +9,9 @@
                 xmlns:rich="http://richfaces.org/rich"
                 template="layout/template.xhtml">
                        
+<ui:param name="remoteComponentNames" value="favoritesAction,org.open18.model.Golfer"/>
 <ui:define name="body">
-    
+    <script type="text/javascript" src="#{request.contextPath}/script/favorites.js"></script>
     <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
     
     <rich:panel>
@@ -102,6 +103,11 @@
         <s:button view="/#{empty facilityFrom ? 'FacilityList' : facilityFrom}.xhtml"
                     id="done"
                  value="Done"/>
+
+        <s:span id="addToFavoritesLink" rendered="#{sessionContext.get('currentGolfer') != null}" style="padding-bottom: 1em; vertical-align: middle;">
+            <a href="javascript: void(0);"
+                onclick="addToFavorites(#{facilityHome.id}, 'Facility', #{currentGolfer.id});">Add to favorites</a>
+        </s:span>
 
     </div>
 
