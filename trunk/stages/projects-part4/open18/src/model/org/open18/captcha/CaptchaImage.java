@@ -9,7 +9,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.contexts.ServletLifecycle;
 
-/**
+/**4
  * Override built-in component to create png instead of jpg
  */
 @Name("org.jboss.seam.captcha.captchaImage")

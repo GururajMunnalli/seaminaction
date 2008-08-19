@@ -5,6 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:a="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	template="layout/template.xhtml">
 
@@ -33,12 +34,20 @@
 		
 				<s:decorate id="emailAddressField" template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
-					<h:inputText id="emailAddress" value="#{newGolfer.emailAddress}" size="40" required="true"/>
+					<h:inputText id="emailAddress" value="#{newGolfer.emailAddress}" size="40" required="true"
+						valueChangeListener="#{registerAction.checkEmailRegistered}">
+						<a:support id="emailAddressCheck" event="onblur" reRender="emailAddressField"
+							ajaxSingle="true" bypassUpdates="true"/>
+					</h:inputText>
 				</s:decorate>
 		
 				<s:decorate id="usernameField" template="layout/edit.xhtml">
 					<ui:define name="label">Username</ui:define>
-					<h:inputText id="username" value="#{newGolfer.username}" size="20" required="true"/>
+					<h:inputText id="username" value="#{newGolfer.username}" size="20" required="true"
+						valueChangeListener="#{registerAction.verifyUsernameAvailable}">
+						<a:support id="usernameCheck" event="onblur" reRender="usernameField"
+							ajaxSingle="true" bypassUpdates="true"/>
+					</h:inputText>
 				</s:decorate>
 		
 				<s:decorate id="passwordField" template="layout/edit.xhtml">
@@ -88,8 +97,10 @@
 
 				<s:decorate id="verifyCaptchaField" template="layout/edit.xhtml">
 					<ui:define name="label">Security check</ui:define>
-					<h:graphicImage id="captchaChallenge" value="/seam/resource/captcha" styleClass="captchaChallenge"/>
-					<h:inputText id="verifyCaptcha" value="#{captcha.response}" required="true" size="3"/>
+					<h:graphicImage id="captchaChallenge" value="/seam/resource/captcha?f=#{currentDate.time}" styleClass="captchaChallenge"/>
+					<h:inputText id="verifyCaptcha" value="#{captcha.response}" required="true" size="3">
+						<a:support event="onblur" reRender="verifyCaptchaField" ajaxSingle="true" bypassUpdates="true"/>
+					</h:inputText>
 				</s:decorate>
 
 				<div style="clear:both">

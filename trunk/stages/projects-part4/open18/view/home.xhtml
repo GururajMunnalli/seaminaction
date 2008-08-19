@@ -43,6 +43,17 @@
 						</rich:dataList>
 					</h:form>
 				</rich:panel>
+				<rich:panel styleClass="module-box" rendered="#{sessionContext.get('currentGolfer') != null}">
+					<f:facet name="header">Favorite Facilities</f:facet>
+					<s:div rendered="#{favoriteFacilities.size == 0}">
+						You haven't selected any favorite facilities.
+					</s:div>
+					<rich:dataList var="_facility" value="#{favoriteFacilities}">
+						<s:link id="viewFacility" view="/Facility.xhtml" value="#{_facility.name}" propagation="none">
+							<f:param name="facilityId" value="#{_facility.id}"/>
+						</s:link>
+					</rich:dataList>
+				</rich:panel>
 				<rich:panel styleClass="module-box" rendered="#{not empty conversationList}">
 					<f:facet name="header">Workspaces</f:facet>
 					<h:form id="switcher">

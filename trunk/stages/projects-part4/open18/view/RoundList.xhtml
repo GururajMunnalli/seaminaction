@@ -5,6 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	template="layout/template.xhtml">
 
@@ -19,17 +20,23 @@
 	 
 				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{sessionContext.get('currentGolfer') != null}">
 					<ui:define name="label">My rounds:</ui:define>
-					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}" style="margin: 0;"/>
+					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}" style="margin: 0;">
+						<a:support event="onchange"/>
+					</h:selectBooleanCheckbox>
 				</s:decorate>
 	
 				<s:decorate id="firstNameField" template="layout/display.xhtml">
 					<ui:define name="label">First name:</ui:define>
-					<h:inputText id="firstName" value="#{roundExample.golfer.firstName}"/>
+					<h:inputText id="firstName" value="#{roundExample.golfer.firstName}">
+						<a:support event="onblur"/>
+					</h:inputText>
 				</s:decorate>
 	
 				<s:decorate id="lastNameField" template="layout/display.xhtml">
 					<ui:define name="label">Last name:</ui:define>
-					<h:inputText id="lastName" value="#{roundExample.golfer.lastName}"/>
+					<h:inputText id="lastName" value="#{roundExample.golfer.lastName}">
+						<a:support event="onblur"/>
+					</h:inputText>
 				</s:decorate>
 
 				<ui:remove>
@@ -41,25 +48,31 @@
 	
 				<s:decorate id="afterDateField" template="layout/display.xhtml">
 					<ui:define name="label">From:</ui:define>
-					<rich:calendar id="afterDate" datePattern="MMM dd, yyyy" value="#{roundCriteria.afterDate}" />
+					<ui:remove><!-- Ajax is not firing on <rich:calendar>, even when setting mode="ajax" --></ui:remove>
+					<rich:calendar id="afterDate" datePattern="MMM dd, yyyy" value="#{roundCriteria.afterDate}"/>
 				</s:decorate>
 	
+				<!-- Ajax is not firing on <rich:calendar>, even when setting mode="ajax" -->
 				<s:decorate id="beforeDateField" template="layout/display.xhtml">
 					<ui:define name="label">To:</ui:define>
-					<rich:calendar id="beforeDate" datePattern="MMM dd, yyyy" value="#{roundCriteria.beforeDate}" />
+					<ui:remove><!-- Ajax is not firing on <rich:calendar>, even when setting mode="ajax" --></ui:remove>
+					<rich:calendar id="beforeDate" datePattern="MMM dd, yyyy" value="#{roundCriteria.beforeDate}"/>
 				</s:decorate>
 	
 				<s:decorate id="coursesField" template="layout/display.xhtml">
 					<ui:define name="label">Courses:</ui:define>
 					<h:selectManyListbox size="4" value="#{roundCriteria.courses}">
-						<s:selectItems var="_course" value="#{courses}" label="#{_course.facility.state} - #{_course.name}" />
+						<s:selectItems var="_course" value="#{courses}" label="#{_course.facility.state} - #{_course.name}"/>
 						<s:convertEntity />
+						<a:support event="onchange"/>
 					</h:selectManyListbox>
 				</s:decorate>
 	
 				<s:decorate id="colorField" template="layout/display.xhtml">
 					<ui:define name="label">Tee set color:</ui:define>
-					<h:inputText id="color" value="#{roundExample.teeSet.color}"/>
+					<h:inputText id="color" value="#{roundExample.teeSet.color}">
+						<a:support event="onblur"/>
+					</h:inputText>
 				</s:decorate>
 
 
@@ -91,6 +104,7 @@
 			
 		</h:form>
 		
+		<a:outputPanel ajaxRendered="true" layout="none">
 		<rich:panel>
 			<f:facet name="header">Round search results (#{roundList.resultList.size})</f:facet>
 				<h:form id="roundListForm">
@@ -218,6 +232,7 @@
 			
 			</h:form>
 		</div>
+		</a:outputPanel>
 	
 		<ui:remove>
 		<div class="tableControl">

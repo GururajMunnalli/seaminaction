@@ -7,6 +7,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a="http://richfaces.org/a4j"
                 xmlns:rich="http://richfaces.org/rich"
                 template="layout/template.xhtml">
                        
@@ -17,30 +18,52 @@
     <h:form id="courseSearch" styleClass="edit">
     
         <rich:simpleTogglePanel label="Course search parameters" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <h:inputText id="name" value="#{courseList.course.name}">
+                    <a:support event="onblur"> <!-- reRender="searchResultsPanel"> -->
+                        <s:conversationPropagation type="join"/>
+                    </a:support>
+                </h:inputText>
+            </s:decorate>
         
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">description</ui:define>
-                <h:inputText id="description" value="#{courseList.course.description}"/>
+                <h:inputText id="description" value="#{courseList.course.description}">
+                    <a:support event="onblur">
+                        <s:conversationPropagation type="join"/>
+                    </a:support>
+                </h:inputText>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">designer</ui:define>
-                <h:inputText id="designer" value="#{courseList.course.designer}"/>
+                <h:inputText id="designer" value="#{courseList.course.designer}">
+                    <a:support event="onblur">
+                        <s:conversationPropagation type="join"/>
+                    </a:support>
+                </h:inputText>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">fairways</ui:define>
-                <h:inputText id="fairways" value="#{courseList.course.fairways}"/>
+                <h:selectOneMenu id="fairways" value="#{courseList.course.fairways}">
+                    <s:selectItems var="_t" value="#{grassOptions.fairways}" label="#{_t}" noSelectionLabel="All"/>
+                    <a:support event="onchange">
+                        <s:conversationPropagation type="join"/>
+                    </a:support>
+                </h:selectOneMenu>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">greens</ui:define>
-                <h:inputText id="greens" value="#{courseList.course.greens}"/>
-            </s:decorate>
-
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <h:inputText id="name" value="#{courseList.course.name}"/>
+                <h:selectOneMenu id="greens" value="#{courseList.course.greens}">
+                    <s:selectItems var="_t" value="#{grassOptions.greens}" label="#{_t}" noSelectionLabel="All"/>
+                    <a:support event="onchange">
+                        <s:conversationPropagation type="join"/>
+                    </a:support>
+                </h:selectOneMenu>
             </s:decorate>
 
         
@@ -68,7 +91,8 @@
         
     </h:form>
     
-    <rich:panel>
+    <a:outputPanel ajaxRendered="true" layout="none">
+    <rich:panel id="searchResultsPanel">
         <f:facet name="header">Course search results (#{courseList.resultList.size})</f:facet>
     <div class="results" id="courseList">
 
@@ -226,6 +250,7 @@
         </s:link>
         
     </div>
+    </a:outputPanel>
     
     <s:div styleClass="actionButtons" rendered="#{empty from}">
         <s:button view="/CourseEdit.xhtml"
