@@ -2,7 +2,6 @@ package org.open18.action;
 
 import org.open18.model.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Collections;
 import java.util.List;
 import org.jboss.seam.ScopeType;
@@ -11,6 +10,8 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.framework.EntityHome;
 import org.jboss.seam.framework.EntityNotFoundException;
+import org.open18.comparator.HoleComparator;
+import org.open18.comparator.TeeSetComparator;
 
 @Name("courseHome")
 public class CourseHome extends EntityHome<Course> {
@@ -90,12 +91,7 @@ public class CourseHome extends EntityHome<Course> {
 
 		List<Hole> holes =
 				new ArrayList<Hole>(getInstance().getHoles());
-		Collections.sort(holes, new Comparator<Hole>() {
-
-			public int compare(Hole a, Hole b) {
-				return Integer.valueOf(a.getNumber()).compareTo(Integer.valueOf(b.getNumber()));
-			}
-		});
+		Collections.sort(holes, new HoleComparator());
 
 		return holes;
 	}
@@ -113,13 +109,7 @@ public class CourseHome extends EntityHome<Course> {
 
 		List<TeeSet> teeSets =
 				new ArrayList<TeeSet>(getInstance().getTeeSets());
-		Collections.sort(teeSets, new Comparator<TeeSet>() {
-
-			public int compare(TeeSet a, TeeSet b) {
-				return a.getPosition() == null ||
-						b.getPosition() == null ? 0 : a.getPosition().compareTo(b.getPosition());
-			}
-		});
+		Collections.sort(teeSets, new TeeSetComparator());
 
 		return teeSets;
 	}

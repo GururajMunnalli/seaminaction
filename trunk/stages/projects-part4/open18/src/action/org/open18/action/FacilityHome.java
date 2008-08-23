@@ -25,6 +25,10 @@ public class FacilityHome extends EntityHome<Facility> {
 	
 	private String lastStateChange;
 	
+    private byte[] newLogo;
+
+    private String newLogoContentType;
+	
 	public String getLastStateChange() {
 		return this.lastStateChange;
 	}
@@ -80,6 +84,13 @@ public class FacilityHome extends EntityHome<Facility> {
 	
 	@Override
 	public String persist() {
+		if (getNewLogo() != null && getNewLogoContentType() != null) {
+			getInstance().setLogo(getNewLogo());
+			getInstance().setLogoContentType(getNewLogoContentType());
+			newLogo = null;
+			newLogoContentType = null;
+		}
+		
 		lastStateChange = super.persist();
 		return lastStateChange;
 	}
@@ -94,6 +105,13 @@ public class FacilityHome extends EntityHome<Facility> {
 	@Restrict("#{s:hasPermission('facilityHome', 'update', facilityHome.instance)}")
 	@Override
 	public String update() {
+		if (getNewLogo() != null && getNewLogoContentType() != null) {
+			getInstance().setLogo(getNewLogo());
+			getInstance().setLogoContentType(getNewLogoContentType());
+			newLogo = null;
+			newLogoContentType = null;
+		}
+
 		lastStateChange = super.update();
 		if (conversation.isNested()) {
 			conversation.endAndRedirect();
@@ -111,4 +129,20 @@ public class FacilityHome extends EntityHome<Facility> {
 		}
 	}
 
+	public byte[] getNewLogo() {
+		return newLogo;
+	}
+
+	public void setNewLogo(byte[] newLogo) {
+		this.newLogo = newLogo;
+	}
+
+	public String getNewLogoContentType() {
+		return newLogoContentType;
+	}
+
+	public void setNewLogoContentType(String newLogoContentType) {
+		this.newLogoContentType = newLogoContentType;
+	}
+	
 }

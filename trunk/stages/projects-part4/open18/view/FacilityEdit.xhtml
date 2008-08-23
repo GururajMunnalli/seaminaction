@@ -14,7 +14,7 @@
     
     <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 
-    <h:form id="facility" styleClass="edit">
+    <h:form id="facility" styleClass="edit" enctype="multipart/form-data">
     
         <rich:panel>
             <f:facet name="header">#{facilityHome.managed ? 'Edit' : 'Add'} Facility</f:facet>
@@ -149,6 +149,16 @@
                 </h:inputText>
             </s:decorate>
         
+            <s:decorate id="logoField" template="layout/edit.xhtml">
+                <ui:define name="label">logo</ui:define>
+                <s:fileUpload id="logo"
+                            data="#{facilityHome.newLogo}"
+                          accept="image/*"
+                     contentType="#{facilityHome.newLogoContentType}"/>
+                <s:graphicImage value="#{facilityHome.instance.logo}" fileName="facility-#{facilityHome.id}-50-thumbnail" alt="[facility logo thumbnail]" rendered="#{facilityHome.instance.logo != null}" style="margin-left: 8px; vertical-align: top;">
+                    <s:transformImageSize height="50" maintainRatio="true"/>
+                </s:graphicImage>
+            </s:decorate>
 
             <s:decorate id="enterCourseField" template="layout/edit.xhtml" rendered="#{!facilityHome.managed}">
                 <ui:define name="label">Enter course information?</ui:define>

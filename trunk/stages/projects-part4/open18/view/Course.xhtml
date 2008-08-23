@@ -11,8 +11,36 @@
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
+    <rich:modalPanel id="sendToFriendPanel" moveable="false" resizeable="false" height="0" top="200" width="350">
+        <f:facet name="header">Send scorecard to friend</f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/img/close.png" alt="[close]" style="cursor: pointer; margin-top: -1px;">
+                <rich:componentControl for="sendToFriendPanel" operation="hide" event="onclick"/>
+            </h:graphicImage>
+        </f:facet>
+        <h:form id="sendToFriend">
+            <s:span id="sent" style="display: none;">#{notifications.sent}</s:span>
+            <h:panelGrid id="recipientFields" border="0" columns="3" cellpadding="5" cellspacing="0">
+                <h:outputLabel for="recipientName" value="Friend's name:" style="white-space: nowrap;"/>
+                <h:inputText id="recipientName" value="#{recipient.name}" required="true" requiredMessage="required">
+                    <s:validate/>
+                    <a:support event="onblur" ajaxSingle="true" reRender="recipientNameError"/>
+                </h:inputText>
+                <a:outputPanel id="recipientNameError"><h:message for="recipientName" styleClass="errors"/></a:outputPanel>
+                <h:outputLabel for="recipientEmail" value="Friend's email:" style="white-space: nowrap;"/>
+                <h:inputText id="recipientEmail" value="#{recipient.emailAddress}" required="true" requiredMessage="required">
+                    <s:validate/>
+                    <a:support event="onblur" ajaxSingle="true" reRender="recipientEmailError"/>
+                </h:inputText>
+                <a:outputPanel id="recipientEmailError"><h:message for="recipientEmail" styleClass="errors"/></a:outputPanel>
+            </h:panelGrid>
+            <a:commandButton id="send" action="#{notifications.sendScorecard}" value="Send scorecard" reRender="sendToFriend,globalMessagesSlot" oncomplete="if (document.getElementById('sendToFriend:sent').firstChild.nodeValue == 'true') { document.getElementById('sendToFriendPanel').component.hide(); }">
+                <a:actionparam name="courseId" value="#{courseHome.instance.id}"/>
+            </a:commandButton>
+        </h:form>
+    </rich:modalPanel>
     
-    <h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+    <a:outputPanel id="globalMessagesSlot"><h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/></a:outputPanel>
     
     <rich:panel>
         <f:facet name="header">Course</f:facet>
@@ -82,6 +110,39 @@
         <s:button view="/#{empty courseFrom ? 'CourseList' : courseFrom}.xhtml"
                     id="done"
                  value="Done"/>
+
+        <span class="related">
+            <s:link view="/exportCourseInfo.xhtml" propagation="none" value="Summary">
+                <f:param name="courseId" value="#{courseHome.instance.id}"/>
+            </s:link>
+            <s:link view="/exportCourseInfo.xhtml" propagation="none">
+                <f:param name="courseId" value="#{courseHome.instance.id}"/>
+				<h:graphicImage value="/img/pdf-icon.png" title="Download as PDF" alt="[pdf]" style="vertical-align: text-bottom;"/>
+            </s:link>
+			#{' '}
+            <s:link view="/exportCourseInfo.xhtml" propagation="none">
+                <f:param name="courseId" value="#{courseHome.instance.id}"/>
+                <f:param name="type" value="rtf"/>
+				<h:graphicImage value="/img/rtf-icon.png" title="Download as RTF" alt="[rtf]" style="vertical-align: text-bottom;"/>
+            </s:link>
+        </span>
+
+        <span class="related">
+            <s:link view="/exportScorecard.xhtml" propagation="none" value="Scorecard">
+                <f:param name="courseId" value="#{courseHome.instance.id}"/>
+            </s:link>
+            <s:link view="/exportScorecard.xhtml" propagation="none">
+                <f:param name="courseId" value="#{courseHome.instance.id}"/>
+				<h:graphicImage value="/img/pdf-icon.png" title="Download as PDF" style="vertical-align: text-bottom;"/>
+            </s:link>
+        </span>
+
+        <s:span styleClass="related" rendered="#{s:hasRole('golfer')}">
+            <h:outputLink id="sendToFriendLink" value="javascript: void(0);">
+                Send scorecard to friend
+                <rich:componentControl for="sendToFriendPanel" operation="show" event="onclick"/>
+            </h:outputLink>
+        </s:span>
 
     </div>
 
@@ -303,6 +364,10 @@
 		<h:outputText value="No one has commented on this course." rendered="#{courseComments.size == 0}"/>
 		<a:repeat var="_comment" value="#{courseComments}" rowKeyVar="index">
 			<div class="comment">
+				<s:graphicImage value="#{_comment.golfer.image != null ? _comment.golfer.image : '/img/golfer.png'}"
+					fileName="#{_comment.golfer.username}-36-thumbnail" alt="[profile image thumbnail]">
+					<s:transformImageSize width="36" maintainRatio="true"/>
+				</s:graphicImage>
 				<s:link view="/profile.xhtml" value="#{_comment.golfer.username}" propagation="none">
 					<f:param name="golferId" value="#{_comment.golfer.id}"/>
 				</s:link>
@@ -315,10 +380,8 @@
 			<rich:separator height="1" rendered="#{index + 1 != courseComments.size}" lineType="dashed" style="height: 20px;"/>
 		</a:repeat>
 	</rich:tab>
-	<rich:tab id="postcomment" label="Leave a comment" rendered="#{sessionContext.get('currentGolfer') != null}">
+	<rich:tab id="postcomment" label="Leave a comment" rendered="#{s:hasRole('golfer')}">
 		<h:form id="commentForm">
-			<!-- hidden field required to keep natural conversation going -->
-			<input type="hidden" name="courseId" value="#{courseHome.courseId}"/>
 			<s:decorate id="textField" template="layout/edit.xhtml">
 				<ui:define name="label">Comment:</ui:define>
 				<h:inputTextarea id="text" value="#{courseComment.text}" required="true"/>

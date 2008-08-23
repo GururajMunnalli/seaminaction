@@ -4,11 +4,14 @@ commons-digester.jar
 core.jar
 drools-compiler.jar
 drools-core.jar
+itext.jar
 janino.jar
 jboss-el.jar
 jboss-seam.jar
 jboss-seam-*.jar
 jbpm-jpdl.jar
+jcommon.jar
+jfreechart.jar
 jsf-facelets.jar
 mvel14.jar
 richfaces-api.jar

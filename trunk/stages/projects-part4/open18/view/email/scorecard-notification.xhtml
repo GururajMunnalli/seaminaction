@@ -1,0 +1,22 @@
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:m="http://jboss.com/products/seam/mail"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<m:from name="Open 18 Notifications" address="dan.j.allen@gmail.com"/>
+	<ui:remove><m:from name="Open 18 Notifications" address="notification@open18.org"/></ui:remove>
+	<m:replyTo address="#{currentGolfer.emailAddress}"/>
+	<m:to>#{recipient.emailAddress}</m:to>
+	<m:subject>#{currentGolfer.name} sent you a scorecard</m:subject>
+	<m:attachment fileName="scorecard.pdf" contentType="application/pdf">
+		<ui:include src="/exportScorecard.xhtml"/>
+	</m:attachment>
+	<m:body type="plain">While browsing the Open 18 course directory,
+I came across a golf course that I thought might interest you.
+
+#{course.name}
+
+The scorecard for this course is attached to this message.
+
+Cheers,
+
+#{currentGolfer.name}</m:body>
+</m:message>

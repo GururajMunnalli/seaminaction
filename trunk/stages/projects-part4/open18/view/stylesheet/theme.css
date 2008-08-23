@@ -101,10 +101,10 @@ img.errors {
 	padding-right: 5px;
 }
 .errors input {
-	border: 1px solid red;
+	border: 1px solid red !important;
 }
 .errors textarea {
-	border: 1px solid red;
+	border: 1px solid red !important;
 }
 
 .required {
@@ -229,6 +229,9 @@ input[type='submit'], input[type='button'] {
 html {
 	overflow-y: scroll;
 }
+a img {
+	border: none;
+}
 
 /* maybe going to go with this */
 /*
@@ -294,4 +297,20 @@ th a.desc {
 	vertical-align: middle;
 	margin-bottom: 2px;
 	margin-right: 2px;
+}
+
+.comment {
+	padding-top: 3px;
+}
+
+.comment img {
+	margin-right: 8px;
+	vertical-align: middle;
+	margin-top: -3px;	
+}
+
+.actionButtons span.related {
+	padding-bottom: 10px;
+	vertical-align: middle;
+	padding-right: 5px;
 }

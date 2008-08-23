@@ -10,7 +10,7 @@
    <begin-conversation nested="true" if="#{!conversation.nested}"/>
    
    <action execute="#{facilityHome.validateEntityFound}"
-      if="#{facilityHome.facilityId ne null}"/>
+      if="#{facilityHome.facilityId != null}"/>
    <action execute="#{facilityHome.wire}"/>
    
    <param name="facilityFrom"/>

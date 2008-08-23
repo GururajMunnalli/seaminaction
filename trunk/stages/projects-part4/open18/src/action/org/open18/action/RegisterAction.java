@@ -1,18 +1,20 @@
 package org.open18.action;
 
+import java.io.IOException;
 import org.jboss.seam.annotations.In;
 import java.util.List;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
 import javax.faces.event.ValueChangeEvent;
 import javax.persistence.EntityManager;
 
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.RaiseEvent;
 import org.jboss.seam.core.Events;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Identity;
+import org.jboss.seam.ui.graphicImage.Image;
 import org.open18.auth.PasswordBean;
 import org.open18.auth.PasswordManager;
 import org.open18.model.Golfer;
@@ -65,6 +67,10 @@ public class RegisterAction {
 			return null;
 		}
 
+		if (!scaleImage()) {
+			return null;
+		}
+		
 		newGolfer.setPasswordHash(passwordManager.hash(passwordBean.getPassword()));
 		entityManager.persist(newGolfer);
 		if (Events.exists()) {
@@ -75,7 +81,8 @@ public class RegisterAction {
 		identity.setUsername(newGolfer.getUsername());
 		identity.setPassword(passwordBean.getPassword());
 		// could also do Events.instance().raiseTransactionSuccessEvent("attemptLogin"); and write an observer
-		identity.login();
+		// quietLogin() doesn't add messages or throw exceptions
+		identity.quietLogin();
 		return "success";
 	}
 	
@@ -107,6 +114,38 @@ public class RegisterAction {
 			facesMessages.addToControl(e.getComponent().getId(),
 				"Sorry, email address is already registered");
 		}
+	}
+	
+	protected boolean scaleImage() {
+		if (newGolfer.getImage() != null) {
+			try {
+				Image image = new Image();
+				image.setInput(newGolfer.getImage());
+				if (image.getBufferedImage() == null) {
+					throw new IOException("The profile image data is empty.");
+				}
+				if (!image.getContentType().getMimeType().matches("image/(png|gif|jpeg)")) {
+					facesMessages.addToControl("image",
+						"Invalid image type: " + image.getContentType());
+				}
+				if (image.getHeight() > 64 || image.getWidth() > 64) {
+					if (image.getHeight() > image.getWidth()) {
+						image.scaleToHeight(64);
+					} else {
+						image.scaleToWidth(64);
+					}
+					newGolfer.setImage(image.getImage());
+				}
+			} catch (IOException e) {
+				log.error("An error occurred reading the profile image", e);
+				facesMessages.addToControl("image", FacesMessage.SEVERITY_ERROR,
+					"An error occurred reading the profile image.");
+				newGolfer.setImage(null);
+				newGolfer.setImageContentType(null);
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

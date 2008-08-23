@@ -195,6 +195,7 @@
             <fileset dir="${basedir}/resources"> 
                 <include name="messages*.properties"/>
                 <include name="*.skin.properties"/> <!-- dallen: RichFaces skins -->
+                <include name="*_theme.properties"/> <!-- dallen: Seam themes -->
             </fileset>
         </copy>
         

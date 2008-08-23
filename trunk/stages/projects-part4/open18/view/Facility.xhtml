@@ -17,7 +17,10 @@
     <rich:panel>
         <f:facet name="header">Facility</f:facet>
 
-
+        <s:div rendered="#{facilityHome.instance.logo != null}">
+            <s:graphicImage value="#{facilityHome.instance.logo}" fileName="facility-#{facilityHome.id}"
+                alt="[facility logo]"/>
+        </s:div>
 
         <s:decorate id="address" template="layout/display.xhtml">
             <ui:define name="label">address</ui:define>
@@ -104,7 +107,7 @@
                     id="done"
                  value="Done"/>
 
-        <s:span id="addToFavoritesLink" rendered="#{sessionContext.get('currentGolfer') != null}" style="padding-bottom: 1em; vertical-align: middle;">
+        <s:span id="addToFavoritesLink" rendered="#{s:hasRole('golfer')}" style="padding-bottom: 10px; vertical-align: middle;">
             <a href="javascript: void(0);"
                 onclick="addToFavorites(#{facilityHome.id}, 'Facility', #{currentGolfer.id});">Add to favorites</a>
         </s:span>
@@ -179,7 +182,7 @@
     <div class="actionButtons">
         <s:button 
                value="Add course"
-                view="/CourseEdit.xhtml" propagation="none">
+                view="/CourseEdit.xhtml">
             <f:param name="facilityId" 
                     value="#{facilityHome.instance.id}"/>
             <f:param name="courseFrom" value="Facility"/>

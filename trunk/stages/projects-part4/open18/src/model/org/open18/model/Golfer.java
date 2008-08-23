@@ -3,12 +3,14 @@ package org.open18.model;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -18,6 +20,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Length;
+import org.jboss.seam.ui.graphicImage.Image;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "MEMBER_ID")
@@ -32,7 +35,11 @@ public class Golfer extends Member {
 	private String location;
 	private String specialty;
 	private String proStatus;
+	private byte[] image;
+	private String imageContentType;
 	private Set<Round> rounds = new HashSet<Round>(0);
+	private Set<CourseComment> courseComments = new HashSet<CourseComment>(0);
+	private Set<Favorite> favorites = new HashSet<Favorite>(0);
 
 	@Column(name = "last_name", nullable = false)
 	@NotNull
@@ -125,5 +132,66 @@ public class Golfer extends Member {
 
 	public void setRounds(Set<Round> rounds) {
 		this.rounds = rounds;
+	}
+
+	@Column(name = "image_data")
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	@Column(name = "image_content_type")
+	public String getImageContentType() {
+		return imageContentType;
+	}
+
+	public void setImageContentType(String imageContentType) {
+		this.imageContentType = imageContentType;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "golfer")
+	public Set<CourseComment> getCourseComments() {
+		return courseComments;
+	}
+
+	public void setCourseComments(Set<CourseComment> courseComments) {
+		this.courseComments = courseComments;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "golfer")
+	public Set<Favorite> getFavorites() {
+		return favorites;
+	}
+
+	public void setFavorites(Set<Favorite> favorites) {
+		this.favorites = favorites;
+	}
+	
+	// NOTE: the only downside here is that we have a hard dependency to jboss-seam-ui.jar
+	@Transient
+	public String getImageExtension() {
+		Image.Type type = Image.Type.getTypeByMimeType(imageContentType);
+		return type != null ? type.getExtension() : null;
+	}
+	
+	public double getAverageScore(long par) {
+		double total = 0;
+		int num = 0;
+
+		for (Round round : getRounds()) {
+			for (Score score : round.getScores()) {
+				if (score.getHole().getPar(round.getGolfer().getGender()) == par) {
+					total += score.getStrokes();
+					num++;
+				}
+			}
+		}
+
+		return num > 0 ? total / num : 0;
 	}
 }

@@ -97,7 +97,7 @@ public class Hole implements java.io.Serializable {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
+	
 	@Column(name = "M_PAR", nullable = false)
 	@NotNull
 	public int getMensPar() {
@@ -142,6 +142,18 @@ public class Hole implements java.io.Serializable {
 
 	public void setTees(Set<Tee> tees) {
 		this.tees = tees;
+	}
+
+	public int getPar(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? getMensPar() : getLadiesPar();
+	}
+	
+	public int getHandicap(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? getMensHandicap() : getLadiesHandicap();
+	}
+
+	public boolean isPar3(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? getMensPar() == 3 : getLadiesPar() == 3;
 	}
 
 }
