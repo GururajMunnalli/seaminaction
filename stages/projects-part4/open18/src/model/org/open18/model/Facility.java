@@ -2,6 +2,7 @@ package org.open18.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -38,6 +40,8 @@ public class Facility implements java.io.Serializable {
 	private Integer priceRange;
 	private Set<Course> courses = new HashSet<Course>(0);
 	private Golfer owner;
+	private byte[] logo;
+	private String logoContentType;
 
 	public Facility() {
 	}
@@ -211,6 +215,26 @@ public class Facility implements java.io.Serializable {
 
 	public void setOwner(Golfer owner) {
 		this.owner = owner;
+	}
+	
+	@Lob
+	@Column(name = "LOGO_DATA")
+	@Basic(fetch = FetchType.LAZY)
+	public byte[] getLogo() {
+		return logo;
+	}
+
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
+	}
+
+	@Column(name = "LOGO_CONTENT_TYPE")
+	public String getLogoContentType() {
+		return logoContentType;
+	}
+
+	public void setLogoContentType(String logoContentType) {
+		this.logoContentType = logoContentType;
 	}
 
 }

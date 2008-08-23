@@ -1,0 +1,101 @@
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:m="http://jboss.com/products/seam/mail"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	charset="UTF-8"
+	importance="normal" urlBase="http://localhost:8080">
+	<m:header name="X-Composed-By" value="JBoss Seam"/>
+	<m:from name="Open 18" address="dan.j.allen@gmail.com"/>
+	<ui:remove><m:from name="Open 18" address="members@open18.org"/></ui:remove>
+	<m:replyTo address="noreply@open18.org"/>
+	<m:to name="#{newGolfer.name}">#{newGolfer.emailAddress}</m:to>
+	<m:subject>Open 18 - Registration Information</m:subject>
+	<m:attachment fileName="about-flyer.pdf" contentType="application/pdf">
+		<ui:include src="/about-flyer.xhtml"/>
+	</m:attachment>
+	<m:attachment value="#{newGolfer.image}"
+		contentType="#{newGolfer.imageContentType}"
+		fileName="#{newGolfer.username}#{newGolfer.imageExtension}"
+		disposition="inline" status="profileImageAttachment"
+		rendered="#{newGolfer.image != null}"/>
+	<m:body><html>
+	<body>
+		<p>#{newGolfer.name},</p>
+
+		<p><strong>Welcome to the <span style="color: green;">Open 18</span> community!</strong></p>
+
+		<p><h:graphicImage value="/img/open18-logo.png"/></p>
+		
+		<p>Thank you for registering. On behalf of the other members, I would
+		like to welcome you and let you know that we look forward to your
+		participation in the Open 18 community.</p>
+
+		<p>Here are the faces of some other cool new golfers you might meet online:</p>
+
+		<ui:repeat var="_golfer" value="#{newGolfersList}">
+			<m:attachment value="#{_golfer.image != null ? _golfer.image : '/img/golfer.png'}"
+				contentType="#{_golfer.imageContentType}"
+				fileName="#{_golfer.username}#{_golfer.image != null ? _golfer.imageExtension : '.png'}"
+				rendered="#{_golfer != newGolfer}"
+				disposition="inline" status="otherProfileImageAttachment"/>
+			<p><img src="cid:#{otherProfileImageAttachment.contentId}" alt="[#{_golfer.username}]"/></p>
+		</ui:repeat>
+		
+		<p>Below is your account information. Please keep it for your records.</p>
+		
+		<table border="0" cellpadding="3" cellspacing="0">
+			<tr>
+				<th>Username:</th><td>#{newGolfer.username}</td>
+			</tr>
+			<tr>
+				<th>Password:</th><td>#{passwordBean.password}</td>
+			</tr>
+		</table>
+		
+		<s:fragment rendered="#{newGolfer.image != null}">
+		<p><img src="cid:#{profileImageAttachment.contentId}"/></p>
+		</s:fragment>
+		
+		<p>Your password has been encrypted in our database and we cannot
+		retrieve it for you after this point. If you should lose this email
+		and forget your password, you can reset the password on your account
+		from the login screen.</p>
+		
+		<div>
+			<strong style="color: green;">Open 18</strong><br />
+			<strong style="color: gray;">...a place for golfers</strong><br />
+			Member Services
+		</div>
+	</body>
+</html>
+<f:facet name="alternative"><s:fragment>#{newGolfer.name},
+
+Welcome to the Open 18 community!
+
+Thank you for registering. On behalf of the other members, I would
+like to say that we look forward to your participation in the Open
+18 community.
+
+Here are some other cool new golfers you might meet online:
+
+<ui:repeat var="_golfer" value="#{newGolfersList}">
+	* #{_golfer.name}
+</ui:repeat>
+
+Below is your account information. Please keep it for your records.
+
+Username: #{newGolfer.username}
+Password: #{passwordBean.password}
+
+Your password has been encrypted in our database and we cannot
+retrieve it for you after this point. If you should lose this email
+and forget your password, you can reset the password on your account
+from the login screen.
+
+Open 18
+...a place for golfers
+Member Services</s:fragment></f:facet>
+	</m:body>
+</m:message>

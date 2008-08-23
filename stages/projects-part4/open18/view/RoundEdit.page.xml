@@ -27,28 +27,32 @@
 
 	<navigation from-action="selectTeeSet">
 		<redirect view-id="/TeeSetList.xhtml">
-			 <param name="from" value="RoundEdit"/>
+			<param name="from" value="RoundEdit"/>
 		</redirect>
 	</navigation>
 
 	<navigation from-action="#{roundHome.persist}">
-		 <end-conversation/>
-		 <redirect view-id="/Round.xhtml"/>
+		<rule>
+			<end-conversation/>
+			<redirect view-id="/Round.xhtml"/>
+		</rule>
 	</navigation>
 	
 	<navigation from-action="#{roundHome.update}">
-		 <end-conversation/>
-		 <redirect view-id="/Round.xhtml"/>
+		<rule>
+			<end-conversation/>
+			<redirect view-id="/Round.xhtml"/>
+		</rule>
 	</navigation>
 	
 	<navigation from-action="#{roundHome.remove}">
-		 <end-conversation/>
-		 <redirect view-id="/RoundList.xhtml"/>
+		<end-conversation/>
+		<redirect view-id="/RoundList.xhtml"/>
 	</navigation>
 
 	<navigation from-action="#{roundHome.revert}">
-		 <end-conversation/>
-		 <redirect view-id="/Round.xhtml"/>
+		<end-conversation/>
+		<redirect view-id="/Round.xhtml"/>
 	</navigation>
 	
 </page>

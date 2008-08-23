@@ -13,12 +13,25 @@
 	
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 		
-		<div style="margin: 5px;"><strong>Average Score (#{roundCriteria.self ? 'Your' : 'All'} Rounds):</strong> #{averageScore.singleResult}</div>
+		<div>
+			<div style="margin: 0 2px 3px 2px; float: left">
+				<strong>Average Score (#{roundCriteria.self ? 'Your' : 'All'} Rounds):</strong>
+				#{averageScore.singleResult}
+			</div>
+			<div style="margin: 0 2px 3px 2px; float: right;">
+				<s:link view="/latestRounds.xhtml" propagation="none">
+					<h:graphicImage value="#{theme.feedIcon != 'feedIcon' ? theme.feedIcon : '/img/feed-icon.png'}"
+						style="vertical-align: middle;"/>
+				</s:link>
+				#{' '}
+				<s:link view="/latestRounds.xhtml" propagation="none">Latest Rounds Feed</s:link></div>
+			<div style="clear: both;"/>
+		</div>
 		<h:form id="roundSearch" styleClass="edit">
 		
 			<rich:simpleTogglePanel label="Round search parameters" switchType="ajax">
 	 
-				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{sessionContext.get('currentGolfer') != null}">
+				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{s:hasRole('golfer')}">
 					<ui:define name="label">My rounds:</ui:define>
 					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}" style="margin: 0;">
 						<a:support event="onchange"/>

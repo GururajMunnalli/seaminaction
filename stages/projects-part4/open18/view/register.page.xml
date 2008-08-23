@@ -6,7 +6,9 @@
 		http://jboss.com/products/seam/pages-2.0.xsd">
 	<navigation from-action="#{registerAction.register}">
 		<rule if-outcome="success">
-			<redirect view-id="/home.xhtml"/>
+			<redirect view-id="/profile.xhtml">
+				<param name="golferId" value="#{newGolfer.id}"/>
+			</redirect>
 		</rule>
 	</navigation>
 	<navigation>

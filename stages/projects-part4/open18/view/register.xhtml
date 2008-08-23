@@ -13,12 +13,12 @@
 
 		<div id="banner">
 			<h1>Join the Open 18 golfer community!</h1>
-			<p>Already a member?#{' '}<s:link id="signin" value="Click Here to Sign In" view="/login.xhtml"/></p>
+			<p>#{messages['membership.alreadyMember']}#{' '}<s:link id="signin" value="#{messages['membership.signIn']}" view="/login.xhtml"/></p>
 		</div>
 
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
 	
-		<h:form id="registerActionForm" styleClass="edit">
+		<h:form id="registerActionForm" styleClass="edit" enctype="multipart/form-data">
 			<rich:panel>
 				<f:facet name="header">Open 18 Member Registration</f:facet>
 
@@ -93,6 +93,12 @@
 						<s:selectItems var="t" label="#{t}" noSelectionLabel="-- Select --" 
 							value="#{registerAction.specialtyTypes}"/>
 					</h:selectOneMenu>
+				</s:decorate>
+
+				<s:decorate id="imageField" template="layout/edit.xhtml">
+					<ui:define name="label">Profile image / Avatar</ui:define>
+					<s:fileUpload id="image" accept="image/png,image/gif,image/jpeg"
+						data="#{newGolfer.image}" contentType="#{newGolfer.imageContentType}"/>
 				</s:decorate>
 
 				<s:decorate id="verifyCaptchaField" template="layout/edit.xhtml">

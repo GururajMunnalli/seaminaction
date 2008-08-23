@@ -18,7 +18,7 @@
         <rich:panel>
             <f:facet name="header">Login to Open 18</f:facet>
     
-            <p>Please login using the credentials from your Open 18 member account. Not a member?#{' '}<s:link id="register" value="Sign up now!" view="/register.xhtml" propagation="end"/></p>
+            <p>Please login using the credentials from your Open 18 member account. #{messages['membership.notMember']}#{' '}<s:link id="register" value="#{messages['membership.signUp']}" view="/register.xhtml" propagation="end"/></p>
 
             <div class="dialog">
                 <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">

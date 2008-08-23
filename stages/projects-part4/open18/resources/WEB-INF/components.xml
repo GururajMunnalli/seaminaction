@@ -10,6 +10,9 @@
             xmlns:framework="http://jboss.com/products/seam/framework"
             xmlns:web="http://jboss.com/products/seam/web"
             xmlns:navigation="http://jboss.com/products/seam/navigation"
+            xmlns:pdf="http://jboss.com/products/seam/pdf"
+            xmlns:i18n="http://jboss.com/products/seam/international"
+            xmlns:theme="http://jboss.com/products/seam/theme"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
                 "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
@@ -18,10 +21,13 @@
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
+                 http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
                  http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
                  http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.0.xsd
                  http://jboss.com/products/seam/navigation http://jboss.com/products/seam/navigation-2.0.xsd
-                 http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
+                 http://jboss.com/products/seam/pdf http://jboss.com/products/seam/pdf-2.0.xsd
+                 http://jboss.com/products/seam/i18n http://jboss.com/products/seam/international-2.0.xsd
+                 http://jboss.com/products/seam/theme http://jboss.com/products/seam/international-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
    <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
@@ -30,6 +36,8 @@
                  conversation-timeout="120000" 
                  conversation-id-parameter="cid"
                  parent-conversation-id-parameter="pid"/>
+
+   <web:multipart-filter max-request-size="5242880" create-temp-files="false"/>
     
    <persistence:managed-persistence-context name="entityManager"
                                      auto-create="true"
@@ -37,6 +45,29 @@
 
    <persistence:entity-manager-factory name="open18EntityManagerFactory" 
                       persistence-unit-name="open18"/>
+
+   <pdf:document-store use-extensions="true" error-page="/missingDoc.seam"/>
+
+   <i18n:locale-selector cookie-enabled="true"/>
+
+   <i18n:time-zone-selector cookie-enabled="true" time-zone-id="America/New_York"/>
+
+   <theme:theme-selector cookie-enabled="true" theme="green_theme">
+      <theme:available-themes>
+         <value>green_theme</value>
+         <value>blue_theme</value>
+         <value>red_theme</value>
+         <value>classic_theme</value>
+         <value>japanCherry_theme</value>
+         <value>wine_theme</value>
+         <value>deepMarine_theme</value>
+         <value>default_theme</value>
+      </theme:available-themes>
+   </theme:theme-selector>
+
+   <component name="richFacesSkinSelector">
+      <property name="defaultSkin">emeraldTown</property>
+   </component>
    
    <drools:rule-base name="securityRules">
       <drools:rule-files><value>/security.drl</value></drools:rule-files>
@@ -82,7 +113,8 @@
    <!-- Only want to invalidate session if remaining in https after login -->
    <!-- <web:session invalidate-on-scheme-change="true"/> -->
 
-   <mail:mail-session host="localhost" port="2525" username="test" password="test"/>
+   <!--<mail:mail-session host="smtp.gmail.com" port="587" username="example@gmail.com" password="secret"/>-->
+   <mail:mail-session session-jndi-name="java:/Mail"/>
         
    <bpm:jbpm>
       <bpm:pageflow-definitions>
@@ -247,9 +279,10 @@
       <property name="golfer">#{currentGolfer}</property>
    </component>
 
+   <!-- courseCommentHome is scoped to event so that the form is reset after post -->
    <framework:entity-home name="courseCommentHome"
       entity-class="org.open18.model.CourseComment"
-      new-instance="#{courseCommentPrototype}"/>
+      new-instance="#{courseCommentPrototype}" scope="event"/>
    <factory name="courseComment" value="#{courseCommentHome.instance}"/>
 
    <framework:entity-query name="courseCommentsQuery"
@@ -272,5 +305,20 @@
       </framework:restrictions>
    </framework:entity-query>
    <factory name="favoriteFacilities" value="#{favoriteFacilitiesQuery.resultList}"/>
+
+   <framework:entity-query name="golferRounds"
+      ejbql="select r from Round r join fetch r.scores"
+      order="r.date asc">
+      <framework:restrictions>
+         <value>r.golfer = #{selectedGolfer}</value>
+      </framework:restrictions>
+   </framework:entity-query>
+
+   <framework:entity-query name="latestRoundsQuery"
+      ejbql="select r from Round r"
+      order="r.date asc"
+      max-results="10">
+   </framework:entity-query>
+   <factory name="latestRounds" value="#{latestRoundsQuery.resultList}"/>
 
 </components>
