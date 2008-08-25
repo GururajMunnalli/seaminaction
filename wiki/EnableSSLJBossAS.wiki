@@ -5,7 +5,7 @@
 
 In order to use the HTTPS sheme in Seam, you have to first enable JBoss AS to accept HTTP connections over SSL. This page describes the necessary steps using a self-signed certificate.
 
-= Details =
+== Details ==
 
 In this example I'm only using a self-signed certificate, but the procedure would be more or less the same even if you are going to use a certificate from a Certification Authority.
 
@@ -29,3 +29,7 @@ mv jbossas.keystore ${jboss.home}/server/default/conf/
 {{{
 https://localhost:8443
 }}}
+
+== Additional Resources ==
+
+Check out the JBoss Wiki for all the details about using SSL with JBoss AS: http://wiki.jboss.org/wiki/SSLSetup
