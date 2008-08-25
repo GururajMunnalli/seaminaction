@@ -23,7 +23,7 @@ cp jbossas.keystore ${jboss.home}/server/default/conf/
 {{{
 <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
            maxThreads="150" scheme="https" secure="true"
-           clientAuth="false" sslProtocol="TLS"
+           clientAuth="false" sslProtocol="TLS" address="${jboss.bind.address}"
            keystoreFile="${jboss.server.home.dir}/conf/jbossas.keystore"
            keystorePass="PASSWORD_FOR_KEYSTORE"/>
 }}}
