@@ -1,0 +1,30 @@
+#summary Explains how to enable SSL on JBoss AS 4.2.x
+#labels Featured
+
+= Introduction =
+
+In order to use the HTTPS sheme in Seam, you have to first enable JBoss AS to accept HTTP connections over SSL. This page describes the necessary steps using a self-signed certificate.
+
+= Details =
+
+Enable SSL on JBoss
+
+In this example I’m only using a self-signed certificate, but the procedure would be more or less the same even if you are going to use a certificate from a Certification Authority.
+
+  # Generate the keystore with the following command (just make up stuff for the responses, but take note of the password):
+{{{
+keytool -genkey -alias jbossas -keyalg RSA -keystore NAME_OF_KEYSTORE -validity NUMBER_OF_DAYS
+}}}
+  # Copy the generated file the conf directory of the JBoss AS default domain (or the one you are using):
+{{{
+cp jbossas ${jboss.home}/server/default/conf/jbossas.keystore
+}}}
+  # Open the file ${jboss.home}/server/default/deploy/jboss-web.deployer/server.xml in your editor, remove the XML comment around the SSL-connector, and modify the attributes to match the configuration shown here: 
+{{{
+<Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
+           maxThreads="150" scheme="https" secure="true"
+           clientAuth="false" sslProtocol="TLS"
+           keystoreFile="${jboss.server.home.dir}/conf/jbossas.keystore"
+           keystorePass="PASSWORD_FOR_KEYSTORE"/>
+}}}
+  # Now you should be able to access your application through https. Remember to use https:// instead of http:// in your browser-url, or else it will fail.
