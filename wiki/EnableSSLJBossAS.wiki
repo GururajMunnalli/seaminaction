@@ -7,9 +7,7 @@ In order to use the HTTPS sheme in Seam, you have to first enable JBoss AS to ac
 
 = Details =
 
-Enable SSL on JBoss
-
-In this example I’m only using a self-signed certificate, but the procedure would be more or less the same even if you are going to use a certificate from a Certification Authority.
+In this example I'm only using a self-signed certificate, but the procedure would be more or less the same even if you are going to use a certificate from a Certification Authority.
 
   # Generate the keystore using the command below. Just make up stuff for the responses, but remember the password you provide. Also, use the same password for the keystore and the key. 
 {{{
