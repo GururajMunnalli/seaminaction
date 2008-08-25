@@ -13,9 +13,9 @@ In this example I'm only using a self-signed certificate, but the procedure woul
 {{{
 keytool -genkey -alias jbossas -keyalg RSA -keystore jbossas.keystore -validity NUMBER_OF_DAYS
 }}}
-  # Copy the generated file the conf directory of the JBoss AS default domain (or the one you are using):
+  # Move the generated file the conf directory of the JBoss AS default domain (or the one you are using):
 {{{
-cp jbossas.keystore ${jboss.home}/server/default/conf/
+mv jbossas.keystore ${jboss.home}/server/default/conf/
 }}}
   # Open the file ${jboss.home}/server/default/deploy/jboss-web.deployer/server.xml in your editor, remove the XML comment around the SSL-connector, and modify the attributes to match the configuration shown here: 
 {{{
