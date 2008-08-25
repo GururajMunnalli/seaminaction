@@ -25,4 +25,7 @@ cp jbossas.keystore ${jboss.home}/server/default/conf/
            keystoreFile="${jboss.server.home.dir}/conf/jbossas.keystore"
            keystorePass="PASSWORD_FOR_KEYSTORE"/>
 }}}
-  # Now you should be able to access your application through https. Remember to use https:// instead of http:// in your browser-url, or else it will fail.
+  # Now you should be able to access your application through https. The URL will begin with https instead of http and you need to include the port number if the port you provided in the configuration is anything other than 443:
+{{{
+https://localhost:8443/open18
+}}}
