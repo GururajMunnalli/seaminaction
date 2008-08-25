@@ -9,7 +9,7 @@ In order to use the HTTPS sheme in Seam, you have to first enable JBoss AS to ac
 
 In this example I'm only using a self-signed certificate, but the procedure would be more or less the same even if you are going to use a certificate from a Certification Authority.
 
-  # Generate the keystore using the command below. Just make up stuff for the responses, but remember the password you provide. Also, use the same password for the keystore and the key. 
+  # Generate the keystore using the command below. For the most part, you can just make up stuff for the responses. However, remember the password you provide and use the same password for the keystore and the key. When it asks for your first and last name, you should enter the hostname used for JBoss AS (i.e., localhost).
 {{{
 keytool -genkey -alias jbossas -keyalg RSA -keystore jbossas.keystore -validity NUMBER_OF_DAYS
 }}}
