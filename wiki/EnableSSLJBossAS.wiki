@@ -27,5 +27,5 @@ cp jbossas.keystore ${jboss.home}/server/default/conf/
 }}}
   # Now you should be able to access your application through https. The URL will begin with https instead of http and you need to include the port number if the port you provided in the configuration is anything other than 443:
 {{{
-https://localhost:8443/open18
+https://localhost:8443
 }}}
