@@ -1,18 +1,40 @@
 <?xml version="1.0"?>
-<project name="seam-in-action" default="help" basedir=".">
+<project name="seaminaction" default="help" basedir=".">
+	<!-- Display seam version (and verify there is a seam dist present) -->
+
 	<property name="jboss.home" value="${basedir}/opt/jboss-as-4.2.2.GA"/>
-	<property name="seam.runtime" value="${basedir}/opt/jboss-seam-2.0.1.CR1"/>
+	<property name="seam.dist" value="${basedir}/opt/jboss-seam-2.0.3.CR1"/>
 	<!--
-	<property file="${seam.runtime}/build.properties"/>
+	<property file="${seam.dist}/build.properties"/>
 	-->
 	<property name="jboss.deploy.dir" value="${jboss.home}/server/default/deploy"/>
 	<property name="jboss.lib.dir" value="${jboss.home}/server/default/lib"/>
+	<property name="svn.javahl" value="false"/>
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="/home/twoputt/lib/ant-contrib-1.0b2.jar"/>
+		</classpath>
+	</taskdef>
 
 	<target name="help">
 		<echo message="Planning on putting some help here"/>
 	</target>
 
-	<target name="remove-deployments">
+	<target name="rehome">
+		<fail unless="home" message="Please specify a new home using -Dhome=C:/NAME_OF_HOME_FOLDER"/>
+		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
+			<isset property="old.home"/>
+		</condition>
+		<replace dir="${basedir}/stages" token="${replacement.token}" value="${home}">
+			<include name="**/*.properties"/>
+			<include name="**/*-ds.xml"/>
+			<include name="**/*-datasource.xml"/>
+			<exclude name="**/exploded-archives/**"/>
+		</replace>
+	</target>
+
+	<target name="undeploy-all">
 		<delete includeemptydirs="true">
 			<fileset dir="${jboss.deploy.dir}">
 				<exclude name="hsqldb-ds.xml"/>
@@ -22,6 +44,28 @@
 				<include name="*-ds.xml"/>
 			</fileset>
 		</delete>
+	</target>
+
+	<target name="list-deployments">
+		<dirset id="exploded-archives" dir="${jboss.deploy.dir}">
+			<include name="*.war"/>
+			<include name="*.ear"/>
+			<exclude name="jmx-console.war"/>
+		</dirset>
+		<fileset id="packaged-archives" dir="${jboss.deploy.dir}">
+			<include name="*.war"/>
+			<include name="*.ear"/>
+		</fileset>
+		<fileset id="datasources" dir="${jboss.deploy.dir}">
+			<exclude name="hsqldb-ds.xml"/>
+			<include name="*-ds.xml"/>
+		</fileset>
+		<property name="exploded-archives" refid="exploded-archives"/>
+		<property name="packaged-archives" refid="packaged-archives"/>
+		<property name="datasources" refid="datasources"/>
+		<echo message="exploded archives: ${exploded-archives}"/>
+		<echo message="packaged archives: ${packaged-archives}"/>
+		<echo message="datasources: ${datasources}"/>
 	</target>
 
 	<target name="clean-all">
@@ -60,8 +104,48 @@
 		</java>
 	</target>
 
+	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql -->
+	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql -->
+	<target name="build-db">
+		<delete failonerror="false">
+			<fileset dir="${basedir}/databases/open18-db" includes="h2*"/>
+		</delete>
+		<java classname="org.h2.tools.RunScript" fork="true">
+			<classpath>
+				<pathelement location="${basedir}/lib/h2.jar"/>
+			</classpath>
+			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2"/>
+			<arg value="-user"/><arg value="open18"/>
+			<arg value="-password"/><arg value="tiger"/>
+			<arg value="-script"/><arg value="etc/schema/open18-initial-schema.sql"/>
+		</java>
+		<java classname="org.h2.tools.RunScript" fork="true">
+			<classpath>
+				<pathelement location="${basedir}/lib/h2.jar"/>
+			</classpath>
+			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2"/>
+			<arg value="-user"/><arg value="open18"/>
+			<arg value="-password"/><arg value="tiger"/>
+			<arg value="-script"/><arg value="etc/schema/open18-seed-data.sql"/>
+		</java>
+	</target>
+
+	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-trivia-data.sql -->
+	<target name="seed-trivia">
+		<java classname="org.h2.tools.RunScript" fork="true">
+			<classpath>
+				<pathelement location="${basedir}/lib/h2.jar"/>
+			</classpath>
+			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2"/>
+			<arg value="-user"/><arg value="open18"/>
+			<arg value="-password"/><arg value="tiger"/>
+			<arg value="-script"/><arg value="etc/schema/open18-trivia-data.sql"/>
+		</java>
+	</target>
+
 	<target name="launch-h2-console">
 		<echo message="Launching H2 admin console... (use Ctrl+C to shutdown)"/>
+		<echo message="Use the JDBC URL: jdbc:h2:file:/home/twoputt/databases/open18-db/h2;IFEXISTS=TRUE;FILE_LOCK=NO"/>
 		<java classname="org.h2.tools.Server" fork="true">
 			<classpath>
 				<pathelement location="lib/h2.jar"/>	
@@ -84,9 +168,9 @@
 
 	<target name="dist" depends="clean-all">
 		<tstamp/>
-		<delete file="dist/seam-in-action-${DSTAMP}.zip"/>
-		<zip zipfile="dist/seam-in-action-${DSTAMP}.zip">
-			<zipfileset prefix="seam-in-action" dir="${basedir}">
+		<delete file="dist/seaminaction-${DSTAMP}.zip"/>
+		<zip zipfile="dist/seaminaction-${DSTAMP}.zip">
+			<zipfileset prefix="seaminaction" dir="${basedir}">
 				<include name="build.xml"/>
 				<include name="readme.txt"/>
 				<include name="lib/h2.jar"/>
@@ -114,126 +198,96 @@
 		</zip>
 	</target>
 
-	<target name="inflate-all">
-		<antcall target="-invoke-all">
-			<param name="subject" value="self"/>
-			<param name="invoke.target" value="-copy-lib"/>
-		</antcall>
-		<copy todir="${jboss.lib.dir}" file="${basedir}/lib/h2.jar"/>
-	</target>
-
-	<target name="inflate">
-		<fail unless="project.home" message="Please supply the project.home property"/>
-		<antcall target="-invoke-on-self">
-			<param name="invoke.target" value="-copy-lib"/>
-		</antcall>
-	</target>
-
-	<!-- could consider using <subant> -->
-	<target name="-invoke-all">
-		<antcall target="-invoke-on-${subject}">
-			<param name="project.home" value="${basedir}/stages/projects-ch02/open18"/>
-		</antcall>
-		<antcall target="-invoke-on-${subject}">
-			<param name="project.home" value="${basedir}/stages/projects-ch02/open18ee"/>
-		</antcall>
-		<!-- TODO: need to inflate open18ice -->
-		<antcall target="-invoke-on-${subject}">
-			<param name="project.home" value="${basedir}/stages/projects-ch03/open18"/>
-		</antcall>
-		<antcall target="-invoke-on-${subject}">
-			<param name="project.home" value="${basedir}/stages/projects-ch04/open18"/>
-		</antcall>
-	</target>
-
-	<target name="-invoke-on-project">
-		<ant dir="${project.home}" target="${invoke.target}" inheritAll="false"/>
-	</target>
-
-	<target name="-invoke-on-self">
-		<antcall target="${invoke.target}"/>
-	</target>
-
-	<target name="-check-needs-inflating">
-		<condition property="project.needs.inflating" value="true">
-			<not><available file="${project.home}/lib/jboss-seam.jar"/></not>
-		</condition>
-	</target>
-
-	<target name="-copy-lib" depends="-check-needs-inflating" if="project.needs.inflating">
-		<ant dir="${seam.runtime}/seam-gen" target="copy-lib" inheritAll="false">
-			<property name="project.home" value="${project.home}"/>
-			<property name="driver.jar" value="${basedir}/lib/h2.jar"/>
-			<property name="icefaces.lib" value="../lib"/>
-		</ant>
-	</target>
-
+	<!-- ant add-svn-ignores -Dpath=prototype/projects/golftips -->
+	<!-- svn add `svn status | grep "^?" | sed 's/^? *//'` -->
 	<target name="add-svn-ignores">
+		<fail unless="path" message="Please specify a path using -Dpath=path/to/project"/>
 		<taskdef resource="svntask.properties"/>
-		<svn javahl="false">
-			<propset path="${path}" name="svn:ignore" file="ignored-project-dirs"/>
+		<svn javahl="${svn.javahl}">
+			<add dir="${path}" recurse="false"/>
+		</svn>
+		<svn javahl="${svn.javahl}">
+			<propset path="${path}" name="svn:ignore" file="ignored-resources"/>
+		</svn>
+		<svn javahl="${svn.javahl}">
+			<add dir="${path}/nbproject" recurse="false"/>
+		</svn>
+		<svn javahl="${svn.javahl}">
+			<propset path="${path}/nbproject" name="svn:ignore" value="private"/>
 		</svn>
 	</target>
 
-	<!-- deprecated
-	<target name="inflate">
-		<antcall target="inflate-ch01"/>
-		<antcall target="inflate-ch02"/>
-		<antcall target="inflate-ch04"/>
+	<target name="update-project" depends="select-project">
+		<ant dir="${seam.dist}/seam-gen" target="update-project" inheritAll="false">
+			<property name="workspace.home" value="${workspace.home}"/>
+			<property name="project.name" value="${project.name}"/>
+			<property name="project.type" value="${project.type}"/>
+		</ant>
 	</target>
 
-	<target name="inflate-ch01">
-		<antcall target="-copy-libs-icefaces">
-			<param name="project.dir" value="stages/ch01/golftips"/>
-		</antcall>
-	</target>
+	<target name="select-project">
+		<echo>Available projects:
 
-	<target name="inflate-ch02">
-		<antcall target="-copy-libs-standard">
-			<param name="project.dir" value="stages/ch02/open18_war"/>
-		</antcall>
+ A: projects-part1 -> golftips
+ B: projects-part1 -> open18
+ C: projects-part1 -> open18ee
+ D: projects-ch03 -> open18
+ E: projects-ch04 -> open18
+ F: projects-ch05 -> open18
+ G: projects-ch06 -> open18
+ H: projects-part3 -> open18
+ I: projects-ch11 -> open18
+ J: projects-ch12 -> open18
+ K: projects-ch13 -> open18
+ </echo>
+		<input addproperty="project.index" message="Enter the number that corresponds to the project you want to update:"
+			validargs="A,B,C,D,E,F,G,H,I,J,K"/>
+		<switch value="${project.index}">
+			<case value="A">
+				<property name="project.selection" value="projects-part1/golftips"/>
+			</case>
+			<case value="B">
+				<property name="project.selection" value="projects-part1/open18"/>
+			</case>
+			<case value="C">
+				<property name="project.selection" value="projects-part1/open18ee"/>
+			</case>
+			<case value="D">
+				<property name="project.selection" value="projects-ch03/open18"/>
+			</case>
+			<case value="E">
+				<property name="project.selection" value="projects-ch04/open18"/>
+			</case>
+			<case value="F">
+				<property name="project.selection" value="projects-ch05/open18"/>
+			</case>
+			<case value="H">
+				<property name="project.selection" value="projects-ch06/open18"/>
+			</case>
+			<case value="H">
+				<property name="project.selection" value="projects-part3/open18"/>
+			</case>
+			<case value="I">
+				<property name="project.selection" value="projects-ch11/open18"/>
+			</case>
+			<case value="J">
+				<property name="project.selection" value="projects-ch12/open18"/>
+			</case>
+			<case value="K">
+				<property name="project.selection" value="projects-ch13/open18"/>
+			</case>
+		</switch>
+		<propertyregex property="project.name"
+			input="${project.selection}"
+			regexp="^.*/(.*)$"
+			select="\1"/>
+		<propertyregex property="workspace.home"
+			input="${project.selection}"
+			regexp="^(.*)/.*$"
+			select="${basedir}/stages/\1"/>
+		<condition property="project.type" value="ear" else="war">
+			<contains string="${project.name}" substring="ee"/>
+		</condition>
 	</target>
-
-	<target name="inflate-ch04">
-		<antcall target="-copy-libs-standard">
-			<param name="project.dir" value="stages/ch04/open18_clubhouse"/>
-		</antcall>
-	</target>
-
-	<target name="-copy-libs-icefaces">
-		<copy todir="${project.dir}/lib" overwrite="true">
-			<fileset dir="${seam.runtime}/lib">
-				<exclude name="jsf-facelets.jar"/>
-				<exclude name="ajax4jsf*.jar"/>
-				<exclude name="richfaces*.jar"/>
-			</fileset>
-			<fileset dir="${seam.runtime}/drools/lib"/>
-			<fileset dir="${seam.runtime}">
-				<include name="jboss-seam*.jar"/>
-				<exclude name="jboss-seam-gen.jar"/>
-			</fileset>
-			<fileset file="lib/h2.jar"/>
-			<fileset dir="lib/icefaces"/>
-		</copy>
-		<copy todir="${project.dir}/bootstrap" overwrite="true">
-			<fileset dir="${seam.runtime}/bootstrap"/>
-		</copy>
-	</target>
-
-	<target name="-copy-libs-standard">
-		<copy todir="${project.dir}/lib" overwrite="true">
-			<fileset dir="${seam.runtime}/lib"/>
-			<fileset dir="${seam.runtime}/drools/lib"/>
-			<fileset dir="${seam.runtime}">
-				<include name="jboss-seam*.jar"/>
-				<exclude name="jboss-seam-gen.jar"/>
-			</fileset>
-			<fileset file="lib/h2.jar"/>
-		</copy>
-		<copy todir="${project.dir}/bootstrap" overwrite="true">
-			<fileset dir="${seam.runtime}/bootstrap"/>
-		</copy>
-	</target>
-	-->
 
 </project>
