@@ -99,14 +99,14 @@
       <property name="dateJoined">#{currentDatetime}</property>
    </component>
 
+   <!-- selectedGolfer | component role to centralize scope for outjected context variable -->
+   <!--
+   <component name="selectedGolfer" class="org.open18.model.Golfer"/>
+   -->
+
    <!-- currentGolfer | generic-style component *definition* -->
    <!-- moved currentGolfer role to components.xml so that Seam remoting does not see Golfer as a component -->
    <component name="currentGolfer" class="org.open18.model.Golfer" scope="session"/>
-
-   <!-- newGolfer | namespace-style component *definition* -->
-   <!--
-   <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}"/>
-   -->
 
    <!-- passwordBean | generic-style component *definition* -->
    <!--

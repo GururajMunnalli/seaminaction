@@ -64,11 +64,6 @@
       <property name="dateJoined">#{currentDatetime}</property>
    </component>
 
-   <!-- newGolfer | namespace-style component *definition* -->
-   <!--
-   <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}"/>
-   -->
-
    <!-- passwordBean | generic-style component *definition* -->
    <!--
    <component name="passwordBean" class="org.open18.auth.PasswordBean" scope="event"/>
