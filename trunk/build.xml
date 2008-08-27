@@ -35,10 +35,10 @@
 	<property name="svn.javahl" value="false"/>
 
 	<property name="h2.jdbc.jar" value="${h2.jdbc.jar}"/>
-	<property name="${open18.database.dir}" value="${databases.dir}/open18-db"/>
-	<property name="${open18.jdbc.url}" value="jdbc:h2:file:${open18.database.dir}/h2"/>
-	<property name="${open18.jdbc.username}" value="open18"/>
-	<property name="${open18.jdbc.password}" value="tiger"/>
+	<property name="open18.database.dir" value="${databases.dir}/open18-db"/>
+	<property name="open18.jdbc.url" value="jdbc:h2:file:${open18.database.dir}/h2"/>
+	<property name="open18.jdbc.username" value="open18"/>
+	<property name="open18.jdbc.password" value="tiger"/>
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
@@ -318,6 +318,7 @@ in the build.properties file.
 			<property name="project.name" value="${project.name}"/>
 			<property name="project.type" value="${project.type}"/>
 		</ant>
+		<copy todir="${jboss-as.lib.dir}" file="${h2.jdbc.jar}"/>
 	</target>
 
 	<target name="select-project">
