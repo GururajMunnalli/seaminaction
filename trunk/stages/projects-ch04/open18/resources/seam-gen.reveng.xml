@@ -94,6 +94,11 @@ public boolean isLadiesHandicapUnique() {
   <table name="TEE_SET">
     <meta attribute="class-code">
 @javax.persistence.Transient
+public String getNameOrColor() {
+    return name != null ? name : color;
+}
+
+@javax.persistence.Transient
 public int getDistanceOut() {
     int distance = 0;
     for (Tee tee : tees) {
