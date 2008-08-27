@@ -157,6 +157,11 @@ public class TeeSet implements java.io.Serializable {
 	// The following is extra code specified in the hbm.xml files
 
 	@javax.persistence.Transient
+	public String getNameOrColor() {
+		return name != null ? name : color;
+	}
+
+	@javax.persistence.Transient
 	public int getDistanceOut() {
 		int distance = 0;
 		for (Tee tee : tees) {
