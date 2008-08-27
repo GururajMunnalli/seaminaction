@@ -7,9 +7,8 @@
 	charset="UTF-8"
 	importance="normal" urlBase="http://localhost:8080">
 	<m:header name="X-Composed-By" value="JBoss Seam"/>
-	<m:from name="Open 18" address="dan.j.allen@gmail.com"/>
-	<ui:remove><m:from name="Open 18" address="members@open18.org"/></ui:remove>
-	<m:replyTo address="noreply@open18.org"/>
+	<m:from name="Open 18" address="#{messages['memberservices.from.address']}"/>
+	<m:replyTo address="#{messages['noreply.address']}"/>
 	<m:to name="#{newGolfer.name}">#{newGolfer.emailAddress}</m:to>
 	<m:subject>Open 18 - Registration Information</m:subject>
 	<m:attachment fileName="about-flyer.pdf" contentType="application/pdf">
