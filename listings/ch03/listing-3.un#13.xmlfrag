@@ -1,9 +1,0 @@
-<navigation-rule>
-  <from-view-id>/FacilityEdit.xhtml</from-view-id>
-  <navigation-case>
-    <from-action>#{facilityHome.persist}</from-action>
-    <from-outcome>persisted</from-outcome>
-    <to-view-id>/Facility.xhtml</to-view-id>
-    <redirect/>
-  </navigation-case>
-</navigation-rule>

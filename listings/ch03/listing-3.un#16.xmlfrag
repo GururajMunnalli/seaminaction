@@ -1,9 +1,0 @@
-http://localhost:8080/open18/Course.seam?courseId=1
-
-<page view-id="/Course.xhtml">
-  <param name="courseId" value="#{courseHome.courseId}"/>
-</page>
-
-<page>
-  <param name="courseId" value="#{courseHome.courseId}"/>
-</page>
