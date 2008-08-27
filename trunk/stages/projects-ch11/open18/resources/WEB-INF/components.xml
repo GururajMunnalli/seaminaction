@@ -99,9 +99,9 @@
       <property name="dateJoined">#{currentDatetime}</property>
    </component>
 
-   <!-- newGolfer | namespace-style component *definition* -->
+   <!-- selectedGolfer | component role to centralize scope for outjected context variable -->
    <!--
-   <model:golfer name="newGolfer" scope="event" date-joined="#{currentDatetime}"/>
+   <component name="selectedGolfer" class="org.open18.model.Golfer"/>
    -->
 
    <!-- passwordBean | generic-style component *definition* -->
