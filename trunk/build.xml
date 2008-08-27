@@ -1,19 +1,48 @@
 <?xml version="1.0"?>
 <project name="seaminaction" default="help" basedir=".">
-	<!-- Display seam version (and verify there is a seam dist present) -->
 
-	<property name="jboss.home" value="${basedir}/opt/jboss-as-4.2.2.GA"/>
-	<property name="seam.dist" value="${basedir}/opt/jboss-seam-2.0.3.CR1"/>
+	<property file="${basedir}/build.properties"/>
 	<!--
-	<property file="${seam.dist}/build.properties"/>
+	<property file="${seam.home}/build.properties" prefix="seamgen"/>
 	-->
-	<property name="jboss.deploy.dir" value="${jboss.home}/server/default/deploy"/>
-	<property name="jboss.lib.dir" value="${jboss.home}/server/default/lib"/>
+
+	<property name="databases.dir" value="${basedir}/databases"/>
+	<property name="etc.dir" value="${basedir}/etc"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="opt.dir" value="${basedir}/opt"/>
+	<property name="projects.dir" value="${basedir}/projects"/>
+	<property name="prototype.dir" value="${basedir}/prototype"/>
+	<property name="stages.dir" value="${basedir}/stages"/>
+	<property name="vault.dir" value="${basedir}/vault"/>
+
+	<property name="jboss-as.distname" value="jboss-as-${jboss-as.version}"/>
+	<property name="seam.distname" value="jboss-seam-${seam.version}"/>
+
+	<property name="jboss.home" value="${opt.dir}/${jboss-as.distname}"/>
+	<property name="jboss-as.home" value="${jboss.home}"/>
+	<property name="seam.home" value="${opt.dir}/${seam.distname}"/>
+
+	<property name="seam.archive.file" value="${seam.distname}.tar.gz"/>
+	<property name="seam.archive.path" value="${vault.dir}/${seam.archive.file}"/>
+	<property name="jboss-as.archive.file" value="${jboss-as.distname}.zip"/>
+	<property name="jboss-as.archive.path" value="${vault.dir}/${jboss-as.archive.file}"/>
+
+	<property name="sourceforge.mirror.jboss.baseurl" value="http://${sourceforge.mirror}/sourceforge/jboss"/> 
+
+	<property name="jboss-as.domain" value="default"/>
+	<property name="jboss-as.deploy.dir" value="${jboss-as.home}/server/${jboss-as.domain}/deploy"/>
+	<property name="jboss-as.lib.dir" value="${jboss-as.home}/server/${jboss-as.domain}/lib"/>
 	<property name="svn.javahl" value="false"/>
 
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+	<property name="h2.jdbc.jar" value="${h2.jdbc.jar}"/>
+	<property name="${open18.database.dir}" value="${databases.dir}/open18-db"/>
+	<property name="${open18.jdbc.url}" value="jdbc:h2:file:${open18.database.dir}/h2"/>
+	<property name="${open18.jdbc.username}" value="open18"/>
+	<property name="${open18.jdbc.password}" value="tiger"/>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="/home/twoputt/lib/ant-contrib-1.0b2.jar"/>
+			<pathelement location="${lib.dir}/ant-contrib-1.0b2.jar"/>
 		</classpath>
 	</taskdef>
 
@@ -21,22 +50,69 @@
 		<echo message="Planning on putting some help here"/>
 	</target>
 
+	<target name="get-jboss" depends="get-jboss-as"/>
+
+	<target name="get-jboss-as">
+		<mkdir dir="${vault.dir}"/>
+		<if>
+			<not><available file="${jboss-as.archive.path}"/></not>
+			<then>
+				<echo>Downloading JBoss AS (~100MB) may take a while. Please be patient.</echo>
+				<get src="${sourceforge.mirror.jboss.baseurl}/jboss-${jboss-as.version}.zip"
+					dest="${jboss-as.archive.path}"/>
+			</then>
+		</if>
+		<if>
+			<not><available file="${jboss-as.home}/bin" type="dir"/></not>
+			<then>
+				<untar src="${jboss-as.archive.path}" dest="${opt.dir}" compression="gzip"/>
+				<rename file="${opt.dir}/jboss-${jboss-as.version}" tofile="${jboss-as.home}"/>
+			</then>
+		</if>
+	</target>
+
+	<target name="get-seam">
+		<mkdir dir="${vault.dir}"/>
+		<if>
+			<not><available file="${seam.archive.path}"/></not>
+			<then>
+				<echo>Downloading Seam (~80MB) may take a while. Please be patient.</echo>
+				<get src="${sourceforge.mirror.jboss.baseurl}/${seam.archive.file}"
+					dest="${seam.archive.path}"/>
+			</then>
+		</if>
+		<if>
+			<not><available file="${seam.home}/seam-gen" type="dir"/></not>
+			<then>
+				<untar src="${seam.archive.path}" dest="${opt.dir}" compression="gzip"/>
+			</then>
+		</if>
+	</target>
+
 	<target name="rehome">
-		<fail unless="home" message="Please specify a new home using -Dhome=C:/NAME_OF_HOME_FOLDER"/>
+		<fail unless="home" message="Please specify a new home using -Dhome=C:/projects/EXAMPLE_CODE_FOLDER_NAME"/>
 		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
 			<isset property="old.home"/>
 		</condition>
-		<replace dir="${basedir}/stages" token="${replacement.token}" value="${home}">
-			<include name="**/*.properties"/>
-			<include name="**/*-ds.xml"/>
-			<include name="**/*-datasource.xml"/>
-			<exclude name="**/exploded-archives/**"/>
+		<replace dir="${stages.dir}" token="${replacement.token}" value="${home}">
+			<patternset id="contains.filesystem.path">
+				<include name="**/*.properties"/>
+				<include name="**/*-ds.xml"/>
+				<include name="**/*-datasource.xml"/>
+				<exclude name="**/exploded-archives/**"/>
+				<exclude name="**/test-build/**"/>
+			</patternset>
 		</replace>
+		<!--
+		<replace dir="${prototype.dir}" token="${replacement.token}" value="${home}">
+			<patternset refid="contains.filesystem.path"/>
+		</replace>
+		-->
 	</target>
 
 	<target name="undeploy-all">
 		<delete includeemptydirs="true">
-			<fileset dir="${jboss.deploy.dir}">
+			<fileset dir="${jboss-as.deploy.dir}">
 				<exclude name="hsqldb-ds.xml"/>
 				<exclude name="jmx-console.war/**"/>
 				<include name="*.war/**"/>
@@ -47,16 +123,16 @@
 	</target>
 
 	<target name="list-deployments">
-		<dirset id="exploded-archives" dir="${jboss.deploy.dir}">
+		<dirset id="exploded-archives" dir="${jboss-as.deploy.dir}">
 			<include name="*.war"/>
 			<include name="*.ear"/>
 			<exclude name="jmx-console.war"/>
 		</dirset>
-		<fileset id="packaged-archives" dir="${jboss.deploy.dir}">
+		<fileset id="packaged-archives" dir="${jboss-as.deploy.dir}">
 			<include name="*.war"/>
 			<include name="*.ear"/>
 		</fileset>
-		<fileset id="datasources" dir="${jboss.deploy.dir}">
+		<fileset id="datasources" dir="${jboss-as.deploy.dir}">
 			<exclude name="hsqldb-ds.xml"/>
 			<include name="*-ds.xml"/>
 		</fileset>
@@ -69,10 +145,28 @@
 	</target>
 
 	<target name="clean-all">
-		<antcall target="-invoke-all">
-			<param name="subject" value="project"/>
-			<param name="invoke.target" value="clean"/>
+		<antcall target="invoke-on-all">
+			<param name="target" value="clean"/>
 		</antcall>
+	</target>
+
+	<target name="invoke-on-all">
+		<fail unless="target" message="Please specify a target to invoke using -Dtarget=targetname"/>	
+		<for param="project.build.file">
+			<fileset dir="${stages.dir}">
+				<include name="*/*/build.xml"/>
+			</fileset>
+			<!--
+			<fileset dir="${prototype.dir}">
+				<include name="*/*/build.xml"/>
+			</fileset>
+			-->
+			<sequential>
+				<var name="project.home" unset="true"/>
+				<dirname property="project.home" file="@{project.build.file}"/>
+				<ant dir="${project.home}" target="${target}" inheritAll="false"/>
+			</sequential>
+		</for>
 	</target>
 
 	<!-- java -cp lib/h2.jar org.h2.tools.Script -url jdbc:h2:file:databases/open18-db/h2\;IFEXISTS=true -user open18 -password tiger -script databases/export.sql -options NOSETTINGS DROP -->
@@ -80,12 +174,12 @@
 		<tstamp/>
 		<java classname="org.h2.tools.Script" fork="true">
 			<classpath>
-				<pathelement location="${basedir}/lib/h2.jar"/>
+				<pathelement location="${h2.jdbc.jar}"/>
 			</classpath>
-			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2;IFEXISTS=true"/>
-			<arg value="-user"/><arg value="open18"/>
-			<arg value="-password"/><arg value="tiger"/>
-			<arg value="-script"/><arg value="databases/export-${DSTAMP}.sql"/>
+			<arg value="-url"/><arg value="${open18.jdbc.url};IFEXISTS=true"/>
+			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
+			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
+			<arg value="-script"/><arg value="${databases.dir}/export-${DSTAMP}.sql"/>
 			<!-- add NODATA to options to exclude data -->
 			<arg value="-options"/><arg value="NOSETTINGS DROP"/>
 		</java>
@@ -95,12 +189,12 @@
 	<target name="import-schema">
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
-				<pathelement location="${basedir}/lib/h2.jar"/>
+				<pathelement location="${h2.jdbc.jar}"/>
 			</classpath>
-			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2;IFEXISTS=true"/>
-			<arg value="-user"/><arg value="open18"/>
-			<arg value="-password"/><arg value="tiger"/>
-			<arg value="-script"/><arg value="databases/import.sql"/>
+			<arg value="-url"/><arg value="${open18.jdbc.url};IFEXISTS=true"/>
+			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
+			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
+			<arg value="-script"/><arg value="${databases.dir}/import.sql"/>
 		</java>
 	</target>
 
@@ -108,25 +202,25 @@
 	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql -->
 	<target name="build-db">
 		<delete failonerror="false">
-			<fileset dir="${basedir}/databases/open18-db" includes="h2*"/>
+			<fileset dir="${open18.database.dir}" includes="h2*"/>
 		</delete>
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
-				<pathelement location="${basedir}/lib/h2.jar"/>
+				<pathelement location="${h2.jdbc.jar}"/>
 			</classpath>
-			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2"/>
-			<arg value="-user"/><arg value="open18"/>
-			<arg value="-password"/><arg value="tiger"/>
-			<arg value="-script"/><arg value="etc/schema/open18-initial-schema.sql"/>
+			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
+			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
+			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/open18-initial-schema.sql"/>
 		</java>
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
-				<pathelement location="${basedir}/lib/h2.jar"/>
+				<pathelement location="${h2.jdbc.jar}"/>
 			</classpath>
-			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2"/>
-			<arg value="-user"/><arg value="open18"/>
-			<arg value="-password"/><arg value="tiger"/>
-			<arg value="-script"/><arg value="etc/schema/open18-seed-data.sql"/>
+			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
+			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
+			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/open18-seed-data.sql"/>
 		</java>
 	</target>
 
@@ -134,21 +228,21 @@
 	<target name="seed-trivia">
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
-				<pathelement location="${basedir}/lib/h2.jar"/>
+				<pathelement location="${h2.jdbc.jar}"/>
 			</classpath>
-			<arg value="-url"/><arg value="jdbc:h2:file:${basedir}/databases/open18-db/h2"/>
-			<arg value="-user"/><arg value="open18"/>
-			<arg value="-password"/><arg value="tiger"/>
-			<arg value="-script"/><arg value="etc/schema/open18-trivia-data.sql"/>
+			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
+			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
+			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/open18-trivia-data.sql"/>
 		</java>
 	</target>
 
 	<target name="launch-h2-console">
 		<echo message="Launching H2 admin console... (use Ctrl+C to shutdown)"/>
-		<echo message="Use the JDBC URL: jdbc:h2:file:/home/twoputt/databases/open18-db/h2;IFEXISTS=TRUE;FILE_LOCK=NO"/>
+		<echo message="Use the JDBC URL: ${open18.jdbc.url};IFEXISTS=TRUE;FILE_LOCK=NO"/>
 		<java classname="org.h2.tools.Server" fork="true">
 			<classpath>
-				<pathelement location="lib/h2.jar"/>	
+				<pathelement location="${h2.jdbc.jar}"/>
 			</classpath>
 			<arg value="-web"/>
 		</java>
@@ -158,42 +252,37 @@
 		<echo message="Starting H2 and launching H2 admin console... (use Ctrl+C to shutdown)"/>
 		<java classname="org.h2.tools.Server" fork="true">
 			<classpath>
-				<pathelement location="lib/h2.jar"/>	
+				<pathelement location="${h2.jdbc.jar}"/>	
 			</classpath>
 			<arg value="-tcp"/>
 			<arg value="-web"/>
-			<arg value="-baseDir"/><arg value="databases"/>
+			<arg value="-baseDir"/><arg value="${databases.dir}"/>
 		</java>
 	</target>
 
 	<target name="dist" depends="clean-all">
 		<tstamp/>
+		<mkdir dir="dist"/>
 		<delete file="dist/seaminaction-${DSTAMP}.zip"/>
 		<zip zipfile="dist/seaminaction-${DSTAMP}.zip">
 			<zipfileset prefix="seaminaction" dir="${basedir}">
 				<include name="build.xml"/>
-				<include name="readme.txt"/>
+				<include name="build.properties"/>
+				<include name="README.txt"/>
 				<include name="lib/h2.jar"/>
-				<include name="lib/jtidy*"/>
-				<include name="lib/icefaces/**"/>
-				<include name="stages/**"/>
+				<include name="lib/ant-contrib*.jar"/>
 				<include name="databases/open18-db/**"/>
-				<include name="databases/open18-db*"/>
-				<include name="databases/open18-directory*"/>
 				<include name="etc/**"/>
 
 				<!-- temporary hack to include empty project directory -->
 				<include name="projects/.directory"/>
 
-				<!-- only include projects of interest
-				<include name="projects/golftips/**"/>
-				<include name="projects/open18_war/**"/>
-				<include name="projects/open18_clubhouse/**"/>
-				<exclude name="projects/*/lib/**"/>
-				-->
-
+				<include name="stages/**"/>
+				<exclude name="stages/projects-baseline/**"/>
 				<exclude name="stages/*/*/lib/**"/>
 				<exclude name="stages/*/*/bootstrap/**"/>
+				<exclude name="stages/*/*/exploded-archives/**"/>
+				<exclude name="stages/*/*/nbproject/private/**"/>
 			</zipfileset>
 		</zip>
 	</target>
@@ -218,7 +307,7 @@
 	</target>
 
 	<target name="update-project" depends="select-project">
-		<ant dir="${seam.dist}/seam-gen" target="update-project" inheritAll="false">
+		<ant dir="${seam.home}/seam-gen" target="update-project" inheritAll="false">
 			<property name="workspace.home" value="${workspace.home}"/>
 			<property name="project.name" value="${project.name}"/>
 			<property name="project.type" value="${project.type}"/>
@@ -284,7 +373,7 @@
 		<propertyregex property="workspace.home"
 			input="${project.selection}"
 			regexp="^(.*)/.*$"
-			select="${basedir}/stages/\1"/>
+			select="${stages.dir}/\1"/>
 		<condition property="project.type" value="ear" else="war">
 			<contains string="${project.name}" substring="ee"/>
 		</condition>
