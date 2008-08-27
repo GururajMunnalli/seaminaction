@@ -49,11 +49,11 @@
 					<p>#{_course.totalMensPar}</p>
 					<p>#{_course.fairways}/#{_course.greens}</p>
 					<p>
-						<h:outputText value="$" rendered="#{_course.facility.priceRange eq 1}"/>
-						<h:outputText value="$$" rendered="#{_course.facility.priceRange eq 2}"/>
-						<h:outputText value="$$$" rendered="#{_course.facility.priceRange eq 3}"/>
-						<h:outputText value="$$$$" rendered="#{_course.facility.priceRange eq 4}"/>
-						<h:outputText value="$$$$$" rendered="#{_course.facility.priceRange eq 5}"/>
+						<h:outputText value="$" rendered="#{_course.facility.priceRange == 1}"/>
+						<h:outputText value="$$" rendered="#{_course.facility.priceRange == 2}"/>
+						<h:outputText value="$$$" rendered="#{_course.facility.priceRange == 3}"/>
+						<h:outputText value="$$$$" rendered="#{_course.facility.priceRange == 4}"/>
+						<h:outputText value="$$$$$" rendered="#{_course.facility.priceRange == 5}"/>
 						<ui:remove>#{_course.facility.priceRange}</ui:remove>
 					</p>
 					<ui:remove><p style="margin-bottom: 0;"><h:commandLink action="#{courseComparison.unselect(_course)}" value="Remove"/></p></ui:remove>

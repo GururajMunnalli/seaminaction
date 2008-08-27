@@ -18,7 +18,7 @@
 		
 			<rich:simpleTogglePanel label="Round search parameters" switchType="ajax">
 	 
-				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{sessionContext.get('currentGolfer') != null}">
+				<s:decorate id="selfField" template="layout/display.xhtml" rendered="#{s:hasRole('golfer')}">
 					<ui:define name="label">My rounds:</ui:define>
 					<h:selectBooleanCheckbox id="self" value="#{roundCriteria.self}" style="margin: 0;">
 						<a:support event="onchange"/>

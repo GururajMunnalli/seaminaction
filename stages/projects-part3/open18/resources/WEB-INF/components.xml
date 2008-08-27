@@ -16,8 +16,8 @@
                  http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
-                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
                  http://open18.org/components/auth http://open18.org/components/auth-1.0.xsd
+                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
    <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
@@ -218,6 +218,12 @@
       entity-class="org.open18.model.CourseComment"
       new-instance="#{courseCommentPrototype}"/>
    <factory name="courseComment" value="#{courseCommentHome.instance}"/>
+
+   <!-- instance is cleared so that the form is reset after comment is submitted -->
+   <!-- as an alternative, could scope courseCommentHome to the event context -->
+   <event type="org.jboss.seam.afterTransactionSuccess.CourseComment">
+      <action execute="#{courseCommentHome.clearInstance}"/>
+   </event>
 
    <framework:entity-query name="courseCommentsQuery"
       ejbql="select c from CourseComment c join fetch c.golfer"

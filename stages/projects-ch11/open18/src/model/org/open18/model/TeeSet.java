@@ -185,4 +185,11 @@ public class TeeSet implements java.io.Serializable {
 
 	// end of extra code specified in the hbm.xml files
 
+	public Double getCourseRating(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? mensCourseRating : ladiesCourseRating;
+	}
+	
+	public Double getSlopeRating(Gender gender) {
+		return (gender == null || gender == Gender.MALE) ? mensSlopeRating : ladiesSlopeRating;
+	}
 }

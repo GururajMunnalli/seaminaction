@@ -40,7 +40,7 @@ Feel free to use <s:decorate> liberally in your own application.
 
 open18-db:
 
-  - setup initial schema and import the seed data using the following two commands from the /home/twoputt directory:
+  - setup initial schema and import the seed data using the following two commands from the example code root directory:
 
 java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
 java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql
@@ -61,6 +61,10 @@ open18:
   - prepared project so that it can be deployed to GlassFish
   - hide the description column on listing pages and assocation tables (it takes up too much space)
   - make the uri of facilities on listing page into links
+  - improved error page so it doesn't sound so apathetic
+  - added severities to handled exceptions in /WEB-INF/pages.xml and updated some of the messages
+  - reordered the entity list links in the top menu bar
+  - added JSF configuration setting to ensure a ViewExpiredException is thrown on session timeout when using RichFaces
 
 open18ee:
 

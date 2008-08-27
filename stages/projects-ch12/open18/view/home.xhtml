@@ -43,7 +43,7 @@
 						</rich:dataList>
 					</h:form>
 				</rich:panel>
-				<rich:panel styleClass="module-box" rendered="#{sessionContext.get('currentGolfer') != null}">
+				<rich:panel styleClass="module-box" rendered="#{s:hasRole('golfer')}">
 					<f:facet name="header">Favorite Facilities</f:facet>
 					<s:div rendered="#{favoriteFacilities.size == 0}">
 						You haven't selected any favorite facilities.

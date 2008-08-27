@@ -21,10 +21,5 @@ function poseQuestion(triviaQuestion) {
 }
 
 function reportResult(result) {
-	if (messages != null) {
-		alert(result ? messages.get("response.correct") : messages.get("response.incorrect"));
-	}
-	else {
-		alert(result ? "Correct!" : "Sorry, wrong answer. Keep studying!");
-	}
+	alert(result ? messages.get("response.correct") : messages.get("response.incorrect"));
 }

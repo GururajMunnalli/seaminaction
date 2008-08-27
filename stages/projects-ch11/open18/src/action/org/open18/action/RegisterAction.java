@@ -74,7 +74,8 @@ public class RegisterAction {
 		identity.setUsername(newGolfer.getUsername());
 		identity.setPassword(passwordBean.getPassword());
 		// could also do Events.instance().raiseTransactionSuccessEvent("attemptLogin"); and write an observer
-		identity.login();
+		// quietLogin() doesn't add messages or throw exceptions
+		identity.quietLogin();
 		return "success";
 	}
 	

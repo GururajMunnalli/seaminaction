@@ -103,7 +103,7 @@ end
 rule ModifyOwnRound
 	no-loop
 when
-	// NOTE: name is value of @Name on entity class or else the fully-qualified entity class name
+    // NOTE: name is value of @Name on entity class or else the fully-qualified entity class name
 	$perm: PermissionCheck(name == "round", action in ("update", "delete"), granted == false)
 	Role(name == "member")
 	Principal($username: name)
@@ -114,6 +114,18 @@ then
 end
 
 // ===== Page-level rules =====
+
+// #{s:hasPermission('/FacilityEdit.xhtml', null, facilityHome.instance)}
+// Allows any member to add a facility
+rule EditNewFacility
+	no-loop
+when
+	$perm: PermissionCheck(name == "/FacilityEdit.xhtml", granted == false)
+	Role(name == "member")
+    Facility(id == null)
+then
+	$perm.grant();
+end
 
 // #{s:hasPermission('/FacilityEdit.xhtml', null, facilityHome.instance)}
 // Allows an admin to bring up a private facility in the editor
@@ -149,6 +161,18 @@ when
 	Principal($username: name)
 	Facility($golfer: owner)
 	Golfer(username == $username) from $golfer
+then
+	$perm.grant();
+end
+
+// #{s:hasPermission('/CourseEdit.xhtml', null, courseHome.instance)}
+// Allows any member to add a course
+rule EditNewCourse
+	no-loop
+when
+	$perm: PermissionCheck(name == "/CourseEdit.xhtml", granted == false)
+	Role(name == "member")
+    Course(id == null)
 then
 	$perm.grant();
 end

@@ -16,6 +16,11 @@
 			<rich:panel>
 				<f:facet name="header">Course information</f:facet>
 
+				<s:decorate id="facilityField" template="/layout/edit.xhtml">
+					<ui:define name="label">Facility</ui:define>
+					#{course.facility.name}
+				</s:decorate>
+
 				<s:decorate id="nameField" template="/layout/edit.xhtml">
 					<ui:define name="label">Name</ui:define>
 					<h:inputText id="name" required="true"

@@ -35,6 +35,7 @@ public class Course implements java.io.Serializable {
 	private Long signatureHole;
 	private Set<TeeSet> teeSets = new HashSet<TeeSet>(0);
 	private Set<Hole> holes = new HashSet<Hole>(0);
+	private Set<CourseComment> comments = new HashSet<CourseComment>(0);
 
 	public Course() {
 	}
@@ -178,7 +179,15 @@ public class Course implements java.io.Serializable {
 	public void setHoles(Set<Hole> holes) {
 		this.holes = holes;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
+	public Set<CourseComment> getComments() {
+		return comments;
+	}
 
+	public void setComments(Set<CourseComment> comments) {
+		this.comments = comments;
+	}
+	
 	// The following is extra code specified in the hbm.xml files
 
 	@javax.persistence.Transient

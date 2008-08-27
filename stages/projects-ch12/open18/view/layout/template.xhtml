@@ -20,13 +20,17 @@
     <s:remote include="adhocTrivia,#{remoteComponentNames}"/>
     <script type="text/javascript" src="#{request.contextPath}/script/trivia.js"></script>
     <script type="text/javascript">
-var messages = null;
+// provide temporary map until real one arrives
+var messages = new Seam.Remoting.Map();
+messages.get = function(key) { return key; }
+var messagesLoaded = false;
 function loadMessages() {
-    if (messages != null) {
-        return;
+    if (messagesLoaded) {
+        return null;
     }
     Seam.Remoting.eval("\#{messages}", function(value) {
         messages = value;
+        messagesLoaded;
     });
 }
     </script>

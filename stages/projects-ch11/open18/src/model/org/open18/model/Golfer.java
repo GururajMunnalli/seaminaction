@@ -38,6 +38,7 @@ public class Golfer extends Member {
 	private String specialty;
 	private String proStatus;
 	private Set<Round> rounds = new HashSet<Round>(0);
+	private Set<CourseComment> courseComments = new HashSet<CourseComment>(0);
 
 	@Column(name = "last_name", nullable = false)
 	@NotNull
@@ -131,4 +132,14 @@ public class Golfer extends Member {
 	public void setRounds(Set<Round> rounds) {
 		this.rounds = rounds;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "golfer")
+	public Set<CourseComment> getCourseComments() {
+		return courseComments;
+	}
+
+	public void setCourseComments(Set<CourseComment> courseComments) {
+		this.courseComments = courseComments;
+	}
+
 }

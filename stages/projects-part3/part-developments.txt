@@ -1,7 +1,10 @@
-Seam in Action: Chapter 10
---------------------------
+Seam in Action: Part 3
+----------------------
 This file details developments made to the application source code during this
-chapter. Please note that the enhancements described here my go beyond what is
-covered in the book.
+part of the book. Please note that the enhancements described here my go beyond
+what is covered in the book.
 
 open18:
+  - add note to login page that they can login with a registered username
+  - disable conversation switching for login and home page
+  - had to add propagation="none" to Add Course on Facility page to avoid natural conversation error

@@ -1,0 +1,26 @@
+Seam in Action: Chapter 13
+--------------------------
+This file details developments made to the application source code during this
+chapter. Please note that the enhancements described here my go beyond what is
+covered in the book.
+
+FIXME:
+  - using a role for currentGolfer is problematic because you can no longer rely on currentGolfer being null for guests
+  - you cannot rely on sessionContext.get('currentGolfer') either because if #{currentGolfer} is ever evaluated you get vanilla, transient instance of Golfer
+  - best options are: 1) always look for #{currentGolfer.id != null}; 2) don't use a role for currentGolfer; 3) shield all uses of currentGolfer with s:hasRole('golfer')
+
+NOTE:
+  - would be nice to have the org.jboss.seam.ui.graphicImage.Image in jboss-seam.jar
+
+MAYBE:
+<!-- need margin-left: 22px; on Home link in menu -->
+<div style="height: 100px; overflow: hidden; padding: 1px 0 0 5px;">
+	<s:link view="/home.xhtml" propagation="none"><h:graphicImage value="/img/open18-logo.png"/></s:link>
+</div>
+
+open18:
+  - Added itext.jar and jfreechart.jar to deployed-jars.list
+  - Added jboss-seam-ui.jar, jboss-seam-pdf.jar, and itext.jar to src/model and src/action build path in NetBeans
+  - Added <include name="*_theme.properties"/> to build.xml to copy theme files (assuming all themes end in _theme)
+  - Introduced comparator classes for Hole, TeeSet, and Tee
+  - Replaced inline comparator logic with instances of HoleComparator and TeeSetComparator in RoundHome
