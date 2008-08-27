@@ -4,21 +4,50 @@ SVN snapshot
 
 Book: Seam in Action, Manning Publications
 Author: Dan Allen
+Book site: http://manning.com/dallen
 Project site: http://code.google.com/p/seaminaction
 
 Getting started
 ---------------
 
-Please refer to appendix A for information about how to get JBoss AS, JBoss
-Seam, and other supporting software installed.  By "installed", I mean nothing
-more than to download and extract. No system-level changes are required. That
-is the beauty of Java after all. 
+Here are the tasks that you will likely need to do to get started:
 
-Expected versions to retrieve:
+ - Download Seam and JBoss AS
+ - Add the required libraries to the example projects
+ - Replace references to /home/twoputt with your home folder
+ - Seed the H2 database for Open 18 
+ - Launch the H2 administration console 
 
-   JBoss AS - 4.2.2.GA
-   JBoss Seam - 2.0.1.CR1
-   Java SE - Sun JDK 1.6.0 
+You can accomplish all of these tasks using the Ant build script in this
+folder. I have even provided the ant distribution so that you don't need to
+have it on your system (though you do have to have Java properly installed).
+
+To discover which tasks you can execute, start out by typing:
+
+   ant -projecthelp
+
+The commands of most interest are shown here:
+
+   get-seam         Downloads Seam and extracts it to the software directory (i.e., opt)
+   get-jboss-as     Downloads JBoss AS and extracts it to the software directory (i.e., opt)
+   rehome           Replace any absolute paths with the path specified in the -Dhome=XXX argument
+   update-project   Update the libraries for the selected project (menu provided)
+   build-db         Build and seed the initial H2 database for Open 18
+
+You run each command by prefix it with ant, as shown here:
+
+   ant get-seam
+
+Please refer to appendix A for information about how to get JBoss AS, Seam, and
+other supporting software installed. By "installed", I mean nothing more than
+downloading and extracting. No system-level changes are required. That's the
+beauty of Java after all. 
+
+Recommended versions to retrieve:
+
+ - JBoss AS - 4.2.2.GA
+ - Seam - 2.0.3.CR1 (until GA is released)
+ - Java SE - Sun JDK 5 (or 6)
 
 ** IMPORTANT **
 Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not
@@ -27,23 +56,23 @@ which is also a JBoss project.
 ** IMPORTANT **
 
 The stages/ directory contains a snapshot of the projects at the end of each
-chapter. Each projects-chXX folder contains a file named
-chapter-developments.txt which describes what setup was done and what changes
-were made to the application in that chapter.
+chapter, or in the case of part 1 and part 3, at the end of the part. Each
+projects-chXX or projects-partX folder contains a file named
+chapter-developments.txt or part-developments.txt, respectively, which
+describes what setup was done and what changes were made to the application in
+that chapter or part.
 
 Before you can use these applications, you must "inflate" them with the jar
 files from the Seam distribution (this is done to keep the source code download
 size to a minimum). The h2.jar will also be copied to the JBoss AS installation
-during this process, though the ./seam setup command will also perform this
-task.
+during this process, though the ./seam setup command also performs this task.
 
-To inflate the project stages, ensure that the property seam.runtime in
-build.xml points to your Seam distribution, then run:
+To inflate (or update) a project, ensure that you have downloaded and extracted
+Seam, then run:
 
-   ant inflate-all
+   ant update-project
 
-To start using a project, copy it (or use a symlink) from the stages/ directory
-into the projects/ directory. The projects/ directory serves as your workspace.
+You will be provided a menu of projects and you can choose which one to update.
 
 Several configuration files refer to the home directory /home/twoputt. You will
 need to update those references in order to deploy the application property.
@@ -54,11 +83,19 @@ The files in each project that you need to update are:
    resources/*-ds.xml
    resources/glassfish-datasource.xml
 
+You update these paths across the entire example code base by running the
+following command, supply the location where the Seam in Action sample code
+resides on your harddrive in the -Dhome setting:
+
+   ant rehome -Dhome=C:/projects/seaminaction
+
+Please use forward slashes, even on Windows, to avoid backslash gymnastics.
+
 Course directory databases for Open18
 --------------------------------------
 
 Chapter 2 mentions that the DBA provides you with an H2 database that will be
-used to create the course directory module of the Open18 application.  Those
+used to create the course directory module of the Open18 application. Those
 two archives are located in the databases/ directory.
 
    open18-db-initial-empty.tar.gz - A database with only the golf course directory schema
@@ -72,8 +109,12 @@ data in the database or not. The DDL file is also included in this directory,
 which you can use as a reference to prepare the schema for your database of
 choice.
 
-If you want to create the database from scratch, run the following two commands
-from this directory to initialize the database and load the seed data:
+If you want to create the database from scratch, run the following command:
+
+   ant build-db
+
+This target will execute the following two commands to initialize the database
+and load the seed data:
 
    java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
    java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql
@@ -93,4 +134,37 @@ installation directory:
 This launch configuration provides memory settings that should avoid permgen
 errors when running on a Sun JVM and it also properly sets the JBOSS_HOME
 environment variable.
+
+These steps are handled for you by using the following command:
+
+   ant get-jboss-as
+
+*** IMPORTANT ***
+Make sure that the H2 version in server/default/lib is the same as the one you
+used to build the H2 database. Otherwise, strange errors may occur.
+seam-gen copies h2.jar to server/default/lib during ./seam setup, but if you
+upgrade later the h2.jar on the JBoss server could be out of date.
+*** IMPORTANT ***
+
+Launching the H2 console
+------------------------
+
+You can launch the administration console for the H2 database with this command:
+
+   ant launch-h2-database
+
+The admin console is started by executing the Server class from the H2 JAR file
+in web mode:
+
+   java -cp /home/twoputt/lib/h2.jar org.h2.tools.Server -web
+
+You also have the option of executing the Console class, which will put an
+entry in the status bar, allowing you to shutdown the application more
+gracefully:
+
+   java -cp /home/twoputt/lib/h2.jar org.h2.tools.Console
+
+Either command will instruct you to open the H2 console URL in your browser:
+
+   http://localhost:8082
 
