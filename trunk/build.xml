@@ -47,12 +47,18 @@
 	</taskdef>
 
 	<target name="help">
-		<echo message="Planning on putting some help here"/>
+		<echo>
+Run &quot;ant -projecthelp&quot; to get a list of the available targets.
+
+You can use this script to automatically download JBoss AS and Seam. You
+specify which versions to download and the sourceforge.net mirror to use
+in the build.properties file.
+</echo>
 	</target>
 
 	<target name="get-jboss" depends="get-jboss-as"/>
 
-	<target name="get-jboss-as">
+	<target name="get-jboss-as" description="Downloads JBoss AS and extracts it to the software directory (i.e., opt)">
 		<mkdir dir="${vault.dir}"/>
 		<if>
 			<not><available file="${jboss-as.archive.path}"/></not>
@@ -71,7 +77,7 @@
 		</if>
 	</target>
 
-	<target name="get-seam">
+	<target name="get-seam" description="Downloads Seam and extracts it to the software directory (i.e., opt)">
 		<mkdir dir="${vault.dir}"/>
 		<if>
 			<not><available file="${seam.archive.path}"/></not>
@@ -89,7 +95,7 @@
 		</if>
 	</target>
 
-	<target name="rehome">
+	<target name="rehome" description="Replace any absolute paths with the path specified in the -Dhome=XXX argument">
 		<fail unless="home" message="Please specify a new home using -Dhome=C:/projects/EXAMPLE_CODE_FOLDER_NAME"/>
 		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
 			<isset property="old.home"/>
@@ -110,7 +116,7 @@
 		-->
 	</target>
 
-	<target name="undeploy-all">
+	<target name="undeploy-all" description="Undeploy all projects from JBoss AS">
 		<delete includeemptydirs="true">
 			<fileset dir="${jboss-as.deploy.dir}">
 				<exclude name="hsqldb-ds.xml"/>
@@ -122,7 +128,7 @@
 		</delete>
 	</target>
 
-	<target name="list-deployments">
+	<target name="list-deployments" description="List the current JBoss AS deployments">
 		<dirset id="exploded-archives" dir="${jboss-as.deploy.dir}">
 			<include name="*.war"/>
 			<include name="*.ear"/>
@@ -200,7 +206,7 @@
 
 	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql -->
 	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql -->
-	<target name="build-db">
+	<target name="build-db" description="Build and seed the initial H2 database for Open 18">
 		<delete failonerror="false">
 			<fileset dir="${open18.database.dir}" includes="h2*"/>
 		</delete>
@@ -225,7 +231,7 @@
 	</target>
 
 	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-trivia-data.sql -->
-	<target name="seed-trivia">
+	<target name="seed-trivia" description="Seed the Open 18 database with sample trivia questions (chapter 12)">
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
 				<pathelement location="${h2.jdbc.jar}"/>
@@ -237,7 +243,7 @@
 		</java>
 	</target>
 
-	<target name="launch-h2-console">
+	<target name="launch-h2-console" description="Launch the H2 database administration console">
 		<echo message="Launching H2 admin console... (use Ctrl+C to shutdown)"/>
 		<echo message="Use the JDBC URL: ${open18.jdbc.url};IFEXISTS=TRUE;FILE_LOCK=NO"/>
 		<java classname="org.h2.tools.Server" fork="true">
@@ -248,7 +254,7 @@
 		</java>
 	</target>
 
-	<target name="launch-h2">
+	<target name="launch-h2" description="Launch the H2 database in client-server mode (requires different JDBC URL)">
 		<echo message="Starting H2 and launching H2 admin console... (use Ctrl+C to shutdown)"/>
 		<java classname="org.h2.tools.Server" fork="true">
 			<classpath>
@@ -306,7 +312,7 @@
 		</svn>
 	</target>
 
-	<target name="update-project" depends="select-project">
+	<target name="update-project" depends="select-project" description="Update the libraries for the selected project (menu provided)">
 		<ant dir="${seam.home}/seam-gen" target="update-project" inheritAll="false">
 			<property name="workspace.home" value="${workspace.home}"/>
 			<property name="project.name" value="${project.name}"/>
@@ -329,7 +335,7 @@
  J: projects-ch12 -> open18
  K: projects-ch13 -> open18
  </echo>
-		<input addproperty="project.index" message="Enter the number that corresponds to the project you want to update:"
+		<input addproperty="project.index" message="Enter the letter that corresponds to the project you want to update:"
 			validargs="A,B,C,D,E,F,G,H,I,J,K"/>
 		<switch value="${project.index}">
 			<case value="A">
