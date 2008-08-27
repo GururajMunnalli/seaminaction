@@ -14,36 +14,39 @@
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 		
 		<rich:panel>
-				<f:facet name="header">Round</f:facet>
+			<f:facet name="header">Round</f:facet>
 
-				<s:decorate id="golfer" template="layout/display.xhtml">
-						<ui:define name="label">Golfer</ui:define>
+			<s:decorate id="golfer" template="layout/display.xhtml">
+					<ui:define name="label">Golfer</ui:define>
+					<s:link view="/profile.xhtml">
+						<f:param name="golferId" value="#{round.golfer.id}"/>
 						#{round.golfer.name}
-				</s:decorate>
+					</s:link>
+			</s:decorate>
 
-				<s:decorate id="name" template="layout/display.xhtml">
-						<ui:define name="label">Date</ui:define>
-						<h:outputText value="#{round.date}">
-							<s:convertDateTime type="date" />
-						</h:outputText>
-				</s:decorate>
+			<s:decorate id="name" template="layout/display.xhtml">
+					<ui:define name="label">Date</ui:define>
+					<h:outputText value="#{round.date}">
+						<s:convertDateTime type="date" />
+					</h:outputText>
+			</s:decorate>
 
-				<s:decorate id="totalScore" template="layout/display.xhtml">
-						<ui:define name="label">Total score</ui:define>
-						#{round.totalScore}
-				</s:decorate>
+			<s:decorate id="totalScore" template="layout/display.xhtml">
+					<ui:define name="label">Total score</ui:define>
+					#{round.totalScore}
+			</s:decorate>
 
-				<s:decorate id="weather" template="layout/display.xhtml">
-						<ui:define name="label">Weather</ui:define>
-						#{round.weather}
-				</s:decorate>
+			<s:decorate id="weather" template="layout/display.xhtml">
+					<ui:define name="label">Weather</ui:define>
+					#{round.weather}
+			</s:decorate>
 
-				<s:decorate id="notes" template="layout/display.xhtml">
-						<ui:define name="label">Notes</ui:define>
-						#{round.notes}
-				</s:decorate>
+			<s:decorate id="notes" template="layout/display.xhtml">
+					<ui:define name="label">Notes</ui:define>
+					#{round.notes}
+			</s:decorate>
 
-				<div style="clear:both"/>
+			<div style="clear:both"/>
 		</rich:panel>
 		
 		<div class="actionButtons">
@@ -53,7 +56,7 @@
 
 		<rich:tabPanel switchType="ajax">
 
-			<rich:tab label="teeSet">
+			<rich:tab label="Tee set">
 				<div class="association" id="teeSetParent">
 				
 					<h:outputText value="No tee set" rendered="#{round.teeSet == null}"/>
@@ -65,7 +68,7 @@
 								#{teeSet.id}
 						</h:column>
 						<h:column>
-								<f:facet name="header">name</f:facet>
+								<f:facet name="header">Name</f:facet>
 								#{teeSet.name}
 						</h:column>
 						<h:column>
@@ -76,21 +79,13 @@
 								<f:facet name="header">Color</f:facet>
 								<div title="#{teeSet.color}" class="colorSwatch" style="background-color: #{teeSet.color};" />
 						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
-								<f:facet name="header">Course Rating</f:facet>
-								#{teeSet.ladiesCourseRating}
+						<h:column>
+								<f:facet name="header">Course/Slope Rating (Men)</f:facet>
+								#{teeSet.mensCourseRating} / #{teeSet.mensSlopeRating}
 						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
-								<f:facet name="header">Slope Rating</f:facet>
-								#{teeSet.ladiesSlopeRating}
-						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'MALE'}">
-								<f:facet name="header">Course Rating</f:facet>
-								#{teeSet.mensCourseRating}
-						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'MALE'}">
-								<f:facet name="header">Slope Rating</f:facet>
-								#{teeSet.mensSlopeRating}
+						<h:column>
+								<f:facet name="header">Course/Slope Rating (Ladies)</f:facet>
+								#{teeSet.ladiesCourseRating} / #{teeSet.ladiesSlopeRating}
 						</h:column>
 						<h:column>
 								<f:facet name="header">Position</f:facet>

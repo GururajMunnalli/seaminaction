@@ -44,6 +44,7 @@ public class GolferHome extends EntityHome<Golfer> {
 	
 	public void setRoles(List<Role> roles) {
 		if (getInstance() != null) {
+			getInstance().getRoles().clear();
 			getInstance().getRoles().addAll(roles);
 		}
 	}

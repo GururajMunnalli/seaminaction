@@ -8,7 +8,7 @@
    <begin-conversation join="true"/>
    
    <action execute="#{facilityHome.validateEntityFound}"
-      if="#{facilityHome.facilityId ne null}"/>
+      if="#{facilityHome.facilityId != null}"/>
    <action execute="#{facilityHome.wire}"/>
    
    <param name="facilityFrom"/>

@@ -69,6 +69,9 @@
 		<u:style name="color" skin="headerTextColor"/>
 		<u:style name="font-weight" value="bold"/>
 	</u:selector>
+	<u:selector name="input[type='submit'][disabled], input[type='button'][disabled]">
+		<u:style name="opacity" value="0.33"/>
+	</u:selector>
 	<u:selector name=".rich-table-subheadercell">
 		<u:style name="background-image">
 			<f:resource f:key="org.richfaces.renderkit.images.TabGradientB"/>

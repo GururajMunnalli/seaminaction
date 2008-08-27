@@ -6,10 +6,8 @@
        no-conversation-view-id="/home.xhtml"
        login-view-id="/login.xhtml">
 
-    <!--<conversation name="Course" parameter-name="courseId"
-        parameter-value="#{redirect.parameters.courseId != null ? redirect.parameters.courseId : courseHome.instance.id}"/>-->
     <conversation name="Course" parameter-name="courseId"
-        parameter-value="#{course != null ? course.id : (redirect.parameters.courseId != null ? redirect.parameters.courseId : courseHome.instance.id)}"/>
+        parameter-value="#{redirect.parameters.courseId != null ? redirect.parameters.courseId : (courseHome.instance.id != null ? courseHome.instance.id : '')}"/>
 
     <page view-id="*">
         <navigation>

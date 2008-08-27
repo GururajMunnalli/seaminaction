@@ -238,6 +238,9 @@ input[type='submit'], input[type='button'] {
 html {
 	overflow-y: scroll;
 }
+a img {
+	border: none;
+}
 
 table.simpleFormLayout {
 	border-collapse: collapse;

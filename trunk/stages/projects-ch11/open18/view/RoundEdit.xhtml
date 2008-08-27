@@ -1,7 +1,6 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:s="http://jboss.com/products/seam/taglib"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -54,8 +53,8 @@
 				<ui:remove>
 				<s:decorate id="teeSetField" template="layout/edit.xhtml">
 					<ui:define name="label">Tee set</ui:define>
-					<h:selectOneMenu value="#{round.teeSet}">
-						<s:selectItems var="_teeSet" value="#{teeSets}"
+					<h:selectOneMenu id="teeSet" value="#{round.teeSet}">
+						<s:selectItems var="_teeSet" value="#{teeSets}" noSelectionLabel="-- Select --"
 							label="#{_teeSet.course.name} - #{_teeSet.color}"/>
 						<s:convertEntity/>
 					</h:selectOneMenu>
@@ -71,88 +70,77 @@
 				
 			<div class="actionButtons">
 
-			<h:commandButton id="save" value="Save" action="#{roundHome.persist}"
-				disabled="#{!roundHome.wired}" rendered="#{!roundHome.managed}"/>
+				<h:commandButton id="save" value="Save" action="#{roundHome.persist}"
+					disabled="#{!roundHome.wired}" rendered="#{!roundHome.managed}"/>
 
-			<h:commandButton id="update" value="Save" action="#{roundHome.update}"
-				rendered="#{roundHome.managed}"/>
+				<h:commandButton id="update" value="Save" action="#{roundHome.update}"
+					rendered="#{roundHome.managed}"/>
 						 
-			<h:commandButton id="delete" value="Delete" action="#{roundHome.remove}"
-				immediate="true" rendered="#{roundHome.managed}"/>
+				<h:commandButton id="delete" value="Delete" action="#{roundHome.remove}"
+					immediate="true" rendered="#{roundHome.managed}"/>
 					
-			<h:commandButton id="revert" value="Discard changes" action="#{roundHome.revert}"
-				immediate="true" rendered="#{roundHome.managed}"/>
+				<h:commandButton id="revert" value="Discard changes" action="#{roundHome.revert}"
+					immediate="true" rendered="#{roundHome.managed}"/>
 
-			<ui:remove>
-			<s:button id="discard" 
-				value="Discard changes"
-			 propagation="end"
-					view="/Round.xhtml"
-				rendered="#{roundHome.managed}"/>
-			</ui:remove>
+				<ui:remove>
+					<s:button id="discard" value="Discard changes" view="/Round.xhtml" propagation="end"
+						rendered="#{roundHome.managed}"/>
+				</ui:remove>
 				
-			<s:button id="cancel" value="Cancel" view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml"
-				rendered="#{!roundHome.managed}" propagation="end"/>
+				<s:button id="cancel" value="Cancel" view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml"
+					rendered="#{!roundHome.managed}" propagation="end"/>
 
-		</div>
+			</div>
 
-		<rich:tabPanel switchType="ajax">
-	
-			<rich:tab label="teeSet *" labelClass="required">
-				<div class="association" id="teeSetParent">
-	
-					<h:outputText value="Tee set not selected" rendered="#{round.teeSet == null}"/>
+			<rich:tabPanel switchType="ajax">
 		
-					<rich:dataTable id="teeSetTable" var="teeSet" value="#{round.teeSet}" rendered="#{round.teeSet != null}"
-						rowClasses="rvgRowOne,rvgRowTwo">
-						<h:column>
-							<f:facet name="header">id</f:facet>
-							#{teeSet.id}
-						</h:column>
-						<h:column>
-							<f:facet name="header">name</f:facet>
-							#{teeSet.name}
-						</h:column>
-						<h:column>
-							<f:facet name="header">Course</f:facet>
-							#{teeSet.course.name}
-						</h:column>
-						<h:column>
-							<f:facet name="header">Color</f:facet>
-							<div title="#{teeSet.color}" class="colorSwatch" style="background-color: #{teeSet.color};"/>
-						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
-							<f:facet name="header">Course Rating</f:facet>
-							#{teeSet.ladiesCourseRating}
-						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'FEMALE'}">
-							<f:facet name="header">Slope Rating</f:facet>
-							#{teeSet.ladiesSlopeRating}
-						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'MALE'}">
-							<f:facet name="header">Course Rating</f:facet>
-							#{teeSet.mensCourseRating}
-						</h:column>
-						<h:column rendered="#{currentGolfer.gender == 'MALE'}">
-							<f:facet name="header">Slope Rating</f:facet>
-							#{teeSet.mensSlopeRating}
-						</h:column>
-						<h:column>
-							<f:facet name="header">Position</f:facet>
-							#{teeSet.position}
-						</h:column>
-						<h:column>
-							<f:facet name="header">action</f:facet>
-							<s:link view="/TeeSet.xhtml" id="viewteeSet" value="View" propagation="none">
-								<f:param name="teeSetId" value="#{teeSet.id}"/>
-							</s:link>
-						</h:column>
-					</rich:dataTable>
+				<rich:tab label="Tee set *" labelClass="required">
+					<div class="association" id="teeSetParent">
+		
+						<h:outputText value="Tee set not selected" rendered="#{round.teeSet == null}"/>
+			
+						<rich:dataTable id="teeSetTable" var="teeSet" value="#{round.teeSet}" rendered="#{round.teeSet != null}"
+							rowClasses="rvgRowOne,rvgRowTwo">
+							<h:column>
+								<f:facet name="header">id</f:facet>
+								#{teeSet.id}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Name</f:facet>
+								#{teeSet.name}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Course</f:facet>
+								#{teeSet.course.name}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Color</f:facet>
+								<div title="#{teeSet.color}" class="colorSwatch" style="background-color: #{teeSet.color};"/>
+							</h:column>
+							<h:column>
+								<f:facet name="header">Course Rating</f:facet>
+								#{teeSet.getCourseRating(currentGolfer.gender)}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Slope Rating</f:facet>
+								#{teeSet.getSlopeRating(currentGolfer.gender)}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Position</f:facet>
+								#{teeSet.position}
+							</h:column>
+							<h:column>
+								<f:facet name="header">action</f:facet>
+								<s:link view="/TeeSet.xhtml" id="viewteeSet" value="View" propagation="none">
+									<f:param name="teeSetId" value="#{teeSet.id}"/>
+								</s:link>
+							</h:column>
+						</rich:dataTable>
 
 						<div class="actionButtons">
-							<h:commandButton value="Select Tee Set" action="selectTeeSet"/>
+							<h:commandButton value="Select tee set" action="selectTeeSet"/>
 							<ui:remove>
-							<s:button value="Select Tee Set" view="/TeeSetList.xhtml">
+							<s:button value="Select tee set" view="/TeeSetList.xhtml">
 								<f:param name="from" value="RoundEdit"/>
 							</s:button>
 							</ui:remove>

@@ -1,4 +1,4 @@
-Seam in Action: Chapter 05
+Seam in Action: Chapter 06
 --------------------------
 This file details developments made to the application source code during this
 chapter. Please note that the enhancements described here my go beyond what is

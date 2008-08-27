@@ -229,6 +229,9 @@ input[type='submit'], input[type='button'] {
 html {
 	overflow-y: scroll;
 }
+a img {
+	border: none;
+}
 
 /* maybe going to go with this */
 /*

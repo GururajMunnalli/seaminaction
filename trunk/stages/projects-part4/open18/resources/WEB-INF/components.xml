@@ -279,11 +279,16 @@
       <property name="golfer">#{currentGolfer}</property>
    </component>
 
-   <!-- courseCommentHome is scoped to event so that the form is reset after post -->
    <framework:entity-home name="courseCommentHome"
       entity-class="org.open18.model.CourseComment"
-      new-instance="#{courseCommentPrototype}" scope="event"/>
+      new-instance="#{courseCommentPrototype}"/>
    <factory name="courseComment" value="#{courseCommentHome.instance}"/>
+
+   <!-- instance is cleared so that the form is reset after comment is submitted -->
+   <!-- as an alternative, could scope courseCommentHome to the event context -->
+   <event type="org.jboss.seam.afterTransactionSuccess.CourseComment">
+      <action execute="#{courseCommentHome.clearInstance}"/>
+   </event>
 
    <framework:entity-query name="courseCommentsQuery"
       ejbql="select c from CourseComment c join fetch c.golfer"
