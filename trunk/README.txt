@@ -91,8 +91,8 @@ resides on your harddrive in the -Dhome setting:
 
 Please use forward slashes, even on Windows, to avoid backslash gymnastics.
 
-Course directory databases for Open18
---------------------------------------
+Seed database for Open18
+------------------------
 
 Chapter 2 mentions that the DBA provides you with an H2 database that will be
 used to create the course directory module of the Open18 application. Those
@@ -135,6 +135,12 @@ This launch configuration provides memory settings that should avoid permgen
 errors when running on a Sun JVM and it also properly sets the JBOSS_HOME
 environment variable.
 
+I have also provided a custom log4j configuration that should speed up JBoss AS
+significantly while not taking away any important information your application
+has to tell you.
+
+  cp etc/jboss-as-conf/jboss-log4j.xml jboss-as-4.2.2.GA/server/default/conf/
+
 These steps are handled for you by using the following command:
 
    ant get-jboss-as
@@ -151,18 +157,18 @@ Launching the H2 console
 
 You can launch the administration console for the H2 database with this command:
 
-   ant launch-h2-database
+   ant launch-h2-console
 
 The admin console is started by executing the Server class from the H2 JAR file
 in web mode:
 
-   java -cp /home/twoputt/lib/h2.jar org.h2.tools.Server -web
+   java -cp lib/h2.jar org.h2.tools.Server -web
 
 You also have the option of executing the Console class, which will put an
 entry in the status bar, allowing you to shutdown the application more
 gracefully:
 
-   java -cp /home/twoputt/lib/h2.jar org.h2.tools.Console
+   java -cp lib/h2.jar org.h2.tools.Console
 
 Either command will instruct you to open the H2 console URL in your browser:
 
