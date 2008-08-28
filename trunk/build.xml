@@ -246,7 +246,7 @@ in the build.properties file.
 			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
 			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
 			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
-			<arg value="-script"/><arg value="${etc.dir}/schema/open18-trivia-data.sql"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/open18-trivia-seed-data.sql"/>
 		</java>
 	</target>
 
