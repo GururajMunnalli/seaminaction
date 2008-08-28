@@ -238,7 +238,7 @@ in the build.properties file.
 	</target>
 
 	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-trivia-data.sql -->
-	<target name="seed-trivia" description="Seed the Open 18 database with sample trivia questions (chapter 12)">
+	<target name="seed-trivia" description="Seed the Open 18 database with sample trivia questions (must first deploy chapter 12 stage)">
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
 				<pathelement location="${h2.jdbc.jar}"/>
