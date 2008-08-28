@@ -56,8 +56,12 @@ which is also a JBoss project.
 ** IMPORTANT **
 
 The stages/ directory contains a snapshot of the projects at the end of each
-chapter, or in the case of part 1 and part 3, at the end of the part. Each
-projects-chXX or projects-partX folder contains a file named
+chapter (e.g., projects-ch04), or in the case of part 1 and part 3, at the end
+of the part (e.g., projects-part1). Development is progressive, so the projects
+accumulate features as the part and chapter numbers increase. If you want to
+see the application in its entirety, then use projects-ch13.
+
+Each projects-chXX or projects-partX folder contains a file named
 chapter-developments.txt or part-developments.txt, respectively, which
 describes what setup was done and what changes were made to the application in
 that chapter or part.
