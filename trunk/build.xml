@@ -21,6 +21,7 @@
 	<property name="jboss.home" value="${opt.dir}/${jboss-as.distname}"/>
 	<property name="jboss-as.home" value="${jboss.home}"/>
 	<property name="seam.home" value="${opt.dir}/${seam.distname}"/>
+	<property name="seam-gen.dir" value="${seam.home}/seam-gen"/>
 
 	<property name="seam.archive.file" value="${seam.distname}.tar.gz"/>
 	<property name="seam.archive.path" value="${vault.dir}/${seam.archive.file}"/>
@@ -95,7 +96,7 @@ in the build.properties file.
 			</then>
 		</if>
 		<if>
-			<not><available file="${seam.home}/seam-gen" type="dir"/></not>
+			<not><available file="${seam-gen.dir}" type="dir"/></not>
 			<then>
 				<untar src="${seam.archive.path}" dest="${opt.dir}" compression="gzip"/>
 			</then>
@@ -321,8 +322,17 @@ in the build.properties file.
 		</svn>
 	</target>
 
-	<target name="update-project" depends="select-project" description="Update the libraries for the selected project (menu provided)">
-		<ant dir="${seam.home}/seam-gen" target="update-project" inheritAll="false">
+	<target name="verify-seam">
+		<available property="seam.present" file="${seam-gen.dir}" type="dir"/>
+		<fail unless="seam.present">Prerequisite not satisified.
+
+Cannot find a Seam distribution. Use the following command to download Seam automatically (then break for lunch):
+
+   ant get-seam</fail>
+	</target>
+
+	<target name="update-project" depends="verify-seam,select-project" description="Update the libraries for the selected project (menu provided)">
+		<ant dir="${seam-gen.dir}" target="update-project" inheritAll="false">
 			<property name="workspace.home" value="${workspace.home}"/>
 			<property name="project.name" value="${project.name}"/>
 			<property name="project.type" value="${project.type}"/>
