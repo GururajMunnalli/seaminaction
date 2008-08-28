@@ -311,6 +311,7 @@
                 <exclude name="import*.sql"/>
                 <exclude name="${project.name}-*-ds.xml"/>
             </fileset>
+            <fileset dir="${basedir}/view"/> <!-- dallen: added view directory since tests are page-oriented -->
         </copy>
         <copy tofile="${test.dir}/META-INF/persistence.xml" 
               file="${basedir}/resources/META-INF/persistence-test-war.xml"
