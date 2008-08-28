@@ -42,6 +42,9 @@
 	<property name="open18.jdbc.username" value="open18"/>
 	<property name="open18.jdbc.password" value="tiger"/>
 
+	<mkdir dir="${databases.dir}"/>
+	<mkdir dir="${projects.dir}"/>
+
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
 			<pathelement location="${lib.dir}/ant-contrib.jar"/>
