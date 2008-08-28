@@ -5,7 +5,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 
 import org.jboss.seam.Component;
-import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.core.Init;
 import org.jboss.seam.mock.SeamTest;
 import org.open18.model.Golfer;
 import org.testng.annotations.Test;
@@ -30,17 +30,23 @@ public class RegisterGolferIntegrationTest extends SeamTest {
             
             @Override
             protected void invokeApplication() {
-                Object outcome =
-                    invokeMethod("#{registerAction.register}");
-				assert outcome != null && outcome.equals("success");
+				// FIXME: I want to verify that the event is thrown, but not call the events
+				Init.instance().getObserverMethods("golferRegistered").clear();
+                invokeAction("#{registerAction.register}");
+				assert "success".equals(getOutcome());
+				// verify we persisted
+				assert (Boolean) getValue("#{newGolfer.id != null}");
+				// verify quiet login
+				assert (Boolean) getValue("#{identity.loggedIn}");
+				assert (Boolean) getValue("#{s:hasRole('golfer')}");
             }
 
             @Override
             protected void renderResponse() throws Exception {
-                List<FacesMessage> messages = 
-                    FacesMessages.instance().getCurrentGlobalMessages();
+                List<FacesMessage> messages = (List<FacesMessage>) getValue("#{facesMessages.currentMessages}");
                 assert messages.size() == 1;
 				assert messages.get(0).getSeverity().equals(FacesMessage.SEVERITY_INFO);
+				// NOTE: be i18n sensitive
 				assert messages.get(0).getSummary().contains("Tommy Twoputt");
             }
         }.run();
