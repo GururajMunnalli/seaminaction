@@ -31,7 +31,7 @@ public class Captcha extends org.jboss.seam.captcha.Captcha {
 		Graphics2D graphics = challenge.createGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 			RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		graphics.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		graphics.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		graphics.setColor(getChallengeBackgroundColor());
 		graphics.fillRect(0, 0, getChallengeImageWidth(), 20);
 		graphics.setColor(getChallengeTextColor());
