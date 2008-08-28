@@ -12,7 +12,7 @@ public class GolfTipsTest extends SeamTest {
 		
 		new NonFacesRequest("/golftips.xhtml") {
 			protected void renderResponse() throws Exception {
-				assert (Boolean) getValue("#{tips.rowCount eq 0}");
+				assert (Boolean) getValue("#{tips.rowCount == 0}");
 			}
 		}.run();
 		
@@ -29,7 +29,7 @@ public class GolfTipsTest extends SeamTest {
 			}
 			
 			protected void renderResponse() throws Exception {
-				assert (Boolean) getValue("#{tips.rowCount eq 1}");
+				assert (Boolean) getValue("#{tips.rowCount == 1}");
 				List<FacesMessage> messages = (List<FacesMessage>) getValue("#{facesMessages.currentMessages}");
 				assert messages.size() == 1;
 				assert "Thanks for the tip, Ben Hogan!".equals(messages.get(0).getSummary());
