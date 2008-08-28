@@ -1,4 +1,4 @@
-package org.open18.validation;
+package org.open18.validator;
 
 import org.open18.action.*;
 import java.util.ArrayList;

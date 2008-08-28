@@ -15,7 +15,7 @@ import org.jboss.seam.security.Identity;
 import org.open18.auth.PasswordBean;
 import org.open18.auth.PasswordManager;
 import org.open18.model.Golfer;
-import org.open18.validation.GolferValidator;
+import org.open18.validator.GolferValidator;
 
 @Name("registerAction")
 public class RegisterAction {
