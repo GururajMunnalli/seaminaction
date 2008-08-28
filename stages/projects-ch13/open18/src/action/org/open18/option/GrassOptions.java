@@ -1,5 +1,6 @@
 package org.open18.option;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.open18.model.enums.GrassType;
 @Name("grassOptions")
 @Scope(ScopeType.PAGE)
 @BypassInterceptors
-public class GrassOptions {
+public class GrassOptions implements Serializable {
 
 	private List<String> greens;
 	private List<String> fairways;
