@@ -77,8 +77,8 @@ in the build.properties file.
 		<if>
 			<not><available file="${jboss-as.bin.dir}" type="dir"/></not>
 			<then>
-				<untar src="${jboss-as.archive.path}" dest="${opt.dir}" compression="gzip"/>
-				<rename file="${opt.dir}/jboss-${jboss-as.version}" tofile="${jboss-as.home}"/>
+				<unzip src="${jboss-as.archive.path}" dest="${opt.dir}"/>
+				<move file="${opt.dir}/jboss-${jboss-as.version}" tofile="${jboss-as.home}"/>
 				<copy file="${etc.dir}/jboss-as-conf/run.conf" tofile="${jboss-as.bin.dir}/run.conf" overwrite="true"/>
 				<copy file="${etc.dir}/jboss-as-conf/jboss-log4j.xml" tofile="${jboss-as.conf.dir}/jboss-log4j.xml" overwrite="true"/>
 			</then>
