@@ -1,0 +1,66 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+		
+		<h:form id="preferences" styleClass="edit">
+			<rich:panel>
+				<f:facet name="header">Preferences</f:facet>
+				<p>
+					<span>Language: </span>
+					<h:selectOneMenu value="#{localeSelector.localeString}"
+						valueChangeListener="#{localeSelector.select}" onchange="submit()">
+                		<f:selectItems value="#{localeSelector.supportedLocales}"/>
+					</h:selectOneMenu>
+					<h:commandLink action="#{localeSelector.select}" value="[ Select ]" rendered="false"/>
+				</p>
+				<p>
+					<span>Time zone: </span>
+					<!-- See .page.xml for why we are not using onchange="submit()" here -->
+					<h:selectOneMenu value="#{timeZoneSelector.timeZoneId}">
+                        <f:selectItem itemValue="America/Los_Angeles" itemLabel="Pacific Standard Time"/>
+                        <f:selectItem itemValue="America/Denver" itemLabel="Mountain Standard Time"/>
+                        <f:selectItem itemValue="America/Chicago" itemLabel="Central Standard Time"/>
+                        <f:selectItem itemValue="America/New_York" itemLabel="Eastern Standard Time"/>
+                        <f:selectItem itemValue="Europe/London" itemLabel="Greenwich Mean Time"/>
+						<ui:remove>
+						<s:selectItems var="_timeZoneId" value="#{timeZone.getAvailableIDs()}"
+							label="#{timeZone.getTimeZone(_timeZoneId).displayName}"/>
+						</ui:remove>
+					</h:selectOneMenu>
+					<h:commandLink action="#{timeZoneSelector.select}" value="[ Select ]"/>
+					Current time:#{' '}
+					<h:outputText value="#{currentDatetime}">
+						<s:convertDateTime type="time" timeStyle="short"/>
+					</h:outputText>
+				</p>
+				<p>
+                    <span>Theme: </span>
+					<h:selectOneMenu value="#{themeSelector.theme}"
+						valueChangeListener="#{themeSelector.select}" onchange="submit()">
+						<f:selectItems value="#{themeSelector.themes}"/>
+					</h:selectOneMenu>
+				</p>
+				<p>
+					<span>Quick language selection: </span>
+					<ui:repeat var="_locale" value="#{localeSelector.supportedLocales}">
+						#{' '}<h:commandLink action="#{localeSelector.selectLanguage(_locale.value)}" value="#{_locale.label}"/>
+					</ui:repeat>
+				</p>
+			</rich:panel>
+			<div class="actionButtons">
+			</div>
+		</h:form>
+
+	</ui:define> 
+</ui:composition>

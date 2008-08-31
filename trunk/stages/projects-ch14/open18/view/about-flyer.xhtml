@@ -1,0 +1,24 @@
+<p:document xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	title="#{messages['application.title']}"
+	creator="Open 18"
+	pageSize="LETTER">
+	<p:font size="24" color="#008000" style="bold">
+		<p:paragraph>#{messages['application.title']}</p:paragraph>
+	</p:font>
+	<p:font size="16" color="#808080">
+		<p:paragraph>...#{messages['application.tagline']}</p:paragraph>
+	</p:font>
+	<p:font size="10">
+		<p:paragraph spacingAfter="15"/>
+		<p:paragraph>Open 18 is a golf course directory and community site for golf players.</p:paragraph>
+		<p:paragraph spacingBefore="10"><p:font style="bold">Golf course directory:</p:font></p:paragraph>
+		<p:paragraph>The golf course directory allows you to browse for golf facilities/courses or search for one in your area. The information available includes the facility, the course, the holes, the tee sets and the tees.</p:paragraph>
+		<p:paragraph spacingBefore="10"><p:font style="bold">The clubhouse:</p:font></p:paragraph>
+		<p:paragraph>The clubhouse is a social utility that allows you to connect with other golfers. When you register to become a golfer, you will get a profile, which you can share with others. Along with that profile, you can track your golf rounds and publish personal experiences.</p:paragraph>
+		<p:paragraph spacingAfter="10"/>
+	</p:font>
+	<p:image alignment="center" value="/img/screenshot.png" scalePercent="71"/>
+</p:document>

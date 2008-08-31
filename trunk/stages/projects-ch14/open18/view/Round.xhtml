@@ -1,0 +1,208 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://jboss.com/products/seam/pdf"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+		
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+		
+		<rich:panel>
+			<f:facet name="header">Round</f:facet>
+
+			<s:decorate id="golfer" template="layout/display.xhtml">
+					<ui:define name="label">Golfer</ui:define>
+					<s:link view="/profile.xhtml">
+					<f:param name="golferId" value="#{round.golfer.id}"/>
+						#{round.golfer.name}
+					</s:link>
+			</s:decorate>
+
+			<s:decorate id="name" template="layout/display.xhtml">
+					<ui:define name="label">Date</ui:define>
+					<h:outputText value="#{round.date}">
+						<s:convertDateTime type="date" />
+					</h:outputText>
+			</s:decorate>
+
+			<s:decorate id="totalScore" template="layout/display.xhtml">
+					<ui:define name="label">Total score</ui:define>
+					#{round.totalScore}
+			</s:decorate>
+
+			<s:decorate id="weather" template="layout/display.xhtml">
+					<ui:define name="label">Weather</ui:define>
+					#{round.weather}
+			</s:decorate>
+
+			<s:decorate id="notes" template="layout/display.xhtml">
+					<ui:define name="label">Notes</ui:define>
+					#{round.notes}
+			</s:decorate>
+
+			<div style="clear:both"/>
+		</rich:panel>
+		
+		<div class="actionButtons">
+			<s:button id="edit" view="/RoundEdit.xhtml" value="Edit"/>
+			<s:button id="done" view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml" value="Done"/>
+		</div>
+
+		<rich:tabPanel switchType="ajax">
+
+			<rich:tab label="Tee set">
+				<div class="association" id="teeSetParent">
+				
+					<h:outputText value="No tee set" rendered="#{round.teeSet == null}"/>
+
+					<rich:dataTable id="teeSetTable" var="teeSet" value="#{round.teeSet}"
+						rendered="#{round.teeSet != null}" rowClasses="rvgRowOne,rvgRowTwo">
+						<h:column>
+								<f:facet name="header">id</f:facet>
+								#{teeSet.id}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Name</f:facet>
+								#{teeSet.name}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Course</f:facet>
+								#{teeSet.course.name}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Color</f:facet>
+								<div title="#{teeSet.color}" class="colorSwatch" style="background-color: #{teeSet.color};" />
+						</h:column>
+						<h:column>
+								<f:facet name="header">Course/Slope Rating (Men)</f:facet>
+								#{teeSet.mensCourseRating} / #{teeSet.mensSlopeRating}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Course/Slope Rating (Ladies)</f:facet>
+								#{teeSet.ladiesCourseRating} / #{teeSet.ladiesSlopeRating}
+						</h:column>
+						<h:column>
+								<f:facet name="header">Position</f:facet>
+								#{teeSet.position}
+						</h:column>
+						<h:column>
+							<f:facet name="header">action</f:facet>
+							<s:link id="viewteeSet" value="View" view="/TeeSet.xhtml">
+								<f:param name="teeSetId" value="#{teeSet.id}"/>
+							</s:link>
+						</h:column>
+					</rich:dataTable>
+				</div>
+			</rich:tab>
+
+			<rich:tab id="scorecardTab" label="Scorecard" labelClass="required" rendered="#{round.teeSet != null and round.scoreDetailPresent}">
+				<a:loadStyle src="resource:///css/table.xcss"/>
+				<table class="dr-table rich-table" border="0" cellpadding="0" cellspacing="0">
+					<colgroup>
+						<col span="2" width="5%"/>
+						<col span="18" width="5%"/>
+					</colgroup>
+					<thead>
+						<tr class="dr-table-header rich-table-header">
+							<th class="dr-table-headercell rich-table-headercell" colspan="20">#{round.teeSet.course.name}</th>
+						</tr>
+						<tr class="dr-table-subheader rich-table-subheader">
+							<th class="dr-table-subheadercell rich-table-subheadercell" style="text-align: left;" colspan="2">
+								<div style="float: left; margin-right: 5px;">HOLE</div>
+								<div title="#{round.teeSet.color}" class="colorSwatch" style="float: left; background-color: #{round.teeSet.color}"/>
+							</th>
+							<a:repeat var="_score" value="#{round.scores.{s|s}}" rowKeyVar="index">
+								<th class="dr-table-subheadercell rich-table-subheadercell">#{index + 1}</th>
+							</a:repeat>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="dr-table-cell rich-table-cell" style="text-align: left;" colspan="2">Par</th>
+							<a:repeat var="_score" value="#{round.scores.{s|s}}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center; color: #A0A0A0">
+									#{_score.hole.getPar(round.golfer.gender)}	
+								</td>
+							</a:repeat>
+						</tr>
+						<tr>
+							<th class="dr-table-cell rich-table-cell" style="text-align: left;" colspan="2">Score</th>
+							<a:repeat id="strokesRow" var="_score" value="#{round.scores.{s|s}}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+									#{_score.strokes}
+								</td>
+							</a:repeat>
+						</tr>
+						<tr>
+							<th class="dr-table-cell rich-table-cell" style="text-align: left;" colspan="2">Fairway</th>
+							<a:repeat id="fairwayRow" var="_score" value="#{round.scores.{s|s}}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+									#{_score.fairway != null ? _score.fairway : '-'}
+								</td>
+							</a:repeat>
+						</tr>
+						<tr>
+							<th class="dr-table-cell rich-table-cell" style="text-align: left;" colspan="2">GIR</th>
+							<a:repeat id="girRow" var="_score" value="#{round.scores.{s|s}}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+									#{_score.greenInRegulation != null ? _score.greenInRegulation : '-'}
+								</td>
+							</a:repeat>
+						</tr>
+						<tr>
+							<th class="dr-table-cell rich-table-cell" style="text-align: left;" colspan="2">Putts</th>
+							<a:repeat id="puttsRow" var="_score" value="#{round.scores.{s|s}}">
+								<td class="dr-table-cell rich-table-cell" style="text-align: center;">
+									#{_score.putts}
+								</td>
+							</a:repeat>
+						</tr>
+					</tbody>
+				</table>
+			</rich:tab>
+
+		</rich:tabPanel>
+
+		<rich:tabPanel switchType="ajax" style="margin-top: 5px;">
+			<rich:tab label="Avg. Score vs. Par">
+				<ui:remove><!-- I decided to put getAverageScore() on Round; could also put it on Golfer --></ui:remove>
+				<p:barchart title="Average Score vs. Par" rangeAxisLabel="Average Score" legend="true"
+					borderVisible="false" borderBackgroundPaint="white" plotOutlinePaint="white" legendOutlinePaint="white"
+					is3D="true" plotForegroundAlpha="0.9">
+					<p:series key="#{roundHome.getDate('yyyy-MM-dd')}" seriesPaint="series1" seriesOutlinePaint="seriesOutline">
+						<p:data key="Par 3" value="#{round.getAverageScore(3)}"/>
+						<p:data key="Par 4" value="#{round.getAverageScore(4)}"/>
+						<p:data key="Par 5" value="#{round.getAverageScore(5)}"/>
+					</p:series>
+					<p:series key="#{round.golfer.username}'s rounds" seriesPaint="series2" seriesOutlinePaint="seriesOutline">
+						<p:data key="Par 3" value="#{round.golfer.getAverageScore(3)}"/>
+						<p:data key="Par 4" value="#{round.golfer.getAverageScore(4)}"/>
+						<p:data key="Par 5" value="#{round.golfer.getAverageScore(5)}"/>
+					</p:series>
+					<p:color id="series1" color="#FFBF4F"/>
+					<p:color id="series2" color="#A6C78E"/>
+					<p:color id="seriesOutline" color="#A0A0A0"/>
+				</p:barchart>
+			</rich:tab>
+			<rich:tab label="Putt Analysis">
+				<p:piechart title="Putt Analysis" legend="false" circular="true" labelGap="0.04"
+					borderVisible="false" is3D="true" plotForegroundAlpha="0.6"
+					borderBackgroundPaint="canvas" plotOutlinePaint="canvas" plotBackgroundPaint="canvas">
+					<ui:repeat var="_freq" value="#{round.puttFrequencies}">
+						<p:data key="#{_freq.numPutts} putt" value="#{_freq.count}"/>
+					</ui:repeat>
+					<p:color id="canvas" color="#{a4jSkin.generalBackgroundColor}"/>
+				</p:piechart>
+			</rich:tab>
+		</rich:tabPanel>
+
+	</ui:define>
+
+</ui:composition>
