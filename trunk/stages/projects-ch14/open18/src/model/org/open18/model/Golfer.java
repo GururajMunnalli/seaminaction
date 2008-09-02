@@ -40,6 +40,7 @@ public class Golfer extends Member {
 	private Set<Round> rounds = new HashSet<Round>(0);
 	private Set<CourseComment> courseComments = new HashSet<CourseComment>(0);
 	private Set<Favorite> favorites = new HashSet<Favorite>(0);
+	private Set<FriendLink> friendLinks = new HashSet<FriendLink>();
 
 	@Column(name = "last_name", nullable = false)
 	@NotNull
@@ -171,6 +172,21 @@ public class Golfer extends Member {
 	public void setFavorites(Set<Favorite> favorites) {
 		this.favorites = favorites;
 	}
+
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "golfer")
+	public Set<FriendLink> getFriendLinks() { return this.friendLinks; }
+
+	public void setFriendLinks(Set<FriendLink> friendLinks) {
+		this.friendLinks = friendLinks;
+	}
+
+	public void addFriend(Golfer friend) {
+		FriendLink link = new FriendLink();
+		link.setGolfer(this);
+		link.setFriend(friend);
+		friendLinks.add(link);
+	}
 	
 	// NOTE: the only downside here is that we have a hard dependency to jboss-seam-ui.jar
 	@Transient
@@ -193,5 +209,35 @@ public class Golfer extends Member {
 		}
 
 		return num > 0 ? total / num : 0;
+	}
+	
+	public boolean is(Golfer other) {
+		if (getUsername() == null || other == null) {
+			return false;
+		}
+		return getUsername().equals(other.getUsername());
+	}
+	
+	public boolean isNot(Golfer other) {
+		return !is(other);
+	}
+	
+	public boolean isFriendOf(Golfer other) {
+		if (other == null) {
+			return false;
+		}
+		
+		for (FriendLink link : friendLinks) {
+			// NOTE: we are cheating a bit by comparing ids to avoid unnecessary lazy loading
+			if (link.getFriend().getId().equals(other.getId())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean isNotFriendOf(Golfer other) {
+		return !isFriendOf(other);
 	}
 }

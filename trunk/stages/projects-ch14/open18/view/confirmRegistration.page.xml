@@ -4,10 +4,5 @@
 	xsi:schemaLocation="
 		http://jboss.com/products/seam/pages
 		http://jboss.com/products/seam/pages-2.0.xsd"
-    switch="disabled">
-	<action execute="#{profileAction.findNewGolfers}"/>
-
-	<navigation from-action="#{courier.send}">
-		<redirect/>
-	</navigation>
+	action="#{registrationConfirmationManager.confirm}">
 </page>

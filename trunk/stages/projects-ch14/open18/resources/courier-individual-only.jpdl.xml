@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		urn:jbpm.org:jpdl-3.2
+		http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd"
+	name="Courier">
+
+	<start-state name="create">
+		<transition name="send" to="inbox"/>
+	</start-state>
+
+	<task-node name="inbox">
+		<task name="receive" description="#{message.content}">
+			<assignment actor-id="#{message.recipient}"/>
+		</task>
+		<transition name="acknowledge" to="acknowledged"/>
+	</task-node>
+
+	<end-state name="acknowledged"/>
+
+</process-definition>

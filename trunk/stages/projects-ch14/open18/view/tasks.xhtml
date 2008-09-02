@@ -1,0 +1,133 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+		
+		<h:panelGrid columns="2" styleClass="panel-layout" columnClasses="main-column,side-column">
+			<rich:panel>
+				<f:facet name="header">Tasks</f:facet>
+				<div style="margin-top: -1em;">
+				<h3>Messages</h3>
+				<h:outputText value="You have no messages." rendered="#{empty messagesFromCourier}"/>
+				<rich:dataTable var="_task" value="#{messagesFromCourier}"
+					rendered="#{not empty messagesFromCourier}" style="width: auto;">
+					<h:column>
+						<f:facet name="header">Message</f:facet>
+						#{_task.description}
+					</h:column>
+					<h:column>
+						<f:facet name="header">From</f:facet>
+						#{_task.variables.sender}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Sent at</f:facet>
+						<h:outputText value="#{_task.create}">
+							<s:convertDateTime type="both" timeStyle="short"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<s:link action="#{courier.acknowledge}"
+							taskInstance="#{_task}" value="Acknowledge"/>
+					</h:column>
+				</rich:dataTable>
+				<h:form id="groupInboxForm">
+				<h3>Group Inbox</h3>
+				<h:outputText value="There are no group tasks." rendered="#{empty cachedPooledTaskInstanceList}"/>
+				<rich:dataTable var="_task" value="#{cachedPooledTaskInstanceList}"
+					rendered="#{not empty cachedPooledTaskInstanceList}" style="width: auto;">
+					<h:column>
+						<f:facet name="header">Type</f:facet>
+						#{_task.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Description</f:facet>
+						#{_task.description}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Created</f:facet>
+						<h:outputText value="#{_task.create}">
+							<s:convertDateTime type="both" timeStyle="short"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<s:link action="#{pooledTask.assignToCurrentActor}" 
+							taskInstance="#{_task}" value="Accept"/>
+						#{' or '}
+						<h:commandLink action="#{pooledTask.assign(assignment.actorId)}" value="Assign to">
+							<f:param name="taskId" value="#{_task.id}"/>
+						</h:commandLink>
+						#{' '}
+						<h:selectOneMenu value="#{assignment.actorId}" required="true">
+							<s:selectItems var="_actorId" value="#{availableActorIds}"
+								label="#{_actorId}"/>
+						</h:selectOneMenu>
+					</h:column>
+				</rich:dataTable>
+				</h:form>
+				<h3>Friend requests</h3>
+				<h:outputText value="You have no friend requests." rendered="#{empty friendRequests}"/>
+				<rich:dataTable var="_task" value="#{friendRequests}"
+					rendered="#{not empty friendRequests}" style="width: auto;">
+					<h:column>
+						You have a friend request from #{_task.variables.initiator}.
+					</h:column>
+					<h:column>
+						<s:link action="#{friendDecision.review}"
+							taskInstance="#{_task}" value="Review"/>
+					</h:column>
+				</rich:dataTable>
+				</div>
+			</rich:panel>
+			<h:panelGroup>
+				<rich:panel styleClass="module-box">
+					<f:facet name="header">Send message</f:facet>
+					<h:form id="sendMessage">
+						<h:panelGrid columns="2" class="simpleForm" columnClasses="nameCol,valueCol">
+							<h:outputLabel for="recipient" value="To:"/>
+							<h:selectOneMenu id="recipient" value="#{message.recipient}" required="true">
+								<s:selectItems var="_actorId" value="#{availableActorIds}"
+									label="#{_actorId}" noSelectionLabel="-- Select --"/>
+							</h:selectOneMenu>
+							<h:outputLabel for="content" value="Message:"/>
+							<h:inputTextarea id="content" value="#{message.content}" required="true"/>
+						</h:panelGrid>
+						<h:commandButton action="#{courier.send}" value="Send message"/>
+					</h:form>
+				</rich:panel>
+				<rich:panel styleClass="module-box" rendered="#{identity.loggedIn}">
+					<f:facet name="header">Broadcast message</f:facet>
+					<h:form id="broadcastMessage">
+						<h:panelGrid columns="2" class="simpleForm" columnClasses="nameCol,valueCol">
+							<h:outputLabel for="recipient" value="To:"/>
+							<h:selectOneMenu id="recipient" value="#{message.recipient}" required="true">
+								<f:selectItem itemValue="#{null}" itemLabel="-- Select --"/>
+								<f:selectItem itemValue="actor" itemLabel="Any Member"/>
+								<f:selectItem itemValue="golfer" itemLabel="Any Golfer"/>
+								<f:selectItem itemValue="admin" itemLabel="Any Administrator"/>
+							</h:selectOneMenu>
+							<h:outputLabel for="content" value="Message:"/>
+							<h:inputTextarea id="content" value="#{message.content}" required="true"/>
+						</h:panelGrid>
+						<h:commandButton action="#{courier.send}" value="Send message">
+							<f:setPropertyActionListener target="#{message.broadcast}" value="#{true}"/>
+						</h:commandButton>
+					</h:form>
+				</rich:panel>
+			</h:panelGroup>
+
+		</h:panelGrid>
+
+	</ui:define> 
+</ui:composition>

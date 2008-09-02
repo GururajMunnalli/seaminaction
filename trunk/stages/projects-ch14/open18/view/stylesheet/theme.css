@@ -263,8 +263,12 @@ a:hover {
 	width: 100%;
 }
 
-.panel-column {
+.panel-column, .main-column, .side-column {
 	vertical-align: top;
+}
+
+.main-column {
+	width: 99%;
 }
 
 .main-panel {
@@ -313,4 +317,12 @@ th a.desc {
 	padding-bottom: 10px;
 	vertical-align: middle;
 	padding-right: 5px;
+}
+
+table.simpleForm td {
+	vertical-align: top;
+}
+
+table.simpleForm td.nameCol {
+	padding-top: 3px;
 }

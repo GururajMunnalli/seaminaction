@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/pages
+		http://jboss.com/products/seam/pages-2.0.xsd">
+	<param name="friendId" value="#{friendHome.id}" converterId="javax.faces.Long"/>
+	<restrict>#{s:hasRole('golfer')}</restrict>
+
+	<!-- INFO: this demonstrates handling the null outcome and a non-null outcome in the same navigation -->
+	<navigation from-action="#{friendRequester.addFriend}">
+		<redirect view-id="/profile.xhtml">
+			<param name="golferId" value="#{friendHome.id}"/>	
+		</redirect>
+		<rule>
+			<redirect view-id="/profile.xhtml">
+				<param name="golferId" value="#{friendHome.id}"/>	
+			</redirect>
+		</rule>
+	</navigation>
+</page>

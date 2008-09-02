@@ -56,11 +56,24 @@
 				</h:outputText>
 			</s:decorate>
 
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Pro status</ui:define>
+				#{selectedGolfer.proStatus}
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Specialty</ui:define>
+				#{selectedGolfer.specialty}
+			</s:decorate>
+
 			<div style="clear: both;"/>
 			
 		</rich:panel>
 		
 		<div class="actionButtons">
+			<s:button id="addFriend" value="Add to friends" view="/addFriend.xhtml" rendered="#{s:hasRole('golfer') and selectedGolfer.isNot(currentGolfer) and selectedGolfer.isNotFriendOf(currentGolfer)}">
+				<f:param name="friendId" value="#{selectedGolfer.id}"/>
+			</s:button>
 			<s:button propagation="end" id="done" value="Done" action="home"/>
 		</div>
 
@@ -83,6 +96,21 @@
 						</p:series>
 					</p:linechart>
 				</div>
+			</rich:tab>
+			<rich:tab label="Friends (#{friends.size})" rendered="#{s:hasRole('golfer')}"><ui:remove>(selectedGolfer.is(currentGolfer) or selectedGolfer.isFriendOf(currentGolfer))</ui:remove>
+				<ui:remove><!-- action param required if not using conversation --></ui:remove>
+				<a:actionparam name="golferId" value="#{selectedGolfer.id}"/>
+				<h:outputText value="No friends." rendered="#{empty friends}"/>
+				<rich:dataTable var="_golfer" value="#{friends}" rendered="#{not empty friends}">
+					<h:column>
+						<s:graphicImage value="#{_golfer.image != null ? _golfer.image : '/img/golfer.png'}" style="vertical-align: text-top; margin-right: 5px;">
+							<s:transformImageSize width="36" maintainRatio="true"/>
+						</s:graphicImage>
+						<s:link viewId="/profile.xhtml" value="#{_golfer.name}" propagation="none" style="color: inherit; font-weight: bold;">
+							<f:param name="golferId" value="#{_golfer.id}"/>
+						</s:link>
+					</h:column>
+				</rich:dataTable>
 			</rich:tab>
 		</rich:tabPanel>
 	

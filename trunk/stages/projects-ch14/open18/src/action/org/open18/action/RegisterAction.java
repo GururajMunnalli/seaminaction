@@ -74,6 +74,7 @@ public class RegisterAction {
 		newGolfer.setPasswordHash(passwordManager.hash(passwordBean.getPassword()));
 		entityManager.persist(newGolfer);
 		if (Events.exists()) {
+			//Events.instance().raiseEvent("registrationRequest");
 			Events.instance().raiseTransactionSuccessEvent("golferRegistered", newGolfer);
 		}
 		facesMessages.addFromResourceBundle("registration.welcome", newGolfer.getName());

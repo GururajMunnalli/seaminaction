@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		urn:jbpm.org:jpdl-3.2
+		http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd"
+	name="Confirm Registration">
+
+	<start-state name="register">
+		<event type="after-signal">
+			<script>System.out.println("A new golfer has registered");</script>
+		</event>
+		<transition name="request confirmation" to="confirm"/>
+	</start-state>
+
+	<task-node name="confirm">
+		<task description="Respond to the registration confirmation email">
+			<assignment actor-id="#{newGolfer.username}"/>
+			<event type="task-assign">
+				<!--<mail name="send confirmation email" template="confirm-registration" async="true"/>-->
+				<mail name="send confirmation email" async="true" to="#{newGolfer.emailAddress}">
+					<subject>Confirm Registration</subject>
+					<text><![CDATA[#{newGolfer.name},
+
+Thanks for registering! Before you can login, you must verify your
+e-mail address by clicking on the following link:
+
+http://localhost:8080/open18/confirmRegistration.seam?code=#{confirmationCode}&amp;taskId=#{taskInstance.id}
+
+Open 18
+...a place for golfers
+Member Services]]></text>
+				</mail>
+			</event>
+			<timer name="confirmation timeout"
+				duedate="1 hour" transition="timed out">
+				<script>
+					System.out.println("Registration canceled");
+					taskInstance.end();
+				</script>
+			</timer>
+		</task>
+		<transition name="timed out" to="end"/>
+		<transition name="confirmed" to="end">
+			<script>System.out.println("Registration confirmed");</script>
+		</transition>
+	</task-node>
+
+	<end-state name="end"/>
+
+</process-definition>
