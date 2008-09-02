@@ -18,44 +18,41 @@ import javax.persistence.NoResultException;
 @Name("authenticationManager")
 public class AuthenticationManager {
 
-    @Logger private Log log;
-    @In private EntityManager entityManager;
-    @In private Identity identity;
-    @In private PasswordManager passwordManager;
-    @Out(required = false)
-	private Golfer currentGolfer;
+	@Logger private Log log;
+	@In private EntityManager entityManager;
+	@In private Identity identity;
+	@In private PasswordManager passwordManager;
+	@Out(required = false) private Golfer currentGolfer;
 
-    @Transactional
-    public boolean authenticate() {
-        log.info("authenticating #0", identity.getUsername());
-        try {
-            Member member = (Member) entityManager.createQuery(
-                //"select m from Member m where m.username = :username")
-                "select distinct m from Member m left join fetch m.roles where m.username = :username")
-                .setParameter("username", identity.getUsername())
-                .getSingleResult();
+	@Transactional public boolean authenticate() {
+		log.info("authenticating {0}", identity.getUsername());
+		try {
+			Member member = (Member) entityManager.createQuery(
+				//"select m from Member m where m.username = :username")
+				"select distinct m from Member m left join fetch m.roles where m.username = :username")
+				.setParameter("username", identity.getUsername())
+				.getSingleResult();
 
-            if (!validatePassword(identity.getPassword(), member)) {
-                return false;
-            }
+			if (!validatePassword(identity.getPassword(), member)) {
+				return false;
+			}
 
-            identity.addRole("member");
-            if (member.getRoles() != null) {
-                for (Role role : member.getRoles()) {
-                    identity.addRole(role.getName());
-                }
-            }
+			identity.addRole("member");
+			if (member.getRoles() != null) {
+				for (Role role : member.getRoles()) {
+					identity.addRole(role.getName());
+				}
+			}
 
-            if (member instanceof Golfer) {
-                currentGolfer = (Golfer) member;
-                identity.addRole("golfer");
-            }
-            return true;
-        } catch (NoResultException e) {
-            return false;
-        }
-
-    }
+			if (member instanceof Golfer) {
+				currentGolfer = (Golfer) member;
+				identity.addRole("golfer");
+			}
+			return true;
+		} catch (NoResultException e) {
+			return false;
+		}
+	}
 
 	public boolean validatePassword(String password, Member m) {
 		return passwordManager.hash(password).equals(m.getPasswordHash());
