@@ -329,6 +329,7 @@ in the build.properties file.
 Cannot find a Seam distribution. Use the following command to download Seam automatically (then break for lunch):
 
    ant get-seam</fail>
+		<echo>Using Seam distribution at ${seam.home}</echo>
 	</target>
 
 	<target name="update-project" depends="verify-seam,select-project" description="Update the libraries for the selected project (menu provided)">
@@ -354,9 +355,10 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
  I: projects-ch11 -> open18
  J: projects-ch12 -> open18
  K: projects-ch13 -> open18
+ L: projects-ch14 -> open18
  </echo>
 		<input addproperty="project.index" message="Enter the letter that corresponds to the project you want to update:"
-			validargs="A,B,C,D,E,F,G,H,I,J,K"/>
+			validargs="A,B,C,D,E,F,G,H,I,J,K,L"/>
 		<switch value="${project.index}">
 			<case value="A">
 				<property name="project.selection" value="projects-part1/golftips"/>
@@ -390,6 +392,9 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 			</case>
 			<case value="K">
 				<property name="project.selection" value="projects-ch13/open18"/>
+			</case>
+			<case value="L">
+				<property name="project.selection" value="projects-ch14/open18"/>
 			</case>
 		</switch>
 		<propertyregex property="project.name"
