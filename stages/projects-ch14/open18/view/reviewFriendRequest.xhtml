@@ -1,0 +1,36 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+		
+		<rich:panel>
+			<f:facet name="header">Is #{initiator} your friend?</f:facet>
+			<h:form id="friendDecision">
+				<p><strong>#{initiator}</strong> wants to add you as a friend. We need you
+					to confirm that you are, in fact, friends with #{initiator}.</p>
+		
+				<s:fragment rendered="#{not empty personalMessage}">
+					<p>#{initiator} says, "#{personalMessage}"</p>
+				</s:fragment>
+		
+				<p>To either approve or reject this friend request, please use
+					one of the buttons below. Please note that #{initiator} will
+					only be notified if you approve the friend request.</p>
+		
+				<s:button action="#{friendDecision.reject}" value="Reject"/>
+				<s:button action="#{friendDecision.approve}" value="Approve"/>
+			</h:form>
+		</rich:panel>
+
+	</ui:define> 
+</ui:composition>

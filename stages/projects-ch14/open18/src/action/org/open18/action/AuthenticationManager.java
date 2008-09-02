@@ -5,6 +5,7 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Transactional;
+import org.jboss.seam.bpm.Actor;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Identity;
 import org.open18.auth.PasswordManager;
@@ -18,44 +19,46 @@ import javax.persistence.NoResultException;
 @Name("authenticationManager")
 public class AuthenticationManager {
 
-    @Logger private Log log;
-    @In private EntityManager entityManager;
-    @In private Identity identity;
-    @In private PasswordManager passwordManager;
-    @Out(required = false)
-	private Golfer currentGolfer;
+	@Logger private Log log;
+	@In private EntityManager entityManager;
+	@In private Identity identity;
+	@In private Actor actor;
+	@In private PasswordManager passwordManager;
+	@Out(required = false) private Golfer currentGolfer;
 
-    @Transactional
-    public boolean authenticate() {
-        log.info("authenticating #0", identity.getUsername());
-        try {
-            Member member = (Member) entityManager.createQuery(
-                //"select m from Member m where m.username = :username")
-                "select distinct m from Member m left join fetch m.roles where m.username = :username")
-                .setParameter("username", identity.getUsername())
-                .getSingleResult();
+	@Transactional public boolean authenticate() {
+		log.info("authenticating {0}", identity.getUsername());
+		try {
+			Member member = (Member) entityManager.createQuery(
+				//"select m from Member m where m.username = :username")
+				"select distinct m from Member m left join fetch m.roles where m.username = :username")
+				.setParameter("username", identity.getUsername())
+				.getSingleResult();
 
-            if (!validatePassword(identity.getPassword(), member)) {
-                return false;
-            }
+			if (!validatePassword(identity.getPassword(), member)) {
+				return false;
+			}
 
-            identity.addRole("member");
-            if (member.getRoles() != null) {
-                for (Role role : member.getRoles()) {
-                    identity.addRole(role.getName());
-                }
-            }
+			actor.setId(identity.getUsername());
 
-            if (member instanceof Golfer) {
-                currentGolfer = (Golfer) member;
-                identity.addRole("golfer");
-            }
-            return true;
-        } catch (NoResultException e) {
-            return false;
-        }
+			identity.addRole("member");
+			actor.getGroupActorIds().add("actor");
+			if (member.getRoles() != null) {
+				for (Role role : member.getRoles()) {
+					identity.addRole(role.getName());
+					actor.getGroupActorIds().add(role.getName());
+				}
+			}
 
-    }
+			if (member instanceof Golfer) {
+				currentGolfer = (Golfer) member;
+				identity.addRole("golfer");
+			}
+			return true;
+		} catch (NoResultException e) {
+			return false;
+		}
+	}
 
 	public boolean validatePassword(String password, Member m) {
 		return passwordManager.hash(password).equals(m.getPasswordHash());

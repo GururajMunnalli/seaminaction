@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		urn:jbpm.org:jpdl-3.2
+		http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd"
+	name="Add Friend">
+
+	<start-state name="add friend">
+		<transition name="notify" to="friend request"/>
+	</start-state>
+
+	<!-- NOTE: due to a bug in Seam 2.0, it's not possible to reference a top-level
+		 context variable in a business process definition, so a wrapper is used -->
+	<task-node name="friend request">
+		<task name="confirm friend" description="Confirm friend request from #{friendRequest.initiator}">
+			<assignment actor-id="#{friendRequest.prospectiveFriend}"/>
+		</task>
+		<!-- NOTE: there is a problem here that the sender context variable gets associated with
+			 the Add Friend process rather than the Courier process -->
+		<!--
+		<transition name="approve" to="approved">
+			<action expression="#{courier.send}"/>
+		</transition>
+		-->
+		<transition name="approve" to="approvalNotification"/>
+		<transition name="reject" to="rejected"/>
+	</task-node>
+
+	<process-state name="approvalNotification">
+		<sub-process name="Courier"/>
+		<variable name="prospectiveFriend" mapped-name="sender"/>
+		<transition to="approved"/>
+	</process-state>
+
+	<end-state name="approved"/>
+	<end-state name="rejected"/>
+
+</process-definition>

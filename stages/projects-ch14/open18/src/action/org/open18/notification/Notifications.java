@@ -17,7 +17,7 @@ public class Notifications {
     public void sendScorecard() {
         scorecard.load();
         renderer.render("/email/scorecard-notification.xhtml");
-        facesMessages.add("The scorecard has been sent to #0.", recipient.getName());
+        facesMessages.add("The scorecard has been sent to {0}.", recipient.getName());
 		// NOTE: clear so that form is clear
 		recipient.reset();
 		sent = true;

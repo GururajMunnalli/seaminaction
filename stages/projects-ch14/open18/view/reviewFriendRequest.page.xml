@@ -3,11 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 		http://jboss.com/products/seam/pages
-		http://jboss.com/products/seam/pages-2.0.xsd"
-    switch="disabled">
-	<action execute="#{profileAction.findNewGolfers}"/>
-
-	<navigation from-action="#{courier.send}">
-		<redirect/>
+		http://jboss.com/products/seam/pages-2.0.xsd">
+	<restrict>#{s:hasRole('golfer')}</restrict>
+	<navigation>
+		<redirect view-id="/home.xhtml" />
 	</navigation>
 </page>

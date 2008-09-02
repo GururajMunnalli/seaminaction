@@ -37,6 +37,8 @@ public class ProfileAction implements Serializable {
 	
 	public String view() {
 		assert selectedGolfer != null && selectedGolfer.getId() != null;
+		// NOTE: lookup again so that entity is in "managed" state when page is rendered
+		selectedGolfer = entityManager.find(Golfer.class, selectedGolfer.getId());
 		return "/profile.xhtml";
 	}
 	

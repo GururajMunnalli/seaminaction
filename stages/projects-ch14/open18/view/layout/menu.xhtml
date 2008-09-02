@@ -9,6 +9,9 @@
         <h:outputText value="#{projectName}:"/>
         <s:link view="/home.xhtml" value="Home" propagation="none"/>
     </rich:toolBarGroup>
+    <h:panelGroup rendered="#{identity.loggedIn}"><s:link view="/tasks.xhtml"
+           value="Inbox"
+     propagation="none"/> (#{taskInstanceList.size + pooledTaskInstanceList.size})</h:panelGroup>
     <s:link view="/FacilityList.xhtml" 
            value="Facilities" 
      propagation="none"/>

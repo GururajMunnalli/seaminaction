@@ -120,6 +120,11 @@
       <bpm:pageflow-definitions>
          <value>courseWizard-pageflow.jpdl.xml</value>
       </bpm:pageflow-definitions>
+      <bpm:process-definitions>
+         <value>courier.jpdl.xml</value>
+         <value>add-friend.jpdl.xml</value>
+         <value>confirm-registration.jpdl.xml</value>
+      </bpm:process-definitions>
    </bpm:jbpm>
 
    <!-- ===== Open 18 component definitions and configurations ===== -->
@@ -325,5 +330,24 @@
       max-results="10">
    </framework:entity-query>
    <factory name="latestRounds" value="#{latestRoundsQuery.resultList}"/>
+
+   <framework:entity-query name="availableActorIdsQuery"
+      ejbql="select m.username from Member m where m.username != #{identity.username}"
+	  order="m.username asc"/>
+   <factory name="availableActorIds" value="#{availableActorIdsQuery.resultList}"/>
+
+   <framework:entity-home name="friendHome" entity-class="org.open18.model.Golfer"/>
+   <factory name="friend" value="#{friendHome.instance}" auto-create="true"/>
+
+   <framework:entity-query name="friendsQuery"
+      ejbql="select fl.friend from FriendLink fl where fl.golfer.username = #{currentGolfer.username}"
+	  order="fl.friend.lastName asc, fl.friend.firstName asc"/>
+   <factory name="friends" value="#{friendsQuery.resultList}"/>
+
+   <factory name="cachedTaskInstanceListForType" value="#{taskInstanceListForType}"/>
+   <factory name="cachedPooledTaskInstanceList" value="#{pooledTaskInstanceList}"/>
+
+   <factory name="messagesFromCourier" value="#{cachedTaskInstanceListForType['receive']}"/>
+   <factory name="friendRequests" value="#{cachedTaskInstanceListForType['confirm friend']}"/>
 
 </components>

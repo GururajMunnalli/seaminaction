@@ -19,7 +19,7 @@
 		</div>
 
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
-    
+		
 		<h:panelGrid columns="2" styleClass="panel-layout" columnClasses="panel-column">
 			<rich:panel styleClass="main-panel">
 				<f:facet name="header">About #{messages['application.title']}</f:facet>
@@ -69,8 +69,42 @@
 						</div>
 					</h:form>
 				</rich:panel>
+				<rich:panel styleClass="module-box" rendered="#{identity.loggedIn}">
+					<f:facet name="header">Send message</f:facet>
+					<h:form id="sendMessage">
+						<h:panelGrid columns="2" class="simpleForm" columnClasses="nameCol,valueCol">
+							<h:outputLabel for="recipient" value="To:"/>
+							<h:selectOneMenu id="recipient" value="#{message.recipient}" required="true">
+								<s:selectItems var="_actorId" value="#{availableActorIds}"
+									label="#{_actorId}" noSelectionLabel="-- Select --"/>
+							</h:selectOneMenu>
+							<h:outputLabel for="content" value="Message:"/>
+							<h:inputTextarea id="content" value="#{message.content}" required="true"/>
+						</h:panelGrid>
+						<h:commandButton action="#{courier.send}" value="Send message"/>
+					</h:form>
+				</rich:panel>
+				<rich:panel styleClass="module-box" rendered="#{identity.loggedIn}">
+					<f:facet name="header">Broadcast message</f:facet>
+					<h:form id="broadcastMessage">
+						<h:panelGrid columns="2" class="simpleForm" columnClasses="nameCol,valueCol">
+							<h:outputLabel for="recipient" value="To:"/>
+							<h:selectOneMenu id="recipient" value="#{message.recipient}" required="true">
+								<f:selectItem itemValue="#{null}" itemLabel="-- Select --"/>
+								<f:selectItem itemValue="actor" itemLabel="Any Member"/>
+								<f:selectItem itemValue="golfer" itemLabel="Any Golfer"/>
+								<f:selectItem itemValue="admin" itemLabel="Any Administrator"/>
+							</h:selectOneMenu>
+							<h:outputLabel for="content" value="Message:"/>
+							<h:inputTextarea id="content" value="#{message.content}" required="true"/>
+						</h:panelGrid>
+						<h:commandButton action="#{courier.send}" value="Send message">
+							<f:setPropertyActionListener target="#{message.broadcast}" value="#{true}"/>
+						</h:commandButton>
+					</h:form>
+				</rich:panel>
 			</h:panelGroup>
 		</h:panelGrid>
-    
+		
 	</ui:define> 
 </ui:composition>
