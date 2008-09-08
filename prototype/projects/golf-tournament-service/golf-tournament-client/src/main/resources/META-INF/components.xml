@@ -44,6 +44,7 @@
 		 <action execute="#{redirect.returnToCapturedView}"/>
 	</event>
 
+	<!-- TODO: using BASIC authentication - http://static.springframework.org/spring/docs/2.5.x/api/org/springframework/remoting/httpinvoker/CommonsHttpInvokerRequestExecutor.html -->
 	<component name="golfTournamentService" class="org.open18.spring.adapter.HttpInvokerProxyFactoryBeanAdapter" auto-create="true">
 		<property name="serviceUrl">http://localhost:9090/golf-tournament-service/tournament.service</property>
 		<property name="serviceInterface">org.open18.partner.service.GolfTournamentService</property>
