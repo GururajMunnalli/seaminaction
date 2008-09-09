@@ -2,6 +2,7 @@ package org.open18.partner.action;
 
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
+import javax.persistence.EntityManager;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.End;
@@ -22,6 +23,8 @@ public class TournamentAction implements Serializable {
 
 	@Logger Log log;
 	
+	@In	private EntityManager entityManager;
+
 	@In	private FacesMessages facesMessages;
 	
 	@In	private TournamentManager tournamentManager;
@@ -43,7 +46,6 @@ public class TournamentAction implements Serializable {
 		return "/tournamentEditor.xhtml";
 	}
 
-	@Begin(flushMode = FlushModeType.MANUAL)
 	public String view(Tournament selectedTournament) {
 		tournament = tournamentManager.get(selectedTournament.getId());
 		return "/tournament.xhtml";
@@ -77,9 +79,12 @@ public class TournamentAction implements Serializable {
 		return tournament.getId() != null ? "/tournament.xhtml" : returnToList();
 	}
 	
-	@End
 	public String returnToList() {
 		return "/tournaments.xhtml";
+	}
+
+	public boolean isManagedAccordingToSeam() {
+		return entityManager.contains(tournament);
 	}
 	
 	public boolean isManagedAccordingToSpring() {

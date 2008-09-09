@@ -90,10 +90,7 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">Action</f:facet>
-					<h:commandLink id="viewTournament" action="#{tournamentAction.view(_tournament)}" value="View">
-						<!-- NOTE: although end is specified, it's actually reused, so we end up returning to list as it was -->
-						<s:conversationPropagation type="end"/>
-					</h:commandLink>
+					<h:commandLink id="viewTournament" action="#{tournamentAction.view(_tournament)}" value="View"/>
 					<ui:remove>
 					<s:link view="/#{empty from ? 'Tournament' : from}.xhtml" 
 						   value="#{empty from ? 'View' : 'Select'}" 
