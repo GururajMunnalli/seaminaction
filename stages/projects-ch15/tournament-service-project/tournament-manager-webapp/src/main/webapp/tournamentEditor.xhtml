@@ -1,0 +1,160 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+					   
+	<ui:define name="body">
+		
+		<h:form id="tournament" styleClass="edit">
+		
+			<rich:panel>
+				<f:facet name="header">#{managed ? 'Edit' : 'Add'} Tournament</f:facet>
+
+				<s:decorate id="nameField" template="layout/edit.xhtml">
+					<ui:define name="label">Name</ui:define>
+					<h:inputText id="name" value="#{tournament.name}"/>
+				</s:decorate>
+
+				<s:decorate id="hostFacilityNameField" template="layout/edit.xhtml">
+					<ui:define name="label">Host facility name</ui:define>
+					<h:inputText id="hostFacilityName" value="#{tournament.hostFacilityName}" size="30"/>
+				</s:decorate>
+
+				<s:decorate id="hostFacilityLocationField" template="layout/edit.xhtml">
+					<ui:define name="label">Host facility location</ui:define>
+					<h:inputText id="hostFacilityLocation" value="#{tournament.hostFacilityLocation}"/>
+				</s:decorate>
+
+				<s:decorate id="startDateField" template="layout/edit.xhtml">
+					<ui:define name="label">Start date</ui:define>
+					<rich:calendar id="startDate"
+							  value="#{tournament.startDate}" datePattern="MM/dd/yyyy" />
+				</s:decorate>
+
+				<s:decorate id="endDateField" template="layout/edit.xhtml">
+					<ui:define name="label">End date</ui:define>
+					<rich:calendar id="endDate"
+							  value="#{tournament.endDate}" datePattern="MM/dd/yyyy" />
+				</s:decorate>
+	
+				<s:decorate id="entryDeadlineField" template="layout/edit.xhtml">
+					<ui:define name="label">Entry deadline</ui:define>
+					<rich:calendar id="entryDeadline"
+							  value="#{tournament.entryDeadline}" datePattern="MM/dd/yyyy" />
+				</s:decorate>
+	
+				<s:decorate id="entryFeeField" template="layout/edit.xhtml">
+					<ui:define name="label">Entry fee</ui:define>
+					<h:inputText id="entryFee" value="#{tournament.entryFee}">
+						<a:support event="onblur" reRender="entryFeeField" bypassUpdates="true" ajaxSingle="true"/>
+					</h:inputText>
+				</s:decorate>
+	
+				<s:decorate id="purseField" template="layout/edit.xhtml">
+					<ui:define name="label">Purse</ui:define>
+					<h:inputText id="purse" value="#{tournament.purse}"/>
+				</s:decorate>
+
+				<s:decorate id="sponsersField" template="layout/edit.xhtml">
+					<ui:define name="label">Sponsers</ui:define>
+					<h:inputText id="sponsers" value="#{tournament.sponsers}">
+						<a:support event="onblur" reRender="sponsersField" bypassUpdates="true" ajaxSingle="true"/>
+					</h:inputText>
+				</s:decorate>
+	
+				<s:decorate id="benefitingCharitiesField" template="layout/edit.xhtml">
+					<ui:define name="label">Benefiting charities</ui:define>
+					<h:inputText id="benefitingCharities" value="#{tournament.benefitingCharities}">
+						<a:support event="onblur" reRender="benefitingCharitiesField" bypassUpdates="true" ajaxSingle="true"/>
+					</h:inputText>
+				</s:decorate>
+	
+				<s:decorate id="contactField" template="layout/edit.xhtml">
+					<ui:define name="label">Contact</ui:define>
+					<h:inputText id="contact" value="#{tournament.contact}"/>
+				</s:decorate>
+	
+				<s:decorate id="emailField" template="layout/edit.xhtml">
+					<ui:define name="label">Email</ui:define>
+					<h:inputText id="email" value="#{tournament.email}"/>
+				</s:decorate>
+	
+				<s:decorate id="phoneField" template="layout/edit.xhtml">
+					<ui:define name="label">Phone</ui:define>
+					<h:inputText id="phone" value="#{tournament.phone}"/>
+				</s:decorate>
+	
+				<s:decorate id="summaryField" template="layout/edit.xhtml">
+					<ui:define name="label">Summary</ui:define>
+					<h:inputTextarea id="summary"
+								   cols="80"
+								   rows="3"
+								  value="#{tournament.summary}"/>
+				</s:decorate>
+	
+				<s:decorate id="websiteField" template="layout/edit.xhtml">
+					<ui:define name="label">Website</ui:define>
+					<h:inputText id="website" value="#{tournament.website}" size="50"/>
+				</s:decorate>
+
+				<s:decorate template="layout/display.xhtml" rendered="#{managed}">
+					<ui:define name="label">Managed according to Spring?</ui:define>
+					#{tournamentAction.managedAccordingToSpring}
+				</s:decorate>
+			
+				<div style="clear:both">
+					<span class="required">*</span> 
+					required fields
+				</div>
+				
+			</rich:panel>
+					
+			<div class="actionButtons">
+
+				<h:commandButton id="save" value="Save" action="#{tournamentAction.save}"/>
+				<h:commandButton id="delete" value="Delete" action="#{tournamentAction.delete}" rendered="#{managed}"/>
+				<h:commandButton id="cancel" value="Cancel" action="#{tournamentAction.cancel}" immediate="true"/>
+	
+				<ui:remove>
+				<h:commandButton id="save" 
+							  value="Save" 
+							 action="#{tournamentHome.persist}"
+						   disabled="#{!tournamentHome.wired}"
+						   rendered="#{!tournamentHome.managed}"/>  
+							  			  
+				<h:commandButton id="update" 
+							  value="Save" 
+							 action="#{tournamentHome.update}"
+						   rendered="#{tournamentHome.managed}"/>
+										  
+				<h:commandButton id="delete" 
+							  value="Delete" 
+							 action="#{tournamentHome.remove}"
+						  immediate="true"
+						   rendered="#{tournamentHome.managed}"/>
+						
+				<s:button id="done" 
+					   value="Done"
+				 propagation="end"
+						view="/Tournament.xhtml"
+					rendered="#{tournamentHome.managed}"/>
+					
+				<s:button id="cancel" 
+					   value="Cancel"
+				 propagation="end"
+						view="/#{empty tournamentFrom ? 'TournamentList' : tournamentFrom}.xhtml"
+					rendered="#{!tournamentHome.managed}"/>
+				</ui:remove>
+	
+			</div>
+		</h:form>
+	
+	</ui:define>
+
+</ui:composition>

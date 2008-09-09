@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.h2.Driver"/>
+		<!--
+		<property name="url" value="jdbc:h2:file:/home/twoputt/databases/tournament-db/h2"/>
+		-->
+		<property name="url" value="jdbc:h2:tcp://localhost/target/databases/tournament-db/h2"/>
+		<property name="username" value="open18"/>
+		<property name="password" value="tiger"/>
+	</bean>
+
+	<bean id="entityManagerFactorySpring" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="tournament"/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+		</property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true"/>
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<map>
+				<entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+				<entry key="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+				<entry key="hibernate.format_sql" value="true"/>
+				<entry key="hibernate.hbm2ddl.auto" value="none"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="entityManagerFactory" class="org.jboss.seam.ioc.spring.SeamManagedEntityManagerFactoryBean">
+		<property name="persistenceContextName" value="entityManager"/>
+		<property name="persistenceUnitName" value="tournament:seam"/>
+	</bean>
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor">
+		<property name="defaultPersistenceUnitName" value="tournament:seam"/>
+	</bean>
+
+</beans>

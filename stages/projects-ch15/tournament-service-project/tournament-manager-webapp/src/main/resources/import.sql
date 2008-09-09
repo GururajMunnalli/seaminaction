@@ -1,0 +1,2 @@
+insert into TOURNAMENT (ID, NAME, START_DATE, END_DATE, HOST_FACILITY_NAME, HOST_FACILITY_LOCATION, WEBSITE) values (1, 'US Open', '2008-06-09', '2008-06-15', 'Torrey Pines Golf Course', 'San Diego, CA', 'http://www.usopen.com')
+insert into TOURNAMENT (ID, NAME, START_DATE, END_DATE, HOST_FACILITY_NAME, HOST_FACILITY_LOCATION, WEBSITE) values (2, 'The Masters', '2008-04-07', '2008-04-13', 'Augusta National Golf Course', 'Augusta, GA', 'http://www.masters.com')
