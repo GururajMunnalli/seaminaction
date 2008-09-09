@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:seam="http://jboss.com/products/seam/spring-seam"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://jboss.com/products/seam/spring-seam http://jboss.com/products/seam/spring-seam-2.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<tx:advice id="defaultTxAdvice">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config proxy-target-class="true">
+		<aop:advisor id="tournamentManagerTx" advice-ref="defaultTxAdvice"
+			pointcut="execution(* org.open18.partner.business.TournamentManager.*(..))"/>
+	</aop:config>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+
+	<seam:instance id="facesMessages" name="#{facesMessages}" proxy="true"
+		type="org.jboss.seam.faces.FacesMessages"/>
+
+	<seam:instance id="currentUser" name="#{identity}" proxy="true"
+		scope="SESSION" type="org.jboss.seam.security.Identity"/>
+	
+	<bean id="tournamentManager"
+		class="org.open18.partner.business.impl.TournamentManagerImpl" scope="prototype">
+		<seam:component scope="CONVERSATION"/>
+		<property name="tournamentDao" ref="tournamentDao"/>
+		<property name="facesMessages" ref="facesMessages"/>
+		<property name="currentUser" ref="currentUser"/>
+	</bean>
+
+</beans>

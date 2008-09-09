@@ -1,0 +1,107 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+					   
+	<ui:define name="body">
+		
+		<rich:panel>
+			<f:facet name="header">Tournament</f:facet>
+	
+			<s:decorate id="name" template="layout/display.xhtml">
+				<ui:define name="label">Name</ui:define>
+				#{tournament.name}
+			</s:decorate>
+	
+			<s:decorate id="hostFacility" template="layout/display.xhtml">
+				<ui:define name="label">Host facility</ui:define>
+				#{tournament.hostFacilityName} - #{tournament.hostFacilityLocation}
+			</s:decorate>
+	
+			<s:decorate id="summary" template="layout/display.xhtml">
+				<ui:define name="label">Summary</ui:define>
+				#{tournament.summary}
+			</s:decorate>
+	
+			<s:decorate id="website" template="layout/display.xhtml">
+				<ui:define name="label">Website</ui:define>
+				#{tournament.website}
+			</s:decorate>
+	
+			<s:decorate id="dates" template="layout/display.xhtml">
+				<ui:define name="label">Dates</ui:define>
+				<h:outputText value="#{tournament.startDate}">
+					<s:convertDateTime type="date" dateStyle="short"/>
+				</h:outputText> 
+				-
+				<h:outputText value="#{tournament.endDate}">
+					<s:convertDateTime type="date" dateStyle="short"/>
+				</h:outputText>
+			</s:decorate>
+	
+			<s:decorate id="entryFee" template="layout/display.xhtml">
+				<ui:define name="label">Entry fee</ui:define>
+				#{tournament.entryFee}
+			</s:decorate>
+	
+			<s:decorate id="purse" template="layout/display.xhtml">
+				<ui:define name="label">Purse</ui:define>
+				#{tournament.purse}
+			</s:decorate>
+	
+			<s:decorate id="entryDeadline" template="layout/display.xhtml">
+				<ui:define name="label">Entry deadline</ui:define>
+				<h:outputText value="#{tournament.entryDeadline}">
+					<s:convertDateTime type="date" dateStyle="short"/>
+				</h:outputText>
+			</s:decorate>
+	
+			<s:decorate id="sponsers" template="layout/display.xhtml">
+				<ui:define name="label">Sponsers</ui:define>
+				#{tournament.sponsers}
+			</s:decorate>
+	
+			<s:decorate id="benefitingCharities" template="layout/display.xhtml">
+				<ui:define name="label">Benefiting charities</ui:define>
+				#{tournament.benefitingCharities}
+			</s:decorate>
+	
+			<s:decorate id="contact" template="layout/display.xhtml">
+				<ui:define name="label">Contact</ui:define>
+				#{tournament.contact}
+			</s:decorate>
+	
+			<s:decorate id="email" template="layout/display.xhtml">
+				<ui:define name="label">Email</ui:define>
+				#{tournament.email}
+			</s:decorate>
+	
+			<s:decorate id="phone" template="layout/display.xhtml">
+				<ui:define name="label">Phone</ui:define>
+				#{tournament.phone}
+			</s:decorate>
+	
+			<div style="clear:both"/>
+			
+		</rich:panel>
+		
+		<div class="actionButtons">	  
+	
+			<ui:remove>
+			<s:button id="edit" view="/TournamentEdit.xhtml" value="Edit"/>
+			<s:button id="done" view="/#{empty tournamentFrom ? 'tournaments' : tournamentFrom}.xhtml" value="Done"/>
+			</ui:remove>
+
+			<s:button id="edit" action="#{tournamentAction.edit(tournament)}" value="Edit"/>
+			<s:button id="done" action="#{tournamentAction.returnToList}" value="Close"/>
+	
+		</div>
+	
+	</ui:define>
+
+</ui:composition>

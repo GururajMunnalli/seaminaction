@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.open18.partner</groupId>
+		<artifactId>tournament-service-project</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>tournament-service-client</artifactId>
+	<packaging>war</packaging>
+	<name>Tournament Service Test Client</name>
+	<description>A Spring MVC-based test client for the tournament service</description>
+	<dependencyManagement>
+		<dependencies>
+			<!-- force use of commons-logging 1.1.1, which fixes the bogus dependencies -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>tournament-service-api</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>2.5.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context-support</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<finalName>tournament-service-client</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.9</version>
+				<configuration>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>${jetty.run.port}</port>
+							<maxIdleTime>3600000</maxIdleTime>
+						</connector>
+					</connectors>
+					<contextPath>/${project.build.finalName}</contextPath>
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<jetty.run.port>9091</jetty.run.port>
+		<jetty.debug.port>9191</jetty.debug.port>
+	</properties>
+</project>

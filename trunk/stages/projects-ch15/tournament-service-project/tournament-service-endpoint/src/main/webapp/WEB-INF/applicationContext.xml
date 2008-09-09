@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.h2.Driver"/>
+		<!--
+		<property name="url" value="jdbc:h2:file:/home/twoputt/databases/tournament-db/h2"/>
+		-->
+		<property name="url" value="jdbc:h2:tcp://localhost/target/databases/tournament-db/h2"/>
+		<property name="username" value="open18"/>
+		<property name="password" value="tiger"/>
+	</bean>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="tournament"/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+		</property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true"/>
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<map>
+				<entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+				<entry key="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+				<entry key="hibernate.format_sql" value="true"/>
+				<entry key="hibernate.hbm2ddl.auto" value="create"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+	<bean id="tournamentDao" class="org.open18.partner.dao.jpa.JpaTournamentDao"/>
+
+	<tx:advice id="readOnlyTxAdvice">
+		<tx:attributes>
+			<tx:method name="*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config proxy-target-class="true">
+		<aop:advisor id="tournamentServiceTx" advice-ref="readOnlyTxAdvice"
+			pointcut="execution(* org.open18.partner.service.TournamentService.*(..))"/>
+	</aop:config>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+
+	<bean id="tournamentService" class="org.open18.partner.service.impl.TournamentServiceImpl">
+		<property name="tournamentDao" ref="tournamentDao"/>
+	</bean>
+
+	<bean id="httpTournamentService" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+		<property name="service" ref="tournamentService"/>
+		<property name="serviceInterface" value="org.open18.partner.service.TournamentService"/>
+	</bean>
+	
+</beans>

@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.open18.partner</groupId>
+	<artifactId>tournament-service-project</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>Tournament Service Project</name>
+	<description>A project demonstrating the use of an HTTPInvoker Spring service from a Seam application. This project includes the API, implementation, and endpoint of the service and a sample client.</description>
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>RELEASE</version>
+					<configuration>
+						<source>1.5</source>
+						<target>1.5</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<modules>
+		<module>tournament-service-api</module>
+		<module>tournament-dao</module>
+		<module>tournament-service-impl</module>
+		<module>tournament-service-endpoint</module>
+		<module>tournament-service-test-client</module>
+		<module>tournament-service-seam-client</module>
+		<module>tournament-manager-webapp</module>
+	</modules>
+</project>

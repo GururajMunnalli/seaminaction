@@ -1,0 +1,137 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+					   
+	<ui:define name="body">
+		
+		<h:form id="tournamentSearch" styleClass="edit">
+		
+			<rich:simpleTogglePanel label="Tournament search criteria">
+				<s:decorate template="layout/display.xhtml">
+					<ui:define name="label">Search string</ui:define>
+					<h:inputText id="searchString" value="#{tournamentSearchCriteria.searchString}"/>
+				</s:decorate>
+			</rich:simpleTogglePanel>
+
+			<div class="actionButtons">
+				<h:commandButton id="search" value="Search" action="/tournaments.xhtml"/>
+			</div>
+			
+		</h:form>
+		
+		<rich:panel>
+			<f:facet name="header">Tournament search results</f:facet>
+			<div class="results" id="tournamentList">
+	
+			<h:outputText value="The tournament search returned no results." rendered="#{empty tournamentResults}"/>
+					   
+			<h:form id="tournaments">
+			<rich:dataTable id="tournamentData" var="_tournament" value="#{tournamentResults}"
+				rendered="#{not empty tournamentResults}">
+				<h:column>
+					<f:facet name="header">
+						<s:link styleClass="columnHeader"
+									 value="ID #{tournamentSearchCriteria.sortBy=='id asc' ? messages.down : ( tournamentSearchCriteria.sortBy=='id desc' ? messages.up : '' )}">
+							<f:param name="sortBy" value="#{tournamentSearchCriteria.sortBy=='id asc' ? 'id desc' : 'id asc'}"/>
+						</s:link>
+					</f:facet>
+					#{_tournament.id}
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<s:link styleClass="columnHeader"
+									 value="Name #{tournamentSearchCriteria.sortBy=='name asc' ? messages.down : ( tournamentSearchCriteria.sortBy=='name desc' ? messages.up : '' )}">
+							<f:param name="sortBy" value="#{tournamentSearchCriteria.sortBy=='name asc' ? 'name desc' : 'name asc'}"/>
+						</s:link>
+					</f:facet>
+					#{_tournament.name}
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<s:link styleClass="columnHeader"
+									 value="Host Facility #{tournamentSearchCriteria.sortBy=='hostFacilityName asc' ? messages.down : ( tournamentSearchCriteria.sortBy=='hostFacilityName desc' ? messages.up : '' )}">
+							<f:param name="sortBy" value="#{tournamentSearchCriteria.sortBy=='hostFacilityName asc' ? 'hostFacilityName desc' : 'hostFacilityName asc'}"/>
+						</s:link>
+					</f:facet>
+					#{_tournament.hostFacilityName}
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<s:link styleClass="columnHeader"
+									 value="Start Date #{tournamentSearchCriteria.sortBy=='startDate asc' ? messages.down : ( tournamentSearchCriteria.sortBy=='startDate desc' ? messages.up : '' )}">
+							<f:param name="sortBy" value="#{tournamentSearchCriteria.sortBy=='startDate asc' ? 'startDate desc' : 'startDate asc'}"/>
+						</s:link>
+					</f:facet>
+					#{_tournament.startDate}
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<s:link styleClass="columnHeader"
+									 value="Entry Deadline #{tournamentSearchCriteria.sortBy=='entryDeadline asc' ? messages.down : ( tournamentSearchCriteria.sortBy=='entryDeadline desc' ? messages.up : '' )}">
+							<f:param name="sortBy" value="#{tournamentSearchCriteria.sortBy=='entryDeadline asc' ? 'entryDeadline desc' : 'entryDeadline asc'}"/>
+						</s:link>
+					</f:facet>
+					#{_tournament.entryDeadline}
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<s:link styleClass="columnHeader"
+									 value="Website #{tournamentSearchCriteria.sortBy=='website asc' ? messages.down : ( tournamentSearchCriteria.sortBy=='website desc' ? messages.up : '' )}">
+							<f:param name="sortBy" value="#{tournamentSearchCriteria.sortBy=='website asc' ? 'website desc' : 'website asc'}"/>
+						</s:link>
+					</f:facet>
+					#{_tournament.website}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Action</f:facet>
+					<h:commandLink id="viewTournament" action="#{tournamentAction.view(_tournament)}" value="View">
+						<!-- NOTE: although end is specified, it's actually reused, so we end up returning to list as it was -->
+						<s:conversationPropagation type="end"/>
+					</h:commandLink>
+					<ui:remove>
+					<s:link view="/#{empty from ? 'Tournament' : from}.xhtml" 
+						   value="#{empty from ? 'View' : 'Select'}" 
+							  id="tournament">
+						<f:param name="tournamentId" 
+								value="#{_tournament.id}"/>
+					</s:link>
+					</ui:remove>
+				</h:column>
+			</rich:dataTable>
+			</h:form>
+	
+			</div>
+		</rich:panel>
+		
+		<s:div styleClass="tableControl" rendered="#{tournamentSearchCriteria.isPaginationNeeded(tournamentResults.size)}">
+			<h:form id="pagination">
+		  
+				<s:link id="first" action="#{tournamentSearchCriteria.first}"
+					value="#{messages.left}#{messages.left} First Page"
+					rendered="#{tournamentSearchCriteria.previousExists}"/>
+				
+				<s:link id="previous" action="#{tournamentSearchCriteria.previous}"
+					value="#{messages.left} Previous Page"
+					rendered="#{tournamentSearchCriteria.previousExists}"/> 
+				
+				<s:link id="next" action="#{tournamentSearchCriteria.next}"
+					rendered="#{tournamentSearchCriteria.isNextExists(tournamentResults.size)}"
+					value="Next Page #{messages.right}"/>
+			
+			</h:form>
+		</s:div>
+		
+		<s:div styleClass="actionButtons">
+			<s:button id="create" action="#{tournamentAction.create}" value="Create tournament"/>
+		</s:div>
+		
+	</ui:define>
+
+</ui:composition>
+
