@@ -332,14 +332,32 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 		<echo>Using Seam distribution at ${seam.home}</echo>
 	</target>
 
-	<target name="update-project" depends="verify-seam,select-project" description="Update the libraries for the selected project (menu provided)">
+	<target name="verify-jboss-as">
+		<available property="jboss-as.present" file="${jboss-as.bin.dir}asd" type="dir"/>
+		<if>
+			<not><isset property="jboss-as.present"/></not>
+			<then>
+				<echo>Cannot find a JBoss AS installation. You must have JBoss AS available to deploy your application using the default configuration.</echo>
+			</then>
+		</if>
+	</target>
+
+	<target name="update-project" depends="verify-seam,verify-jboss-as,select-project" description="Update the libraries for the selected project (menu provided)">
 		<ant dir="${seam-gen.dir}" target="update-project" inheritAll="false">
 			<property name="workspace.home" value="${workspace.home}"/>
 			<property name="project.name" value="${project.name}"/>
 			<property name="project.type" value="${project.type}"/>
 			<property name="jboss.home" value="${jboss-as.home}"/>
 		</ant>
-		<copy todir="${jboss-as.lib.dir}" file="${h2.jdbc.jar}"/>
+		<if>
+			<isset property="jboss-as.present"/>
+			<then>
+				<copy todir="${jboss-as.lib.dir}" file="${h2.jdbc.jar}"/>
+			</then>
+			<else>
+				<echo>You must copy h2.jar to the lib directory of the JBoss AS domain before deploying the application.</echo>
+			</else>
+		</if>
 	</target>
 
 	<target name="select-project">
@@ -398,14 +416,8 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 				<property name="project.selection" value="projects-ch14/open18"/>
 			</case>
 		</switch>
-		<propertyregex property="project.name"
-			input="${project.selection}"
-			regexp="^.*/(.*)$"
-			select="\1"/>
-		<propertyregex property="workspace.home"
-			input="${project.selection}"
-			regexp="^(.*)/.*$"
-			select="${stages.dir}/\1"/>
+		<basename property="project.name" file="${stages.dir}/${project.selection}"/>
+		<dirname property="workspace.home" file="${stages.dir}/${project.selection}"/>
 		<condition property="project.type" value="ear" else="war">
 			<contains string="${project.name}" substring="ee"/>
 		</condition>
