@@ -13,6 +13,8 @@ Due to the quota of 550 pages for Seam in Action, there is some auxiliary inform
 
 *interceptor* - a class that can be used to intercept runtime events that occur in a program to "advise" the code by weaving in cross-cutting concerns; the main event to which an interceptor is applied is a method invocation.
 
+*lazy loading* - a technique used in ORMs to avoid loading more information than is necessary into memory. Without lazy loading, loading an object would mean loading the object and all of its associated objects into memory recursively. In the case that all entities are linked, this would result in the entire database being loaded into memory when retrieving an object. To avoid this situation, an ORM will only load the object or object graph up to a certain level. This level is defined statically and/or dynamically by the developer (using fetch directives). If the program reaches one of the lazy associations, the ORM will load the needed object graph section on demand, transparently.
+
 *meta-annotation* - an annotation that is applied to an annotation interface (ElementType.ANNOTATION_TYPE). Thus, the annotation is applied to a concrete type by way of the annotation on which it is defined.
 
 *open session in view* - an architecture pattern that keeps a Hibernate session (persistence context) open during the rendering of the view in an MVC application; typically, the session is closed after executing the business logic, leaving the view unable to cross lazy associations in a Hibernate-instrumented entity instance, leading to the dreaded LazyInitializationException
