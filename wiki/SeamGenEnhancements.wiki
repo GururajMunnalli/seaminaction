@@ -1,7 +1,7 @@
 #summary Enhancements to seam-gen or workarounds for outstanding issues.
 #labels seam-gen,Featured,oracle
 
-= Introduction =
+= Overview =
 
 The seam-gen tool is a good start, but it does not handle all scenarios. Part of this is intentionally for simplicity sake and part is that seam-gen still has room to grow. This page documents several enhancements to seam-gen to help get you further along.
 
