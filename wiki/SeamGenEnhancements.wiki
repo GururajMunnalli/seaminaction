@@ -9,7 +9,7 @@ The output that seam-gen produces is not fixed in stone. As I mention in the boo
 
 The first step is to download the Seam distribution and extract it. From there, your focus will be on the seam-gen folder, which hosts the templates that Seam uses to create the project and generate code. The remainder of the instructions on this page apply to the files in that folder.
 
-== Boolean types in Oracle ==
+== Handling boolean types in Oracle ==
 
 It is conventional to represent a boolean type in oracle using a CHAR(1) column with the values "y" or "n" to represent true and false. JPA cannot accommodate this mapping, but it is possible by using a Hibernate extension annotation. Here is an example of a boolean property named "excluded" mapped to a CHAR(1) column in Oracle using the Hibernate "yes_no" custom type.
 
