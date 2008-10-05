@@ -150,7 +150,7 @@ The files in each project that you need to update are:
 
  * build.properties (location of JBoss AS)
  * hibernate-console.properties (used for Eclipse Hibernate Console plugin)
- * resources/\*-ds.xml
+ * resources/`*`-ds.xml
  * resources/glassfish-datasource.xml
 
 You update these paths across the entire example code base by running the
