@@ -1,0 +1,218 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
+ 
+ 	<ice:panelGroup id="scoreCardPanelGroupId" styleClass="formBorderHighlight"
+ 	                 rendered="#{roundHome.instance.teeSet !=null}">
+	  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+	    	  <td class="iceDatTblColHdr2">#{roundHome.instance.teeSet.course.name}</td>
+			</tr>
+	  </table>
+	  <table id="teeSetTable" border="0" cellpadding="0" cellspacing="0">
+	   <colgroup span="19"/>
+	    <thead>
+		 <tr>
+		  <th style="text-align: left;" >
+   		    <div style="float: left; margin-right: 5px;">HOLE</div>
+            <div title="#{roundHome.instance.teeSet.color}" style="float: left; background-color: #{roundHome.instance.teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+	        <div style="float: right; font-weight: normal; font-size: smaller; margin-top: 2px;">
+	          <s:fragment rendered="#{roundHome.instance.golfer.gender eq 'MALE'}">
+                 <ice:outputText value="#{roundHome.instance.teeSet.mensCourseRating}">
+                    <f:convertNumber pattern="###.#"/>
+                 </ice:outputText>
+                   #{' / '}
+                 <ice:outputText value="#{roundHome.instance.teeSet.mensSlopeRating}">
+                    <f:convertNumber pattern="###.#"/>
+                 </ice:outputText>
+	          </s:fragment>
+              <s:fragment rendered="#{round.golfer.gender eq 'FEMALE'}">
+                 <ice:outputText value="#{roundHome.instance.teeSet.ladiesCourseRating}">
+                    <f:convertNumber pattern="###.#"/>
+                 </ice:outputText>
+                      #{' / '}
+                 <ice:outputText value="#{roundHome.instance.teeSet.ladiesSlopeRating}">
+                     <f:convertNumber pattern="###.#"/>
+                 </ice:outputText>
+               </s:fragment>
+             </div>
+          <ice:form id="scoresFormInput">
+             <!--  actually reads hole number from the scores List -->
+             <ice:panelSeries value="#{roundHome.scores}" var="_score">
+		        <th>
+                     <ice:outputText id="holeInputScore_#{_holeNum3.number}"
+                           value="#{_score.hole.number}"  
+                             size="2"/>
+		        </th>
+		      </ice:panelSeries>
+	     </ice:form>
+           </th>
+         </tr>
+	  </thead>
+	  <tbody>
+
+ 
+	     <tr>	        
+	       <th style="text-align: left;">Par</th>	
+		   <ice:panelSeries value="#{roundHome.instance.teeSet.course.holes.toArray()}" var="_holeNum2">
+		       <s:fragment rendered="#{roundHome.instance.golfer.gender eq 'MALE'}">
+			       <td style="text-align: center; color: #A0A0A0">#{_holeNum2.mensPar}</td>
+			   </s:fragment>
+			   <s:fragment rendered="#{roundHome.instance.golfer.gender eq 'FEMALE'}">
+			       	<td style="text-align: center; color: #A0A0A0">#{_holeNum2.ladiesPar}</td>
+			   </s:fragment>
+		   </ice:panelSeries>
+		 </tr>
+<ui:remove>  could also have done it this way	
+		 <tr>
+		      <th style="text-align: left;">Score</th>
+		      <ice:panelSeries value="#{roundHome.instance.teeSet.course.holes.toArray()}" var="_holeNum3">
+		        <td>
+                     <ice:inputText id="inputScore_#{_holeNum3.number}"
+                     	   valueChangeListener="#{roundHome.calculateTotalScore}" 
+                     	   readonly="#{roundHome.readonly}"
+                           value="#{roundHome.scores.toArray()[_holeNum3.number-1].strokes}" 
+                           partialSubmit="true"  size="2"/>
+		        </td>
+		      </ice:panelSeries>
+		 </tr>
+			 
+		 <tr>
+		      <th style="text-align: left;">Hole Number</th>
+		      <ice:panelSeries value="#{roundHome.scores}" var="_score">
+		        <td>
+                     <ice:outputText id="holeInputScore_#{_holeNum3.number}"
+                           value="#{_score.hole.number}"  
+                             size="2"/>
+		        </td>
+		      </ice:panelSeries>
+		 </tr>
+ 
+
+		 <tr>
+		   <th style="text-align: left;">Score</th>
+		     <ice:form id="totalStrokes">
+		      <ice:panelSeries id="golfStrokesPanelSeries" 
+		                value="#{roundHome.scores}" var="_score">
+		        <td>
+		            <ice:inputText  
+		                     value="#{_score.strokes}" 
+                             partialSubmit="true" 
+                             readonly="#{roundHome.readonly}"
+                             onfocus="return false;"   
+                             size="2">
+                         <s:validate/>
+                    </ice:inputText>
+		        </td>
+		      </ice:panelSeries>
+		    </ice:form>
+		    <!--                              valueChangeListener="#{roundHome.calculateTotalScore}"  -->
+		 </tr>
+</ui:remove>	
+		 <tr>
+		   <th style="text-align: left;">Score</th>
+		     <ice:form id="totalStrokes">
+		      <ice:panelSeries id="golfStrokesPanelSeries" 
+		                value="#{testBack.scores}" var="_score">
+		        <td>
+		            <ice:inputText  
+                             partialSubmit="true" 
+                             onfocus="return false;"   
+                             size="2">
+                         <s:validate/>
+                    </ice:inputText>
+		        </td>
+		      </ice:panelSeries>
+		    </ice:form>
+		    <!--                              valueChangeListener="#{roundHome.calculateTotalScore}"  -->
+		 </tr>
+
+		 
+<ui:remove>
+		 <tr>
+		      <th style="text-align: left;">Fairway</th>
+		      <ice:panelSeries value="#{round.teeSet.course.holes.toArray()}" var="_holeNum4">
+		        <td>
+		          <ice:panelGroup>
+		          <ice:panelGroup rendered="#{roundHome.readonly}" >
+		            <ice:selectOneMenu readonly="#{roundHome.readonly}" 
+		                  value="#{roundHome.scores.toArray()[_holeNum4.number-1].fairway}" rendered="#{not round.teeSet.course.holes.toArray()[_holeNum4.number-1].isPar3(round.golfer.gender)}">
+							<f:selectItem itemValue="" itemLabel="-"/>
+							<f:selectItem itemValue="#{true}" itemLabel="y"/>
+						    <f:selectItem itemValue="#{false}" itemLabel="n"/>
+					</ice:selectOneMenu>
+				   </ice:panelGroup>
+				   <ice:panelGroup rendered="#{not myscorescard.editMode}">
+				      <h:outputText value="#{roundHome.scores.toArray()[_holeNum4.number-1].fairway}" rendered="#{not round.teeSet.course.holes.toArray()[_holeNum4.number-1].isPar3(round.golfer.gender)}"/>
+				   </ice:panelGroup>
+                 <ice:outputText value="n/a" rendered="#{roundHome.instance.teeSet.course.holes.toArray()[_holeNum4.number-1].isPar3(roundHome.instance.golfer.gender)}"/>
+                  </ice:panelGroup>
+		        </td>
+		      </ice:panelSeries>		      
+		 </tr>
+		 <tr>
+		      <th style="text-align: left;">Green in regulation</th>
+		      <ice:panelSeries value="#{roundHome.instance.teeSet.course.holes.toArray()}" var="_holeNum5">
+		        <td>
+		          <ice:panelGroup rendered="#{not roundHome.readonly}">
+		             <ice:selectOneMenu id="gir_#{_holeNum5.number}" 
+		                      readonly="#{roundHome.readonly}"
+		                      value="#{roundHome.scores.toArray()[_holeNum5.number-1].greenInRegulation}">
+						<f:selectItem itemValue="" itemLabel="-"/>
+						<f:selectItem itemValue="#{true}" itemLabel="y"/>
+						<f:selectItem itemValue="#{false}" itemLabel="n"/>
+				     </ice:selectOneMenu>
+				    </ice:panelGroup>
+				    <ice:panelGroup rendered="#{roundHome.readonly}">
+				       <ice:outputText value="#{roundHome.scores.toArray()[_holeNum5.number-1].greenInRegulation}"/>
+				    </ice:panelGroup>
+		        </td>
+		      </ice:panelSeries>
+		 </tr>
+
+		 <tr>
+		      <th style="text-align: left;">Putts</th>
+		 <ice:form id="puttsForm">
+		      <ice:panelSeries value="#{roundHome.instance.teeSet.course.holes}" var="_holeNum6">
+                 <td >
+                        <ice:inputText id="putts_#{_holeNum6.number}" partialSubmit="true" 
+                                 readonly="#{roundHome.readonly}"
+                                 value="#{scores.toArray()[_holeNum6.number-1].putts}"                            
+                                 size="2"/>
+                 </td>
+		      </ice:panelSeries>
+	</ice:form>
+		 </tr>
+ </ui:remove>
+ 
+ 		 <tr>
+		      <th style="text-align: left;">Putts</th>
+		 <ice:form id="puttsForm">
+		      <ice:panelSeries value="#{testBack.putts}" var="_putt">
+                 <td >
+                        <ice:inputText  partialSubmit="true"                    
+                                 size="2"/>
+                 </td>
+		      </ice:panelSeries>
+	</ice:form>
+		 </tr>
+ 
+	   </tbody>
+	   
+	 </table>
+	 <ice:messages/>
+	<ui:remove> <h4> <ice:outputText value="#{roundHome.holeCheck}"/></h4> </ui:remove>
+	</ice:panelGroup>
+    <ice:panelGroup>
+				<s:decorate id="totalScoreField" template="layout/display.xhtml">
+					<ui:define name="label">Total score</ui:define>
+					<ice:outputText id="totalScoreId"
+					       value="#{roundHome.totalScore}"/>
+				</s:decorate>
+			
+	</ice:panelGroup>
+ </ui:composition>

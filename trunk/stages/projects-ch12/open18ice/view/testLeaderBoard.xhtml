@@ -1,0 +1,85 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/199F9/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"  
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+		 	<h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+		
+		<ice:panelGroup styleClass="formBorderHighlight">
+		
+		  <div class="results" id="LeaderBoardResults">
+	
+			<h:outputText value="No rounds found." rendered="#{empty leaderBoardManager.roundsLookup[40]}"/>
+	
+		    <ice:form>
+		      <ice:panelGroup styleClass="formBorderHighlight" rendered="#{not empty leaderBoardManager.roundsLookup[40]}">
+			     <ice:dataTable id="leaderListId" var="_round" value="#{leaderBoardManager.roundsLookup[40]}" 
+				      resizable="true" columnClasses="allCols">
+					<ice:column id="totalScoreColumn">
+						<f:facet name="header">
+							<ice:outputText value="Score"/>
+						</f:facet>
+						<ice:outputText value="#{_round.totalScore}"/>
+					</ice:column>	
+					<ice:column id="golfer">
+						<f:facet name="header">
+							<ice:outputText value="First Name"/>
+						</f:facet>
+						<ice:outputText value="#{_round.golfer.firstName}"/>
+					</ice:column>
+					<ice:column id="golfer">
+						<f:facet name="header">
+							<ice:outputText value="Last Name"/>
+						</f:facet>
+						<ice:outputText value="#{_round.golfer.lastName}"/>
+					</ice:column>																		      
+					<ice:column id="dateColumn">
+						<f:facet name="header">
+							<ice:outputText id="dateTextColumnId" value="Date"/>
+						</f:facet>
+						<ice:outputText value="#{_round.date}">
+							<s:convertDateTime type="date" />
+						</ice:outputText>
+					</ice:column>
+					<ice:column id="courseColumn">
+						<f:facet name="header">
+							<ice:outputText value="Course Name"/>
+						</f:facet>
+						<ice:outputText value="#{_round.teeSet.course.name}"/>
+					</ice:column>
+					<ice:column id="teeSetColumn">
+						<f:facet name="header">
+							<ice:outputText value="Tee Colour"/>
+						</f:facet>
+						<ice:panelGroup>
+						  <div title="#{_round.teeSet.color}" class="teeMarker" 
+						    style="background-color: #{_round.teeSet.color};" />
+						</ice:panelGroup>
+					</ice:column>
+					<ice:column id="weatherColumn">
+						<f:facet name="header">
+							<ice:outputText value="Weather"/>
+						</f:facet>
+						<ice:outputText value="#{_round.weather}"/>
+					</ice:column>
+
+				</ice:dataTable>
+
+		   </ice:panelGroup>
+
+	    </ice:form>
+	  </div>
+	 </ice:panelGroup>
+	<br/>
+	</ui:define>
+
+</ui:composition>
+
+	

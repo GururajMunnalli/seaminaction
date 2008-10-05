@@ -1,0 +1,80 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"   
+	template="layout/template.xhtml">
+	
+	<ui:define name="body">
+
+		<s:div id="banner" rendered="#{profileLoaded}">
+			<h1>#{selectedGolfer.name}</h1>
+			<ui:remove><p>#{selectedGolfer.status}</p></ui:remove>
+		</s:div>
+	
+		<h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+	
+		<s:div rendered="#{not profileLoaded}">
+			Sorry, but this golfer does not exist.
+		</s:div>
+
+		<ice:panelGroup id="viewProfilePanelGroup" styleClass="formBorderHighlight" rendered="#{profileLoaded}">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="iceDatTblColHdr2">Golfer's Profile</td>
+				</tr>
+			</table>
+		
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Gender</ui:define>
+				#{selectedGolfer.gender}&#160;
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Birthday</ui:define>
+				<h:outputText value="#{selectedGolfer.dateOfBirth}">
+					<s:convertDateTime pattern="MMMM dd, yyyy"/>
+				</h:outputText>&#160;
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Location</ui:define>
+				#{selectedGolfer.location}&#160;
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Member since</ui:define>
+				<h:outputText value="#{selectedGolfer.dateJoined}">
+					<s:convertDateTime pattern="MMMM dd, yyyy"/>
+				</h:outputText>&#160;
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Pro status</ui:define>
+				#{selectedGolfer.proStatus}&#160;
+			</s:decorate>
+
+			<s:decorate template="layout/display.xhtml">
+				<ui:define name="label">Specialty</ui:define>
+				#{selectedGolfer.specialty}&#160;
+			</s:decorate>
+
+			<div style="clear: both;"/>
+			
+		</ice:panelGroup>
+		
+		<div class="actionButtons">
+			<s:button id="done" value="&#171; Back to golfers" view="/GolferList.xhtml" propagation="end"/>
+			<ui:remove>
+			<s:button id="edit" value="Edit" view="/GolferEdit.xhtml" rendered="#{currentGolfer.username eq selectedGolfer.username}" propagation="none">
+				<f:param name="golferId" value="#{selectedGolfer.id}"/>
+			</s:button>
+			</ui:remove>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

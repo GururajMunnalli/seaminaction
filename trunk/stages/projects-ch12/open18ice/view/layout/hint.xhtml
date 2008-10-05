@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+	<ice:panelGroup id="tipPanel" panelTooltip="#{id}">
+		<ice:graphicImage url="/img/icon_info.gif" style="border: none; float: #{empty float ? 'none' : float}; height: 36px;"/>
+		<ice:panelTooltip id="#{id}" hideOn="mouseout" hoverDelay="500" style="width: 500px; text-align: left; background-color: gray;">
+			<f:facet name="header">
+				<ice:outputText value="#{headerText}"/>
+			</f:facet>
+			<f:facet name="body">
+				<ice:panelGroup>
+					<ui:insert/>
+				</ice:panelGroup>
+			</f:facet>
+		</ice:panelTooltip>
+	</ice:panelGroup>
+</ui:composition>
