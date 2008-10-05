@@ -126,12 +126,9 @@ You run each command by prefix it with ant, as shown here:
 ant get-seam
 }}}
 
---
-
-*IMPORTANT*
-Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not jboss-4.2.2.GA. I have renamed it to better distinguish it from Seam, which is also a JBoss project.
-
---
+----
+*IMPORTANT* Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not jboss-4.2.2.GA. I have renamed it to better distinguish it from Seam, which is also a JBoss project.
+----
 
 The stages/ directory contains a snapshot of the projects at the end of each chapter (e.g., projects-ch04), or in the case of part 1 and part 3, at the end of the part (e.g., projects-part1). Development is progressive, so the projects accumulate features as the part and chapter numbers increase. If you want to see the application in its entirety, then use projects-ch13.
 
@@ -153,7 +150,7 @@ The files in each project that you need to update are:
 
  * build.properties (location of JBoss AS)
  * hibernate-console.properties (used for Eclipse Hibernate Console plugin)
- * resources/*-ds.xml
+ * resources/\*-ds.xml
  * resources/glassfish-datasource.xml
 
 You update these paths across the entire example code base by running the
@@ -221,12 +218,9 @@ Fortunately, these steps are handled for you by using the following command:
 ant get-jboss-as
 }}}
 
---
-
-*IMPORTANT*
-Make sure that the H2 version in server/default/lib is the same as the one you used to build the H2 database. Otherwise, strange errors may occur. seam-gen copies h2.jar to server/default/lib during ./seam setup, but if you upgrade later the h2.jar on the JBoss server could be out of date.
-
---
+----
+*IMPORTANT* Make sure that the H2 version in server/default/lib is the same as the one you used to build the H2 database. Otherwise, strange errors may occur. seam-gen copies h2.jar to server/default/lib during ./seam setup, but if you upgrade later the h2.jar on the JBoss server could be out of date.
+----
 
 === Launching the H2 console ===
 
