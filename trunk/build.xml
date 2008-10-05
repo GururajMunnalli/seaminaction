@@ -103,6 +103,33 @@ in the build.properties file.
 		</if>
 	</target>
 
+	<target name="get-glassfish" description="Downloads GlassFish and extracts it to the software directory (i.e., opt)">
+		<mkdir dir="${vault.dir}"/>
+		<if>
+			<not><available file="${vault.dir}/glassfish-installer-v2ur2-b04-linux.jar"/></not>
+			<then>
+				<echo>Downloading GlassFish (~50MB) may take a while. Please be patient.</echo>
+				<get src="http://java.net/download/javaee5/v2ur2/promoted/Linux/glassfish-installer-v2ur2-b04-linux.jar"
+					dest="${vault.dir}/glassfish-installer-v2ur2-b04-linux.jar"/>
+			</then>
+		</if>
+		<if>
+			<not><available file="${opt.dir}/glassfish-v2/bin" type="dir"/></not>
+			<then>
+				<java jar="${vault.dir}/glassfish-installer-v2ur2-b04-linux.jar" fork="true"/>
+				<move file="glassfish" tofile="${opt.dir}/glassfish-v2"/>
+				<ant antfile="${opt.dir}/glassfish-v2/setup.xml" inheritAll="false">
+					<property name="instance.port" value="7070"/>
+					<property name="https.port" value="7171"/>
+				</ant>
+			</then>
+		</if>
+	</target>
+
+	<target name="upgrade-icefaces" depends="verify-seam" description="Upgrades the ICEfaces version in Seam from 1.7.0 to 1.7.1">
+		<replace file="${seam-gen.dir}/build.xml" token="1.7.0" value="1.7.1"/>
+	</target>
+
 	<target name="rehome" description="Replace any absolute paths with the path specified in the -Dhome=XXX argument">
 		<fail unless="home" message="Please specify a new home using -Dhome=C:/projects/EXAMPLE_CODE_FOLDER_NAME"/>
 		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
@@ -333,7 +360,7 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 	</target>
 
 	<target name="verify-jboss-as">
-		<available property="jboss-as.present" file="${jboss-as.bin.dir}asd" type="dir"/>
+		<available property="jboss-as.present" file="${jboss-as.bin.dir}" type="dir"/>
 		<if>
 			<not><isset property="jboss-as.present"/></not>
 			<then>
@@ -342,12 +369,15 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 		</if>
 	</target>
 
-	<target name="update-project" depends="verify-seam,verify-jboss-as,select-project" description="Update the libraries for the selected project (menu provided)">
+	<target name="inflate-project" depends="update-project" description="An alias for update-project"/>
+
+	<target name="update-project" depends="verify-seam,verify-jboss-as,select-project,upgrade-icefaces" description="Update the libraries for the selected project (menu provided)">
 		<ant dir="${seam-gen.dir}" target="update-project" inheritAll="false">
 			<property name="workspace.home" value="${workspace.home}"/>
 			<property name="project.name" value="${project.name}"/>
 			<property name="project.type" value="${project.type}"/>
 			<property name="jboss.home" value="${jboss-as.home}"/>
+			<property name="icefaces" value="${icefaces}"/>
 		</ant>
 		<if>
 			<isset property="jboss-as.present"/>
@@ -373,8 +403,9 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
  H: projects-part3 -> open18
  I: projects-ch11 -> open18
  J: projects-ch12 -> open18
- K: projects-ch13 -> open18
- L: projects-ch14 -> open18
+ K: projects-ch12 -> open18ice
+ L: projects-ch13 -> open18
+ M: projects-ch14 -> open18
  </echo>
 		<input addproperty="project.index" message="Enter the letter that corresponds to the project you want to update:"
 			validargs="A,B,C,D,E,F,G,H,I,J,K,L"/>
@@ -410,9 +441,12 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 				<property name="project.selection" value="projects-ch12/open18"/>
 			</case>
 			<case value="K">
-				<property name="project.selection" value="projects-ch13/open18"/>
+				<property name="project.selection" value="projects-ch12/open18ice"/>
 			</case>
 			<case value="L">
+				<property name="project.selection" value="projects-ch13/open18"/>
+			</case>
+			<case value="M">
 				<property name="project.selection" value="projects-ch14/open18"/>
 			</case>
 		</switch>
@@ -420,6 +454,9 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 		<dirname property="workspace.home" file="${stages.dir}/${project.selection}"/>
 		<condition property="project.type" value="ear" else="war">
 			<contains string="${project.name}" substring="ee"/>
+		</condition>
+		<condition property="icefaces" value="y" else="n">
+			<contains string="${project.name}" substring="ice"/>
 		</condition>
 	</target>
 
