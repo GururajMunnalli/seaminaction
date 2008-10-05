@@ -142,7 +142,13 @@ To inflate (or update) a project, ensure that you have downloaded and extracted 
 ant update-project
 }}}
 
-You will be provided a menu of projects and you can choose which one to update.
+You will be provided a menu of projects and you can choose which one to update. Once the project is inflated, you can use your IDE to open the project as described in chapter 2. If you have Ant installed, you can also change to the directory of the project and deploy it by running:
+
+{{{
+ant explode
+}}}
+
+=== Rehome ===
 
 Several configuration files refer to the home directory /home/twoputt. You will
 need to update those references in order to deploy the application property.
