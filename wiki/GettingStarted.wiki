@@ -163,7 +163,7 @@ ant rehome -Dhome=C:/projects/seaminaction
 
 Please use forward slashes, even on Windows, to avoid backslash gymnastics.
 
-=== Seed database for Open18 ===
+=== Seeding the database for Open18 ===
 
 Chapter 2 mentions that the DBA provides you with an H2 database that will be
 used to create the course directory module of the Open18 application. Those
