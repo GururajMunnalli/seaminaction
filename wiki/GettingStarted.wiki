@@ -13,7 +13,7 @@ First of all, I encourage you (read as "urge you") to [http://mojavelinux.com/se
   * Apache Ant 1.7.0 (to execute the build from the project)
   * IDE - Eclipse, NetBeans, or IntelliJ IDEA (to follow along with chapter 2)
 
-Before you scour the web to find this software, you should know that the build script that comes with the example code includes targets which automatically download and extract JBoss AS and Seam. And although the script that you run is an Ant build script, you don't need Ant initially since it comes bundled with the example code. The only hard requirement is that you must have a Java SE Development Kit (JDK) installed. 
+Before you scour the web to find this software, you should know that the build script that comes with the example code includes targets which automatically download and extract JBoss AS and Seam. And although the script is an Ant build script, you don't need Ant initially since it comes bundled with the example code. The only hard requirement is that you must have a Java SE Development Kit (JDK) installed. 
 
 == Verifying your Java installation ==
 
