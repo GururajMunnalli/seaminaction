@@ -458,6 +458,47 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 		<condition property="icefaces" value="y" else="n">
 			<contains string="${project.name}" substring="ice"/>
 		</condition>
+		<condition property="can.ivyize" value="true">
+			<not>
+				<or>
+					<contains string="${project.name}" substring="ee"/>
+					<contains string="${project.name}" substring="ice"/>
+				</or>
+			</not>
+		</condition>
+	</target>
+
+	<target name="ivyize-project" depends="verify-seam,select-project" description="Integrate Ivy into project to manage dependencies (alternative to update-project)">
+		<fail unless="can.ivyize">Sorry, the ivy configuration in this build only supports RichFaces WAR projects</fail>
+
+		<property name="project.dir" value="${workspace.home}/${project.name}"/>
+
+		<copy todir="${project.dir}">
+			<fileset dir="${etc.dir}/ivy-configuration">
+				<include name="ivy*xml"/>
+			</fileset>
+		</copy>
+		
+		<replace dir="${project.dir}" includes="build.xml">
+			<not><contains text="ivy.build.xml"/></not>
+			<replacetoken><![CDATA[<target name="init"]]></replacetoken>
+			<replacevalue><![CDATA[<import file="${basedir}/ivy.build.xml"/>
+
+    <target name="init"]]></replacevalue>
+		</replace>
+
+		<ant dir="${project.dir}" target="inflate" inheritAll="false">
+			<property name="ivy.sync" value="true"/>
+			<property name="lib.dir" value="${project.dir}/lib"/>
+		</ant>
+
+		<mkdir dir="${project.dir}/bootstrap"/>
+		<copy todir="${project.dir}/bootstrap">
+			<fileset dir="${seam.home}/bootstrap">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
 	</target>
 
 </project>
