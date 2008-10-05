@@ -1,0 +1,118 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
+ 
+ 	<ice:panelGroup id="scoreCardPanelGroupId" styleClass="formBorderHighlight">            
+ 	    
+	  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+	    	  <td class="iceDatTblColHdr2">#{round.teeSet.course.name}</td>
+			</tr>
+	  </table>
+	   	                 
+ 	    <ice:dataTable id="scorecardTableId"  width="100%"  
+ 	            value="#{roundHome.testData}" var="rowValue" rows="5">
+ 	
+ 	       <ice:column id="rowHeadingColumnId" >       
+ 	          <f:facet name="header">
+ 	            <ice:panelGroup>
+ 	             <div style="float: left; margin-right: 5px; width:80px">HOLE</div>          		    
+		          <div title="#{round.teeSet.color}" 
+		              style="float: left; background-color: #{round.teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+	        <div style="float: right; font-weight: normal; font-size: smaller; margin-top: 2px;">
+			           	<ice:outputText value="#{_roundHome.male ? round.teeSet.mensCourseRating : round.teeSet.ladiesCourseRating}">
+                    <f:convertNumber pattern="###.#"/>
+                 </ice:outputText>
+                   #{' / '}
+		                 <ice:outputText value="#{_roundHome.male ? round.teeSet.mensSlopeRating : round.teeSet.ladiesSlopeRating }">
+                    <f:convertNumber pattern="###.#"/>
+                 </ice:outputText>
+             </div>
+		            </ice:panelGroup>
+		        </f:facet>
+ 	           <ice:outputText value="#{rowValue}"/>
+ 	       </ice:column>
+
+ 	       <ice:columns id="columnDataValuesId"
+ 	                 value="#{roundHome.scores}" var="_scoreVal">
+ 	          <f:facet name="header">
+ 	               <ice:outputText id="score_hole_numbers"
+                                 value="#{_scoreVal.hole.number}" 
+                             size="2"/>
+ 	          </f:facet>
+ 	          <ice:panelGroup rendered="#{rowValue eq 'Par'}">
+ 	              <ice:outputText style="text-align: center; color: #A0A0A0" 
+ 	                       value="#{_roundHome.male ? _scoreVal.hole.mensPar : _scoreVal.hole.ladiesPar}"/>                  
+			   </ice:panelGroup>
+			   <ice:panelGroup rendered="#{rowValue eq 'Score'}">
+			     <s:validateAll>
+			      <ice:inputText  id="strokesInputValueId" 
+		                     value="#{_scoreVal.strokes}" 
+                             partialSubmit="true" 
+                             readonly="#{roundHome.readonly}"
+                           valueChangeListener="#{roundHome.calculateTotalScore}" 
+                             size="2">
+                    </ice:inputText>
+                  </s:validateAll>
+                </ice:panelGroup>  
+               <!--          onfocus="return false;" -->
+		       <ice:panelGroup rendered="#{rowValue eq 'Fairway'}">
+		          <ice:panelGroup rendered="#{not roundHome.readonly}" >
+		            <ice:selectOneMenu   value="#{_scoreVal.fairway}"
+		                  rendered="#{not _scoreVal.hole.isPar3(round.golfer.gender)}">
+							<f:selectItem itemValue="" itemLabel="-"/>
+							<f:selectItem itemValue="#{true}" itemLabel="y"/>
+						    <f:selectItem itemValue="#{false}" itemLabel="n"/>
+					</ice:selectOneMenu>
+				   </ice:panelGroup>
+				   <ice:panelGroup rendered="#{roundHome.readonly}">
+				      <h:outputText value="#{_scoreVal.fairway}" rendered="#{not _scoreVal.hole.isPar3(round.golfer.gender)}"/>
+				   </ice:panelGroup>
+                 <ice:outputText value="n/a" rendered="#{_scoreVal.hole.isPar3(round.golfer.gender)}"/>
+                  </ice:panelGroup>
+			   <ice:panelGroup rendered="#{rowValue eq 'Green In Regulation'}">
+		          <ice:panelGroup rendered="#{not roundHome.readonly}">
+		             <ice:selectOneMenu id="girValue" 
+		                      value="#{_scoreVal.greenInRegulation}">
+						<f:selectItem itemValue="" itemLabel="-"/>
+						<f:selectItem itemValue="#{true}" itemLabel="y"/>
+						<f:selectItem itemValue="#{false}" itemLabel="n"/>
+				     </ice:selectOneMenu>
+				    </ice:panelGroup>
+				    <ice:panelGroup rendered="#{roundHome.readonly}">
+				       <ice:outputText value="#{_scoreVal.greenInRegulation}"/>
+				    </ice:panelGroup>
+ 	           </ice:panelGroup>     
+ 	           <ice:panelGroup rendered="#{rowValue eq 'Putts'}">
+                         <ice:inputText id="puttsValue" partialSubmit="true" 
+                                 readonly="#{roundHome.readonly}"
+                                 value="#{_scoreVal.putts}"                            
+                                 size="2"/>
+			   </ice:panelGroup>
+ 	       </ice:columns>
+
+ 	    </ice:dataTable>
+ 
+    </ice:panelGroup>
+    <ice:panelGroup id="panelGroupTotalScoreId">
+    	<h4>Total Score for this round:- "#{roundHome.totalScore}"</h4>
+	</ice:panelGroup>
+	<ui:remove>
+    <ice:panelGroup>
+       <ice:outputText value="number for hole 7 #{scores.toArray()[6].hole.number}"/>    
+       <ice:outputText value="strokes for hole 7 #{scores.toArray()[6].strokes}"/>
+       <ice:outputText value="putts for hole 7 #{scores.toArray()[6].putts}"/>
+    </ice:panelGroup>
+	</ui:remove>
+    <ice:messages/>
+    <ice:panelGroup id="editButtonPanelId" rendered="#{roundHome.readonly}">
+       <s:button value="Edit" view="/RoundEdit.xhtml"   
+                     action="#{roundHome.switchToEditMode}">
+            <f:param name="inputMode" value="Edit"/>
+       </s:button>
+	</ice:panelGroup>
+ </ui:composition>

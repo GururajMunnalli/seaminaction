@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:framework="http://jboss.com/products/seam/framework"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:bpm="http://jboss.com/products/seam/bpm"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation=
+                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.0.xsd 
+                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd 
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.0.xsd
+                 http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
+
+   <core:init debug="true" jndi-pattern="open18ice/#{ejbName}/local"/>
+
+   <core:manager concurrent-request-timeout="500" 
+                 conversation-timeout="120000" 
+                 conversation-id-parameter="cid"
+                 parent-conversation-id-parameter="pid"/>
+    
+   <persistence:managed-persistence-context name="entityManager"
+                                     auto-create="true"
+                          entity-manager-factory="#{open18iceEntityManagerFactory}"/>
+
+   <persistence:entity-manager-factory name="open18iceEntityManagerFactory" 
+                      persistence-unit-name="open18ice"/>
+   
+   <drools:rule-base name="securityRules">
+       <drools:rule-files><value>/security.drl</value></drools:rule-files>
+   </drools:rule-base>
+
+   <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
+                              
+   <event type="org.jboss.seam.security.notLoggedIn">
+       <action execute="#{redirect.captureCurrentView}"/>
+   </event>
+   <event type="org.jboss.seam.security.loginSuccessful">
+       <action execute="#{redirect.returnToCapturedView}"/>
+   </event>
+        
+   <!-- ===== Registration and member management ===== -->
+      
+   <component name="passwordManager">
+      <property name="digestAlgorithm">SHA-1</property>
+      <property name="charset">UTF-8</property>
+      <property name="encoding">base64</property>
+   </component>
+
+   <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
+      <property name="dateJoined">#{currentDatetime}</property>
+   </component>
+
+   <component name="registerAction">
+      <property name="pro-status-types">amateur pro semi-pro</property>
+      <property name="specialtyTypes">
+         <value>#{messages['specialty.drive']}</value>
+         <value>#{messages['specialty.chip']}</value>
+         <value>#{messages['specialty.putt']}</value>
+         <value>#{messages['specialty.iron']}</value>
+         <value>#{messages['specialty.looks']}</value>
+      </property>
+   </component>
+
+   <!-- ===== Golfer ===== -->
+
+   <!-- may want to make these @Roles on Golfer class -->
+   <component name="currentGolfer" class="org.open18.model.Golfer" scope="session"/>
+   <component name="golferExample" class="org.open18.model.Golfer" scope="event"/>
+
+   <framework:entity-query name="golferList"
+      ejbql="select g from Golfer g"
+      order="g.lastName asc, g.firstName asc">
+      <framework:restrictions>
+         <value>g.id = #{golferExample.id}</value>
+         <value>lower(g.lastName) like concat(lower(#{golferExample.lastName}),'%')</value>
+         <value>lower(g.firstName) like concat(lower(#{golferExample.firstName}),'%')</value>
+      </framework:restrictions>
+   </framework:entity-query>
+
+   <!-- ===== Round ===== -->
+
+   <component name="courseExample" class="org.open18.model.Course" scope="event"/>
+   <component name="teeSetExample" class="org.open18.model.TeeSet" scope="event">
+      <property name="course">#{courseExample}</property>
+   </component>
+   <component name="roundExample" class="org.open18.model.Round" scope="event">
+      <property name="golfer">#{golferExample}</property>
+      <property name="teeSet">#{teeSetExample}</property>
+   </component>
+
+   <component name="roundPrototype" class="org.open18.model.Round">
+      <property name="golfer">#{currentGolfer}</property>
+      <property name="date">#{currentDate}</property>
+   </component>
+
+   <framework:entity-home name="roundHome" class="org.open18.action.RoundHome" new-instance="#{roundPrototype}"/>
+
+   <!-- @see org.open18.action.RoundList for the count query override logic 
+   PUT THIS LOGIC IN BEAN SINCE NEED OTHER ATTRIBUTES FOR ICE COMPONENTS
+     <framework:entity-query name="roundList"
+        ejbql="select r from Round r
+          join fetch r.golfer golfer
+          join fetch r.teeSet teeSet
+          join fetch teeSet.course course"
+        max-results="5"
+        order="r.date desc"
+       scope="conversation">
+  
+    </framework:entity-query> -->
+
+
+   <!-- ===== General Use ===== -->
+
+   <factory name="_" value=" " scope="application"/>
+
+   <!-- Remove the factory for webSession when upgrading to Seam 2.1! -->
+   <factory name="org.jboss.seam.web.webSession" value="#{org.jboss.seam.web.session}" scope="stateless"/>
+ 
+   <factory name="teeSets" value="#{teeSetsQuery.resultList}" scope="stateless"/>
+
+   <framework:entity-query name="teeSetsQuery"
+      ejbql="select ts from TeeSet ts join fetch ts.course c"
+      order="c.name asc, ts.position asc"
+      scope="conversation" />
+
+   <factory name="courses" value="#{coursesQuery.resultList}" scope="stateless"/>
+
+   <framework:entity-query name="coursesQuery"
+      ejbql="select c from Course c join fetch c.facility f"
+      order="f.state asc, c.name asc"
+      scope="conversation" />
+   <!-- If a round is changed, we have to assume that the result set is stale (could lead to LIE otherwise) -->
+    <event type="org.jboss.seam.afterTransactionSuccess.Round">
+        <action execute="#{myscorecard.refresh}"/>
+        <!-- It is necessary to fetch the result list to deal with swizzled result list -->
+        <action execute="#{myscorecard.getResultList}"/>
+    </event>
+</components>

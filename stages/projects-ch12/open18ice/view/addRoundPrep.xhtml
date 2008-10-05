@@ -1,0 +1,38 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
+ 
+	<ice:panelGroup>
+          <ice:panelGrid columns="2">
+            <ice:panelGroup>
+					<s:decorate template="layout/edit.xhtml">
+				   <ui:define name="label">Select Tee Set / Course to add </ui:define>
+				   <ice:selectOneListbox size="10" value="#{myscorecard.teeSet}" partialSubmit="true">
+					  <s:selectItems var="_ts" value="#{teeSets}" label="#{_ts.course.name} - #{_ts.nameOrColor}" />
+					  <s:convertEntity />
+					</ice:selectOneListbox>
+				</s:decorate>
+				<ice:outputText value="Selected course:- #{myscorecard.teeSet.course.name} - #{myscorecard.teeSet.name}"
+				            rendered="#{not empty myscorecard.teeSet.id}"/>
+			</ice:panelGroup>
+		  </ice:panelGrid>			   
+		     <ice:panelGroup styleClass="actionButtons" >
+					<s:button view="/RoundEdit.xhtml"
+								id="create" rendered="#{myscorecard.showAddButton}"
+							 value="Enter Round Data" propagation="join">
+						<f:param name="teeSetId" value="#{myscorecard.teeSet.id}"/>
+						<f:param name="roundId"/>
+						<f:param name="inputMode" value="Add"/>
+					</s:button>
+					<ice:commandButton  id="cancelAddRoundId"
+					                action="#{myscorecard.cancelAdd}"
+					                immediate="true"
+					                value="Cancel"/>
+		     </ice:panelGroup>
+
+     </ice:panelGroup>
+ </ui:composition>

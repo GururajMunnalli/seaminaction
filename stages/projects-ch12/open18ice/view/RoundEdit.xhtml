@@ -1,0 +1,109 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="layout/template.xhtml">
+					   
+	<ui:define name="body">
+	
+		<h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+
+		<ice:form id="roundForm" styleClass="edit">
+		
+			<ice:panelGroup id="roundPanelGroup" styleClass="formBorderHighlight">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+				  	  <td class="iceDatTblColHdr2"><ice:outputText value="#{roundHome.inputMode} Round"/></td>
+					</tr>
+				</table>
+				  <s:decorate id="golferField" template="layout/display.xhtml">
+					<ui:define name="label">Golfer</ui:define>
+					#{round.golfer.name}
+				  </s:decorate>
+				<s:decorate id="dateFieldDisplay" template="layout/display.xhtml" rendered="#{roundHome.readonly}">
+				    <ui:define name="label">Date</ui:define>
+				    <ice:outputText id="dateValId" value="#{round.date}">
+				        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{roundHome.timeZone}"/>
+				    </ice:outputText>          
+				</s:decorate>
+				<s:decorate id="dateFieldEdit" template="layout/edit.xhtml" rendered="#{not roundHome.readonly}">
+					<ui:define name="label">Date</ui:define>
+					<ice:selectInputDate id="date" 
+								value="#{round.date}"
+								renderAsPopup="true"
+					 			required="true">
+					    <f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{roundHome.timeZone}"/>
+					</ice:selectInputDate>
+				</s:decorate>
+				
+				<s:decorate id="notesField" template="layout/edit.xhtml">
+					<ui:define name="label">Notes</ui:define>
+					<ice:inputTextarea id="notes" cols="80" readonly="#{roundHome.readonly}" 
+					           rows="3" value="#{round.notes}" partialSubmit="true"/>
+				</s:decorate>
+				<s:decorate id="weatherFieldDisplay" template="layout/display.xhtml" rendered="#{roundHome.readonly}">
+				    <ui:define name="label">Weather</ui:define>
+				    <ice:outputText id="weatherdisplayIdText" value="#{round.weather}"/>
+				</s:decorate>
+				<s:decorate id="weatherFieldEdit" template="layout/edit.xhtml"  rendered="#{not roundHome.readonly}">
+					<ui:define name="label">Weather</ui:define>
+					<ice:selectOneMenu id="weather"  
+					         value="#{round.weather}" required="true" partialSubmit="true">
+						<f:selectItem itemValue="#{null}" itemLabel="-- Select --"/>
+						<f:selectItem itemValue="Sunny"/>
+						<f:selectItem itemValue="Mostly Sunny"/>
+						<f:selectItem itemValue="Partly Cloudy"/>
+						<f:selectItem itemValue="Mostly Cloudy"/>
+						<f:selectItem itemValue="Cloudy"/>
+						<f:selectItem itemValue="Fair"/>
+						<f:selectItem itemValue="Scattered Showers"/>
+						<f:selectItem itemValue="Scattered T-Storms"/>
+						<f:selectItem itemValue="Showers"/>
+						<f:selectItem itemValue="Rain"/>
+						<f:selectItem itemValue="T-Storms"/>
+					</ice:selectOneMenu>
+				</s:decorate>
+
+				<div style="clear:both">
+					<span class="required">*</span> required fields
+				</div>
+				
+			</ice:panelGroup>
+
+					
+			<div class="actionButtons">
+				<ice:commandButton id="save" value="Save" action="#{roundHome.persist}"
+					disabled="#{!roundHome.wired}" rendered="#{!roundHome.managed and roundHome.inputMode eq 'Add'}"/>  						   
+				<ice:commandButton id="update" value="Save" action="#{roundHome.update}"
+					rendered="#{roundHome.managed and roundHome.inputMode eq 'Edit'}" />		 
+				<h:commandButton id="delete" value="Delete" action="#{roundHome.remove}"
+					immediate="true" rendered="#{roundHome.managed}"/>
+						
+				<h:commandButton id="revert" value="Discard changes" 
+				      propagation="end"    action="#{roundHome.revert}"
+					immediate="true" rendered="#{roundHome.managed}"/>
+
+				<s:button id="cancel" value="Cancel" propagation="end"
+					view="/myScoreCard.xhtml" rendered="#{!roundHome.managed}"/>
+
+			</div>
+
+		</ice:form>
+
+
+    <ice:panelGroup id="scorecardPanelGroupId" styleClass="formBorderHighlight">
+	  <ice:form id="ScorecardFormId"> 	
+	     <h3>Scorecard</h3>  
+			     <ice:panelGroup id="includedScorecardPageId">
+		    	   <ui:include src="./scorecard.xhtml"/>
+			     </ice:panelGroup>
+		</ice:form>  
+      </ice:panelGroup>
+	</ui:define>
+
+</ui:composition>

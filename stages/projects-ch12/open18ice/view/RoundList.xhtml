@@ -1,0 +1,243 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"  
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+	
+		<h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+		
+		<ice:form id="roundSearchForm" styleClass="edit">
+
+            <ice:panelCollapsible id="roundSearchGroupPanel" expanded="true" >
+              <f:facet name="header">
+                <ice:panelGroup id="panelSearchUtilityId" >
+                    <ice:outputText id="linkHeader"
+                            value="Search Utility Panel"/>
+                </ice:panelGroup>
+              </f:facet>                               
+  
+
+			  <ice:panelGroup id="roundSearchGroup" styleClass="formBorderHighlight">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="iceDatTblColHdr2">Round Search</td>
+					</tr>
+				</table>	
+			    <ice:panelGroup id="searchPanelInfoId" >
+				   <ui:decorate template="layout/hint.xhtml">
+				   	<ui:param name="id" value="searchPanelTooltip"/>
+					<ui:param name="headerText" value="Search Utility Panel Hint"/>
+		               	<ice:outputText value="Click on header to open and close Search Utility Panel"/>
+		                <p>No search button is needed!  Each input component uses partialSubmit for automatic ajax submit. 
+		                Just hit enter or tab out of the component.</p>
+       		            <p>Hover over the <b> info icon</b> below 
+			   			for helpful hints on data pagination.</p>
+					</ui:decorate>
+					<s:decorate id="firstNameField" template="layout/display.xhtml">
+						<ui:define name="label">First Name</ui:define>
+						<ice:inputText id="firstName" value="#{roundExample.golfer.firstName}" partialSubmit="true"/>
+					</s:decorate>
+		
+					<s:decorate id="lastNameField" template="layout/display.xhtml">
+						<ui:define name="label">Last name</ui:define>
+						<ice:inputText id="lastName" value="#{roundExample.golfer.lastName}" partialSubmit="true"/>
+					</s:decorate>
+					<s:decorate id="dateField" template="layout/display.xhtml">
+						<ui:define name="label">Date</ui:define>
+							<ice:selectInputDate id="dateId" value="#{roundExample.date}"
+							  renderAsPopup="true"/>
+					</s:decorate>	
+		
+					<s:decorate id="totalScoreField" template="layout/display.xhtml">
+						<ui:define name="label">Total score</ui:define>
+						<ice:inputText value="#{roundExample.totalScore}" size="3" partialSubmit="true"/>
+					</s:decorate>
+		
+					<s:decorate id="teeSetField" template="layout/display.xhtml">
+						<ui:define name="label">Tee Set (color)</ui:define>
+						<ice:inputText id="tee" value="#{roundExample.teeSet.color}" partialSubmit="true"/>
+					</s:decorate>
+		
+					<s:decorate id="weatherField" template="layout/display.xhtml">
+						<ui:define name="label">Weather</ui:define>
+						<ice:selectOneListbox id="weather" value="#{roundExample.weather}" size="5" partialSubmit="true">
+							<f:selectItem itemValue="Sunny"/>
+							<f:selectItem itemValue="Mostly Sunny"/>
+							<f:selectItem itemValue="Partly Cloudy"/>
+							<f:selectItem itemValue="Mostly Cloudy"/>
+							<f:selectItem itemValue="Cloudy"/>
+							<f:selectItem itemValue="Fair"/>
+							<f:selectItem itemValue="Scattered Showers"/>
+							<f:selectItem itemValue="Scattered T-Storms"/>
+							<f:selectItem itemValue="Showers"/>
+							<f:selectItem itemValue="Rain"/>
+							<f:selectItem itemValue="T-Storms"/>
+						</ice:selectOneListbox>
+					</s:decorate>
+				</ice:panelGroup>
+
+			 </ice:panelGroup>
+ 		  </ice:panelCollapsible>
+		</ice:form>
+		
+		<ice:panelGroup styleClass="formBorderHighlight">
+	
+		   			  
+		<div class="results" id="roundListResults">
+	     <ice:panelGrid columns="3" >
+	       <ice:panelGroup style="float:left; width=100px;">
+	       	<h2>Round Search Results</h2>
+	       </ice:panelGroup>
+		   <ui:decorate template="layout/hint.xhtml">
+		   	<ui:param name="id" value="searchResultsTooltip"/>
+			<ui:param name="headerText" value="Data Paginator Hint"/>
+			<ui:param name="float" value="left"/>
+			<p>There are currently #{roundList.roundCount} values in this table. The roundList maxSize is currently set to 50. With searching and sorting, 50 is probably sufficient. Modify roundList.ejbql and add actionListener to DataPaginator to retrieve data in bundles.</p>
+		   </ui:decorate>		   		
+
+		</ice:panelGrid>
+		    <ice:form style="clear:both;">
+				<h:outputText value="No rounds found." rendered="#{empty roundList.resultList}"/>
+				   
+				<ice:dataTable id="roundList" var="_round" 
+					        value="#{roundList.resultList}" 
+					        rendered="#{not empty roundList.resultList}"
+					        rows="10" 
+					        sortColumn="#{roundList.sortColumn}"
+					        sortAscending="#{roundList.descending}"
+					        resizable="true" columnClasses="allCols">
+
+					<ice:column id="idColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.id" arrow="true">
+								<ice:outputText value="Id"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						#{_round.id}
+					</ice:column>
+					<ice:column id="golferColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="golfer.firstName" arrow="true">
+								<ice:outputText value="Name"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						#{_round.golfer.name}
+					</ice:column>
+					<ice:column id="dateColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.date" arrow="true">
+								<ice:outputText value="Date"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						<h:outputText value="#{_round.date}">
+							<s:convertDateTime type="date" />
+						</h:outputText>
+					</ice:column>
+					<ice:column id="courseColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.teeSet.course.name" arrow="true">
+								<ice:outputText value="CourseName"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						#{_round.teeSet.course.name}
+					</ice:column>
+					<ice:column id="teeSetColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.teeSet.color" arrow="true">
+								<ice:outputText value="TeeSet"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						<div title="#{_round.teeSet.color}" class="teeMarker" style="background-color: #{_round.teeSet.color};" />
+					</ice:column>
+					<ice:column id="totalScoreColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.totalScore" arrow="true">
+								<ice:outputText value="TotalScore"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						#{_round.totalScore}
+					</ice:column>
+					<ice:column id="weatherColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.weather" arrow="true">
+								<ice:outputText value="Weather"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						#{_round.weather}
+					</ice:column>
+<ui:remove>	they can't select anyone else's to do anything with. If time use panelToolTip to 
+           show the score for each hole			
+					<ice:column id="actionColumn">
+						<f:facet name="header">Action</f:facet>
+						<s:link id="round" view="/#{empty from ? 'Round' : from}.xhtml" 
+							value="Select">
+							<f:param name="roundId" value="#{_round.id}"/>
+						</s:link>
+					</ice:column>
+</ui:remove>					
+			   </ice:dataTable>
+             <center>
+		   <ice:panelGroup styleClass="clearer">             
+             
+					<ice:dataPaginator id="dataScroll_1" for="roundList"
+					                   paginatorMaxPages="5" rendered="#{not empty roundList.resultList}"
+										vertical="false" fastStep="3" paginator="true">
+							<f:facet name="first">
+								<ice:graphicImage id="firstpage_1"
+											url="./xmlhttp/css/rime/css-images/arrow-first.gif"
+											style="border:none;" title="firstpage" />
+							</f:facet>
+							<f:facet name="last">
+								<ice:graphicImage id="lastpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-last.gif"
+										style="border:none;" title="lastpage" />
+							</f:facet>
+							<f:facet name="previous">
+								<ice:graphicImage id="previouspage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-previous.gif"
+										style="border:none;" title="previouspage" />
+							</f:facet>
+							<f:facet name="next">
+								<ice:graphicImage id="nextpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-next.gif"
+										style="border:none;" title="nextpage" />
+							</f:facet>
+							<f:facet name="fastforward">
+								<ice:graphicImage id="fastforward_1"
+										url="./xmlhttp/css/rime/css-images/arrow-ff.gif"
+										style="border:none;" title="fastforward" />
+							</f:facet>
+							<f:facet name="fastrewind">
+								<ice:graphicImage id="fastrewind_1"
+										url="./xmlhttp/css/rime/css-images/arrow-fr.gif"
+										style="border:none;" title="fastbackward" />
+							</f:facet>
+					</ice:dataPaginator>
+						  	
+	          </ice:panelGroup> 
+	          </center>
+		   <br/>			  
+
+	     </ice:form> 
+	  </div>
+	</ice:panelGroup>
+		
+
+	</ui:define>
+
+</ui:composition>
+

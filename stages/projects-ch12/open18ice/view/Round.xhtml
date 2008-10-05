@@ -1,0 +1,59 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"   
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+		
+		<h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+		
+		<ice:panelGroup id="round" styleClass="formBorderHighlight">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="iceDatTblColHdr2">Round</td>
+				</tr>
+			</table>
+
+			<s:decorate id="golfer" template="layout/display.xhtml">
+				<ui:define name="label">Golfer</ui:define>
+				#{round.golfer.name}
+			</s:decorate>
+
+			<s:decorate id="name" template="layout/display.xhtml">
+				<ui:define name="label">Date</ui:define>
+				<h:outputText value="#{round.date}">
+					<s:convertDateTime type="date" />
+				</h:outputText>
+			</s:decorate>
+
+			<s:decorate id="totalScore" template="layout/display.xhtml">
+				<ui:define name="label">Total score</ui:define>
+				#{round.totalScore}
+			</s:decorate>
+
+			<s:decorate id="weather" template="layout/display.xhtml">
+				<ui:define name="label">Weather</ui:define>
+				#{round.weather}
+			</s:decorate>
+
+			<s:decorate id="notes" template="layout/display.xhtml">
+				<ui:define name="label">Notes</ui:define>
+				#{round.notes}
+			</s:decorate>
+
+			<div style="clear:both"/>
+		</ice:panelGroup>
+		
+		<div class="actionButtons">			
+			<s:button id="edit" view="/RoundEdit.xhtml" value="Edit"/>
+			<s:button id="done" view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml" value="Done"/>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

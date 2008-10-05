@@ -1,0 +1,176 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		        xmlns:ice="http://www.icesoft.com/icefaces/component"  
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+    
+    <ice:form id="golferSearchForm" styleClass="edit">
+      <ice:panelGroup id="golferSearchGroup" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">Golfer Search</td>
+              </tr>
+         </table>	
+         <ice:panelGroup id="golferSearchFields" styleClass="edit">
+			<ui:decorate template="layout/hint.xhtml">
+				<ui:param name="id" value="searchPanelTooltip"/>
+				<ui:param name="headerText" value="Search Utility Panel Hint"/>
+				<p>No search button is needed!  Each input component uses partialSubmit for automatic ajax submit. 
+				Just hit enter or tab out of the component.</p>
+				<p>The <code>s:link</code> use on the headers with Seam mechanisms and PAGE context are left intact
+				to show that regular Seam sorting using full page refreshes can also be used.  To see the
+				<code>ice:commandSortHeader</code> way to do sorting see RoundList or My Score Card</p>
+			</ui:decorate>
+            <s:decorate id="idField" template="layout/display.xhtml">
+                <ui:define name="label">Id</ui:define>
+                <ice:inputText id="id" 
+                          value="#{golferExample.id}"
+				  partialSubmit="true"/>
+            </s:decorate>
+		
+            <s:decorate id="lastNameField" template="layout/display.xhtml">
+                <ui:define name="label">Last Name</ui:define>
+                <ice:inputText id="lastName" 
+                          value="#{golferExample.lastName}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="firstNameField" template="layout/display.xhtml">
+                <ui:define name="label">First Name</ui:define>
+                <ice:inputText id="firstName" 
+                          value="#{golferExample.firstName}"
+				  partialSubmit="true"/>
+            </s:decorate>
+   
+	    </ice:panelGroup>
+        
+      </ice:panelGroup> 
+    </ice:form>
+    
+    <ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>Golfer Search Results</h3>
+    <ice:form id="golferResultsForm">
+      <div class="searchResults" id="listgolferResults">
+ 
+      <ice:outputText value="The golfer search returned no results." 
+               rendered="#{empty golferList.resultList}"/>
+               
+      <ice:dataTable id="golferListTableId" 
+                  var="_golfer"
+                value="#{golferList.resultList}" 
+            resizable="true"
+            rows="10"
+        columnClasses="allCols"
+             rendered="#{not empty golferList.resultList}">
+        <ice:column id="listidId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listidLinkId"
+                             value="Id #{golferList.order=='id asc' ? messages.down : ( golferList.order=='id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{golferList.order=='id asc' ? 'id desc' : 'id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{_golfer.id}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listlastNameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listlastNameLinkId"
+                             value="Last Name #{golferList.order=='lastName asc' ? messages.down : ( golferList.order=='lastName desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{golferList.order=='lastName asc' ? 'lastName desc' : 'lastName asc'}"/>
+                </s:link>
+            </f:facet>
+            #{_golfer.lastName}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listfirstNameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listfirstNameLinkId"
+                             value="First Name #{golferList.order=='firstName asc' ? messages.down : ( golferList.order=='firstName desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{golferList.order=='firstName asc' ? 'firstName desc' : 'firstName asc'}"/>
+                </s:link>
+            </f:facet>
+            #{_golfer.firstName}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listColumnGolferId">
+            <f:facet name="header">View Profile</f:facet>
+            <s:link view="/profile.xhtml" 
+                   value="View Profile" 
+                      id="listgolferLinkId">
+                <f:param name="golferId" 
+                        value="#{_golfer.id}"/>
+            </s:link>
+        </ice:column>
+<ui:remove>        
+        <ice:column id="selectGolferId">
+            <f:facet name="header">Select</f:facet>
+            <s:link view="/Golfer.xhtml"
+                   value="Edit/Delete Golfer"
+                      id="delGolferId">
+                <f:param name="golferId"
+                        value="#{_golfer.id}"/> 
+            </s:link>
+        </ice:column>
+</ui:remove>        
+      </ice:dataTable>
+
+     </div>
+
+
+     <center>
+		   <ice:panelGroup styleClass="clearer">             
+				<ice:dataPaginator id="dataScroll_1" for="golferListTableId"
+					                   paginatorMaxPages="5" rendered="#{golferList.resultList.size gt 10}"
+										vertical="false" fastStep="3" paginator="true">
+							<f:facet name="first">
+								<ice:graphicImage id="firstpage_1"
+											url="./xmlhttp/css/rime/css-images/arrow-first.gif"
+											style="border:none;" title="firstpage" />
+							</f:facet>
+							<f:facet name="last">
+								<ice:graphicImage id="lastpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-last.gif"
+										style="border:none;" title="lastpage" />
+							</f:facet>
+							<f:facet name="previous">
+								<ice:graphicImage id="previouspage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-previous.gif"
+										style="border:none;" title="previouspage" />
+							</f:facet>
+							<f:facet name="next">
+								<ice:graphicImage id="nextpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-next.gif"
+										style="border:none;" title="nextpage" />
+							</f:facet>
+							<f:facet name="fastforward">
+								<ice:graphicImage id="fastforward_1"
+										url="./xmlhttp/css/rime/css-images/arrow-ff.gif"
+										style="border:none;" title="fastforward" />
+							</f:facet>
+							<f:facet name="fastrewind">
+								<ice:graphicImage id="fastrewind_1"
+										url="./xmlhttp/css/rime/css-images/arrow-fr.gif"
+										style="border:none;" title="fastbackward" />
+							</f:facet>
+					</ice:dataPaginator>
+						  	
+	          </ice:panelGroup> 
+	  </center>
+    </ice:form>
+       
+  </ice:panelGroup>
+</ui:define>
+
+</ui:composition>
+

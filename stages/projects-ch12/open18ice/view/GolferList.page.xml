@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd">
+   <param name="firstResult" value="#{golferList.firstResult}"/>
+   <param name="order" value="#{golferList.order}"/>
+   <!-- If you bind page parameters directly to the properties of a component,
+   then the Hibernate Validator rules are going to be applied to the
+   properties, which is not what you want in the case of a search. -->
+   <!--
+   <param name="lastName" value="#{golferExample.lastName}"/>
+   <param name="firstName" value="#{golferExample.firstName}"/>
+   -->
+</page>

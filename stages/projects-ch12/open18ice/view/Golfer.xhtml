@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    template="layout/template.xhtml">
+<ui:define name="body">
+    
+    <h:messages id="messages" globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+    
+    <h:form id="golferForm">
+
+        <ice:panelGroup>
+            <f:facet name="header">Golfer</f:facet>
+
+            <s:decorate id="firstNameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">firstName</ui:define>
+                <h:inputText id="name" required="true"
+                             value="#{golferHome.instance.firstName}"/>
+            </s:decorate>
+    
+            <s:decorate id="lastNameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">lastName</ui:define>
+                <h:inputText id="name" required="true"
+                             value="#{golferHome.instance.lastName}"/>
+            </s:decorate>
+            
+            <div style="clear:both"/>
+            
+        </ice:panelGroup>
+
+        <div class="actionButtons">
+            <h:commandButton id="save" 
+                          value="Save" 
+                         action="#{golferHome.persist}"
+                       rendered="#{!golferHome.managed}"/>                   
+            <h:commandButton id="update" 
+                          value="Save" 
+                         action="#{golferHome.update}"
+                       rendered="#{golferHome.managed}"/>                  
+            <h:commandButton id="delete" 
+                          value="Delete" 
+                         action="#{golferHome.remove}"
+                      immediate="true"
+                       rendered="#{golferHome.managed}"/>
+            <s:button propagation="end" 
+                               id="done" 
+                            value="Done"
+                             view="/GolferList.xhtml"/>
+        </div>
+        
+    </h:form>
+    
+</ui:define>
+
+</ui:composition>
+
