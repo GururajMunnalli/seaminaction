@@ -124,7 +124,7 @@ You run each command by prefix it with ant, as shown here:
 
 {{{
 ant get-seam
-}}
+}}}
 
 --
 
