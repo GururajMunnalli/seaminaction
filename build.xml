@@ -130,12 +130,16 @@ in the build.properties file.
 		<replace file="${seam-gen.dir}/build.xml" token="1.7.0" value="1.7.1"/>
 	</target>
 
-	<target name="rehome" description="Replace any absolute paths with the path specified in the -Dhome=XXX argument">
+	<target name="rehome" description="Replace any absolute paths with the location of this build file">
+		<property name="new.home" value="${basedir}"/>
+		<!--
 		<fail unless="home" message="Please specify a new home using -Dhome=C:/projects/EXAMPLE_CODE_FOLDER_NAME"/>
+		-->
 		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
 			<isset property="old.home"/>
 		</condition>
-		<replace dir="${stages.dir}" token="${replacement.token}" value="${home}">
+		<echo>Replacing references to ${replacement.token} with ${new.home}</echo>
+		<replace dir="${stages.dir}" token="${replacement.token}" value="${new.home}">
 			<patternset id="contains.filesystem.path">
 				<include name="**/*.properties"/>
 				<include name="**/*-ds.xml"/>
@@ -145,7 +149,7 @@ in the build.properties file.
 			</patternset>
 		</replace>
 		<!--
-		<replace dir="${prototype.dir}" token="${replacement.token}" value="${home}">
+		<replace dir="${prototype.dir}" token="${replacement.token}" value="${new.home}">
 			<patternset refid="contains.filesystem.path"/>
 		</replace>
 		-->
@@ -368,6 +372,8 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 			</then>
 		</if>
 	</target>
+
+	<target name="quickstart" depends="get-seam,get-jboss-as,build-db,update-project" description="Perform all the initial tasks to get started (run rehome first)"/>
 
 	<target name="inflate-project" depends="update-project" description="An alias for update-project"/>
 
