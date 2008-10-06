@@ -159,13 +159,15 @@ The files in each project that you need to update are:
  * resources/`*`-ds.xml
  * resources/glassfish-datasource.xml
 
-You update these paths across the entire example code base by running the
-following command, supply the location where the Seam in Action sample code
-resides on your harddrive in the -Dhome setting:
+You can update these files across the entire source tree using the location of 
+the Seam in Action source code (the current directory) by running the command:
 
-{{{
-ant rehome -Dhome=C:/projects/seaminaction
-}}}
+   ant rehome
+
+You can also supply the location where the Seam in Action sample code
+resides on your harddrive explicitly using the the -Dnew.home setting:
+
+   ant rehome -Dnew.home=C:/seaminaction
 
 Please use forward slashes, even on Windows, to avoid backslash gymnastics.
 
