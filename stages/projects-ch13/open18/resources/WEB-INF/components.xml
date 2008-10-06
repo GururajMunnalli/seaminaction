@@ -46,6 +46,8 @@
    <persistence:entity-manager-factory name="open18EntityManagerFactory" 
                       persistence-unit-name="open18"/>
 
+   <factory name="hibernateSession" value="#{entityManager.delegate}" auto-create="true"/>
+
    <pdf:document-store use-extensions="true" error-page="/missingDoc.seam"/>
 
    <i18n:locale-selector cookie-enabled="true"/>
