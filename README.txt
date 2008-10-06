@@ -88,8 +88,8 @@ The files in each project that you need to update are:
    resources/*-ds.xml
    resources/glassfish-datasource.xml
 
-You update these files across the entire source tree using the location of the
-Seam in Action source code (the current directory) by running the command:
+You can update these files across the entire source tree using the location of
+the Seam in Action source code (the current directory) by running the command:
 
    ant rehome
 
