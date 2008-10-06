@@ -28,11 +28,12 @@ To discover which tasks you can execute, start out by typing:
 
 The commands of most interest are shown here:
 
+   rehome           Replace any absolute paths with the current directory (or -Dnew.home=XXX argument)
    get-seam         Downloads Seam and extracts it to the software directory (i.e., opt)
    get-jboss-as     Downloads JBoss AS and extracts it to the software directory (i.e., opt)
-   rehome           Replace any absolute paths with the path specified in the -Dhome=XXX argument
-   update-project   Update the libraries for the selected project (menu provided)
    build-db         Build and seed the initial H2 database for Open 18
+   update-project   Update the libraries for the selected project (menu provided)
+   quickstart       Executes get-seam, get-jboss-as, build-db, and update-project
 
 You run each command by prefix it with ant, as shown here:
 
@@ -87,11 +88,15 @@ The files in each project that you need to update are:
    resources/*-ds.xml
    resources/glassfish-datasource.xml
 
-You update these paths across the entire example code base by running the
-following command, supply the location where the Seam in Action sample code
-resides on your harddrive in the -Dhome setting:
+You update these files across the entire source tree using the location of the
+Seam in Action source code (the current directory) by running the command:
 
-   ant rehome -Dhome=C:/projects/seaminaction
+   ant rehome
+
+You can also supply the location where the Seam in Action sample code
+resides on your harddrive explicitly using the the -Dnew.home setting:
+
+   ant rehome -Dnew.home=C:/seaminaction
 
 Please use forward slashes, even on Windows, to avoid backslash gymnastics.
 
