@@ -36,16 +36,17 @@
         <fileset refid="lib" />
     </path>
 
-    <taskdef name ="groovyc"
-        classname ="org.codehaus.groovy.ant.Groovyc"
-        classpathref="build.classpath"/> <!-- really only the groovy jar is necessary -->
-
     <target name="init" description="Initialize the build">
+
+        <taskdef name ="groovyc"
+            classname ="org.codehaus.groovy.ant.Groovyc"
+            classpathref="build.classpath"/> <!-- really only the groovy jar is necessary -->
+
         <mkdir dir="${classes.model.dir}" />
         <mkdir dir="${classes.action.dir}" />
         <mkdir dir="${dist.dir}" />
         <!-- if a .groovy file is in model or action, set groovy.present -->
-        <available property="groovy.present" value="true" file="">
+        <available property="groovy.present" value="true" file="" searchparents="true">
           <filepath>
             <fileset dir="${src.action.dir}">
               <include name="**/*.groovy"/>
@@ -256,7 +257,7 @@
         <delete dir="${war.dir}"/>
         <delete dir="${basedir}/test-report"/>
         <delete dir="${basedir}/test-output"/>
-        <delete failonerror="no">
+        <delete failonerror="no" includeemptydirs="true">
             <fileset dir="${test.dir}">
                 <exclude name="**/*.class" if="eclipse.running"/>
             </fileset>
@@ -302,6 +303,7 @@
                 <exclude name="import*.sql"/>
                 <exclude name="${project.name}-*-ds.xml"/>
             </fileset>
+            <fileset dir="${basedir}/view"/> <!-- dallen: added view directory since tests are page-oriented -->
         </copy>
         <copy tofile="${test.dir}/META-INF/persistence.xml" 
               file="${basedir}/resources/META-INF/persistence-test-war.xml"
