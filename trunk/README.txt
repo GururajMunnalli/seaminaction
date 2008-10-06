@@ -15,8 +15,8 @@ Here are the tasks that you will likely need to do to get started:
  - Download Seam and JBoss AS
  - Add the required libraries to the example projects
  - Replace references to /home/twoputt with your home folder
- - Seed the H2 database for Open 18 
- - Launch the H2 administration console 
+ - Seed the H2 database for Open 18 (lauch the H2 admin console to browse)
+ - Update a project stage and run it
 
 You can accomplish all of these tasks using the Ant build script in this
 folder. I have even provided the ant distribution so that you don't need to
@@ -56,28 +56,8 @@ jboss-4.2.2.GA. I have renamed it to better distinguish it from Seam,
 which is also a JBoss project.
 ** IMPORTANT **
 
-The stages/ directory contains a snapshot of the projects at the end of each
-chapter (e.g., projects-ch04), or in the case of part 1 and part 3, at the end
-of the part (e.g., projects-part1). Development is progressive, so the projects
-accumulate features as the part and chapter numbers increase. If you want to
-see the application in its entirety, then use projects-ch13.
-
-Each projects-chXX or projects-partX folder contains a file named
-chapter-developments.txt or part-developments.txt, respectively, which
-describes what setup was done and what changes were made to the application in
-that chapter or part.
-
-Before you can use these applications, you must "inflate" them with the jar
-files from the Seam distribution (this is done to keep the source code download
-size to a minimum). The h2.jar will also be copied to the JBoss AS installation
-during this process, though the ./seam setup command also performs this task.
-
-To inflate (or update) a project, ensure that you have downloaded and extracted
-Seam, then run:
-
-   ant update-project
-
-You will be provided a menu of projects and you can choose which one to update.
+Changing the home directory
+---------------------------
 
 Several configuration files refer to the home directory /home/twoputt. You will
 need to update those references in order to deploy the application property.
@@ -100,8 +80,44 @@ resides on your harddrive explicitly using the the -Dnew.home setting:
 
 Please use forward slashes, even on Windows, to avoid backslash gymnastics.
 
-Seed database for Open18
-------------------------
+Running a project stage
+-----------------------
+
+The stages/ directory contains a snapshot of the projects at the end of each
+chapter (e.g., projects-ch04), or in the case of part 1 and part 3, at the end
+of the part (e.g., projects-part1). Development is progressive, so the projects
+accumulate features as the part and chapter numbers increase. If you want to
+see the application in its entirety, then use projects-ch13.
+
+Each projects-chXX or projects-partX folder contains a file named
+chapter-developments.txt or part-developments.txt, respectively, which
+describes what setup was done and what changes were made to the application in
+that chapter or part.
+
+Before you can use these applications, you must "inflate" them with the jar
+files from the Seam distribution (this is done to keep the source code download
+size to a minimum). The h2.jar will also be copied to the JBoss AS installation
+during this process, though the ./seam setup command also performs this task.
+
+To inflate (or update) a project, ensure that you have downloaded and extracted
+Seam, then run:
+
+   ant update-project
+
+You will be provided a menu of projects and you can choose which one to update.
+Assuming that you started with the command rehome followed by quickstart you
+can deploy the selected project with the following command:
+
+  ant -f stages/projects-ch13/open18/build.xml explode
+
+You then start JBoss AS by entering the opt/jboss-as-4.2.2.GA folder and running
+one of the following two commands:
+
+  run (Windows)
+  ./run.sh (Unix/Linux/Mac)
+
+Seeding the database for Open18
+-------------------------------
 
 Chapter 2 mentions that the DBA provides you with an H2 database that will be
 used to create the course directory module of the Open18 application. Those
@@ -125,8 +141,10 @@ If you want to create the database from scratch, run the following command:
 This target will execute the following two commands to initialize the database
 and load the seed data:
 
-   java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
-   java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql
+   java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 \
+      -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
+   java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 \
+      -user open18 -password tiger -script etc/schema/open18-seed-data.sql
 
 Configuring JBoss AS
 --------------------
