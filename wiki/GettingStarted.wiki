@@ -130,7 +130,7 @@ ant get-seam
 *IMPORTANT* Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not jboss-4.2.2.GA. I have renamed it to better distinguish it from Seam, which is also a JBoss project.
 ----
 
-=== Rehome ===
+=== Changing the home directory ===
 
 Several configuration files refer to the home directory /home/twoputt. You will
 need to update those references in order to deploy the application property.
