@@ -33,6 +33,8 @@
 
    <persistence:entity-manager-factory name="open18EntityManagerFactory" 
                       persistence-unit-name="open18"/>
+
+   <factory name="hibernateSession" value="#{entityManager.delegate}" auto-create="true"/>
    
    <drools:rule-base name="securityRules">
       <drools:rule-files><value>/security.drl</value></drools:rule-files>
