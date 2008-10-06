@@ -30,6 +30,16 @@
         <param-name>com.sun.faces.disableVersionTracking</param-name>
         <param-value>true</param-value>
     </context-param>
+
+    <context-param>
+        <description>
+            If the view cannot be found in the session on a JSF postback, rebuild
+            the view again before executing the Restore View phase. This step
+            prevents "stale" public form pages. Enable this feature if you need it.
+        </description>
+        <param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
+        <param-value>false</param-value>
+    </context-param>
  
    <!-- Seam -->
     
