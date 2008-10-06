@@ -153,7 +153,7 @@ resides on your harddrive explicitly using the the -Dnew.home setting:
 
 Please use forward slashes, even on Windows, to avoid backslash gymnastics.
 
-=== Running project stage ===
+=== Running a project stage ===
 
 The stages/ directory contains a snapshot of the projects at the end of each chapter (e.g., projects-ch04), or in the case of part 1 and part 3, at the end of the part (e.g., projects-part1). Development is progressive, so the projects accumulate features as the part and chapter numbers increase. If you want to see the application in its entirety, then use projects-ch13.
 
