@@ -65,7 +65,7 @@
 						<s:link action="#{pooledTask.assignToCurrentActor}" 
 							taskInstance="#{_task}" value="Accept"/>
 						#{' or '}
-						<h:commandLink action="#{pooledTask.assign(assignment.actorId)}" value="Assign to">
+						<h:commandLink action="#{pooledTask.assign(assignment.actorId)}" value="Assign to:">
 							<f:param name="taskId" value="#{_task.id}"/>
 						</h:commandLink>
 						#{' '}
