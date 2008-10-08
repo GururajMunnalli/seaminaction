@@ -139,35 +139,24 @@ in the build.properties file.
 
 	<target name="rehome" description="Replace any absolute paths with the location of this build file">
 		<property name="new.home" value="${basedir.xplatform}"/>
-		<!--
-		<fail unless="home" message="Please specify a new home using -Dhome=C:/projects/EXAMPLE_CODE_FOLDER_NAME"/>
-		-->
 		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
 			<isset property="old.home"/>
 		</condition>
-		<if>
-			<not><equals arg1="${replacement.token}" arg2="${new.home}"/></not>
-			<then>
-				<echo>Replacing references to ${replacement.token} with ${new.home}</echo>
-				<replace dir="${stages.dir}" token="${replacement.token}" value="${new.home}">
-					<patternset id="contains.filesystem.path">
-						<include name="**/*.properties"/>
-						<include name="**/*-ds.xml"/>
-						<include name="**/*-datasource.xml"/>
-						<exclude name="**/exploded-archives/**"/>
-						<exclude name="**/test-build/**"/>
-					</patternset>
-				</replace>
-				<!--
-				<replace dir="${prototype.dir}" token="${replacement.token}" value="${new.home}">
-					<patternset refid="contains.filesystem.path"/>
-				</replace>
-				-->
-			</then>
-			<else>
-				<echo>All home directory references are up to date</echo>
-			</else>
-		</if>
+		<echo>Replacing references to ${replacement.token} with ${new.home}</echo>
+		<replace dir="${stages.dir}" token="${replacement.token}" value="${new.home}">
+			<patternset id="contains.filesystem.path">
+				<include name="**/*.properties"/>
+				<include name="**/*-ds.xml"/>
+				<include name="**/*-datasource.xml"/>
+				<exclude name="**/exploded-archives/**"/>
+				<exclude name="**/test-build/**"/>
+			</patternset>
+		</replace>
+		<!--
+		<replace dir="${prototype.dir}" token="${replacement.token}" value="${new.home}">
+			<patternset refid="contains.filesystem.path"/>
+		</replace>
+		-->
 	</target>
 
 	<target name="undeploy-all" description="Undeploy all projects from JBoss AS">
