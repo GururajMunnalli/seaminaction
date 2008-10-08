@@ -193,6 +193,15 @@ in the build.properties file.
 		<echo message="datasources: ${datasources}"/>
 	</target>
 
+	<target name="uninflate-all" description="Reverses the inflate process for all stages">
+		<delete includeemptydirs="true">
+			<fileset dir="${stages.dir}">
+				<include name="*/*/lib/**"/>
+				<include name="*/*/bootstrap/**"/>
+			</fileset>
+		</delete>
+	</target>
+
 	<target name="clean-all">
 		<antcall target="invoke-on-all">
 			<param name="target" value="clean"/>
@@ -377,7 +386,12 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 		</if>
 	</target>
 
-	<target name="quickstart" depends="get-seam,get-jboss-as,rehome,build-db,update-project" description="Perform all the initial tasks to get started (run rehome first)"/>
+	<target name="quickstart" depends="get-seam,get-jboss-as,rehome,build-db,update-project" description="Perform tasks to get started"/>
+
+	<!-- can't do this until we can fetch the bootstrap directory -->
+	<!--
+	<target name="quickstart-ivy" depends="get-jboss-as,rehome,build-db,ivyize-project" description="Perform tasks to get started without the Seam distribution"/>
+	-->
 
 	<target name="inflate-project" depends="update-project" description="An alias for update-project"/>
 
