@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
 <project name="seaminaction" default="help" basedir=".">
 
-	<property file="${basedir}/build.properties"/>
+	<!-- creates a path that uses forward slashes, which Java understands cross-platform -->
+	<pathconvert property="basedir.xplatform" targetos="unix">
+		<path location="${basedir}"/>
+	</pathconvert>
+
+	<property file="${basedir.xplatform}/build.properties"/>
 	<!--
 	<property file="${seam.home}/build.properties" prefix="seamgen"/>
 	-->
 
-	<property name="databases.dir" value="${basedir}/databases"/>
-	<property name="etc.dir" value="${basedir}/etc"/>
-	<property name="lib.dir" value="${basedir}/lib"/>
-	<property name="opt.dir" value="${basedir}/opt"/>
-	<property name="projects.dir" value="${basedir}/projects"/>
-	<property name="prototype.dir" value="${basedir}/prototype"/>
-	<property name="stages.dir" value="${basedir}/stages"/>
-	<property name="vault.dir" value="${basedir}/vault"/>
+	<property name="databases.dir" value="${basedir.xplatform}/databases"/>
+	<property name="etc.dir" value="${basedir.xplatform}/etc"/>
+	<property name="lib.dir" value="${basedir.xplatform}/lib"/>
+	<property name="opt.dir" value="${basedir.xplatform}/opt"/>
+	<property name="projects.dir" value="${basedir.xplatform}/projects"/>
+	<property name="prototype.dir" value="${basedir.xplatform}/prototype"/>
+	<property name="stages.dir" value="${basedir.xplatform}/stages"/>
+	<property name="vault.dir" value="${basedir.xplatform}/vault"/>
 
 	<property name="jboss-as.distname" value="jboss-as-${jboss-as.version}"/>
 	<property name="seam.distname" value="jboss-seam-${seam.version}"/>
@@ -133,28 +138,36 @@ in the build.properties file.
 	</target>
 
 	<target name="rehome" description="Replace any absolute paths with the location of this build file">
-		<property name="new.home" value="${basedir}"/>
+		<property name="new.home" value="${basedir.xplatform}"/>
 		<!--
 		<fail unless="home" message="Please specify a new home using -Dhome=C:/projects/EXAMPLE_CODE_FOLDER_NAME"/>
 		-->
 		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
 			<isset property="old.home"/>
 		</condition>
-		<echo>Replacing references to ${replacement.token} with ${new.home}</echo>
-		<replace dir="${stages.dir}" token="${replacement.token}" value="${new.home}">
-			<patternset id="contains.filesystem.path">
-				<include name="**/*.properties"/>
-				<include name="**/*-ds.xml"/>
-				<include name="**/*-datasource.xml"/>
-				<exclude name="**/exploded-archives/**"/>
-				<exclude name="**/test-build/**"/>
-			</patternset>
-		</replace>
-		<!--
-		<replace dir="${prototype.dir}" token="${replacement.token}" value="${new.home}">
-			<patternset refid="contains.filesystem.path"/>
-		</replace>
-		-->
+		<if>
+			<not><equals arg1="${replacement.token}" arg2="${new.home}"/></not>
+			<then>
+				<echo>Replacing references to ${replacement.token} with ${new.home}</echo>
+				<replace dir="${stages.dir}" token="${replacement.token}" value="${new.home}">
+					<patternset id="contains.filesystem.path">
+						<include name="**/*.properties"/>
+						<include name="**/*-ds.xml"/>
+						<include name="**/*-datasource.xml"/>
+						<exclude name="**/exploded-archives/**"/>
+						<exclude name="**/test-build/**"/>
+					</patternset>
+				</replace>
+				<!--
+				<replace dir="${prototype.dir}" token="${replacement.token}" value="${new.home}">
+					<patternset refid="contains.filesystem.path"/>
+				</replace>
+				-->
+			</then>
+			<else>
+				<echo>All home directory references are up to date</echo>
+			</else>
+		</if>
 	</target>
 
 	<target name="undeploy-all" description="Undeploy all projects from JBoss AS">
@@ -312,7 +325,7 @@ in the build.properties file.
 		<mkdir dir="dist"/>
 		<delete file="dist/seaminaction-${DSTAMP}.zip"/>
 		<zip zipfile="dist/seaminaction-${DSTAMP}.zip">
-			<zipfileset prefix="seaminaction" dir="${basedir}">
+			<zipfileset prefix="seaminaction" dir="${basedir.xplatform}">
 				<include name="ant"/>
 				<include name="ant.bat"/>
 				<include name="build.xml"/>
@@ -375,7 +388,7 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 		</if>
 	</target>
 
-	<target name="quickstart" depends="get-seam,get-jboss-as,build-db,update-project" description="Perform all the initial tasks to get started (run rehome first)"/>
+	<target name="quickstart" depends="get-seam,get-jboss-as,rehome,build-db,update-project" description="Perform all the initial tasks to get started (run rehome first)"/>
 
 	<target name="inflate-project" depends="update-project" description="An alias for update-project"/>
 
