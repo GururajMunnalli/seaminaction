@@ -4,16 +4,27 @@ import org.open18.model.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Observer;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.framework.EntityHome;
+import org.jboss.seam.log.Log;
+import org.jboss.seam.ScopeType;
 
 @Name("teeSetHome")
+@Scope(ScopeType.CONVERSATION)
 public class TeeSetHome extends EntityHome<TeeSet> {
-
+	
+	@Logger Log log;
+	
+	
 	@In(create = true)
 	CourseHome courseHome;
 
+//	@Observer("settingTeeSet")
 	public void setTeeSetId(Long id) {
+		log.info("setting id to "+id);
 		setId(id);
 	}
 
@@ -23,6 +34,7 @@ public class TeeSetHome extends EntityHome<TeeSet> {
 
 	@Override
 	protected TeeSet createInstance() {
+		log.info("creating new instance of TeeSetHome");
 		TeeSet teeSet = new TeeSet();
 		return teeSet;
 	}

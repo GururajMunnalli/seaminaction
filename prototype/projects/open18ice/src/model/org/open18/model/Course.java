@@ -1,6 +1,6 @@
 package org.open18.model;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -33,17 +34,14 @@ public class Course implements java.io.Serializable {
 	private Integer yearBuilt;
 	private int numHoles;
 	private Long signatureHole;
-	private Set<TeeSet> teeSets = new HashSet<TeeSet>(0);
-	private Set<Hole> holes = new HashSet<Hole>(0);
+	private Set<TeeSet> teeSets = new LinkedHashSet<TeeSet>(0);
+	private Set<Hole> holes = new LinkedHashSet<Hole>(0);
 
 	public Course() {
 	}
 
-	public Course(Facility facility, String fairways, String greens,
-			int numHoles) {
+	public Course(Facility facility, int numHoles) {
 		this.facility = facility;
-		this.fairways = fairways;
-		this.greens = greens;
 		this.numHoles = numHoles;
 	}
 	public Course(Facility facility, String name, String description,
@@ -113,8 +111,7 @@ public class Course implements java.io.Serializable {
 		this.designer = designer;
 	}
 
-	@Column(name = "FAIRWAYS", nullable = false, length = 15)
-	@NotNull
+	@Column(name = "FAIRWAYS", length = 15)
 	@Length(max = 15)
 	public String getFairways() {
 		return this.fairways;
@@ -124,8 +121,7 @@ public class Course implements java.io.Serializable {
 		this.fairways = fairways;
 	}
 
-	@Column(name = "GREENS", nullable = false, length = 15)
-	@NotNull
+	@Column(name = "GREENS", length = 15)
 	@Length(max = 15)
 	public String getGreens() {
 		return this.greens;
@@ -163,6 +159,7 @@ public class Course implements java.io.Serializable {
 		this.signatureHole = signatureHole;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
+	@OrderBy("position asc")
 	public Set<TeeSet> getTeeSets() {
 		return this.teeSets;
 	}
@@ -171,6 +168,7 @@ public class Course implements java.io.Serializable {
 		this.teeSets = teeSets;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
+	@OrderBy("number asc")
 	public Set<Hole> getHoles() {
 		return this.holes;
 	}
