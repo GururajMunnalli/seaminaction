@@ -38,7 +38,6 @@ public class Authenticator {
             Member m = (Member) entityManager.createQuery(
                 "select distinct m from Member m left join fetch m.roles where m.username = ?1")
                 .setParameter(1, identity.getUsername()).getSingleResult();
-
             if (!validatePassword(identity.getPassword(), m)) {
                 return false;
             }

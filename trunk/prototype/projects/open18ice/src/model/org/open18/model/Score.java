@@ -72,7 +72,7 @@ public class Score implements java.io.Serializable {
     }
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "HOLE_ID", nullable = false)
     public Hole getHole() {
         return this.hole;

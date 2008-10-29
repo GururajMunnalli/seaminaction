@@ -5,7 +5,10 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.DATE;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,9 +28,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
-import org.hibernate.validator.Past;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Role;
+
 
 @Entity
 @Table(name = "ROUND")
@@ -50,6 +51,7 @@ public class Round implements java.io.Serializable {
 	private List<Course> courseFilter;
 	private Integer lowScoreFilter;
 	private Integer highScoreFilter;
+	private transient boolean selected=false;
 
 	public Round() {}
 
@@ -124,6 +126,11 @@ public class Round implements java.io.Serializable {
 	public void setScores(Set<Score> scores) {
 		this.scores = scores;
 	}
+
+	public void setScores(List<Score> scores){
+		this.scores = new HashSet(scores);
+	}
+
 
 	@NotNull
 	@ManyToOne(fetch = LAZY)
@@ -257,5 +264,14 @@ public class Round implements java.io.Serializable {
 		}
 
 		return total;
+	}
+	
+	public void setSelected(boolean selected){
+		System.out.println("setting Selected for round="+this.getId()+" to:"+selected);
+		this.selected = selected;
+	}
+	@Transient
+	public boolean getSelected(){
+		return this.selected;
 	}
 }
