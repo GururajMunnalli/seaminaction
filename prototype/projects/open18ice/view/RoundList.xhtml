@@ -13,7 +13,16 @@
 	
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
 		
-		<h:form id="roundSearchForm" styleClass="edit">
+		<ice:form id="roundSearchForm" styleClass="edit">
+
+            <ice:panelCollapsible id="roundSearchGroupPanel" expanded="true" >
+              <f:facet name="header">
+                <ice:panelGroup id="panelSearchUtilityId" >
+                    <ice:outputText id="linkHeader"
+                            value="Search Utility Panel"/>
+                </ice:panelGroup>
+              </f:facet>                               
+  
 		
 			<ice:panelGroup id="roundSearchGroup" styleClass="formBorderHighlight">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -21,14 +30,29 @@
 						<td class="iceDatTblColHdr2">Round Search</td>
 					</tr>
 				</table>	
-	 
-				<ui:remove>
-				<s:decorate id="selfFilterField" template="layout/display.xhtml" rendered="#{currentGolfer ne null}">
-					<ui:define name="label">My rounds only</ui:define>
-					<h:selectBooleanCheckbox id="selfFilter" value="#{roundExample.golfer.selfFilter}"/>
-				</s:decorate>
-				</ui:remove>
-	
+			    <ice:panelGroup id="searchPanelInfoId" >
+			       <ice:panelGroup id="tipsId" panelTooltip="searchPanelToolTip">
+					 <ice:graphicImage url="img/icon_info.gif" style="border: none; height: 36px;"/>					   
+					 <ice:panelTooltip id="searchPanelToolTip"
+				                 hideOn="mouseout"
+				                 hoverDelay="500"
+				                 style="width:500px;text-align:left;background-color:gray">
+				           <f:facet name="header">
+				             <ice:panelGroup>
+				               <ice:outputText value="Search Utility Panel helpful hints"/>			      
+				             </ice:panelGroup>
+				           </f:facet>
+				           <f:facet name="body">
+				             <ice:panelGroup>
+				               	<ice:outputText value="Click on header to open and close Search Utility Panel"/>
+				                <p>No search button is needed!  Each input component uses partialSubmit for automatic ajax submit. 
+				                Just hit enter or tab out of the component" </p>
+           		                <p> Hover over the <bold> info icon</bold> below 
+						   			for helpful hints on data pagination. </p>
+						     </ice:panelGroup>
+				           </f:facet>
+				     </ice:panelTooltip>		   
+			        </ice:panelGroup>
 				<s:decorate id="firstNameField" template="layout/display.xhtml">
 					<ui:define name="label">First Name</ui:define>
 					<ice:inputText id="firstName" value="#{roundExample.golfer.firstName}" partialSubmit="true"/>
@@ -38,26 +62,16 @@
 					<ui:define name="label">Last name</ui:define>
 					<ice:inputText id="lastName" value="#{roundExample.golfer.lastName}" partialSubmit="true"/>
 				</s:decorate>
-	
 				<s:decorate id="dateField" template="layout/display.xhtml">
 					<ui:define name="label">Date</ui:define>
-					<ice:selectInputDate id="date" value="#{roundExample.date}"/>
+							<ice:selectInputDate id="dateId" value="#{roundExample.date}"
+							  renderAsPopup="true"/>
 				</s:decorate>
 	
 				<s:decorate id="totalScoreField" template="layout/display.xhtml">
 					<ui:define name="label">Total score</ui:define>
 					<ice:inputText value="#{roundExample.totalScore}" size="3" partialSubmit="true"/>
 				</s:decorate>
-	
-				<ui:remove>
-				<s:decorate id="courseField" template="layout/display.xhtml">
-					<ui:define name="label">Course</ui:define>
-					<ice:selectOneListbox size="10" value="#{roundExample.teeSet.course}" partialSubmit="true">
-						<s:selectItems var="_course" value="#{courses}" label="#{_course.facility.state} - #{_course.name}" />
-						<s:convertEntity />
-					</ice:selectOneListbox>
-				</s:decorate>
-				</ui:remove>
 	
 				<s:decorate id="teeSetField" template="layout/display.xhtml">
 					<ui:define name="label">Tee Set (color)</ui:define>
@@ -80,51 +94,77 @@
 						<f:selectItem itemValue="T-Storms"/>
 					</ice:selectOneListbox>
 				</s:decorate>
+				</ice:panelGroup>
 	
 			</ice:panelGroup>
+ 		  </ice:panelCollapsible>
+		</ice:form>
 			
-			<div class="actionButtons">
-				<!-- #{queryHelper.zero} inserts an Integer 0 value (the default in JSF is a long) -->
-				<h:commandButton id="search" value="Search" action="/RoundList.xhtml"> <!-- actionListener="#{roundList.first}">-->
-					<f:setPropertyActionListener target="#{roundList.firstResult}" value="#{queryHelper.zero}" />
-				</h:commandButton>
-			</div>
-			
-		</h:form>
-		
 		<ice:panelGroup styleClass="formBorderHighlight">
-			<ui:remove><h3>Round Search Results (#{roundList.resultList.size} of #{roundList.resultCount})</h3></ui:remove>
-			<h3>Round Search Results</h3>
+			
+		
 				<div class="results" id="roundListResults">
+	     <ice:panelGrid columns="3" >
+	       <ice:panelGroup style="float:left; width=100px;">
+	       	<h2>Round Search Results</h2>
+	       </ice:panelGroup>
+		   <ice:panelGroup id="searchResultsToolTipId" panelTooltip="searchResultsTooltip" >
+			 <ice:graphicImage url="img/icon_info.gif" style="float: left; border: none; height: 36px; "/>					   
+		   </ice:panelGroup>
+		   <ice:panelTooltip id="searchResultsTooltip"
+			                 hideOn="mouseout"
+			                 hoverDelay="500"
+			                 style="width:500px;text-align:left;background-color:gray">
+			           <f:facet name="header">
+			                  <ice:outputText value="DataPaginator helpful hint"/>
+			           </f:facet>
+			           <f:facet name="body">
+			              <ice:panelGroup>
+			               	<ice:outputText value="There are currently "/>
+			               	<ice:outputText value="#{roundList.roundCount}"/>
+			               	<ice:outputText value=" values in this table.  The resultList maxSize is currently set to 50"/>
+			               	<ice:outputText value=" With Searching and sorting, 50 is probably sufficient."/>
+			               	<ice:outputText value=" Modify roundList.ejbql and add actionListener to DataPaginator to retrieve data in bundles"/>
+			              </ice:panelGroup>
+			           </f:facet>
+		   </ice:panelTooltip>		   		
 	
+		</ice:panelGrid>
+		    <ice:form style="clear:both;">
 					<h:outputText value="No rounds found." rendered="#{empty roundList.resultList}"/>
 					   
-					<ice:dataTable id="roundList" var="_round" value="#{roundList.resultList}" rendered="#{not empty roundList.resultList}" resizable="true" columnClasses="allCols">
-					<c:set var="entitylist" value="#{roundList}"/>
+				<ice:dataTable id="roundList" var="_round" 
+					        value="#{roundList.resultList}" 
+					        rendered="#{not empty roundList.resultList}"
+					        rows="10" 
+					        sortColumn="#{roundList.sortColumn}"
+					        sortAscending="#{roundList.descending}"
+					        resizable="true" columnClasses="allCols">
+
 					<ice:column id="idColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Id"/>
-								<ui:param name="property" value="r.id"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="r.id" arrow="true">
+								<ice:outputText value="Id"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						#{_round.id}
 					</ice:column>
 					<ice:column id="golferColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Golfer"/>
-								<ui:param name="property" value="g.lastName asc"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="golfer.firstName" arrow="true">
+								<ice:outputText value="Name"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						#{_round.golfer.name}
 					</ice:column>
 					<ice:column id="dateColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Date"/>
-								<ui:param name="property" value="r.date"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="r.date" arrow="true">
+								<ice:outputText value="Date"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						<h:outputText value="#{_round.date}">
 							<s:convertDateTime type="date" />
@@ -132,40 +172,42 @@
 					</ice:column>
 					<ice:column id="courseColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Course"/>
-								<ui:param name="property" value="c.name"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="r.teeSet.course.name" arrow="true">
+								<ice:outputText value="CourseName"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						#{_round.teeSet.course.name}
 					</ice:column>
 					<ice:column id="teeSetColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Tees"/>
-								<ui:param name="property" value="ts.position"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="r.teeSet.color" arrow="true">
+								<ice:outputText value="TeeSet"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						<div title="#{_round.teeSet.color}" class="teeMarker" style="background-color: #{_round.teeSet.color};" />
 					</ice:column>
 					<ice:column id="totalScoreColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Score"/>
-								<ui:param name="property" value="r.totalScore"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="r.totalScore" arrow="true">
+								<ice:outputText value="TotalScore"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						#{_round.totalScore}
 					</ice:column>
 					<ice:column id="weatherColumn">
 						<f:facet name="header">
-							<ui:decorate template="layout/sort.xhtml">
-								<ui:param name="label" value="Weather"/>
-								<ui:param name="property" value="r.weather"/>
-							</ui:decorate>
+						   <ice:commandSortHeader
+						       columnName="r.weather" arrow="true">
+								<ice:outputText value="Weather"/>
+						   </ice:commandSortHeader>
 						</f:facet>
 						#{_round.weather}
 					</ice:column>
+<ui:remove>	they can't select anyone else's to do anything with. If time use panelToolTip to 
+           show the score for each hole			
 					<ice:column id="actionColumn">
 						<f:facet name="header">Action</f:facet>
 						<s:link id="round" view="/#{empty from ? 'Round' : from}.xhtml" 
@@ -173,75 +215,54 @@
 							<f:param name="roundId" value="#{_round.id}"/>
 						</s:link>
 					</ice:column>
+</ui:remove>					
 				</ice:dataTable>
+             <center>
+		   <ice:panelGroup styleClass="clearer">             
 		
-				<s:div styleClass="actionButtons" rendered="#{empty from}">
-					<s:button view="/RoundEdit.xhtml"
-								id="create" 
-							 value="Create round" propagation="none">
-						<f:param name="roundId"/>
-					</s:button>
-				</s:div>
+					<ice:dataPaginator id="dataScroll_1" for="roundList"
+					                   paginatorMaxPages="5" rendered="#{roundList.nextFirstResult gt 0}"
+										vertical="false" fastStep="3" paginator="true">
+							<f:facet name="first">
+								<ice:graphicImage id="firstpage_1"
+											url="./xmlhttp/css/rime/css-images/arrow-first.gif"
+											style="border:none;" title="firstpage" />
+							</f:facet>
+							<f:facet name="last">
+								<ice:graphicImage id="lastpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-last.gif"
+										style="border:none;" title="lastpage" />
+							</f:facet>
+							<f:facet name="previous">
+								<ice:graphicImage id="previouspage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-previous.gif"
+										style="border:none;" title="previouspage" />
+							</f:facet>
+							<f:facet name="next">
+								<ice:graphicImage id="nextpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-next.gif"
+										style="border:none;" title="nextpage" />
+							</f:facet>
+							<f:facet name="fastforward">
+								<ice:graphicImage id="fastforward_1"
+										url="./xmlhttp/css/rime/css-images/arrow-ff.gif"
+										style="border:none;" title="fastforward" />
+							</f:facet>
+							<f:facet name="fastrewind">
+								<ice:graphicImage id="fastrewind_1"
+										url="./xmlhttp/css/rime/css-images/arrow-fr.gif"
+										style="border:none;" title="fastbackward" />
+							</f:facet>
+					</ice:dataPaginator>
 	
-			</div>
 		</ice:panelGroup>
+	          </center>
+		   <br/>			  
 		
-		<ui:remove><!-- using action-based pagination controls requires RoundList to be scoped to the conversation (or page scope, but then these need to be <h:commandButtons> --></ui:remove>
-		<ui:remove>
-		<div class="tableControl">
-		  
-			<h:form><!-- required for setting max page -->
-	
-				<s:button id="first" action="#{roundList.first}" rendered="#{roundList.previousExists}" 
-					value="#{messages.left}#{messages.left} First Page" />
-				
-				<s:button id="previous" action="#{roundList.previous}" rendered="#{roundList.previousExists}" 
-					value="#{messages.left} Previous Page" />
-
-				<h:selectOneMenu id="pageSize" value="#{roundList.maxResults}" valueChangeListener="#{roundList.first}" onchange="this.form.submit();">
-					<f:selectItem itemValue="5" />
-					<f:selectItem itemValue="10" />
-					<f:selectItem itemValue="15" />
-					<f:selectItem itemValue="20" />
-					<f:selectItem itemValue="25" />
-					<f:selectItem itemValue="50" />
-					<f:selectItem itemValue="75" />
-					<f:selectItem itemValue="100" /><!-- this would be a nice feature for Query -->
-				</h:selectOneMenu>
-				
-				<s:button id="next" action="#{roundList.next}" rendered="#{roundList.nextExists}" 
-					value="Next Page #{messages.right}" />
-				
-				<s:button id="last" action="#{roundList.last}" rendered="#{roundList.nextExists}" 
-				value="Last Page #{messages.right}#{messages.right}" />
-			
-			</h:form>
+	     </ice:form> 
 		</div>
-		</ui:remove>
-	
-		<div class="tableControl">
-		  
-			<s:link id="first" view="/RoundList.xhtml" rendered="#{roundList.previousExists}" 
-				value="#{messages.left}#{messages.left} First Page">
-			  <f:param name="firstResult" value="0"/>
-			</s:link>
+	</ice:panelGroup>
 			
-			<s:link id="previous" view="/RoundList.xhtml" rendered="#{roundList.previousExists}" 
-				value="#{messages.left} Previous Page">
-				<f:param name="firstResult" value="#{roundList.previousFirstResult}"/>
-			</s:link>
-			
-			<s:link id="next" view="/RoundList.xhtml" rendered="#{roundList.nextExists}" 
-				value="Next Page #{messages.right}">
-				<f:param name="firstResult" value="#{roundList.nextFirstResult}"/>
-			</s:link>
-			
-			<s:link id="last" view="/RoundList.xhtml" rendered="#{roundList.nextExists}" 
-				value="Last Page #{messages.right}#{messages.right}">
-				<f:param name="firstResult" value="#{roundList.lastFirstResult}"/>
-			</s:link>
-			
-		</div>
 		
 	</ui:define>
 

@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <ui:composition xmlns="http://www.w3.org/199F9/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component"  
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" id="globalMessages"/>
+		<ice:panelGroup >
+		   <ui:include src="/viewMyRounds.xhtml"/>
+		</ice:panelGroup>
+	   
+	   <br/>
+		   
+		<ice:panelGroup id="addRoundGroupPrep" 
+		      styleClass="formBorderHighlight" >
+		    <ice:form id="addRoundFormPrep">
+
+		        <ice:panelCollapsible id="addingAnotherRoundId" expanded="#{myscorecard.expanded}">
+		            <f:facet name="header">
+                		<ice:panelGroup id="panelAddNewRoundHeaderId" >
+                    		<ice:outputText id="linkHeader"
+                            	value="Add a New Round"/>
+	                	</ice:panelGroup>
+              		</f:facet> 
+              		<ice:panelGroup>           
+		          		<ui:include src="./addRoundPrep.xhtml"/>
+					</ice:panelGroup>		          		
+		        </ice:panelCollapsible>
+		     </ice:form>
+
+		</ice:panelGroup>	     
+	  <br/>
+	
+	</ui:define>
+
+</ui:composition>
+
+	

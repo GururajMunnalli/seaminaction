@@ -25,6 +25,17 @@
 					</tr>
 				</table>
 
+				<s:decorate id="genderField" template="layout/edit.xhtml">
+					<ui:define name="label">Gender</ui:define>
+					<ice:selectOneRadio id="gender"
+					      partialSubmit="true" 
+					       value="#{newGolfer.gender}" 
+					       styleClass="radio" required="true">
+						<s:convertEnum/>
+						<s:enumItem enumValue="MALE" label="Male"/>
+						<s:enumItem enumValue="FEMALE" label="Female"/>
+					</ice:selectOneRadio>
+				</s:decorate>
 				<s:decorate id="firstNameField" template="layout/edit.xhtml">
 					<ui:define name="label">First Name</ui:define>
 					<ice:inputText id="firstName" value="#{newGolfer.firstName}" size="40" required="true" partialSubmit="true"/>
@@ -37,22 +48,33 @@
 
 				<s:decorate id="emailField" template="layout/edit.xhtml">
 					<ui:define name="label">Email address</ui:define>
-					<ice:inputText id="emailAddress" value="#{newGolfer.emailAddress}" size="40" required="true" partialSubmit="true"/>
+					<ice:inputText id="emailAddress" value="#{newGolfer.emailAddress}"
+					          validator="#{registerAction.emailNotTaken}"
+					             size="40" required="true" partialSubmit="true"/>
 				</s:decorate>
 
 				<s:decorate id="usernameField" template="layout/edit.xhtml">
 					<ui:define name="label">Username</ui:define>
-					<ice:inputText id="username" value="#{newGolfer.username}" size="20" required="true" partialSubmit="true"/>
+					<ice:inputText id="username" value="#{newGolfer.username}" 
+					               validator="#{registerAction.validateUserName}"
+					               size="20" required="true" partialSubmit="true"/>
 				</s:decorate>
 
 				<s:decorate id="passwordField" template="layout/edit.xhtml">
 					<ui:define name="label">Password</ui:define>
-					<ice:inputSecret id="password" value="#{passwordBean.password}" size="20" required="true" redisplay="true" partialSubmit="true"/>
+					<ice:inputSecret id="password" value="#{passwordBean.password}" 
+					       size="20" required="true" 
+					       partialSubmit="true" redisplay="true" />
+
 				</s:decorate>
 
 				<s:decorate id="confirmField" template="layout/edit.xhtml">
 					<ui:define name="label">Confirm password</ui:define>
-					<ice:inputSecret id="confirm" value="#{passwordBean.confirm}" size="20" required="true" redisplay="true" partialSubmit="true"/>
+					<ice:inputSecret id="confirm" 
+					            validator="#{registerAction.confirmPassword}"
+								value="#{passwordBean.confirm}" size="20" required="true" 
+								redisplay="true"  
+								partialSubmit="true"/> 
 				</s:decorate>
 
 				<s:decorate id="locationField" template="layout/edit.xhtml">
@@ -62,16 +84,14 @@
 
 				<s:decorate id="dateOfBirthField" template="layout/edit.xhtml">
 					<ui:define name="label">Date of birth</ui:define>
-					<ice:selectInputDate id="dateOfBirth" value="#{newGolfer.dateOfBirth}"/>
-				</s:decorate>
-
-				<s:decorate id="genderField" template="layout/edit.xhtml">
-					<ui:define name="label">Gender</ui:define>
-					<h:selectOneRadio id="gender" value="#{newGolfer.gender}" styleClass="radio" required="true">
-						<s:convertEnum/>
-						<s:enumItem enumValue="MALE" label="Male"/>
-						<s:enumItem enumValue="FEMALE" label="Female"/>
-					</h:selectOneRadio>
+					<ice:selectInputDate id="dateOfBirth"
+					    partialSubmit="true"
+					      renderAsPopup="true" 
+					       value="#{newGolfer.dateOfBirth}">					       
+					    <f:convertDateTime timeZone="#{org.jboss.seam.international.timeZoneSelector.timeZone}"
+					        locale="#{org.jboss.seam.international.localeSelector.locale}"
+					        dateStyle="short" type="date"/>					       
+					 </ice:selectInputDate>
 				</s:decorate>
 
 				<s:decorate id="proStatusField" template="layout/edit.xhtml">
@@ -84,30 +104,31 @@
 
 				<s:decorate id="specialtyField" template="layout/edit.xhtml">
 					<ui:define name="label">Specialty</ui:define>
-					<h:selectOneMenu id="specialty" value="#{newGolfer.specialty}">
-						<s:selectItems var="t" label="#{t}" noSelectionLabel="-- Select --" 
+					<ice:selectOneMenu id="specialty"
+					     partialSubmit="true" 
+					      value="#{newGolfer.specialty}">
+						<s:selectItems var="t" label="#{t}" 
+						      noSelectionLabel="-- Select --" 
 							value="#{registerAction.specialtyTypes}"/>
-					</h:selectOneMenu>
+					</ice:selectOneMenu>
 				</s:decorate>
 
 				<s:decorate id="verifyCaptchaField" template="layout/edit.xhtml">
 					<ui:define name="label">Security check</ui:define>
 					<ui:define name="help">Please type in the letters that are shown in the image above.</ui:define>
-					<h:graphicImage value="/seam/resource/captcha?f=#{currentDate.time}" styleClass="challenge" style="width: 70px; height: 20px;"/>
-					<ice:inputText id="verifyCaptcha" value="#{captcha.response}" required="true" size="10" partialSubmit="true"/>
+					<h:graphicImage value="/seam/resource/captcha?nocache=#{registerAction.randomNumberGenerator}" style="width: 150px; height: 40px;"/>
+					<ice:inputText id="verifyCaptcha" value="#{captcha.response}" required="true" size="20" partialSubmit="true"/>
 				</s:decorate>
 
+			</ice:panelGroup>
 				<div style="clear:both">
 					<span class="required">*</span> required fields
 				</div>
 
-			</ice:panelGroup>
 
 			<div class="actionButtons">
-				<h:commandButton action="home" immediate="true" value="Cancel"/>
-				<h:commandButton id="register" value="Sign Up Now!" action="#{registerAction.register}">
-					<s:defaultAction/>
-				</h:commandButton>
+				<ice:commandButton action="home" immediate="true" value="Cancel"/>
+				<ice:commandButton id="register" value="Sign Up Now!" action="#{registerAction.register}"/>
 			</div>
 
 		</ice:form>

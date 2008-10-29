@@ -22,6 +22,28 @@
               </tr>
          </table>	
          <ice:panelGroup id="golferSearchFields" styleClass="edit">
+            <ice:panelGroup id="tipsId" panelTooltip="searchPanelToolTip">
+					 <ice:graphicImage url="img/icon_info.gif" style="border: none; height: 36px;"/>					   
+					 <ice:panelTooltip id="searchPanelToolTip"
+				                 hideOn="mouseout"
+				                 hoverDelay="500"
+				                 style="width:500px;text-align:left;background-color:gray">
+				           <f:facet name="header">
+				             <ice:panelGroup>
+				               <ice:outputText value="Search Utility Panel helpful hints"/>			      
+				             </ice:panelGroup>
+				           </f:facet>
+				           <f:facet name="body">
+				             <ice:panelGroup>
+				                <p>No search button is needed!  Each input component uses partialSubmit for automatic ajax submit. 
+				                Just hit enter or tab out of the component" </p>
+						   		<p>The <code>s:link</code> use on the headers with Seam mechanisms and PAGE context are left intact
+						   		to show that regular Seam sorting using full page refreshes can also be used.  To see the
+						   		<code>ice:commandSortHeader</code> way to do sorting see RoundList or My Score Card</p>
+						     </ice:panelGroup>
+				           </f:facet>
+				     </ice:panelTooltip>		   
+            </ice:panelGroup>
 
             <s:decorate id="idField" template="layout/display.xhtml">
                 <ui:define name="label">Id</ui:define>
@@ -46,17 +68,15 @@
    
 	  </ice:panelGroup>
         
-        <div class="actionButtons">
-            <ice:commandButton id="golferSearchButton" value="Search" action="/GolferList.xhtml"/>
-        </div>
       </ice:panelGroup> 
     </ice:form>
     
     <ice:panelGroup styleClass="formBorderHighlight">
 
     <h3>Golfer Search Results</h3>
+    <ice:form id="golferResultsForm">
+      <div class="searchResults" id="listgolferResults">
 
-    <div class="searchResults" id="listgolferResults">
     <ice:outputText value="The golfer search returned no results." 
                rendered="#{empty golferList.resultList}"/>
                
@@ -64,6 +84,7 @@
                   var="_golfer"
                 value="#{golferList.resultList}" 
             resizable="true"
+            rows="10"
         columnClasses="allCols"
              rendered="#{not empty golferList.resultList}">
         <ice:column id="listidId">
@@ -97,64 +118,72 @@
             #{_golfer.firstName}&amp;nbsp;
         </ice:column>
         <ice:column id="listColumnGolferId">
-            <f:facet name="header">Action</f:facet>
+            <f:facet name="header">View Profile</f:facet>
             <s:link view="/profile.xhtml" 
-                   value="Select" 
+                   value="View Profile" 
                       id="listgolferLinkId">
                 <f:param name="golferId" 
                         value="#{_golfer.id}"/>
             </s:link>
         </ice:column>
+<ui:remove>        
+        <ice:column id="selectGolferId">
+            <f:facet name="header">Select</f:facet>
+            <s:link view="/Golfer.xhtml"
+                   value="Edit/Delete Golfer"
+                      id="delGolferId">
+                <f:param name="golferId"
+                        value="#{_golfer.id}"/> 
+            </s:link>
+        </ice:column>
+</ui:remove>        
     </ice:dataTable>
 
     </div>
-</ice:panelGroup>
 
-    <div class="tableControl">
       
-        <s:link view="/GolferList.xhtml" 
-            rendered="#{golferList.previousExists}" 
-               value="#{messages.left}#{messages.left} First Page"
-                  id="firstPagegolferListId">
-          <f:param name="firstResult" value="0"/>
-        </s:link>
+     <center>
+		   <ice:panelGroup styleClass="clearer">             
+				<ice:dataPaginator id="dataScroll_1" for="golferListTableId"
+					                   paginatorMaxPages="5" rendered="#{golferList.resultList.size gt 10}"
+										vertical="false" fastStep="3" paginator="true">
+							<f:facet name="first">
+								<ice:graphicImage id="firstpage_1"
+											url="./xmlhttp/css/rime/css-images/arrow-first.gif"
+											style="border:none;" title="firstpage" />
+							</f:facet>
+							<f:facet name="last">
+								<ice:graphicImage id="lastpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-last.gif"
+										style="border:none;" title="lastpage" />
+							</f:facet>
+							<f:facet name="previous">
+								<ice:graphicImage id="previouspage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-previous.gif"
+										style="border:none;" title="previouspage" />
+							</f:facet>
+							<f:facet name="next">
+								<ice:graphicImage id="nextpage_1"
+										url="./xmlhttp/css/rime/css-images/arrow-next.gif"
+										style="border:none;" title="nextpage" />
+							</f:facet>
+							<f:facet name="fastforward">
+								<ice:graphicImage id="fastforward_1"
+										url="./xmlhttp/css/rime/css-images/arrow-ff.gif"
+										style="border:none;" title="fastforward" />
+							</f:facet>
+							<f:facet name="fastrewind">
+								<ice:graphicImage id="fastrewind_1"
+										url="./xmlhttp/css/rime/css-images/arrow-fr.gif"
+										style="border:none;" title="fastbackward" />
+							</f:facet>
+					</ice:dataPaginator>
         
-        <s:link view="/GolferList.xhtml" 
-            rendered="#{golferList.previousExists}" 
-               value="#{messages.left} Previous Page"
-                  id="previousPagegolferListId">
-            <f:param name="firstResult" 
-                    value="#{golferList.previousFirstResult}"/>
-        </s:link>
-        
-        <s:link view="/GolferList.xhtml" 
-            rendered="#{golferList.nextExists}" 
-               value="Next Page #{messages.right}"
-                  id="nextPagegolferListId">
-            <f:param name="firstResult" 
-                    value="#{golferList.nextFirstResult}"/>
-        </s:link>
-        
-        <s:link view="/GolferList.xhtml" 
-            rendered="#{golferList.nextExists}" 
-               value="Last Page #{messages.right}#{messages.right}"
-                  id="lastPagegolferListId">
-            <f:param name="firstResult" 
-                    value="#{golferList.lastFirstResult}"/>
-        </s:link>
-        
-    </div>
+	          </ice:panelGroup> 
+	  </center>
+    </ice:form>
     
-	<ui:remove>
-    <s:div styleClass="actionButtons" rendered="#{empty from}">
-        <s:button view="/GolferEdit.xhtml"
-                    id="listCreategolferId" 
-                 value="Create golfer">
-            <f:param name="golferId"/>
-        </s:button>
-    </s:div>
-	</ui:remove>
-    
+  </ice:panelGroup>
 </ui:define>
 
 </ui:composition>

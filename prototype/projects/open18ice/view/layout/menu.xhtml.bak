@@ -5,16 +5,12 @@
 		xmlns:f="http://java.sun.com/jsf/core"
 		xmlns:ice="http://www.icesoft.com/icefaces/component"  
 		xmlns:s="http://jboss.com/products/seam/taglib">
-  <ice:panelGroup id="roundPanelGroup" styleClass="formBorderHighlight">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	   <tr>
-		 <td class="iceDatTblColHdr2">
+
 	<ice:panelGrid id="menuPanelGrid" columns="2" columnClasses="leftMenu,rightMenu">
                 <ice:panelGroup id="leftMenuId" >
                         <ice:outputText id="menuProjectNameId" value="#{projectName}:"/>
-                            <s:link id="menuHomeId" styleClass="iceCmdLnk" 
-                                   view="/home.xhtml" value="Home" propagation="none"/>
-		<ui:remove>		    <s:link view="/FacilityList.xhtml" styleClass="iceCmdLnk" 
+                            <s:link id="menuHomeId" view="/home.xhtml" value="Home" propagation="none"/>
+				    <s:link view="/FacilityList.xhtml" 
 	       				value="Facility List" 
 						id="FacilityId"
 	 					propagation="none"/>
@@ -34,25 +30,14 @@
 	       				value="Tee List" 
 						id="TeeId"
 	 					propagation="none"/>
-</ui:remove>	 					
-				    <s:link view="/GolferList.xhtml" styleClass="iceCmdLnk" 
+				    <s:link view="/GolferList.xhtml" 
 	       				value="Golfer List" 
 						id="GolferId"
 	 					propagation="none"/>
-	 					
-				    <s:link view="/RoundList.xhtml" styleClass="iceCmdLnk" 
+				    <s:link view="/RoundList.xhtml" 
 	       				value="Round List" 
 						id="RoundId"
 	 					propagation="none"/>
-	 					
-	 			    <s:link view="/myScoreCard.xhtml" styleClass="iceCmdLnk" 
-	 			        value="My Score Card"
-	 			        id="mineId"
-	 			        propagation="none"/>
-	 			    <s:link view="/leaderBoard.xhtml" styleClass="iceCmdLnk" 
-	 			        value="LeaderBoard"
-	 			        id="leaderbdId"
-	 			        propagation="none"/>			 			    			        
                     <!-- @newMenuItem@ -->
  		 </ice:panelGroup>
                  <ice:panelGroup id="rightMenuId">
@@ -61,9 +46,6 @@
                                 <s:link view="/home.xhtml" id="menulogoutId" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}"/>
                 </ice:panelGroup>
             </ice:panelGrid>
-           </td>
-		</tr>
-	</table>            
-  </ice:panelGroup>		
+			
 </div>
 
