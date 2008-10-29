@@ -5,11 +5,13 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		    xmlns:ice="http://www.icesoft.com/icefaces/component"
+		        xmlns:ice="http://www.icesoft.com/icefaces/component"
                 template="layout/template.xhtml">
 
+ 
+
 <ui:define name="body">
-    
+  
     <h:messages styleClass="message"/>
     
  <ice:form id="loginFormId">
@@ -21,29 +23,52 @@
                   </td>
               </tr>
           </table>
-    
+ 		  <ice:panelGroup id="tipsLoginId" panelTooltip="loginPanelToolTip">
+			 <ice:graphicImage url="img/icon_info.gif" style="border: none; height: 36px;"/>					   
+			 <ice:panelTooltip id="loginPanelToolTip"
+				                 hideOn="mouseout"
+				                 hoverDelay="500"
+				                 style="width:500px;text-align:left;background-color:gray">
+				 <f:facet name="header">
+				        <ice:outputText value="Search Utility Panel helpful hints"/>			      
+				 </f:facet>
+				 <f:facet name="body">
+				     <ice:panelGroup>
+				           <p>Please login using any registered username and password. 
+				           If you have not registered yet, proceed to the Home page and do so.</p>
+					 </ice:panelGroup>
+				 </f:facet>
+		   </ice:panelTooltip>		   
+     </ice:panelGroup>   
       
-            <p>Please login using any username and password</p>
-
-                    <div class="dialog">
-                        <h:panelGrid id="loginPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
+     <div class="dialog">
+              <h:panelGrid id="loginPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
                     <h:outputLabel for="username">Username</h:outputLabel>
-                    <h:inputText id="username" 
+                    <ice:inputText id="username" 
                               value="#{identity.username}"/>
                     <h:outputLabel for="password">Password</h:outputLabel>
-                    <h:inputSecret id="password" 
+                    <ice:inputSecret id="password" 
                                 value="#{identity.password}"/>
                     <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
-                    <h:selectBooleanCheckbox id="rememberMe" 
+                    <ice:selectBooleanCheckbox id="rememberMe" 
                                           value="#{identity.rememberMe}"/>
                 </h:panelGrid>
             </div>
   
       </ice:panelGroup>
-         <div class="actionButtons">
-            <h:commandButton id="loginButtonId" value="Login" action="#{identity.login}"/>
-        </div>
-          
-  </ice:form>      
+      <ice:commandButton id="loginButtonId" value="Login" action="#{identity.login}">
+         <s:defaultAction/>
+      </ice:commandButton>
+      <!--  to set the focus on the username inputText field -->
+      <script language="JavaScript" type="text/javascript">
+         // <![CDATA[ 
+         window.onLoad(function() {
+             document.getElementById("loginFormId:username").focus();
+         }); 
+            
+        // ]]> 
+      </script>        
+  </ice:form>  
+ 
 </ui:define> 
 </ui:composition>

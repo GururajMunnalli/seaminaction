@@ -18,41 +18,42 @@
 			<ice:panelGroup id="roundPanelGroup" styleClass="formBorderHighlight">
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-				  	  <td class="iceDatTblColHdr2">#{roundHome.managed ? 'Edit' : 'Add'} Round</td>
+				  	  <td class="iceDatTblColHdr2"><ice:outputText value="#{roundHome.inputMode} Round"/></td>
 					</tr>
 				</table>
-
-				<s:decorate id="golferField" template="layout/display.xhtml">
+				  <s:decorate id="golferField" template="layout/display.xhtml">
 					<ui:define name="label">Golfer</ui:define>
 					#{round.golfer.name}
+				  </s:decorate>
+				<s:decorate id="dateFieldDisplay" template="layout/display.xhtml" rendered="#{roundHome.readonly}">
+				    <ui:define name="label">Date</ui:define>
+				    <ice:outputText id="dateValId" value="#{round.date}">
+				        <f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{roundHome.timeZone}"/>
+				    </ice:outputText>          
+				</s:decorate>
+				<s:decorate id="dateFieldEdit" template="layout/edit.xhtml" rendered="#{not roundHome.readonly}">
+					<ui:define name="label">Date</ui:define>
+					<ice:selectInputDate id="date" 
+								value="#{round.date}"
+								renderAsPopup="true"
+					 			required="true">
+					    <f:convertDateTime pattern="MM/dd/yyyy" timeZone="#{roundHome.timeZone}"/>
+					</ice:selectInputDate>
 				</s:decorate>
 				
-				<s:decorate id="dateField" template="layout/edit.xhtml">
-					<ui:define name="label">Date</ui:define>
-					<ice:selectInputDate id="date" value="#{round.date}" required="true"/>
+				<s:decorate id="notesField" template="layout/edit.xhtml">
+					<ui:define name="label">Notes</ui:define>
+					<ice:inputTextarea id="notes" cols="80" readonly="#{roundHome.readonly}" 
+					           rows="3" value="#{round.notes}" partialSubmit="true"/>
 				</s:decorate>
-
-				<s:decorate template="layout/edit.xhtml">
-				   <ui:define name="label">Tee Set / Course</ui:define>
-				   <ice:selectOneListbox size="10" value="#{round.teeSet}" partialSubmit="true">
-					  <s:selectItems var="_ts" value="#{teeSets}" label="#{_ts.course.name} - #{_ts.nameOrColor}" />
-					  <s:convertEntity />
-					</ice:selectOneListbox>
+				<s:decorate id="weatherFieldDisplay" template="layout/display.xhtml" rendered="#{roundHome.readonly}">
+				    <ui:define name="label">Weather</ui:define>
+				    <ice:outputText id="weatherdisplayIdText" value="#{round.weather}"/>
 				</s:decorate>
-
-				<s:decorate id="totalScoreField" template="layout/edit.xhtml">
-					<ui:define name="label">Total score</ui:define>
-					<h:panelGroup id="totalScoreBundle">
-						<ice:inputText id="totalScore" value="#{round.totalScore}" required="true" partialSubmit="true"/>
-						<h:outputText id="teeSetPar" rendered="#{round.teeSet != null}" value="Par: #{currentGolfer.gender == 'MALE' ? round.teeSet.course.totalMensPar : round.teeSet.course.totalLadiesPar}"/>
-						<h:outputText id="toParLabel" rendered="#{round.teeSet != null and round.totalScore != null}" value=", To par: "/>
-						<h:outputText id="toParValue" rendered="#{round.teeSet != null and round.totalScore != null}" value="#{round.totalScore - (currentGolfer.gender == 'MALE' ? round.teeSet.course.totalMensPar : round.teeSet.course.totalLadiesPar)}"><f:convertNumber pattern="+#;-#"/></h:outputText>
-					</h:panelGroup>
-				</s:decorate>
-
-				<s:decorate id="weatherField" template="layout/edit.xhtml">
+				<s:decorate id="weatherFieldEdit" template="layout/edit.xhtml"  rendered="#{not roundHome.readonly}">
 					<ui:define name="label">Weather</ui:define>
-					<ice:selectOneMenu id="weather" value="#{round.weather}" required="true" partialSubmit="true">
+					<ice:selectOneMenu id="weather"  
+					         value="#{round.weather}" required="true" partialSubmit="true">
 						<f:selectItem itemValue="#{null}" itemLabel="-- Select --"/>
 						<f:selectItem itemValue="Sunny"/>
 						<f:selectItem itemValue="Mostly Sunny"/>
@@ -68,41 +69,41 @@
 					</ice:selectOneMenu>
 				</s:decorate>
 
-				<s:decorate id="notesField" template="layout/edit.xhtml">
-					<ui:define name="label">Notes</ui:define>
-					<ice:inputTextarea id="notes" cols="80" rows="3" value="#{round.notes}" partialSubmit="true"/>
-				</s:decorate>
-
 				<div style="clear:both">
 					<span class="required">*</span> required fields
 				</div>
 				
 			</ice:panelGroup>
+
 					
 			<div class="actionButtons">
-
-				<h:commandButton id="save" value="Save" action="#{roundHome.persist}"
-					disabled="#{!roundHome.wired}" rendered="#{!roundHome.managed}"/>  
-							   
-				<h:commandButton id="update" value="Save" action="#{roundHome.update}"
-					rendered="#{roundHome.managed}"/>
-							 
+				<ice:commandButton id="save" value="Save" action="#{roundHome.persist}"
+					disabled="#{!roundHome.wired}" rendered="#{!roundHome.managed and roundHome.inputMode eq 'Add'}"/>  						   
+				<ice:commandButton id="update" value="Save" action="#{roundHome.update}"
+					rendered="#{roundHome.managed and roundHome.inputMode eq 'Edit'}" />		 
 				<h:commandButton id="delete" value="Delete" action="#{roundHome.remove}"
 					immediate="true" rendered="#{roundHome.managed}"/>
 						
-				<h:commandButton id="revert" value="Discard changes" action="#{roundHome.revert}"
+				<h:commandButton id="revert" value="Discard changes" 
+				      propagation="end"    action="#{roundHome.revert}"
 					immediate="true" rendered="#{roundHome.managed}"/>
 
-				<ui:remove>
-				<s:button id="discard" value="Discard changes" propagation="end" view="/Round.xhtml" rendered="#{roundHome.managed}"/>
-				</ui:remove>
-					
 				<s:button id="cancel" value="Cancel" propagation="end"
-					view="/#{empty roundFrom ? 'RoundList' : roundFrom}.xhtml" rendered="#{!roundHome.managed}"/>
+					view="/myScoreCard.xhtml" rendered="#{!roundHome.managed}"/>
 
 			</div>
 
 		</ice:form>
+
+
+    <ice:panelGroup id="scorecardPanelGroupId" styleClass="formBorderHighlight">
+	  <ice:form id="ScorecardFormId"> 	
+	     <h3>Scorecard</h3>  
+			     <ice:panelGroup id="includedScorecardPageId">
+		    	   <ui:include src="./scorecard.xhtml"/>
+			     </ice:panelGroup>
+		</ice:form>  
+      </ice:panelGroup>
 	</ui:define>
 
 </ui:composition>

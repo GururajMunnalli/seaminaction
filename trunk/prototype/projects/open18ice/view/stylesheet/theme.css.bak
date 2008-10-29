@@ -7,17 +7,17 @@ a:hover {
 }
 
 input, textarea {
-/*	border: 1px solid #BBBBBB;
+	border: 1px solid #BBBBBB;
 	font-size: 10px;
-	background: #F0F8FF; */
+	background: #F0F8FF;
 	color: black;
 }
 
 input[type='submit'], input[type='button'] {
-/*	background: #4477AA;
+	background: #4477AA;
 	color: white;
 	margin: 5px;
-	border-color: gray; */
+	border-color: gray;
 }
 
 .errorImg {
@@ -31,14 +31,6 @@ input[type='submit'], input[type='button'] {
   padding: .1em;
 }
 
-div.clearer {
-    clear: both;
-    height: 0;
-    line-height: .25px;
-    padding: 10px;
-    margin: 0;
-    width: 500px;
-}
 
 /*.error {
   color: red;
@@ -66,19 +58,17 @@ img.errors {
 .menuButtons {
    font-size: 12px;
    font-weight: bold;
-   border-colour: #bed6f8;
- /*  background-color: #BED6F8; */
+   background-color: #BED6F8;
    background-position: top left;
-  
+   border-bottom: 1px solid #CCCCCC;  
 }
 .menuButtons a {
     font-size: 11px;
-    colour: #000000;
     font-weight: bold;
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /*.searchResults {
@@ -90,20 +80,20 @@ img.errors {
 
 }*/ /* looks better without this border */
 .leftMenu {
-   padding: 5px;
+   padding: 3px 5px;
    vertical-align: middle;
    text-align: left;
    background-color: transparent;
 }
 .rightMenu{
-   padding: 5px;
+   padding: 3px 5px;
    vertical-align: middle;
    text-align: right;
    background-color: transparent;
 }
 .menuButtons a:hover {
 	font-family: Arial,sans-serif;
-    background-color: #bed6f8;
+    background-color: white;
     color:  #0066ff; /*#8CAFCD*/
 }
 
@@ -241,7 +231,7 @@ td {
 .dialog 
 {
 	padding: 15px;
-	background-color: #e6e6e6;
+	background-color: #F0F0F0;
 	margin: 10px;	
 }
 .dialog table
@@ -356,21 +346,8 @@ td {
 table.radio {
 	width: auto;
 }
-.icePnlTlTip {
-	background:#EDDDDD none repeat scroll;
+
+a.external {
+	background: url("../img/external.png") center right no-repeat;
+	padding-right: 13px;
 }
-.icePnlTlTipHdr{ 
-	background:#CDBBBB url() repeat-x;
-}
-.iceCmdBtn{
-   font-size: 16px;
-}
-.icePnlGrdCol1{
-    width: 100px;
-}
-.icePnlGrdCol2{
-    width: 50px;
-}
-    .icePnlGrdCol3{
-    width:500px;
-    }

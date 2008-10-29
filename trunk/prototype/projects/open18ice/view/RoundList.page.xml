@@ -5,9 +5,9 @@
       http://jboss.com/products/seam/pages
       http://jboss.com/products/seam/pages-2.0.xsd">
       
-   <!--
-   <description>Round search results (#{roundList.resultList.size} of #{roundList.resultCount})</description>
-   -->
+  
+   <description>Round search results (#{roundList.resultList.size} of #{roundList.roundCount})</description>
+  
    <begin-conversation join="true"/>
    <param name="order" value="#{roundList.order}"/>-->
    <param name="firstResult" value="#{roundList.firstResult}"/>

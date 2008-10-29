@@ -1,0 +1,143 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
+ 
+	<ice:panelGroup>
+ 		<ice:form id="roundSearchForm" styleClass="edit">
+		  <ice:panelGroup>
+            <ice:panelCollapsible id="roundSearchGroupPanel" expanded="false" >
+              <f:facet name="header">
+                <ice:panelGroup>
+                    <ice:outputText id="linkHeader"
+                            value="Search Utility Panel"/>
+                </ice:panelGroup>
+              </f:facet>
+            <ice:panelGroup styleClass="formBorderHighlight">
+				<s:decorate id="dateField" template="layout/display.xhtml">
+					<ui:define name="label">Date</ui:define>
+						<ice:selectInputDate id="dateId" value="#{roundExample.date}"
+						  renderAsPopup="true"/>
+				</s:decorate>
+	
+				<s:decorate id="totalScoreField" template="layout/display.xhtml">
+					<ui:define name="label">Total score</ui:define>
+					<ice:inputText value="#{roundExample.totalScore}" size="3" partialSubmit="true"/>
+				</s:decorate>
+	
+				<s:decorate id="teeSetField" template="layout/display.xhtml">
+					<ui:define name="label">Tee Set (color)</ui:define>
+					<ice:inputText id="tee" value="#{roundExample.teeSet.color}" partialSubmit="true"/>
+				</s:decorate>
+	
+				<s:decorate id="weatherField" template="layout/display.xhtml">
+					<ui:define name="label">Weather</ui:define>
+					<ice:selectOneListbox id="weather" value="#{roundExample.weather}" size="5" partialSubmit="true">
+						<f:selectItem itemValue="Sunny"/>
+						<f:selectItem itemValue="Mostly Sunny"/>
+						<f:selectItem itemValue="Partly Cloudy"/>
+						<f:selectItem itemValue="Mostly Cloudy"/>
+						<f:selectItem itemValue="Cloudy"/>
+						<f:selectItem itemValue="Fair"/>
+						<f:selectItem itemValue="Scattered Showers"/>
+						<f:selectItem itemValue="Scattered T-Storms"/>
+						<f:selectItem itemValue="Showers"/>
+						<f:selectItem itemValue="Rain"/>
+						<f:selectItem itemValue="T-Storms"/>
+					</ice:selectOneListbox>
+				</s:decorate>
+	
+			</ice:panelGroup>
+           </ice:panelCollapsible>		  
+		  </ice:panelGroup>
+				
+		</ice:form>
+		
+		<ice:panelGroup styleClass="formBorderHighlight">
+		  <h3>Rounds Played by #{currentGolfer.username}</h3>
+		  <div class="results" id="roundListResults">
+	
+		   <h:outputText value="No rounds found." rendered="#{empty myscorecard.resultList}"/>
+	
+		   <ice:form>
+		        
+		      <ice:panelGroup rendered="#{not empty myscorecard.resultList}" >	   
+			     <ice:dataTable id="myRoundsList" var="_round" value="#{myscorecard.resultList}" 				            
+					        sortColumn="#{myscorecard.sortColumn}"
+					        sortAscending="#{myscorecard.descending}"
+					        scrollable="true"				   
+				            columnClasses="allCols">
+					<ice:column id="dateColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.date" arrow="true">
+								<ice:outputText value="Date"/>
+						   </ice:commandSortHeader>
+						</f:facet>				   						
+						<ice:outputText value="#{_round.date}">
+							<s:convertDateTime type="date" />
+						</ice:outputText>
+					</ice:column>
+					<ice:column id="courseColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.teeSet.course.name" arrow="true">
+								<ice:outputText value="CourseName"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						<ice:outputText value="#{_round.teeSet.course.name}"/>
+					</ice:column>
+					<ice:column id="teeSetColumn">
+					   <f:facet name="header">					
+						   <ice:commandSortHeader
+						       columnName="r.teeSet.color" arrow="true">
+								<ice:outputText value="TeeSet"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						<ice:panelGroup>
+						  <div title="#{_round.teeSet.color}" class="teeMarker" 
+						    style="background-color: #{_round.teeSet.color};" />
+						</ice:panelGroup>
+					</ice:column>
+					<ice:column id="totalScoreColumn">
+					   <f:facet name="header">
+						 <ice:commandSortHeader
+						       columnName="r.totalScore" arrow="true">
+								<ice:outputText value="TotalScore"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						<ice:outputText value="#{_round.totalScore}"/>
+					</ice:column>
+					<ice:column id="weatherColumn">
+						<f:facet name="header">
+						   <ice:commandSortHeader
+						       columnName="r.weather" arrow="true">
+								<ice:outputText value="Weather"/>
+						   </ice:commandSortHeader>
+						</f:facet>
+						<ice:outputText value="#{_round.weather}"/>
+					</ice:column>
+					<ice:column id="selectRowcolumn">
+					   <f:facet name="header">
+					      <ice:outputText value="View/Edit"/>
+					   </f:facet>			                <!-- propagation="none"> -->
+					   <s:link view="/RoundEdit.xhtml" 
+			                         id="viewOrEditRound" 
+			                      value="View Or Edit"> 
+
+                           <f:param name="roundId" 
+                           value="#{_round.id}"/>
+                           <f:param name="teeSetId" value="#{_round.teeSet.id}"/>
+                           <f:param name="inputMode" value="View"/>
+                       </s:link>
+					</ice:column>
+				</ice:dataTable>
+             </ice:panelGroup>		  
+          </ice:form>
+      </div>
+    </ice:panelGroup>
+   </ice:panelGroup>
+ </ui:composition>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+      http://jboss.com/products/seam/pages
+      http://jboss.com/products/seam/pages-2.0.xsd"
+   no-conversation-view-id="/myScoreCard.xhtml"
+   login-required="true">
+
+   <restrict>#{s:hasRole('golfer')}</restrict>
+   
+        <description>View rounds for: #{currentGolfer.username}</description>
+ 
+      <begin-conversation join="true" />  
+ 
+   
+ <!--    <navigation from-action="#{myscorecard.rowSelectionListener(RowSelectorEvent event)}">
+       <begin-conversation nested="true" flush-mode="manual" if="#{!conversation.nested}"/>
+       <redirect view-id="/myScoreCard.xhtml"/>
+   </navigation> -->
+   
+</page>
