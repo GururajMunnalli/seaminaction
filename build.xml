@@ -295,6 +295,19 @@ in the build.properties file.
 		</java>
 	</target>
 
+	<target name="load-sql-script">
+		<fail unless="script" message="Please specify a script to invoke using -Dscript=filename"/>	
+		<java classname="org.h2.tools.RunScript" fork="true">
+			<classpath>
+				<pathelement location="${h2.jdbc.jar}"/>
+			</classpath>
+			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
+			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
+			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/${script}"/>
+		</java>
+	</target>
+
 	<target name="launch-h2-console" description="Launch the H2 database administration console">
 		<echo message="Launching H2 admin console... (use Ctrl+C to shutdown)"/>
 		<echo message="Use the JDBC URL: ${open18.jdbc.url};IFEXISTS=TRUE;FILE_LOCK=NO"/>
@@ -402,6 +415,7 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 			<property name="project.type" value="${project.type}"/>
 			<property name="jboss.home" value="${jboss-as.home}"/>
 			<property name="icefaces" value="${icefaces}"/>
+			<property name="driver.jar" value="${h2.jdbc.jar}"/>
 		</ant>
 		<if>
 			<isset property="jboss-as.present"/>
