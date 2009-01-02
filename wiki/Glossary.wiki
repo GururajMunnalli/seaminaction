@@ -25,9 +25,9 @@ see also: [WhatIsAComponent]
 
 *persistence manager factory* - an object that is a runtime representation of the persistence unit configuration; can be used to create application-managed persistence managers (continues to act as their parent); thread-safe; expensive to create
 
-*persistence manager* - an API for managing the life cycle of entity instance (create, update, remove, find by id, query); maintains an internal persistence context; queues a set of SQL queries to be set to the database using write-behind semantics
+*persistence manager* - an API for managing the life cycle of entity instance (create, update, remove, find by id, query); maintains an internal persistence context of instances; produces a set of SQL queries from changes in the persistence context that are executed against the database using write-behind semantics
 
-*persistence context* - a cache of persistent entity instances; instances which have been changed are considered "dirty" and the pending changes are flushed to the databaes when flush() is called on the persistence manager (or automatic flushing occurs); the persistence context has a one-to-one association with a persistence manager
+*persistence context* - a cache of persistent entity instances; instances which have been changed are considered "dirty" and the pending changes are flushed to the database when flush() is called on the persistence manager (or automatic flushing occurs); the persistence context has a one-to-one association with a persistence manager
 
 *persistent cookie* - a cookie that is not removed when the browser closes; typically used for an authentication token
 
