@@ -11,6 +11,8 @@ Due to the quota of 550 pages for Seam in Action, there is some auxiliary inform
 
 see also: [WhatIsAComponent]
 
+*configuration by exception* - (also called _convention over configuration_) responds to the question "if you are typing configuration and what you are typing seems obvious, then why type it?" let's the framework imply the configuration and you only configure when you need it to do something different than the default
+
 *host component* - the component on which the subject property or method resides. This term often comes up when discussing outjection and factory methods, which inherit the scope from the component on which they reside if a scope is not specified. The host component could also be described as the current or owning component.
 
 *interceptor* - a class that can be used to intercept runtime events that occur in a program to "advise" the code by weaving in cross-cutting concerns; the main event to which an interceptor is applied is a method invocation.
