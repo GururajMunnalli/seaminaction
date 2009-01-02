@@ -40,6 +40,8 @@ see also: [WhatIsAComponent]
 *unit of work* - a set of operations, made atomic by a transaction; in this text, the operations are performed on the entity instance and the persistence manager
 also: Unit of work ( http://www.martinfowler.com/eaaCatalog/unitOfWork.html ) - keeps track of everything you do during a business transaction that can affect the database. When you're done, it figures out everything that needs to be done to alter the database as a result of your work.
 
+*transaction* - two or more (database) operations that depend on one another; granted there is that whole ACID thing too, but at the core it is about linking operations
+
 *JAR* (Java Archive file : .jar extension) stores of Java classes, resources, auxiliary files, etc. Java source files are compiled and then distributed in jar format.
 
 *WAR* (Web Archive File : .war extension) are intended to contain complete Web applications. A Web Application is a collection of files, classes, resources, .jar files that can be packaged and accessed as one servlet context. Usually, sample web applications are distributed using war format.
