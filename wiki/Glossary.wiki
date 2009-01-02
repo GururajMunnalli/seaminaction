@@ -29,6 +29,8 @@ see also: [WhatIsAComponent]
 
 *persistence context* - a cache of persistent entity instances; instances which have been changed are considered "dirty" and the pending changes are flushed to the database when flush() is called on the persistence manager (or automatic flushing occurs); the persistence context has a one-to-one association with a persistence manager
 
+*persistence life cycle* - the different persistence states that an entity instance goes through: transient, persistent, detached, removed
+
 *persistent cookie* - a cookie that is not removed when the browser closes; typically used for an authentication token
 
 *Seam Application Framework* - a framework of classes for quickly building application components that perform CRUD and query operations on entities.
