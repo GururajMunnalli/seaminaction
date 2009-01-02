@@ -29,6 +29,8 @@ see also: [WhatIsAComponent]
 
 *persistence context* - a cache of persistent entity instances; instances which have been changed are considered "dirty" and the pending changes are flushed to the database when flush() is called on the persistence manager (or automatic flushing occurs); the persistence context has a one-to-one association with a persistence manager
 
+When JPA/Hibernate executes a query, it reads the result set of the query and marshals the entity objects that are returned to the application. During this process, JPA/Hibernate interacts with the persistence context by attempting to resolve every entity object from the cache by its identifier. Only if the instance can't be found there does JPA/Hibernate construct a new instance by reading the values from the row in the JDBC result set
+
 *persistence life cycle* - the different persistence states that an entity instance goes through: transient, persistent, detached, removed
 
 *persistent cookie* - a cookie that is not removed when the browser closes; typically used for an authentication token
