@@ -1,6 +1,6 @@
 #summary Frequently asked questions
 
-= FAQs =
+----
 
 *Why is the @DataModelSelection property annotated with @Out and not @In? (golftips example)*
 
