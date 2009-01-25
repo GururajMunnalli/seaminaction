@@ -1,0 +1,7 @@
+#summary Frequently asked questions
+
+= FAQs =
+
+_Why is the @DataModelSelection property annotated with @Out and not @In? (golftips example)_
+
+The @DataModelSelection is a variation of the @In annotation. The @Out annotation turns around and pushes the selected item injected by @DataModelSelection back out into a context as a top-level variable. Without @Out, the selection would only be available while the method is executing.
