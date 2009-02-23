@@ -11,3 +11,7 @@ The @DataModelSelection is a variation of the @In annotation. The @Out annotatio
 The @RequestParameter annotation does not require a value by default (in fact, there isn't even a setting). If the request parameter is missing, Seam will attempt to assign a null value to the field. If the field is a primitive type, Seam will be unable to perform the assignment in this case and, as a result, an error will be thrown.
 
 Therefore, if the field you are adding the @RequestParameter annotation to is a primitive type (e.g. int), change the field type to a primitive wrapper class (e.g. Integer). You will then have to be prepared for a null value, but that you can handle in your business logic.
+
+* When do I need @Remove and @Destroy?
+
+In Seam 2, if you have exactly one @Remove method, it's automatically made the @Destroy method. If you have multiple @Remove methods, you need @Destroy. Also @Remove @Destroy methods must have no parameters.
