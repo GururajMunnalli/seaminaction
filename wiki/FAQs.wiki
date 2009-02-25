@@ -2,18 +2,18 @@
 
 ----
 
-*Why is the @DataModelSelection property annotated with @Out and not @In? (golftips example)*
+  * *Why is the @DataModelSelection property annotated with @Out and not @In? (golftips example)*
 
-The @DataModelSelection is a variation of the @In annotation. The @Out annotation turns around and pushes the selected item injected by @DataModelSelection back out into a context as a top-level variable. Without @Out, the selection would only be available while the method is executing.
+  The @DataModelSelection is a variation of the @In annotation. The @Out annotation turns around and pushes the selected item injected by @DataModelSelection back out into a context as a top-level variable. Without @Out, the selection would only be available while the method is executing.
 
-* I get an error when using @RequestParameter on a field with a primitive type. Why? *
+  * * I get an error when using @RequestParameter on a field with a primitive type. Why? *
 
-The @RequestParameter annotation does not require a value by default (in fact, there isn't even a setting). If the request parameter is missing, Seam will attempt to assign a null value to the field. If the field is a primitive type, Seam will be unable to perform the assignment in this case and, as a result, an error will be thrown.
+  The @RequestParameter annotation does not require a value by default (in fact, there isn't even a setting). If the request parameter is missing, Seam will attempt to assign a null value to the field. If the field is a primitive type, Seam will be unable to perform the assignment in this case and, as a result, an error will be thrown.
 
-Therefore, if the field you are adding the @RequestParameter annotation to is a primitive type (e.g. int), change the field type to a primitive wrapper class (e.g. Integer). You will then have to be prepared for a null value, but that you can handle in your business logic.
+  Therefore, if the field you are adding the @RequestParameter annotation to is a primitive type (e.g. int), change the field type to a primitive wrapper class (e.g. Integer). You will then have to be prepared for a null value, but that you can handle in your business logic.
 
-* When do I use @Remove and @Destroy on a SFSB?
+  * * When do I use @Remove and @Destroy on a SFSB?
 
-In Seam 2, if you have exactly one @Remove method, it's automatically made the @Destroy method. If you have multiple @Remove methods, you need @Destroy. Also @Remove @Destroy methods must have no parameters.
+  In Seam 2, if you have exactly one @Remove method, it's automatically made the @Destroy method. If you have multiple @Remove methods, you need @Destroy. Also @Remove @Destroy methods must have no parameters.
 
-* [http://seamframework.org/Documentation/HowDoesTheDefaultLocaleWorkWhenIsItUsed How does the default locale work? When is it used?]
+  * * [http://seamframework.org/Documentation/HowDoesTheDefaultLocaleWorkWhenIsItUsed How does the default locale work? When is it used?]
