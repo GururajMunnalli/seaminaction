@@ -16,4 +16,4 @@
 
   In Seam 2, if you have exactly one @Remove method, it's automatically made the @Destroy method. If you have multiple @Remove methods, you need @Destroy. Also @Remove @Destroy methods must have no parameters.
 
-  * [http://seamframework.org/Documentation/HowDoesTheDefaultLocaleWorkWhenIsItUsed How does the default locale work? When is it used?]
+  * *[http://seamframework.org/Documentation/HowDoesTheDefaultLocaleWorkWhenIsItUsed How does the default locale work? When is it used?]*
