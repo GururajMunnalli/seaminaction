@@ -1,0 +1,9 @@
+#summary This page is a collection of side notes that accompany the text in the book.
+
+= Seam in Action: Between the lines =
+
+On this page you can find some author notes that expand on point made in the book.
+
+= JBoss Tools Pageflow editor =
+
+The TIP on page 314 recommends using the Seam pageflow editor from JBoss Tools to edit your pageflow definition in a visual manner. As an additional hint, be sure to enable the Properties view in Eclipse. From that view, you can customize each node and transition w/ a rich client form. Select Window > Show View > Other... > Properties (General). Then click on either a node box or a transition line and you will see all the possible properties that you can edit for the element. It's an alternative to using Ctrl+Space tag completion in the source view.
