@@ -1,6 +1,6 @@
 #summary This page is a collection of addendums or side notes to the text in the book.
 
-= Between the lines =
+= Seam in Action: Between the lines =
 
 On this page you can find some author notes that expand on point made in the book.
 
