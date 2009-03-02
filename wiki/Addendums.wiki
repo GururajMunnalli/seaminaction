@@ -1,4 +1,4 @@
-#summary This page is a collection of addendums or side notes to the text in the book.
+#summary This page is a collection of side notes that accompany the text in the book.
 
 = Seam in Action: Between the lines =
 
