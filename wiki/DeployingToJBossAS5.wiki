@@ -1,10 +1,10 @@
 #summary Provides guidance for running the sample application on JBoss AS 5
 
-= Introduction =
+= Deploying to JBoss AS 5 =
 
 JBoss AS 5 is a fully compliant Java EE 5 application server. It was first released to the community in December 2008, post dating the release of the book by several months. This page documents the problems that may be encountered running the sample application on JBoss AS 5 and guidance on how to get the deployment working.
 
-= Persistence problems =
+== Persistence problems ==
 
 If you take the WAR version of the sample application and attempt to deploy it to JBoss AS 5, you likely get the following exception when you attempt to look at a listing page:
 
