@@ -466,7 +466,7 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 			<case value="F">
 				<property name="project.selection" value="projects-ch05/open18"/>
 			</case>
-			<case value="H">
+			<case value="G">
 				<property name="project.selection" value="projects-ch06/open18"/>
 			</case>
 			<case value="H">
