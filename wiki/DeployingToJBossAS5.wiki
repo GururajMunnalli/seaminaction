@@ -50,7 +50,7 @@ GlassFish handles this more correctly, in my mind. If the persistence unit refer
 
 == Further explanation ==
 
-The reason this problem crops up is because Seam was designed under the assumption that the application server would not load persistence units in a WAR project (I talk about this in depth in chapter 9). JBoss AS 5 is compliant with Java EE 5 and therefore does load the persistence unit. As you figured out, it's necessary to get Seam to use this persistence unit, which on JBoss AS 5 is accomplished using the proprietary JNDI trick. It's also possible to setup a proper resource reference and refer to that, which again, I explain in chapter 9.
+The reason this problem crops up is because Seam was designed under the assumption that the application server would not load persistence units in a WAR project (I talk about this in depth in chapter 9). JBoss AS 5 is compliant with Java EE 5 and therefore does load the persistence unit (well, the spec is loose here and JBoss AS 5 doesn't wait for a persistence unit reference to give the green light).
 
 == Resources ==
 
