@@ -20,7 +20,7 @@ To fix the problem of how the persistence unit is loaded, make the following cha
 {{{
 <property name="jboss.entity.manager.factory.jndi.name" value="java:/open18EntityManagerFactory"/>
 }}}
-  * Disable the Seam-managed persistence unit in resources/WEB-INF/components.xml (or just erase it)
+  * Disable the Seam-managed persistence unit in resources/WEB-INF/components.xml (or just remove this component definition altogether)
 {{{
 <persistence:entity-manager-factory name="open18EntityManagerFactory" persistence-unit-name="open18" installed="false"/>
 }}}
