@@ -5,6 +5,8 @@
 
 seam-gen creates projects that deploy to JBoss AS out of the box. However, a Seam application can run on any Java EE application server or servlet container with the proper configuration. This section explains how to configure a seam-gen project to simultaneously support deployment to JBoss AS and GlassFish, as well as be able to start and stop the GlassFish server. The instructions here pertain to a seam-gen WAR project.
 
+In addition to this page, you can watch two presentations I gave on Aquarium TV covering things you need to know about running [http://wikis.sun.com/display/TheAquarium/Seam+and+WebBeans Seam on GlassFish].
+
 == Background ==
 
 All of the GlassFish-related commands use the prefix `gf-`. You use these commands exclusively when controlling and deploying to GlassFish. However, the semantics of the commands changes a bit. See the Commands section below for details.
