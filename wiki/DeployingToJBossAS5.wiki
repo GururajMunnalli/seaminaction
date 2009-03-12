@@ -29,6 +29,6 @@ The problem stems from the fact that JBoss AS 5 handles the deployment of persis
 
 This solution may seem a bit "hackish" because you are resorting to the proprietary JNDI binding that I spoke about in chapter 9. However, this is currently the only option (that I know about) when using JBoss AS 5 that loads exactly one persistence unit and gets Seam to use it.
 
-== Further explanation
+== Further explanation ==
 
 The reason this problem crops up is because Seam was designed under the assumption that the application server would not load persistence units in a WAR project (I talk about this in depth in chapter 9). JBoss AS 5 is compliant with Java EE 5 and therefore does load the persistence unit. As you figured out, it's necessary to get Seam to use this persistence unit, which on JBoss AS 5 is accomplished using the proprietary JNDI trick. It's also possible to setup a proper resource reference and refer to that, which again, I explain in chapter 9.
