@@ -24,6 +24,6 @@
 
   This problem is related to the hibernate.hbm2ddl.auto setting. If the option is set to "none" (and the database is replaced with the initial one from the sample code download) no duplicate mappings are present. If the setting is set to "update", then generate creates duplicate mappings after the next server restart.
 
-  It is actually a bug in Hibernate that I am trying to get corrected [http://opensource.atlassian.com/projects/hibernate/browse/HHH-3532 HHH-3532]. It just doesn't detect the foreign keys correctly and keeps creating them over and over.
+  It is actually a bug in Hibernate [http://opensource.atlassian.com/projects/hibernate/browse/HHH-3532 HHH-3532] that I am lobbying to get corrected. It just doesn't detect the foreign keys correctly and keeps creating them over and over.
 
   This issue has really bitten me hard and made setting up the sample application a little harder than it had to be. A workaround is to go into the tables and delete the duplicate foreign keys.
