@@ -40,7 +40,7 @@ At this point, you are ready to deploy your project (open18).
 
 GlassFish uses a different JNDI pattern than JBoss AS. (Truthfully, JBoss AS uses a strange proprietary prefix that is best to disable for compatibility). To prep the pattern so that it works on both servers, make the following to changes to the -ds.xml files.
 
-  # Remove the java:/ prefix where JNDI datasource is referenced
+  # Remove the java:/ prefix where JNDI datasource is referenced (in the persistence-`*`.xml files)
   # Add `<use-java-context>false</use-java-context>` to each datasource definition
 
 Several changes had to be made to project files that deal with the persistence unit accommodate switching between two servers. First, Ant filter tokens have been added to the following two files:
