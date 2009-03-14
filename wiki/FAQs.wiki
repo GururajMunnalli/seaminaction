@@ -2,6 +2,10 @@
 
 ----
 
+  * *When do I use @In vs @PersistenceContext to inject an EntityManager* *
+
+  Please see [http://seamframework.org/Documentation/WhenDoIUseInVsPersistenceContextToInjectAnEntityManager this FAQ] on the Seam wiki.
+
   * *Why is the @DataModelSelection property annotated with @Out and not @In? (golftips example)*
 
   The @DataModelSelection is a variation of the @In annotation. The @Out annotation turns around and pushes the selected item injected by @DataModelSelection back out into a context as a top-level variable. Without @Out, the selection would only be available while the method is executing.
@@ -18,7 +22,7 @@
 
   * *How does the default locale work? When is it used?*
 
-  The answer can be found on the [http://seamframework.org/Documentation/HowDoesTheDefaultLocaleWorkWhenIsItUsed Seam Wiki].
+  Please see [http://seamframework.org/Documentation/HowDoesTheDefaultLocaleWorkWhenIsItUsed this FAQ] on the Seam wiki.
 
   * *Why do the collections on the entities in the sample application appear more than once?*
 
