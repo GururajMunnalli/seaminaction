@@ -1,5 +1,5 @@
 #summary Details on how to get more out of seam-gen and work around current limitations
-#labels seam-gen,Featured,Oracle,serialVersionUID
+#labels seam-gen,Featured,Oracle,serialVersionUID,DB2
 
 = Overview =
 
