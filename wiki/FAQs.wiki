@@ -2,7 +2,7 @@
 
 ----
 
-  * *When do I use @In vs @PersistenceContext to inject an EntityManager* *
+  * *When do I use @In vs @PersistenceContext to inject an EntityManager*
 
   Please see [http://seamframework.org/Documentation/WhenDoIUseInVsPersistenceContextToInjectAnEntityManager this FAQ] on the Seam wiki.
 
