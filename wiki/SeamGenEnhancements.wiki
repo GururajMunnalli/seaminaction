@@ -66,7 +66,7 @@ Using DB2 v9.5, this results in an error, SQLState 42610, _A parameter marker is
 One way around this is to leverage the parameterized methods feature of JBoss EL to convert the value to lowercase and concat the % in the EL:
 
 {{{
-lower(person.firstName) LIKE lower(#{personList.person.firstName.toLowerCase().concat('%')})
+lower(person.firstName) LIKE #{personList.person.firstName.toLowerCase().concat('%')}
 }}}
 
 == Adding a serialVersionUID to generated entities ==
