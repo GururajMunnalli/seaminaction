@@ -3,9 +3,11 @@
 
 = Overview =
 
-seam-gen creates projects that deploy to JBoss AS out of the box. However, a Seam application can run on any Java EE application server or servlet container with the proper configuration. This section explains how to configure a seam-gen project to simultaneously support deployment to JBoss AS and GlassFish, as well as be able to start and stop the GlassFish server. The instructions here pertain to a seam-gen WAR project.
+In versions prior to Seam 2.1.2.GA, seam-gen creates projects that deploy to JBoss AS out of the box. However, a Seam application can run on any Java EE application server or servlet container with the proper configuration. This section explains how to configure a seam-gen project to simultaneously support deployment to JBoss AS and GlassFish, as well as be able to start and stop the GlassFish server. The instructions here pertain to a seam-gen WAR project.
 
 You can also watch two presentations I gave on Aquarium TV covering things you need to know about running [http://wikis.sun.com/display/TheAquarium/Seam+and+WebBeans Seam on GlassFish]. I talk specifically about EAR projects in those talks.
+
+But if you just want to get GlassFish support without doing any work at all, just check out Seam 2.1.2.GA (or the SVN trunk if Seam 2.1.2.GA has not yet been released). seam-gen now supports deployment to both JBoss AS and GlassFish out of the box. I talk about the upgrade in [http://in.relation.to/Bloggers/JBossAS5AndGlassFishSupportAddedToSeamgen this blog entry].
 
 == Background ==
 
