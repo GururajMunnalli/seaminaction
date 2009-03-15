@@ -29,7 +29,7 @@
     <property name="javac.deprecation" value="false" />
     <property name="debug" value="false" />
 
-    <import file="${basedir}/glassfish.build.xml"/>
+    <import file="${basedir}/glassfish-build.xml"/>
     
     <fileset id="lib" dir="${lib.dir}">
         <include name="*.jar" />
