@@ -27,7 +27,7 @@ Don't worry, the build will tell you if they are not set ;)
 Next, you need to grab the build file with the GlassFish commands and also the modified build.xml that imports this extended build file. The file [http://seaminaction.googlecode.com/svn/trunk/etc/glassfish-deployment glassfish-build.xml] is stored in the Seam in Action SVN repository. You import it by putting the following Ant import command outside of the project target:
 
 {{{
-<import file="${basedir}/glassfish.build.xml"/>
+<import file="${basedir}/glassfish-build.xml"/>
 }}}
 
 Before deploying the project to GlassFish, Hibernate needs to be deployed to GlassFish as a JPA provider. (It's possible to use TopLink Essentials as the JPA provider, which is bundled with GlassFish, but the fact that that provider does not support MANUAL flushing doesn't fit with how seam-gen generates code).
