@@ -3,6 +3,8 @@
 	<!-- This file consists of deployment targets for the GlassFish Application Server -->
 	<!-- Import it into your build using <import file="${basedir}/glassfish.build.xml"/> -->
 
+	<!-- In GlassFish V3, sessions can be preserved across redeploy using the keepSessions=true property -->
+
 	<macrodef name="asadmin">
 		<attribute name="cmd"/>
 		<attribute name="args" default=""/>
@@ -65,7 +67,7 @@
 		<asadmin cmd="deploydir" args="--name ${project.name} --contextroot ${project.name} ${war.dir}"/>
 	</target>
 
-	<target name="gf-hotdeploy" depends="gf-init,war"/>
+	<target name="gf-hotdeploy" depends="gf-init,war" description="Publish hot deployable artifacts."/>
 
 	<target name="gf-deploy" depends="gf-init,archive,gf-logging,gf-datasource"
 		description="Deploy the packaged archive to GlassFish">
