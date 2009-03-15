@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{HH:mm:ss} %p [%c{6}] %m%n"/>
+			<!-- Use the next pattern for super verbose information (slower) -->
+			<!-- <param name="ConversionPattern" value="%d{HH:mm:ss} [%p] %c#%M@%L => %m%n"/>-->
+		</layout>
+	</appender>
+
+	<category name="org.jboss.seam.init.Initialization">
+		<priority value="DEBUG"/>
+	</category>
+
+	<!-- digester is way too whiny -->
+	<category name="org.apache.commons.digester.Digester">
+		<priority value="WARN"/>
+	</category>
+
+	<category name="org.open18">
+		<priority value="DEBUG"/>
+	</category>
+
+	<root>
+		<priority value="INFO"/>
+		<appender-ref ref="CONSOLE"/>
+	</root>
+	
+</log4j:configuration>
