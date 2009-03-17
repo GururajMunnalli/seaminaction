@@ -1,4 +1,5 @@
 #summary Frequently asked questions
+#labels FAQ
 
 ----
 
@@ -9,6 +10,14 @@
   * *Why is the @DataModelSelection property annotated with @Out and not @In? (golftips example)*
 
   The @DataModelSelection is a variation of the @In annotation. The @Out annotation turns around and pushes the selected item injected by @DataModelSelection back out into a context as a top-level variable. Without @Out, the selection would only be available while the method is executing.
+
+  * *Why does the first row of the DataModel sometimes get selected (and outjected) before any explicit selection is performed?*
+
+  This commonly happens when you are using @Out and @DataModelSelection on the same field. You see, the @DataModelSelection is populated the next time bijection occurs on a component after the @DataModel is outjected. That can happen while the page is still rendering, not necessarily on the postback. For instance, let's say that the toString() method is called on the component. Seam will populated the @DataModelSelection field and then subsequently outject the value as defined by the @Out annotation.
+
+  My recommendation is to always use a different field for @Out and @DataModelSelection so that you can programmatically control when the object reference is transferred.
+
+  As for why the first row is always selected, when no row of a DataModel is explicitly selected, JSF leaves the pointer on the first row :(
 
   * *I get an error when using @RequestParameter on a field with a primitive type. Why?*
 
