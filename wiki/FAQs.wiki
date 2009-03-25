@@ -41,6 +41,31 @@
 
   This issue has really bitten me hard and made setting up the sample application a little harder than it had to be. A workaround is to go into the tables and delete the duplicate foreign keys.
 
+  * *What is the difference between components.properties and seam.properties*
+
+  Both files use the Java properties syntax (i.e., name=value pair). However, Seam uses them for different purposes.
+
+  Seam uses the values in components.properties to replace Ant-style tokens in the Seam component descriptor (e.g., WEB-INF/components.xml). For instance, if the property file contained the following line:
+
+{{{
+debug=true
+}}}
+
+  Seam would replace the @debug@ token in the following excerpt with the value true:
+
+{{{
+<core:init debug="@debug@"/>
+}}}
+
+
+  Seam uses the values in seam.properties to assign initial values to component definitions. The key consists of the component name plus the property name, joined by a '.' character. The property value becomes the initial value. For instance, you can disable Seam's transaction management as follows:
+
+{{{
+org.jboss.seam.core.init.transactionManagementEnabled=false
+}}}
+
+  Recall that both files must be located on the classpath of either the JAR (in the case of an EAR) or WEB-INF/classes (in the case of a standalone WAR).
+
   * *How do I send e-mail with Java?*
 
   Personally I dreaded sending e-mail in Java until I started using Seam. In fairness, Spring supporters could say the same thing about their framework. jBPM is yet another interface. Those are the APIs to the mail you are calling for.
