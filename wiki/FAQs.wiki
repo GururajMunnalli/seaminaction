@@ -41,7 +41,7 @@
 
   This issue has really bitten me hard and made setting up the sample application a little harder than it had to be. A workaround is to go into the tables and delete the duplicate foreign keys.
 
-  * *What is the difference between components.properties and seam.properties*
+  * *What is the difference between components.properties and seam.properties?*
 
   Both files use the Java properties syntax (i.e., name=value pair). However, Seam uses them for different purposes.
 
