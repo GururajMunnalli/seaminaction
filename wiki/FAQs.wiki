@@ -40,3 +40,11 @@
   It is actually a bug in Hibernate [http://opensource.atlassian.com/projects/hibernate/browse/HHH-3532 HHH-3532] that I am lobbying to get corrected. It just doesn't detect the foreign keys correctly and keeps creating them over and over.
 
   This issue has really bitten me hard and made setting up the sample application a little harder than it had to be. A workaround is to go into the tables and delete the duplicate foreign keys.
+
+  * *How do I send e-mail with Java?*
+
+  Personally I dreaded sending e-mail in Java until I started using Seam. In fairness, Spring supporters could say the same thing about their framework. jBPM is yet another interface. Those are the APIs to the mail you are calling for.
+
+  I would discourage anyone from using yet another homegrown wrapper around the JavaMail API and instead use e-mail support from their framework. I even consider the commons-email a bit too one-offish. For instance, in Seam you can compose e-mails using XHTML templates. To me, that is the type of ease one should have when composing an email. Reason being that email is probably the most ubiqutous technology.
+
+  
