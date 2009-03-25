@@ -66,6 +66,12 @@ org.jboss.seam.core.init.transactionManagementEnabled=false
 
   Recall that both files must be located on the classpath of either the JAR (in the case of an EAR) or WEB-INF/classes (in the case of a standalone WAR).
 
+  * *What if I need to perform business validations in a service layer?*
+
+  Seam is not saying "never use middleman components, they are evil" but rather that you can do away with them when they serve no purpose. If you have a need to validate business logic using an external service or layer, then introduce a view-oriented component than can translate those violations into user interface messages and/or routing. Basically, do what feels most natural. Remember, you can inject your service into your Seam component using @In. In fact, your service might even be a Seam component itself.
+
+  You can also use the Hibernate Validator or Bean Validation in the service layer to validate. The tricky part is how to validate a populated object and still be able to present the user with the form again with the validation error messages. For that, you may want to check out the [http://livedemo.exadel.com/richfaces-demo/richfaces/graphValidator.jsf?c=graphValidator&tab=usage graphValidator] component from RichFaces.
+
   * *How do I send e-mail with Java?*
 
   Personally I dreaded sending e-mail in Java until I started using Seam. In fairness, Spring supporters could say the same thing about their framework. jBPM is yet another interface. Those are the APIs to the mail you are calling for.
