@@ -1,0 +1,61 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+	<ui:define name="head">
+<style type="text/css">
+table.designs td {
+	text-align: center;
+	width: 25%;
+}
+
+a.design {
+	text-decoration: none;
+	color: inherit;
+}
+
+a.design:hover {
+	text-decoration: underline;
+}
+</style>
+	</ui:define>
+
+    <ui:define name="body">
+
+		<h1>Designs for #{companyHome.instance.name}</h1>
+
+		<h:panelGroup rendered="#{empty designs}">
+			<p><em>No designs found.</em></p>
+		</h:panelGroup>
+
+		<rich:dataGrid var="_design" value="#{designs}" columns="4" styleClass="designs" rendered="#{not empty designs}">
+			<h:panelGroup>
+				<s:link style="border: none;" view="/design.xhtml" propagation="none">
+					<f:param name="design" value="#{_design.id}"/>
+					<s:graphicImage value="#{_design.imageData}">
+						<s:transformImageSize width="300" maintainRatio="true"/>
+					</s:graphicImage>
+				</s:link>
+				<br/>
+				<strong>
+					<s:link styleClass="design" view="/design.xhtml" propagation="none" value="#{_design.title}">
+						<f:param name="design" value="#{_design.id}"/>
+					</s:link>
+				</strong>
+			</h:panelGroup>
+		</rich:dataGrid>
+
+		<div class="actionButtons">
+			<s:button view="/designUpload.xhtml" value="Upload design" propagation="none"/>
+		</div>
+
+    </ui:define>
+
+</ui:composition>
+

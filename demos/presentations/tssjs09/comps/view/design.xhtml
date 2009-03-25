@@ -1,0 +1,45 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h1>#{designHome.instance.title}</h1>
+
+		<s:graphicImage value="#{designHome.instance.imageData}"/>
+
+		<p>Uploaded by #{designHome.instance.owner} on#{' '}<h:outputText value="#{designHome.instance.dateCreated}"><s:convertDateTime type="both"/></h:outputText></p>
+
+		<p><em>#{designHome.instance.description}</em></p>
+
+		<s:fragment rendered="#{s:hasPermission(designHome.instance, 'seam.read-permissions')}">
+		<h3>Permissions:</h3>
+		<ul>
+			<ui:repeat var="_permission" value="#{permissionManager.listPermissions(designHome.instance)}">
+			   <li>The #{_permission.recipient.class.simpleName} <em>#{_permission.recipient}</em> is granted the <em>#{_permission.action}</em> permission.</li>
+			</ui:repeat>
+		</ul>
+		</s:fragment>
+		
+		<div class="actionButtons">
+			<s:button view="/designPermission.xhtml" value="Assign permissions" propagation="none" rendered="#{s:hasPermission(designHome.instance, 'seam.grant-permission')}"/>
+		</div>
+
+		<h:panelGroup rendered="#{not empty company}">
+			<p>
+				<s:link view="/designs.xhtml" value="&lt; Back to designs" propagation="none">
+					<f:param name="company" value="#{company}"/>
+				</s:link>
+			</p>
+		</h:panelGroup>
+
+	</ui:define>
+
+</ui:composition>
+

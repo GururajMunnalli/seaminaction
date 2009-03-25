@@ -1,0 +1,66 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+
+		<h1>Design Permissions</h1>
+
+		<s:graphicImage value="#{designHome.instance.imageData}">
+			<s:transformImageSize width="300" maintainRatio="true"/>
+		</s:graphicImage>
+
+		<h:form>
+			<rich:panel style="width: 500px;">
+				<s:decorate id="rolesField" template="/layout/edit.xhtml">
+					<ui:define name="label">Roles</ui:define>
+            	    <div class="selectMany">
+            	        <h:selectManyListbox id="roles" value="#{designPermission.grantedRoles}" size="4">
+            	            <s:selectItems value="#{identityManager.listRoles()}" var="_role" label="#{_role}"/>
+            	        </h:selectManyListbox>
+            	   </div>
+				</s:decorate>
+
+				<s:decorate id="membersField" template="/layout/edit.xhtml">
+					<ui:define name="label">Members</ui:define>
+            	    <div class="selectMany">
+            	        <h:selectManyListbox id="members" value="#{designPermission.grantedMembers}" size="4">
+            	            <s:selectItems value="#{identityManager.listUsers()}" var="_username" label="#{_username}"/>
+            	        </h:selectManyListbox>
+            	   </div>
+				</s:decorate>
+
+				<s:decorate id="actionsField" template="/layout/edit.xhtml">
+					<ui:define name="label">Actions</ui:define>
+            	    <div class="selectMany">
+            	        <h:selectManyListbox id="actions" value="#{designPermission.grantedActions}" size="4">
+            	            <s:selectItems value="#{permissionManager.listAvailableActions(designHome.instance)}" var="_action" label="#{_action}"/>
+            	        </h:selectManyListbox>
+            	   </div>
+				</s:decorate>
+
+				<s:decorate id="appendField" template="/layout/edit.xhtml">
+					<ui:define name="label">Append?</ui:define>
+					<h:selectBooleanCheckbox name="append" value="#{designPermission.append}"/> (otherwise, existing permissions will be cleared)
+				</s:decorate>
+
+				<div style="clear: both;"/>
+
+			</rich:panel>
+
+			<div class="actionButtons">
+				<h:commandButton action="#{designPermission.applyPermissions}" value="Apply"/>
+				<s:button view="/design.xhtml" value="Cancel"/>
+			</div>
+		</h:form>
+
+    </ui:define>
+
+</ui:composition>
+

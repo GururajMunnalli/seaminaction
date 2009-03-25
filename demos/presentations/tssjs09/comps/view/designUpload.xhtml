@@ -1,0 +1,41 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h1>Upload Design</h1>
+
+		<h:form enctype="multipart/form-data">
+			<rich:panel>
+			<s:decorate id="imageField" template="/layout/edit.xhtml">
+				<ui:define name="label">Image</ui:define>
+				<s:fileUpload id="image" data="#{design.imageData}" contentType="#{design.imageContentType}" accept="image/*" required="true"/>
+			</s:decorate>
+			<s:decorate id="titleField" template="/layout/edit.xhtml">
+				<ui:define name="label">Title</ui:define>
+				<h:inputText id="title" value="#{design.title}" required="true"/>
+			</s:decorate>
+			<s:decorate id="descriptionField" template="/layout/edit.xhtml">
+				<ui:define name="label">Description</ui:define>
+				<h:inputTextarea id="description" rows="4" cols="30" value="#{design.description}"/>
+			</s:decorate>
+			<div style="clear:both">
+				<span class="required">*</span> required fields
+			</div>
+			</rich:panel>
+			<div class="actionButtons">
+				<h:commandButton action="#{designManager.upload}" value="Upload"/>
+				<s:button view="/designs.xhtml" value="Cancel" propagation="end"/>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,42 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h1>Assign User to Company</h1>
+
+		<h:form id="companyAppointment">
+			<rich:panel styleClass="useradmin">
+				<s:decorate id="nameField" template="/layout/display.xhtml">
+					<ui:define name="label">Username</ui:define>
+					#{selectedAccount.username}
+				</s:decorate>
+				<s:decorate id="companyField" template="/layout/edit.xhtml">
+					<ui:define name="label">Company</ui:define>
+					<h:selectOneMenu id="company" value="#{selectedAccount.company}">
+						<s:selectItems var="_company" value="#{companies}"
+							label="#{_company.name}" noSelectionLabel="Unassigned"/>
+						<s:convertEntity />
+					</h:selectOneMenu>
+				</s:decorate>
+
+				<div style="clear: both;" />
+
+			</rich:panel>
+
+			<div class="actionButtons">
+				<h:commandButton action="#{companyAppointer.save}" value="Assign"/>
+				<s:button view="/useradmin/usermanager.xhtml" value="Cancel" propagation="end"/>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

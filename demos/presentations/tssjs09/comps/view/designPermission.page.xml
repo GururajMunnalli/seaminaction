@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/pages
+		http://jboss.com/products/seam/pages-2.1.xsd" login-required="true">
+
+	<param name="design" value="#{designHome.designId}"/>
+
+	<action execute="#{designHome.load}"/>
+
+	<navigation from-action="#{designHome.load}">
+		<rule if="#{designHome.definedInstance == null}">
+			<redirect view-id="/home.xhtml"/>
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{designPermission.applyPermissions}">
+		<rule>
+			<redirect view-id="/design.xhtml"/>
+		</rule>
+	</navigation>
+
+</page>

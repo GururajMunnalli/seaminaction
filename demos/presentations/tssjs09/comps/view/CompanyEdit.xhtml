@@ -1,0 +1,137 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="company" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{companyHome.managed ? 'Edit' : 'Add'} Company</f:facet>
+
+            <s:decorate id="nameField" template="layout/edit.xhtml">
+                <ui:define name="label">Name</ui:define>
+                <h:inputTextarea id="name"
+                               cols="80"
+                               rows="3"
+                              value="#{companyHome.instance.name}"/>
+            </s:decorate>
+
+            <s:decorate id="clientsField" template="layout/edit.xhtml" rendered="#{companyHome.managed}">
+                <ui:define name="label">Clients</ui:define>
+                <div class="selectMany">
+                    <h:selectManyCheckbox id="name" value="#{companyHome.clients}" layout="pageDirection">
+                        <s:selectItems var="_company" value="#{otherCompanies}" label="#{_company.name}"/>
+                        <s:convertEntity/>
+                    </h:selectManyCheckbox>
+                </div>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{companyHome.persist}"
+                       disabled="#{!companyHome.wired}"
+                       rendered="#{!companyHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{companyHome.update}"
+                       rendered="#{companyHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{companyHome.remove}"
+                      immediate="true"
+                       rendered="#{companyHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Company.xhtml"
+                rendered="#{companyHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty companyFrom ? 'CompanyList' : companyFrom}.xhtml"
+                rendered="#{!companyHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Designs">
+        <h:form styleClass="association" id="designsChildren">
+
+            <h:outputText value="There are no designs associated with this company."
+                       rendered="#{empty companyHome.designs}"/>
+
+            <rich:dataTable value="#{companyHome.designs}"
+                           var="_design"
+                      rendered="#{not empty companyHome.designs}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="designsTable">
+                <rich:column sortBy="#{_design.id}">
+                    <f:facet name="header">Id</f:facet>
+                    <h:outputText value="#{_design.id}"/>
+                </rich:column>
+                <rich:column sortBy="#{_design.dateCreated}">
+                    <f:facet name="header">Date created</f:facet>
+                    <h:outputText value="#{_design.dateCreated}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_design.description}">
+                    <f:facet name="header">Description</f:facet>
+                    <h:outputText value="#{_design.description}"/>
+                </rich:column>
+                <rich:column sortBy="#{_design.imageContentType}">
+                    <f:facet name="header">Image content type</f:facet>
+                    <h:outputText value="#{_design.imageContentType}"/>
+                </rich:column>
+                <rich:column sortBy="#{_design.imageData}">
+                    <f:facet name="header">Image data</f:facet>
+                    <h:outputText value="#{_design.imageData}"/>
+                </rich:column>
+                <rich:column sortBy="#{_design.title}">
+                    <f:facet name="header">Title</f:facet>
+                    <h:outputText value="#{_design.title}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{companyHome.managed}" id="designs">
+        <div class="actionButtons">
+            <s:button id="adddesign"
+                   value="Add design"
+                    view="/DesignEdit.xhtml"
+             propagation="none">
+                 <f:param name="companyId"
+                         value="#{companyHome.instance.id}"/>
+                 <f:param name="designFrom" value="Company"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

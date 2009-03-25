@@ -1,0 +1,23 @@
+- entity class names for identity management don't have to be named User and Role
+	- in this case MemberAccount and MemberRole
+- two companies, a design firm and a client
+- each member is associated with a company + one super admin
+- rules give members and to their stuff; employees access to companies stuff and clients; admin global access
+	- show how rule set is fed into Seam
+
+- show how a rule allows a user in admin role to manage identities
+	<restrict> on /view/useradmin/usermanager.page.xml
+
+- member can upload design and view own design (independent of ACL)
+	<restrict> on /view/design.page.xml
+
+- grant access to design to single member, verify they can see it but no one else
+- grant access to the member role, verify that all members can see it, but not guests
+- grant access to client, verify that employees of that company can see it
+
+- show how the list of designs is filtered
+- show how the permissions are assigned
+- show how available actions for target type are defined using annotations
+- show how permissions are granted, both when uploading and assigning permission to design
+
+- go down list of rules in resources/security.drl

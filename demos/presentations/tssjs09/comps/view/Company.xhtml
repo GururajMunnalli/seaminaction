@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Company Details</f:facet>
+
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">Name</ui:define>
+            <h:outputText value="#{companyHome.instance.name}"/>
+        </s:decorate>
+
+        <s:decorate id="clients" template="layout/display.xhtml">
+            <ui:define name="label">Clients</ui:define>
+            <ui:repeat var="_company" value="#{companyHome.clients}">#{_company.name}<br/></ui:repeat>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CompanyEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty companyFrom ? 'CompanyList' : companyFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Designs</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="designsChildren">
+
+        <h:outputText value="There are no designs associated with this company."
+                   rendered="#{empty companyHome.designs}"/>
+
+        <rich:dataTable value="#{companyHome.designs}"
+                       var="_design"
+                  rendered="#{not empty companyHome.designs}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="designsTable">
+            <rich:column sortBy="#{_design.id}">
+                <f:facet name="header">Id</f:facet>
+                <h:outputText value="#{_design.id}"/>
+            </rich:column>
+            <rich:column sortBy="#{_design.dateCreated}">
+                <f:facet name="header">Date created</f:facet>
+                <h:outputText value="#{_design.dateCreated}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_design.description}">
+                <f:facet name="header">Description</f:facet>
+                <h:outputText value="#{_design.description}"/>
+            </rich:column>
+            <rich:column sortBy="#{_design.imageContentType}">
+                <f:facet name="header">Image content type</f:facet>
+                <h:outputText value="#{_design.imageContentType}"/>
+            </rich:column>
+            <rich:column sortBy="#{_design.imageData}">
+                <f:facet name="header">Image data</f:facet>
+                <h:outputText value="#{_design.imageData}"/>
+            </rich:column>
+            <rich:column sortBy="#{_design.title}">
+                <f:facet name="header">Title</f:facet>
+                <h:outputText value="#{_design.title}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectdesign"
+                     value="Select"
+                      view="/Design.xhtml">
+                    <f:param name="designId"
+                            value="#{_design.id}"/>
+                    <f:param name="designFrom" value="Company"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add design"
+                view="/DesignEdit.xhtml">
+            <f:param name="companyId"
+                    value="#{companyHome.instance.id}"/>
+            <f:param name="designFrom" value="Company"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

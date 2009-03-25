@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:framework="http://jboss.com/products/seam/framework"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation=
+                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.1.xsd
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.1.xsd
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.1.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.1.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.1.xsd
+                 http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.1.xsd">
+
+   <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
+
+   <core:manager concurrent-request-timeout="500"
+                 conversation-timeout="120000"
+                 conversation-id-parameter="cid"
+                 parent-conversation-id-parameter="pid"/>
+
+   <!-- Make sure this URL pattern is the same as that used by the Faces Servlet -->
+   <web:hot-deploy-filter url-pattern="*.seam"/>
+
+   <web:multipart-filter max-request-size="5242880" create-temp-files="false"/>
+
+   <persistence:entity-manager-factory name="entityManagerFactory"
+                      persistence-unit-name="comps"
+                                  installed="@seamBootstrapsPu@"/>
+
+   <persistence:managed-persistence-context name="entityManager" auto-create="true"
+                          entity-manager-factory="@seamEmfRef@"
+                      persistence-unit-jndi-name="@puJndiName@"/>
+
+   <drools:rule-base name="securityRules">
+      <drools:rule-files><value>/security.drl</value></drools:rule-files>
+   </drools:rule-base>
+
+   <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
+
+   <security:jpa-identity-store
+      user-class="org.designworkz.comps.model.MemberAccount"
+      role-class="org.designworkz.comps.model.MemberRole"/>
+
+   <security:jpa-permission-store user-permission-class="org.designworkz.comps.model.MemberPermission"/>
+
+   <security:remember-me enabled="true"/>
+
+   <event type="org.jboss.seam.security.notLoggedIn">
+      <action execute="#{redirect.captureCurrentView}"/>
+   </event>
+   <event type="org.jboss.seam.security.loginSuccessful">
+      <action execute="#{redirect.returnToCapturedView}"/>
+   </event>
+   
+   <component name="design" class="org.designworkz.comps.model.Design">
+      <property name="owner">#{identity.username}</property>
+      <property name="company">#{companyHome.definedInstance}</property>
+   </component>
+
+   <framework:entity-query name="companiesQuery"
+      ejbql="select c from Company c"
+      order="c.name asc"/>
+   <factory name="companies" value="#{companiesQuery.resultList}" scope="conversation"/>
+
+   <framework:entity-query name="otherCompaniesQuery"
+      ejbql="select c from Company c"
+      order="c.name asc">
+      <framework:restrictions>
+         <value>c != #{companyHome.instance}</value>
+      </framework:restrictions>
+   </framework:entity-query>
+   <factory name="otherCompanies" value="#{otherCompaniesQuery.resultList}" scope="conversation"/>
+   
+</components>

@@ -1,0 +1,16 @@
+#Wed Aug 06 19:35:32 BST 2008
+action.package=org.example.tssjs.action
+action.sources=/openid/src/hot
+eclipse.preferences.version=1
+model.package=org.example.tssjs.model
+model.sources=/openid/src/main
+seam.ejb.project=openid
+seam.project.connection.profile=
+seam.project.deployment.type=war
+seam.project.settings.version=1.1
+seam.project.web.root.folder=/openid/view
+seam.runtime.name=
+seam.test.creating=true
+seam.test.project=openid
+test.package=org.example.tssjs.test
+test.sources=/openid/src/test

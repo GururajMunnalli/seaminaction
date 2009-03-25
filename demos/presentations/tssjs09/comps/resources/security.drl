@@ -1,0 +1,102 @@
+package Permissions;
+
+dialect 'mvel'
+
+import java.security.Principal;
+
+import org.jboss.seam.security.permission.PermissionCheck;
+import org.jboss.seam.security.permission.RoleCheck;
+import org.jboss.seam.security.Role;
+
+import org.designworkz.comps.model.Company;
+import org.designworkz.comps.model.Design;
+import org.designworkz.comps.model.MemberAccount;
+
+// DEMO NOTE: Blanket rule that let's admin use IdentityManager
+rule ManageAccount
+   no-loop
+   // The first rule in an activation-group to fire will cancel the
+   // other rules activations (stop them from firing). The activation
+   // group can be any string, as long as the string is identical for
+   // all the rules you need to be in the one group.
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(name == "seam.user" || == "seam.role", granted == false)
+   Role(name == "admin")
+then
+   $perm.grant();
+end
+
+// DEMO NOTE: Allows member to read roles for ACL assignment
+rule ReadUsersAndRoles
+   no-loop
+   activation-group "permissions"
+when
+   $perm: PermissionCheck(name == "seam.user" || == "seam.role", action == "read", granted == false)
+   Role(name == "member")
+then
+   $perm.grant();
+end
+
+// DEMO NOTE: Rule controls context of permission
+rule UploadDesign
+   no-loop
+   activation-group "permissions"
+when
+   MemberAccount($company : company)
+   $design: Design($client : company -> ($client.isClientOf($company)))
+   $perm: PermissionCheck(target == $design, action == "upload", granted == false)
+then
+   $perm.grant();
+end
+
+// DEMO NOTE: Rule controls context of permission
+rule ViewOwnDesign
+   no-loop
+   activation-group "permissions"
+when
+   $member: MemberAccount()
+   $design: Design(owner == $member.username)
+   $perm: PermissionCheck(target == $design, action == "view", granted == false)
+then
+   $perm.grant();
+end
+
+// DEMO NOTE: Allows owner of design to use PermissionManager for ACL assignment
+rule ManageDesignPermissions
+   no-loop
+   activation-group "permissions"
+when
+   $member: MemberAccount()
+   $design: Design(owner == $member.username)
+   $perm: PermissionCheck(target == $design, action == "seam.grant-permission" || == "seam.revoke-permission" || == "seam.read-permissions", granted == false)
+then
+   $perm.grant();
+end
+
+// DEMO NOTE: example of a conditional role (rule+ACL)
+rule ClientViewDesign
+   no-loop
+   activation-group "permissions"
+when
+   $member: MemberAccount()
+//   $design: Design($company : company -> ($company.id.equals($member.company.id))) // For some reason Drools cannot dereference here; use convenience method instead
+   $design: Design($company : company -> ($company.hasMember($member)))
+   PermissionCheck(target == $design, action == "view", granted == false)
+   $role: RoleCheck(name == "client")
+then
+   $role.grant();
+end
+
+// DEMO NOTE: example of a conditional role (rule+ACL); no Principal required
+// FIXME will never run for non-authenticated user since PersistentPermissionResolver quits if isLoggedIn() is false
+rule GuestViewDesign
+   no-loop
+   activation-group "permissions"
+when
+   $design: Design()
+   PermissionCheck(target == $design, action == "view", granted == false)
+   $role: RoleCheck(name == "guest")
+then
+   $role.grant();
+end

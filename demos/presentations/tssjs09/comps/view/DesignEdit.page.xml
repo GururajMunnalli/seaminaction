@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+      no-conversation-view-id="/DesignList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{designHome.wire}"/>
+
+   <param name="designFrom"/>
+   <param name="designId" value="#{designHome.designId}"/>
+   <param name="companyFrom"/>
+   <param name="companyId" value="#{companyHome.companyId}"/>
+
+
+
+   <navigation from-action="#{designHome.persist}">
+      <rule>
+         <end-conversation/>
+         <redirect view-id="/Design.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{designHome.update}">
+      <rule>
+         <end-conversation/>
+         <redirect view-id="/Design.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{designHome.remove}">
+      <rule>
+         <end-conversation/>
+         <redirect view-id="/DesignList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+      no-conversation-view-id="/MemberAccountList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{memberAccountHome.wire}"/>
+
+   <param name="memberAccountFrom"/>
+   <param name="memberAccountId" value="#{memberAccountHome.memberAccountId}"/>
+
+
+   <navigation from-action="#{memberAccountHome.persist}">
+      <rule>
+         <end-conversation/>
+         <redirect view-id="/MemberAccount.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{memberAccountHome.update}">
+      <rule>
+         <end-conversation/>
+         <redirect view-id="/MemberAccount.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{memberAccountHome.remove}">
+      <rule>
+         <end-conversation/>
+         <redirect view-id="/MemberAccountList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>
