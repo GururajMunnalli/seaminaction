@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:decorate template="detailPanel.xhtml">
+		<ui:param name="itemType" value="Monitoring Location"/>
+		<ui:param name="dataTableContainerId" value="dtc"/>
+		<ui:param name="itemManager" value="#{mlocListEditor}"/>
+		<tpl:context component="#{mlocListEditor}">
+			<s:decorate id="id" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">ID</ui:define>
+				<h:outputText value="#{itemDetails.id}" rendered="#{displayMode}"/>
+				<h:inputText id="idf" value="#{itemDetails.id}" rendered="#{editMode}" size="18" required="true"/>
+			</s:decorate>
+			<s:decorate id="nm" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Name</ui:define>
+				<h:outputText value="#{itemDetails.name}" rendered="#{displayMode}"/>
+				<h:inputText id="nmf" value="#{itemDetails.name}" rendered="#{editMode}" size="18" required="true"/>
+			</s:decorate>
+			<s:decorate id="t" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Type</ui:define>
+				<h:outputText value="#{itemDetails.type.name}" rendered="#{displayMode}"/>
+				<ui:remove><!-- <rich:inplaceSelect id="type" value="#{itemDetails.type}" required="true" defaultLabel="Click to select" rendered="#{editMode}"> --></ui:remove>
+				<h:selectOneMenu id="tf" value="#{itemDetails.type}" required="true" rendered="#{editMode}">
+					<s:selectItems var="_type" value="#{monitoringLocationTypes}" label="#{_type.name}" noSelectionLabel="Click to select..."/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+			</s:decorate>
+			<ui:remove><!-- TODO: need to keep endlines in description --></ui:remove>
+			<s:decorate id="dsc" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Description</ui:define>
+				<h:outputText value="#{itemDetails.description}" rendered="#{displayMode}"/>
+				<h:inputTextarea id="dscf" value="#{itemDetails.description}" rows="3" cols="60" rendered="#{editMode}" size="18"/>
+			</s:decorate>
+			<s:decorate id="org" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Organization</ui:define>
+				<h:outputText value="#{itemDetails.organization.name}" rendered="#{displayMode}"/>
+				<h:selectOneMenu id="orgf" value="#{itemDetails.organization}" required="true" rendered="#{editMode}">
+					<s:selectItems var="_org" value="#{organizations}" label="#{_org.name}" noSelectionLabel="Click to select..."/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+			</s:decorate>
+			<s:decorate id="loc" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Location</ui:define>
+				<h:outputText value="#{itemDetails.county.name} - #{itemDetails.state.abbreviation}" rendered="#{displayMode}"/>
+				<h:panelGroup rendered="#{editMode}">
+					<fld:county id="locf" property="editCountyLabel" suggestMethod="filterCounty"/>
+				</h:panelGroup>
+			</s:decorate>
+			<s:decorate id="huc" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">HUC8</ui:define>
+				<h:outputText value="#{itemDetails.huc8}" rendered="#{displayMode}"/>
+				<h:inputText id="hucf" value="#{itemDetails.huc8}" rendered="#{editMode}" size="6"/>
+			</s:decorate>
+			<s:decorate id="lat" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Latitude</ui:define>
+				<h:outputText value="#{itemDetails.latitude}" rendered="#{displayMode}"/>
+				<h:inputText id="latf" value="#{itemDetails.latitude}" rendered="#{editMode}" size="3" required="true"/>
+			</s:decorate>
+			<s:decorate id="lon" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Longitude</ui:define>
+				<h:outputText value="#{itemDetails.longitude}" rendered="#{displayMode}"/>
+				<h:inputText id="lonf" value="#{itemDetails.longitude}" rendered="#{editMode}" size="3" required="true"/>
+			</s:decorate>
+			<s:decorate id="hdat" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">HZ Ref Datum</ui:define>
+				<h:outputText value="#{itemDetails.horizontalReferenceDatum.name}" rendered="#{displayMode}"/>
+				<h:selectOneMenu id="hdatf" value="#{itemDetails.horizontalReferenceDatum}" required="true" rendered="#{editMode}">
+					<s:selectItems var="_datum" value="#{horizontalRefDatums}" label="#{_datum.name}" noSelectionLabel="Click to select..."/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+			</s:decorate>
+			<s:decorate id="hcol" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">HZ Collection Method</ui:define>
+				<h:outputText value="#{itemDetails.horizontalCollectionMethod.name}" rendered="#{displayMode}"/>
+				<h:selectOneMenu id="hcol" value="#{itemDetails.horizontalCollectionMethod}" required="true" rendered="#{editMode}">
+					<s:selectItems var="_meth" value="#{horizontalCollectionMethods}" label="#{_meth.name}" noSelectionLabel="Click to select..."/>
+					<s:convertEntity/>
+				</h:selectOneMenu>
+			</s:decorate>
+		</tpl:context>
+	</ui:decorate>
+</ui:composition>

@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<tpl:default var="noSelectionLabel" value="Not set"/>
+	<tpl:default var="label" value=""/>
+	<tpl:default var="rendered" value="true"/>
+	<rich:inplaceSelect id="#{id}f" label="#{label}" value="#{component[property]}" defaultLabel="#{noSelectionLabel}"
+		rendered="#{rendered}">
+		<s:selectItems var="_o" value="#{items}" label="#{_o[labelProperty]}" noSelectionLabel="#{noSelectionLabel}"/>
+		<s:convertEntity/>
+		<ui:insert/>
+	</rich:inplaceSelect>
+</ui:composition>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/pages
+		http://jboss.com/products/seam/pages-2.0.xsd">
+
+	<!-- This trick forces navigation on entry into the page -->
+	<action execute="#{identity.isLoggedIn()}" if="#{empty param['javax.faces.ViewState'] and not empty identity.principal}"/>
+
+	<navigation from-action="#{identity.isLoggedIn()}">
+		<rule>
+			<redirect view-id="/mlocs.xhtml"/>
+		</rule>
+	</navigation>
+
+	<navigation from-action="#{identity.login()}">
+		<rule if-outcome="loggedIn">
+			<redirect view-id="/mlocs.xhtml"/>
+		</rule>
+	</navigation>
+</page>

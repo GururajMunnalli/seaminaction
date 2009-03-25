@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:remove>
+Template Parameters:
+itemDetails - The entity instance being viewed/edited
+itemType - The name of the entity type, which is displayed in the title bar
+itemManager - The component responsible for handling CRUD and select operations for the entity instance.
+dataTableContainerId - The id of the background data table, which is updated when the entity instance changes.
+	</ui:remove>
+	<a:outputPanel id="dtlFrg" layout="none">
+		<rich:modalPanel id="dtlPnl" height="0" top="50" width="600" rendered="#{itemDetails != null}" showWhenRendered="true" moveable="false" resizeable="false">
+			<f:facet name="header">#{itemType} Details</f:facet>
+			<f:facet name="controls">
+				<h:form id="ctl">
+					<a:commandLink id="prv" action="#{itemManager.previousItem()}" reRender="idx,dtl">
+						<h:graphicImage value="/img/prvrec.png" alt="Previous" title="Previous" style="vertical-align: middle;"/>
+					</a:commandLink>
+					<a:outputPanel id="idx" style="vertical-align: middle;">#{_}#{itemManager.indexOfSelectedItem + 1}#{_}</a:outputPanel>
+					<a:commandLink id="nxt" action="#{itemManager.nextItem()}" reRender="idx,dtl">
+						<h:graphicImage value="/img/nxtrec.png" alt="Next" title="Next" style="vertical-align: middle;"/>
+					</a:commandLink>
+					#{_}
+					<a:commandLink id="cls" action="#{itemManager.closeItemDetail()}" reRender="dtlFrg">
+						<h:graphicImage value="/img/close.png" alt="Close" title="Close" style="vertical-align: middle; margin-left: 3px; margin-bottom: 1px;"/>
+					</a:commandLink>
+				</h:form>
+			</f:facet>
+			<h:form id="dtl">
+				<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
+				<ui:insert/>
+				<div style="clear: both;">
+					<s:span rendered="#{editMode}"><span class="required">*</span> required fields</s:span>
+				</div>
+				<div class="actionButtons">
+					<a:commandButton action="#{itemManager.saveItemDetail()}" reRender="dtl,#{dataTableContainerId}" value="Save" rendered="#{editMode}"/>
+					<a:commandButton action="#{itemManager.cancelEditItemDetail()}" reRender="dtl" value="Cancel" rendered="#{editMode}" ajaxSingle="true"/>
+					<a:commandButton action="#{itemManager.editItemDetail()}" reRender="dtl" value="Edit" rendered="#{displayMode}" ajaxSingle="true"/>
+					<a:commandButton action="#{itemManager.closeItemDetail()}" reRender="dtlFrg" value="Close" rendered="#{displayMode}" ajaxSingle="true"/>
+				</div>
+			</h:form>
+		</rich:modalPanel>
+	</a:outputPanel>
+</ui:composition>

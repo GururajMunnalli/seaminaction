@@ -1,0 +1,16 @@
+archive
+buildtest
+clean
+compileactions
+compilemodel
+compiletest
+copyclasses
+copytestclasses
+deploy
+explode
+init
+restart
+test
+undeploy
+unexplode
+war

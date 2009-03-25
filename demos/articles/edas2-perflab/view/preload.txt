@@ -1,0 +1,16 @@
+	<ui:define name="head">
+	<script type="text/javascript">
+var prvpg = new Image();
+prvpg.src = '#{request.contextPath}/img/prvpg.png';
+var nxtpg = new Image();
+nxtpg.src = '#{request.contextPath}/img/nxtpg.png';
+var edit = new Image();
+edit.src = '#{request.contextPath}/img/pencil.png';
+var del = new Image();
+del.src = '#{request.contextPath}/img/delete.png';
+var save = new Image();
+save.src = '#{request.contextPath}/img/accept.png';
+var cncl = new Image();
+cancel.src = '#{request.contextPath}/img/cancel.png';
+	</script>
+	</ui:define>

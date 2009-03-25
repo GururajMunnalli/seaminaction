@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://java.sun.com/xml/ns/persistence/orm
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+	<persistence-unit-metadata>
+		<persistence-unit-defaults>
+			<entity-listeners>
+				<entity-listener
+					class="com.tetratech.edas2.persistence.AttributableEntityListener" />
+			</entity-listeners>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<named-query name="Organization.getReserved">
+		<query><![CDATA[
+			select
+				o
+			from
+				Organization o
+			where
+				o.id = 'NSQS'
+		]]></query>
+	</named-query>
+	<named-query name="MonitoringLocation.findByCriteria">
+		<query><![CDATA[
+			 	select
+			 		 ml
+				from 
+					MonitoringLocation ml
+					left join fetch ml.county 
+					left join fetch ml.state 
+				where 
+					lower(ml.id) like concat(concat('%',lower(:id)),'%')
+				and lower(ml.name) like concat(concat('%',lower(:name)),'%')
+				and	((:huc8 is null and ml.huc8 is null) or lower(ml.huc8) like concat(concat('%',lower(:huc8)),'%')) 
+				and ((:county is null and ml.county is null) or lower(ml.county.name) like concat(concat('%',lower(:county)),'%'))
+				and ((:state is null and ml.state is null) or lower(ml.state.abbreviation) like concat(concat('%',lower(:state)),'%'))	
+				order by ml.name asc 
+			]]>
+		</query>
+	</named-query>
+	<named-query name="MonitoringLocation.findByCriteriaCount">
+		<query><![CDATA[ 
+				select 
+					count(ml) 
+				from 
+					MonitoringLocation ml 
+					left join ml.county 
+					left join ml.state
+				where
+					lower(ml.id) like concat(concat('%',lower(:id)),'%')
+				and lower(ml.name) like concat(concat('%',lower(:name)),'%')
+				and	((:huc8 is null and ml.huc8 is null) or lower(ml.huc8) like concat(concat('%',lower(:huc8)),'%')) 
+				and ((:county is null and ml.county is null) or lower(ml.county.name) like concat(concat('%',lower(:county)),'%'))
+				and ((:state is null and ml.state is null) or lower(ml.state.abbreviation) like concat(concat('%',lower(:state)),'%'))	
+				]]></query>
+	</named-query>
+	<named-query name="MonitoringLocation.getActivityCounts">
+		<query><![CDATA[
+			 	select
+			 		 ml.uid, count(acts)
+				from 
+					MonitoringLocation ml
+					left join ml.activities acts
+					left join ml.county 
+					left join ml.state
+				where 
+					lower(ml.id) like concat(concat('%',lower(:id)),'%')
+				and lower(ml.name) like concat(concat('%',lower(:name)),'%')
+				and	((:huc8 is null and ml.huc8 is null) or lower(ml.huc8) like concat(concat('%',lower(:huc8)),'%')) 
+				and ((:county is null and ml.county is null) or lower(ml.county.name) like concat(concat('%',lower(:county)),'%'))
+				and ((:state is null and ml.state is null) or lower(ml.state.abbreviation) like concat(concat('%',lower(:state)),'%'))	
+				group by ml.uid, ml.name
+				order by ml.name
+			]]>
+		</query>
+	</named-query>
+	<named-query name="Activity.findByCriteria" >
+		<query><![CDATA[
+			select a 
+			from 
+				Activity a 
+				join fetch a.monitoringLocation 
+				left join fetch a.samplingCollectionEquipment
+				left join fetch a.media
+				left join fetch a.resultType
+			where 
+				lower(a.id) like concat(concat('%',lower(:id)),'%') 
+				and ( (:samplingCollectionMethodName is null and a.collectionMethod.name is null) 
+				or lower(a.collectionMethod.name) like concat(concat('%',lower(:samplingCollectionMethodName)),'%')) 
+				and ( :startDate is null or a.startDate >= :startDate2) 
+				and (:endDate is null or a.endDate <= :endDate2) 
+				and (:monitoringLocationUid = 0L or a.monitoringLocation.uid=:monitoringLocationUid2)
+				and (:sampleCollEquip is null or a.samplingCollectionEquipment = :sampleCollEquip2)
+				and (:media is null or a.media = :media2)
+				and (:resultType is null or a.resultType = :resultType2)
+			order 
+				by a.id
+	    ]]></query>
+	</named-query>
+	<named-query name="Activity.findByCriteriaCount" >
+		<query><![CDATA[
+			select count(a) 
+			from 
+				Activity a 
+				join a.monitoringLocation 
+				left join a.samplingCollectionEquipment
+				left join a.media
+				left join a.resultType
+			where 
+				lower(a.id) like concat(concat('%',lower(:id)),'%') 
+				and ( (:samplingCollectionMethodName is null and a.collectionMethod.name is null) 
+				or lower(a.collectionMethod.name) like concat(concat('%',lower(:samplingCollectionMethodName)),'%')) 
+				and ( :startDate is null or a.startDate >= :startDate2) 
+				and (:endDate is null or a.endDate <= :endDate2) 
+				and (:monitoringLocationUid = 0L or a.monitoringLocation.uid=:monitoringLocationUid2)
+				and (:sampleCollEquip is null or a.samplingCollectionEquipment = :sampleCollEquip2)
+				and (:media is null or a.media = :media2)
+				and (:resultType is null or a.resultType = :resultType2)
+	     ]]></query>
+	</named-query>
+	<named-query name="Activity.getResultCounts">
+		<query><![CDATA[
+			select 
+				a.uid, count(res) 
+			from 
+				Activity a 
+				join a.monitoringLocation 
+				left join a.results res
+				left join a.samplingCollectionEquipment
+				left join a.media
+				left join a.resultType
+			where 
+				lower(a.id) like concat(concat('%',lower(:id)),'%') 
+				and ( (:samplingCollectionMethodName is null and a.collectionMethod.name is null) 
+				or lower(a.collectionMethod.name) like concat(concat('%',lower(:samplingCollectionMethodName)),'%')) 
+				and ( :startDate is null or a.startDate >= :startDate2) 
+				and (:endDate is null or a.endDate <= :endDate2) 
+				and (:monitoringLocationUid = 0L or a.monitoringLocation.uid=:monitoringLocationUid2)
+				and (:sampleCollEquip is null or a.samplingCollectionEquipment = :sampleCollEquip2)
+				and (:media is null or a.media = :media2)
+				and (:resultType is null or a.resultType = :resultType2)
+			group by a.uid, a.id
+			order by a.id
+			]]>
+		</query>
+	</named-query>
+	<named-query name="FieldMeasurement.findByCriteria">
+		<query><![CDATA[
+			select 
+				r 
+			from Result r  
+				left join fetch r.valueType  
+				left join fetch r.detectionCondition 
+				left join fetch r.measurementQualifier 
+				left join fetch r.status
+				left join fetch r.characteristic
+			where
+					 (:valueType is null or r.valueType = :valueType2)
+				and  (:detectionCondition is null or r.detectionCondition = :detectionCondition2)
+				and  (:measurementQualifier is null or r.measurementQualifier = :measurementQualifier2)
+				and  (:status is null or r.status = :status2)
+				and  ((r.characteristic is null and :characteristic is null) or lower(r.characteristic.name) like concat(concat('%',lower(:characteristic)),'%'))
+				and  r.activity.uid = :actUid
+			order by r.uid desc
+		 ]]></query>
+	</named-query>
+	<named-query name="FieldMeasurement.findByCriteriaCount">
+		<query><![CDATA[
+			select 
+				count(r) 
+			from Result r
+				left join r.valueType  
+				left join r.detectionCondition 
+				left join r.measurementQualifier 
+				left join r.status
+				left join r.characteristic
+			where
+					 (:valueType is null or r.valueType = :valueType2)
+				and  (:detectionCondition is null or r.detectionCondition = :detectionCondition2)
+				and  (:measurementQualifier is null or r.measurementQualifier = :measurementQualifier2)
+				and  (:status is null or r.status = :status2)
+				and  ((r.characteristic is null and :characteristic is null) or lower(r.characteristic.name) like concat(concat('%',lower(:characteristic)),'%'))
+				and  r.activity.uid = :actUid
+		 ]]></query>
+	</named-query>
+	<named-query name="BenthicMeasurement.findByCriteria">
+		<query><![CDATA[
+			select 
+				r 
+			from Result r
+				left join fetch r.taxon  
+				left join fetch r.status
+				left join fetch r.resultFrequencyClass
+			where
+					 (:status is null or r.status = :status2)
+				and  ((r.taxon is null and :taxon is null) or lower(r.taxon.name) like concat(concat('%',lower(:taxon)),'%'))
+				and  r.activity.uid = :actUid
+				and (:freqClassDesc is null or r.resultFrequencyClass.frequencyClassDescriptor = :freqClassDesc2)
+			order by r.uid desc
+		 ]]></query>
+	</named-query>
+	<named-query name="BenthicMeasurement.findByCriteriaCount">
+		<query><![CDATA[
+			select 
+				count(r) 
+			from Result r
+				left join r.taxon  
+				left join r.status
+				left join r.resultFrequencyClass
+			where
+					 (:status is null or r.status = :status2)
+				and  ((r.taxon is null and :taxon is null) or lower(r.taxon.name) like concat(concat('%',lower(:taxon)),'%'))
+				and  r.activity.uid = :actUid
+				and (:freqClassDesc is null or r.resultFrequencyClass.frequencyClassDescriptor = :freqClassDesc2)
+		 ]]></query>
+	</named-query>
+	<named-query name="MeasurementUnit.findFuzzyMatch">
+		<query><![CDATA[
+			select
+				mu
+			from
+				MeasurementUnit mu
+			where
+				lower(mu.code) like concat(concat('%', :partialCode), '%')
+		]]></query>
+	</named-query>
+	<named-query name="MeasurementUnit.findByCode">
+		<query><![CDATA[
+			select
+				mu
+			from
+				MeasurementUnit mu
+			where
+				mu.code = :code
+		]]></query>
+	</named-query>
+	<named-query name="Characteristic.findFuzzyMatch">
+		<query><![CDATA[
+			select
+				c
+			from
+				Characteristic c
+			where
+				lower(c.name) like concat(concat('%', :partialName), '%')
+		]]></query>
+	</named-query>
+	<named-query name="Characteristic.findByName">
+		<query><![CDATA[
+			select
+				c
+			from
+				Characteristic c
+			where
+				c.name = :name
+		]]></query>
+	</named-query>
+</entity-mappings>

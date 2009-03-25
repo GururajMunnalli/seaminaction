@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+	xmlns:bpm="http://jboss.com/products/seam/bpm"
+	xmlns:core="http://jboss.com/products/seam/core"
+	xmlns:drools="http://jboss.com/products/seam/drools"
+	xmlns:framework="http://jboss.com/products/seam/framework"
+	xmlns:mail="http://jboss.com/products/seam/mail"
+	xmlns:navigation="http://jboss.com/products/seam/navigation"
+	xmlns:persistence="http://jboss.com/products/seam/persistence"
+	xmlns:security="http://jboss.com/products/seam/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
+		http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
+		http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.0.xsd
+		http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd
+		http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.0.xsd
+		http://jboss.com/products/seam/navigation http://jboss.com/products/seam/navigation-2.0.xsd
+		http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.0.xsd 
+		http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
+		http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
+
+	<factory name="_" value="#{' '}" scope="event"/>
+	<factory name="conversationScope" value="#{conversationContext}" scope="event"/>
+	<factory name="pageScope" value="#{pageContext}" scope="event"/>
+	<factory name="datePattern" value="yyyy-MM-dd" scope="stateless"/>
+	<factory name="dateTimePattern" value="yyyy-MM-dd HH:mm a" scope="stateless"/>
+
+	<core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
+		<!--disabled-interceptors="org.jboss.seam.persistence.ManagedEntityIdentityInterceptor"/>-->
+  
+	<!-- conversation timeout is 10 minutes -->
+	<core:manager concurrent-request-timeout="500"
+		conversation-timeout="600000" 
+		conversation-id-parameter="cid"
+		parent-conversation-id-parameter="pid"/>
+ 
+	<navigation:pages>
+		<navigation:resources>
+			<value>/WEB-INF/pages.xml</value>
+			<value>/WEB-INF/exception-handlers.xml</value>
+		</navigation:resources>
+	</navigation:pages>
+ 
+	<persistence:managed-persistence-context name="entityManager" auto-create="true"
+		entity-manager-factory="#{entityManagerFactory}"/>
+
+	<persistence:entity-manager-factory name="entityManagerFactory" persistence-unit-name="edas2-perflab"/>
+
+	<factory name="hibernateSession" value="#{entityManager.delegate}" scope="stateless" auto-create="true"/>
+
+	<!--
+	<drools:rule-base name="securityRules">
+	    <drools:rule-files>
+			<value>/security.drl</value>
+		</drools:rule-files>
+	</drools:rule-base>
+	-->
+
+	<security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
+
+	<event type="org.jboss.seam.security.notLoggedIn">
+	    <action execute="#{authenticator.captureCurrentView}"/>
+	</event>
+	<event type="org.jboss.seam.security.loginSuccessful">
+	    <action execute="#{redirect.returnToCapturedView}"/>
+	</event>
+	
+	<component name="report">
+		<property name="tmpFolder">@reportFolder@/input</property>
+		<property name="reportFolder">@reportFolder@/output</property>
+		<property name="datasource">@datasource@</property>
+	</component>
+	
+	<framework:entity-query name="organizationsQuery"
+		ejbql="select o from Organization o" order="o.name asc"/>
+	<factory name="organizations" value="#{organizationsQuery.resultList}" scope="conversation"/>
+
+	<framework:entity-query name="monitoringLocationTypesQuery"
+		ejbql="select t from MonitoringLocationType t" order="t.name asc"/>
+	<factory name="monitoringLocationTypes" value="#{monitoringLocationTypesQuery.resultList}" scope="conversation"/>
+
+	<framework:entity-query name="horizontalRefDatumsQuery"
+		ejbql="select d from HorizontalReferenceDatum d" order="d.name asc"/>
+	<factory name="horizontalRefDatums" value="#{horizontalRefDatumsQuery.resultList}" scope="conversation"/>
+
+	<framework:entity-query name="horizontalCollectionMethodsQuery"
+		ejbql="select m from HorizontalCollectionMethod m" order="m.name asc"/>
+	<factory name="horizontalCollectionMethods" value="#{horizontalCollectionMethodsQuery.resultList}" scope="conversation"/>
+
+</components>

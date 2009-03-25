@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>EDAS2: #{empty pageTitle ? 'Ecological Data Analysis System' : pageTitle}</title>
+		<a:loadStyle src="resource:///extended-skin-styles.xcss"/>
+		<a:loadStyle src="/stylesheet/theme.css"/>
+		<ui:insert name="head"/>
+	</head>
+	
+	<body>
+		<ui:insert name="transitiveMarkup"/>
+		<div style="background-color: #0073E6; padding: 5px 3px 3px 5px;">
+			<img src="img/edaslogo2.png" />
+		</div>
+		<ui:include src="topmenu.xhtml"/>
+	
+		<div class="body">
+			<ui:remove>
+			<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"
+				rendered="#{showGlobalMessages != 'false' and not empty facesMessages.currentGlobalMessages}"/>
+			</ui:remove>
+			<rich:messages id="ajaxmsgs" globalOnly="false" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" ajaxRendered="true" rendered="#{showGlobalMessages != 'false' and itemDetails == null}"/>
+			<div>
+				<ui:insert name="body"/>
+			</div>
+		</div>
+	
+		<div class="footer" style="clear: both;">
+			<div>
+				<br/>
+			</div>
+			<div>
+				<table style="margin-left: auto; margin-right:auto;font-size:120%">
+					<tr>
+						<td style="padding-right: 3px;"><b>Sponsored by Tetra Tech Inc</b></td>
+					</tr>
+				</table>
+				<br/>
+				<s:div rendered="#{init.debug}">
+					#{'[ '}
+					<s:link id="resetSession" view="/login.xhtml" action="#{org.jboss.seam.web.session.invalidate}" propagation="none" value="Reset session"/>
+					#{' | '}
+					<s:link id="debugConsole" view="/debug.xhtml" value="Debug console" target="debugConsole"/>
+					#{' ]'}
+					<br/>
+					<strong>conversation:</strong> id = #{conversation.id}, #{conversation.longRunning ? 'long running' : 'temporary'}#{conversation.nested ? ', nested, parent id = '.concat(conversation.parentId) : ''}
+					<br />
+					Date rendered:#{_}<h:outputText value="#{currentDatetime}"><s:convertDateTime type="both" dateStyle="short" timeStyle="medium"/></h:outputText>
+					<br />
+					<h:form id="switcher" rendered="#{not empty switcher.selectItems}">
+						<div style="text-align: center;">
+							<h:selectOneMenu value="#{switcher.conversationIdOrOutcome}">
+								<f:selectItems value="#{switcher.selectItems}"/>
+							</h:selectOneMenu>
+							#{_}
+							<h:commandButton action="#{switcher.select}" value="Switch workspace"/>
+						</div>
+					</h:form>
+				</s:div>
+			</div>
+		</div>
+	</body>
+</html>

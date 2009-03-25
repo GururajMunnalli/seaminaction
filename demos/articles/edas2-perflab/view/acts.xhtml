@@ -1,0 +1,444 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/layout/template.xhtml">
+	<ui:param name="pageTitle" value="Activities" />
+	<ui:define name="transitiveMarkup">
+		<ui:include src="/fragment/activityDetailPanel.xhtml" />
+	</ui:define>
+	<ui:define name="body">
+		<s:div style="clear: both; padding-top: 5px;" rendered="#{activitySearchCriteria.mlocUid != 0}">
+			<strong style="font-size: 13px;">&#171;</strong>
+			#{_}
+			<s:link action="#{activityListEditor.back()}" value="Back to Monitoring Locations" />
+		</s:div>
+		<br />
+		<h:form id="filter" autocomplete="off">
+			<div>
+				<rich:simpleTogglePanel opened="false"
+					switchType="ajax">
+					<f:facet name="header">Activity Filter</f:facet>
+					<table class="dataGrid">
+						<tr>
+							<th>ID</th>
+							<th>Type</th>
+							<th>
+								Sample
+								<br />
+								Collection Method
+							</th>
+							<th>
+								After
+								<br />
+								Start Date
+							</th>
+							<th>
+								Before
+								<br />
+								End Date
+							</th>
+						</tr>
+						<tr>
+							<td>
+								<h:inputText id="id" value="#{activitySearchCriteria.id}">
+									<a:support id="idc" event="onkeyup"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</h:inputText>
+							</td>
+							<td>
+								<h:inputText id="t"
+									value="#{activitySearchCriteria.activityType}">
+									<a:support id="tc" event="onchange"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</h:inputText>
+								<rich:suggestionbox id="ts" for="t" minChars="1"
+									suggestionAction="#{activityListEditor.filterActivityType}"
+									var="_result" ajaxSingle="true" eventQueue="filter">
+									<h:column>
+										<h:outputText value="#{_result.code}" />
+									</h:column>
+								</rich:suggestionbox>
+							</td>
+							<td>
+								<h:inputText id="cm"
+									value="#{activitySearchCriteria.sampleCollectionMethod}">
+									<a:support id="cmc" event="onkeyup"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</h:inputText>
+							</td>
+							<td>
+								<rich:calendar id="sdt"
+									value="#{activitySearchCriteria.startDate}" inputSize="6"
+									datePattern="#{datePattern}">
+									<a:support id="sdtc" event="onchanged"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</rich:calendar>
+							</td>
+							<td>
+								<rich:calendar id="edt"
+									value="#{activitySearchCriteria.endDate}" inputSize="6"
+									datePattern="#{datePattern}">
+									<a:support id="edtc" event="onchanged"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</rich:calendar>
+							</td>
+							<td>
+								<a:commandButton id="a" value="Apply Filter"
+									action="#{activityListEditor.applyFilter()}"
+									reRender="dtc" />
+							</td>
+							<td>
+								<s:button id="r" value="Reset Filter"
+									action="#{activityListEditor.resetFilter()}"/>
+							</td>
+						</tr>
+						<tr>
+							<th>Result Type</th>
+							<th>Media</th>
+							<th>Sample Collection Equipment</th>
+						</tr>
+						<tr>
+							<td>
+								<rich:inplaceSelect id="rt"
+									value="#{activitySearchCriteria.resultType}" defaultLabel="Any">
+									<s:selectItems value="#{resultTypeValues}" var="_asm"
+										label="#{_asm.name}" noSelectionLabel="Any" />
+									<s:convertEntity />
+									<a:support id="rtc" event="onchange"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</rich:inplaceSelect>
+							</td>
+							<td>
+								<rich:inplaceSelect id="m"
+									value="#{activitySearchCriteria.media}" defaultLabel="Any">
+									<s:selectItems value="#{activityMediaValues}"
+										var="_asm" label="#{_asm.name}" noSelectionLabel="Any" />
+									<s:convertEntity />
+									<a:support id="mc" event="onchange"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</rich:inplaceSelect>
+							</td>
+							<td>
+								<rich:inplaceSelect id="ce"
+									value="#{activitySearchCriteria.samplingCollectionEquipment}"
+									defaultLabel="Any">
+									<s:selectItems value="#{sampleCollEquipValues}"
+										var="_asm" label="#{_asm.name}" noSelectionLabel="Any" />
+									<s:convertEntity />
+									<a:support id="cec" event="onchange"
+										action="#{activityListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter" />
+								</rich:inplaceSelect>
+							</td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<h:form id="new" autocomplete="off">
+			<div style="clear:both;">
+				<rich:simpleTogglePanel switchType="client"
+					opened="false" label="Add Activity" rendered="#{activitySearchCriteria.mlocUid!=0}">
+					<rich:dataTable id="act" value="#{1}" styleClass="dataGrid">
+						<h:column>
+							<f:facet name="header">Action</f:facet>
+							<a:commandLink action="#{activityListEditor.addItem(newActivity)}"
+								reRender="new:act,dtc">
+								<h:graphicImage value="/img/add.png" alt="Add"
+									title="Add" />
+							</a:commandLink>
+						</h:column>
+						<h:column>
+							<f:facet name="header">ID<span class="required">*</span></f:facet>
+							<h:inputText value="#{newActivity.id}" required="true" label="ID:"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Result
+								<br />
+								Type
+							</f:facet>
+							<rich:inplaceSelect id="ts1" value="#{newActivity.resultType}"
+								defaultLabel="Select...">
+								<s:selectItems value="#{resultTypeValues}" var="_asm"
+									label="#{_asm.name}" required="true" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Media<span class="required">*</span></f:facet>
+							<rich:inplaceSelect id="ts2"
+								value="#{newActivity.media}"
+								defaultLabel="Select...">
+								<s:selectItems value="#{activityMediaValues}" var="_asm"
+									label="#{_asm.name}"/>
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column>
+							<f:facet name="header">Start Date<span class="required">*</span></f:facet>
+							<rich:calendar value="#{newActivity.startDate}"
+								inputSize="8" datePattern="#{datePattern}" required="true"
+								enableManualInput="true" label="Start Date:"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">End Date</f:facet>
+							<rich:calendar value="#{newActivity.endDate}"
+								inputSize="8" datePattern="#{datePattern}" 
+								enableManualInput="true" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Sample
+								<br />
+								Collection Method
+							</f:facet>
+							<h:inputText value="#{newActivity.collectionMethod.name}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								Sample
+								<br />
+								Collection Equipment
+							</f:facet>
+							<rich:inplaceSelect value="#{newActivity.samplingCollectionEquipment}"
+								defaultLabel="Select...">
+								<s:selectItems value="#{sampleCollEquipValues}"
+									var="_asm" label="#{_asm.name}" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+					</rich:dataTable>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<br />
+		<h:form id="dtc" autocomplete="off">
+			<tpl:context results="#{conversationScope.results}"
+				objectUtils="#{sessionScope.objectUtils}"
+				dataGridEditor="#{conversationScope.activityListEditor}"
+				itemInEditMode="#{conversationScope.get('itemInEditMode')}">
+			<h:outputText value="Your search did not match any records."
+				rendered="#{results.rowCount == 0}" />
+			<h:panelGroup rendered="#{results.rowCount gt 0}">
+				<ui:include src="/fragment/topPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}" />
+					<ui:param name="dataTableContainerId" value="dtc" />
+				</ui:include>
+				<s:div id="dt" style="clear:both;">
+					<rich:dataTable id="dt1" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{itemInEditMode == null}">
+						<f:facet name="header">
+							<h:panelGroup>
+								Activities
+								<h:outputText
+									value=" for Monitoring Location (#{dataGridEditor.mlocNameLabel})"
+									rendered="#{activitySearchCriteria.mlocUid != 0}" />
+							</h:panelGroup>
+						</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditInactive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}" />
+								<ui:param name="dataTableId" value="dt" />
+								<ui:param name="dataTableContainerId" value="dtc" />
+							</ui:include>
+						</h:column>
+						<h:column id="id">
+							<f:facet name="header">ID</f:facet>
+							<h:outputText value="#{_item.id}" />
+						</h:column>
+						<h:column id="rt">
+							<f:facet name="header">
+								Result
+								<br />
+								Type
+							</f:facet>
+							<h:outputText value="#{_item.resultType.name}" />
+						</h:column>
+						<h:column id="m">
+							<f:facet name="header">Media</f:facet>
+							<h:outputText value="#{_item.media.name}" />
+						</h:column>
+						<h:column id="sdt">
+							<f:facet name="header">Start Date</f:facet>
+							<h:outputText value="#{_item.startDate}">
+								<s:convertDateTime pattern="#{datePattern}" type="date"/>
+							</h:outputText>
+						</h:column>
+						<h:column id="edt">
+							<f:facet name="header">End Date</f:facet>
+							<h:outputText value="#{_item.endDate}">
+								<s:convertDateTime pattern="#{datePattern}" type="date"/>
+							</h:outputText>
+						</h:column>
+						<h:column id="cm">
+							<f:facet name="header">
+								Sample
+								<br />
+								Collection Method
+							</f:facet>
+							<h:outputText value="#{_item.collectionMethod.name}" />
+						</h:column>
+						<h:column id="ce">
+							<f:facet name="header">
+								Sample
+								<br />
+								Collection Equipment
+							</f:facet>
+							<h:outputText value="#{_item.samplingCollectionEquipment.name}" />
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<a:commandLink id="sel"
+								action="#{dataGridEditor.selectItem()}" reRender="dtlFrg">
+								<h:graphicImage value="/img/page.png" alt="Show Details"
+									title="Show Details" />
+							</a:commandLink>
+						</h:column>
+						<h:column id="rs">
+							<f:facet name="header">Results</f:facet>
+							<s:link id="go" action="#{activityListEditor.forwardToResults(_item)}">
+								<f:param name="actUid" value="#{_item.uid}" />
+								<f:param name="actId" value="#{_item.id}" />
+								<f:param name="mlocUid" value="#{activitySearchCriteria.mlocUid}" />
+								<f:param name="mlocName" value="#{dataGridEditor.mlocNameLabel}" />
+								<h:graphicImage value="/img/go.png" alt="View Results"
+									title="View Results" />
+							</s:link>
+							<h:outputText value=" (#{activityListEditor.getResultChildCount(_item.uid)}) " />
+						</h:column>
+					</rich:dataTable>
+					<rich:dataTable id="dt2" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{itemInEditMode != null}">
+						<f:facet name="header">
+							<h:panelGroup>
+								Activities
+								<h:outputText
+									value=" for Monitoring Location (#{dataGridEditor.mlocNameLabel})"
+									rendered="#{activitySearchCriteria.mlocUid != 0}" />
+							</h:panelGroup>
+						</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditActive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}" />
+								<ui:param name="dataTableId" value="dt" />
+								<ui:param name="dataTableContainerId" value="dtc" />
+							</ui:include>
+						</h:column>
+						<h:column id="id">
+							<f:facet name="header">ID<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.id}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}" />
+							<h:inputText id="idf" value="#{_item.id}" required="true" label="ID:"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}" />
+						</h:column>
+						<h:column id="rt">
+							<f:facet name="header">
+								Result
+								<br />
+								Type<span class="required">*</span>
+							</f:facet>
+							<h:outputText value="#{_item.resultType.name}" />
+						</h:column>
+						<h:column id="m">
+							<f:facet name="header">Media<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.media.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}" />
+							<rich:inplaceSelect id="mf" value="#{_item.media}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}" >
+								<s:selectItems value="#{activityMediaValues}" var="_asm"
+									label="#{_asm.name}"  />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="sdt">
+							<f:facet name="header">Start Date<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.startDate}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}">
+								<s:convertDateTime pattern="#{datePattern}" type="date"/>
+							</h:outputText>
+							<rich:calendar id="sdtf" value="#{_item.startDate}"
+								inputSize="8" datePattern="#{datePattern}" required="true" label="Start Date:"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}" />
+						</h:column>
+						<h:column id="edt">
+							<f:facet name="header">End Date</f:facet>
+							<h:outputText value="#{_item.endDate}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}">
+								<s:convertDateTime pattern="#{datePattern}" type="date"/>
+							</h:outputText>
+							<rich:calendar id="edtf" value="#{_item.endDate}"
+								inputSize="8" datePattern="#{datePattern}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}" />
+						</h:column>
+						<h:column id="cm">
+							<f:facet name="header">
+								Sample
+								<br />
+								Collection Method
+							</f:facet>
+							<h:outputText value="#{_item.collectionMethod.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}" />
+							<h:inputText id="cmf" value="#{_item.collectionMethod.name}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}" />
+						</h:column>
+						<h:column id="ce">
+							<f:facet name="header">
+								Sample
+								<br />
+								Collection Equipment
+							</f:facet>
+							<h:outputText value="#{_item.samplingCollectionEquipment.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}" />
+							<rich:inplaceSelect id="cef"
+								value="#{_item.samplingCollectionEquipment}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								defaultLabel="Not set">
+								<s:selectItems value="#{sampleCollEquipValues}"
+									var="_asm" label="#{_asm.name}" noSelectionLabel="Not set" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<a:commandLink id="sel"
+								action="#{dataGridEditor.selectItem()}" reRender="dtlFrg">
+								<h:graphicImage value="/img/page.png" alt="Show Details"
+									title="Show Details" />
+							</a:commandLink>
+						</h:column>
+						<h:column id="rs">
+							<f:facet name="header">Results</f:facet>
+							<s:link id="go" action="#{activityListEditor.forwardToResults(_item)}">
+								<f:param name="actUid" value="#{_item.uid}" />
+								<f:param name="actId" value="#{_item.id}" />
+								<f:param name="mlocUid" value="#{activitySearchCriteria.mlocUid}" />
+								<f:param name="mlocName" value="#{dataGridEditor.mlocNameLabel}" />
+								<h:graphicImage value="/img/go.png" alt="View Results"
+									title="View Results" />
+							</s:link>
+							<h:outputText value=" (#{activityListEditor.getResultChildCount(_item.uid)}) " />
+						</h:column>
+					</rich:dataTable>
+				</s:div>
+				<ui:include src="/fragment/bottomPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}" />
+					<ui:param name="dataTableContainerId" value="dtc" />
+				</ui:include>
+			</h:panelGroup>
+			</tpl:context>
+		</h:form>
+	</ui:define>
+</ui:composition>

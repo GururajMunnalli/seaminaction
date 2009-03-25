@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:decorate template="detailPanel.xhtml">
+		<ui:param name="itemType" value="Field Measurement"/>
+		<ui:param name="dataTableContainerId" value="dtc"/>
+		<ui:param name="itemManager" value="#{fieldMeasResultListEditor}"/>
+		<tpl:context label=" ">
+			<s:decorate id="act" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Activity ID</ui:define>
+				<h:outputText value="#{itemDetails.activity.id}"/>
+			</s:decorate>
+			<s:decorate id="rt" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Result Type</ui:define>
+				<h:outputText value="#{itemDetails.type.name}" rendered="#{displayMode}"/>
+				<fld:selectEntity id="rt" component="#{itemDetails}" property="type" items="#{resultTypeValues}"
+					labelProperty="name" rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="ch" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Characteristic</ui:define>
+				<h:outputText value="#{itemDetails.characteristic.name}" rendered="#{displayMode}"/>
+				<fld:characteristic component="#{fieldMeasResultListEditor}" property="editCharacteristicLabel"
+					rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="pm" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Measurement</ui:define>
+				<h:outputText value="#{itemDetails.primaryMeasurement.valueWithUnits}" rendered="#{displayMode}"/>
+				<fld:measurement id="pm" valueComponent="#{itemDetails.primaryMeasurement}" valueProperty="value"
+					unitComponent="#{fieldMeasResultListEditor}" unitProperty="editPrimaryMeasurementMsUnitLabel"
+					rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="mq" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Measurement Qualifier</ui:define>
+				<h:outputText value="#{itemDetails.measurementQualifier.code}" rendered="#{displayMode}"/>
+				<fld:rsltmsmntqualifier component="#{itemDetails}" property="measurementQualifier"
+					rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="cmt" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Comments</ui:define>
+				<h:outputText value="#{itemDetails.comments}" rendered="#{displayMode}"/>
+				<h:inputTextarea id="cmtf" value="#{itemDetails.comments}" cols="40" rows="2"
+					rendered="#{editMode}"/>
+			</s:decorate>
+		</tpl:context>
+	</ui:decorate>
+</ui:composition>

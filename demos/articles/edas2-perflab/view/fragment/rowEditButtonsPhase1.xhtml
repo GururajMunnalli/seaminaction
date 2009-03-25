@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:commandLink id="edit" action="#{dataManager.editItem()}" rendered="#{_item != conversationScope.get('itemInEditMode')}">
+		<h:graphicImage value="/img/pencil.png" alt="Edit" title="Edit"/>
+	</h:commandLink>
+	#{' '}
+	<h:commandLink id="delete" action="#{dataManager.deleteItem()}" rendered="#{_item != conversationScope.get('itemInEditMode')}">
+		<h:graphicImage value="/img/delete.png" alt="Delete" title="Delete" />
+	</h:commandLink>
+	<h:commandLink id="save" action="#{dataManager.saveItem()}" rendered="#{_item == conversationScope.get('itemInEditMode')}">
+		<h:graphicImage value="/img/accept.png" alt="Save" title="Save"/>
+	</h:commandLink>
+	#{' '}
+	<h:commandLink id="cancel" action="#{dataManager.cancelEditItem()}" rendered="#{_item == conversationScope.get('itemInEditMode')}">
+		<h:graphicImage value="/img/cancel.png" alt="Cancel" title="Cancel"/>
+	</h:commandLink>
+</ui:composition>

@@ -1,0 +1,296 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:tpl="http://edas2.com/facelets/template" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/layout/template.xhtml">
+	<ui:param name="pageTitle" value="Benthic Measurements" />
+	<ui:define name="transitiveMarkup">
+		<ui:include src="/fragment/benthicMeasurementDetailPanel.xhtml" />
+	</ui:define>
+	<ui:define name="body">
+		<s:div style="clear: both; padding-top: 5px;" rendered="#{mlocUidLabel==0}">
+			<strong style="font-size: 13px;">&#171;</strong>
+			#{_}
+			<s:link action="#{benthicMeasResultListEditor.back()}" value="Back to Activities" />
+		</s:div>
+		<s:div style="clear: both; padding-top: 5px;" rendered="#{mlocUidLabel!=0}">
+			<strong style="font-size: 13px;">&#171;</strong>
+			#{_}
+			<s:link action="#{benthicMeasResultListEditor.back()}" value="Back to Activity"
+				rendered="#{benthicMeasResultListEditor.mlocUidLabel!=0}">
+				<f:param name="mlocUid" value="#{mlocUidLabel}" />
+				<f:param name="mlocName" value="#{mlocNameLabel}" />
+			</s:link>
+		</s:div>
+		<br />
+		<h:form id="filter" autocomplete="off">
+			<div>
+				<rich:simpleTogglePanel opened="false"
+					switchType="ajax">
+					<f:facet name="header">Benthic Measurement Filter</f:facet>
+					<table class="dataGrid">
+						<tr>
+							<th>Taxon</th>
+							<th>Life Stage</th>
+							<th>Status</th>
+						</tr>
+						<tr>
+							<td>
+								<fld:taxon component="#{benthicMeasResultSearchCriteria}" required="false"
+									property="taxonomyName" suggestComponent="#{benthicMeasResultListEditor}">
+									<a:support id="txc" event="onchange"
+										action="#{benthicMeasResultListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter"/>
+								</fld:taxon>
+							</td>
+							<td>
+								<rich:inplaceSelect id="fqdf" label=""
+									value="#{benthicMeasResultSearchCriteria.freqClassDesc}"
+									defaultLabel="Any" >
+									<s:selectItems value="#{lifestageValues}" var="_asm"
+										label="#{_asm.name}" noSelectionLabel="Any" />
+									<s:convertEntity />
+									<a:support id="sv" event="onchange"
+										action="#{benthicMeasResultListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter" />
+								</rich:inplaceSelect>
+							</td>
+							<td>
+								<rich:inplaceSelect id="sf" label=""
+									value="#{benthicMeasResultSearchCriteria.status}" defaultLabel="Any">
+									<s:selectItems value="#{resultStatusValues}" var="_asm"
+										label="#{_asm.name}" noSelectionLabel="Any" />
+									<s:convertEntity />
+									<a:support id="sc" event="onchange"
+										action="#{benthicMeasResultListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter" />
+								</rich:inplaceSelect>
+							</td>
+							<td>
+								<a:commandButton id="a" value="Apply Filter"
+									action="#{benthicMeasResultListEditor.applyFilter()}" reRender="dtc" />
+							</td>
+							<td>
+								<s:button id="r" value="Reset Filter"
+									action="#{benthicMeasResultListEditor.resetFilter()}" />
+							</td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<h:form id="new" autocomplete="off">
+			<div style="clear:both;">
+				<rich:simpleTogglePanel switchType="client"
+					opened="false" label="Add Benthic Measurement">
+					<rich:dataTable id="benmsmnt" value="#{1}"
+						styleClass="dataGrid">
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<a:commandLink id="a"
+								action="#{benthicMeasResultListEditor.addItem(newBenthicMeasResult)}"
+								reRender="new:benmsmnt,dtc">
+								<h:graphicImage value="/img/add.png" alt="Add"
+									title="Add" />
+							</a:commandLink>
+						</h:column>
+						<h:column id="tx">
+							<f:facet name="header">Taxon<span class="required">*</span></f:facet>
+							<fld:taxon component="#{benthicMeasResultListEditor}" property="addTaxonLabel"/>
+						</h:column>
+						<h:column id="ms">
+							<f:facet name="header">Count<span class="required">*</span></f:facet>
+							<h:inputText id="msf" size="6"
+								value="#{newBenthicMeasResult.primaryMeasurement.value}"  
+								required="true" label="Count:"/>
+						</h:column>
+						<h:column id="ls">
+							<f:facet name="header">Life Stage</f:facet>
+							<rich:inplaceSelect id="lsf" defaultLabel="Not set"
+								value="#{benthicMeasResultListEditor.addFreqClassDesc}">
+								<s:selectItems value="#{lifestageValues}" var="_ls"
+									label="#{_ls.name}" noSelectionLabel="Not set" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="st">
+							<f:facet name="header">Status</f:facet>
+							<rich:inplaceSelect id="stf"
+								value="#{newBenthicMeasResult.status}" defaultLabel="Not set">
+								<s:selectItems value="#{resultStatusValues}" var="_st"
+									label="#{_st.name}" noSelectionLabel="Not set" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="x">
+							<f:facet name="header">Exclude</f:facet>
+							<h:selectBooleanCheckbox id="xf" value="#{newBenthicMeasResult.exclude}" />
+						</h:column>
+						<h:column id="cmt">
+							<f:facet name="header">Comments</f:facet>
+							<h:inputText id="cmtf" value="#{newBenthicMeasResult.comments}" />
+						</h:column>
+					</rich:dataTable>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<br />
+		<h:form id="dtc" autocomplete="off">
+			<!-- #{stopwatch.start('dtc')} -->
+			<tpl:context results="#{conversationScope.results}"
+				dataGridEditor="#{conversationScope.benthicMeasResultListEditor}">
+			<h:outputText value="You search did not match any records."
+				rendered="#{results.rowCount == 0}" />
+			<h:panelGroup rendered="#{results.rowCount > 0}">
+				<ui:include src="/fragment/topPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}" />
+					<ui:param name="dataTableContainerId" value="dtc" />
+				</ui:include>
+				<s:div id="dt" style="clear:both;">
+					<rich:dataTable id="dt1" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{!conversationScope.isSet('itemInEditMode')}">
+						<f:facet name="header">
+							<h:panelGroup>
+								Benthic Measurement Results
+								<h:outputText
+									value=" for Activity (#{actIdLabel})"
+									rendered="#{benthicMeasResultSearchCriteria.actUid != 0}" />
+							</h:panelGroup>
+						</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditInactive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}" />
+								<ui:param name="dataTableId" value="dt" />
+								<ui:param name="dataTableContainerId" value="dtc" />
+							</ui:include>
+						</h:column>
+						<h:column id="tx">
+							<f:facet name="header">Taxon</f:facet>
+							<h:outputText value="#{_item.taxon.name}" required="true" />
+						</h:column>
+						<h:column id="ms">
+							<f:facet name="header">Count</f:facet>
+							<h:outputText value="#{_item.primaryMeasurement.value}" />
+						</h:column>
+						<h:column id="xy">
+							<f:facet name="header">Life Stage</f:facet>
+							<h:outputText
+								value="#{_item.resultFrequencyClass.frequencyClassDescriptor.name}" />
+						</h:column>
+						<h:column id="st">
+							<f:facet name="header">Status</f:facet>
+							<h:outputText value="#{_item.status.name}" />
+						</h:column>
+						<h:column id="x">
+							<f:facet name="header">Exclude</f:facet>
+							<h:graphicImage value="/img/chk#{_item.exclude}.png"
+								alt="#{_item.exclude}" />
+						</h:column>
+						<h:column id="cmt">
+							<f:facet name="header">Comments</f:facet>
+							<h:outputText value="#{_item.comments}" />
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<h:graphicImage value="/img/page.png" alt="Show Details" title="Show Details">
+								<a:support event="onclick" action="#{dataGridEditor.selectItem()}" reRender="dtlFrg" ajaxSingle="true"/>
+							</h:graphicImage>
+						</h:column>
+					</rich:dataTable>
+					<rich:dataTable id="dt2" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{conversationScope.isSet('itemInEditMode')}">
+						<f:facet name="header">
+							<h:panelGroup>
+								Benthic Measurement Results
+								<h:outputText
+									value=" for Activity (#{actIdLabel})"
+									rendered="#{benthicMeasResultSearchCriteria.actUid != 0}" />
+							</h:panelGroup>
+						</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditActive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}" />
+								<ui:param name="dataTableId" value="dt" />
+								<ui:param name="dataTableContainerId" value="dtc" />
+							</ui:include>
+						</h:column>
+						<h:column id="tx">
+							<f:facet name="header">Taxon<span class="required">*</span></f:facet>
+							<h:outputText
+								rendered="#{_item != conversationScope.get('itemInEditMode')}"
+								value="#{_item.taxon.name}" />
+							<fld:taxon component="#{dataGridEditor}" property="editTaxonLabel"
+								rendered="#{_item == conversationScope.get('itemInEditMode')}"/>
+						</h:column>
+						<h:column id="ms">
+							<f:facet name="header">Count<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.primaryMeasurement.value}"
+								rendered="#{_item != conversationScope.get('itemInEditMode')}" />
+							<h:inputText id="msf" size="6" value="#{_item.primaryMeasurement.value}"
+								rendered="#{_item == conversationScope.get('itemInEditMode')}" required="true" 
+								label="Count:"/>
+						</h:column>
+						<h:column id="ls">
+							<f:facet name="header">Life Stage</f:facet>
+							<h:outputText
+								value="#{_item.resultFrequencyClass.frequencyClassDescriptor.name}"
+								rendered="#{_item != conversationScope.get('itemInEditMode')}" />
+							<rich:inplaceSelect id="lsf"
+								rendered="#{_item == conversationScope.get('itemInEditMode')}"
+								defaultLabel="Not set" value="#{dataGridEditor.editFreqClassDesc}">
+								<s:selectItems value="#{lifestageValues}" var="_ls"
+									label="#{_ls.name}" noSelectionLabel="Not set" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="st">
+							<f:facet name="header">Status</f:facet>
+							<h:outputText value="#{_item.status.name}"
+								rendered="#{_item != conversationScope.get('itemInEditMode')}" />
+							<rich:inplaceSelect id="stf" value="#{_item.status}"
+								rendered="#{_item == conversationScope.get('itemInEditMode')}"
+								defaultLabel="Not set">
+								<s:selectItems value="#{resultStatusValues}" var="_st"
+									label="#{_st.name}" noSelectionLabel="Not set" />
+								<s:convertEntity />
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="x">
+							<f:facet name="header">Exclude</f:facet>
+							<h:graphicImage value="/img/chk#{_item.exclude}.png"
+								alt="#{_item.exclude}"
+								rendered="#{_item != conversationScope.get('itemInEditMode')}" />
+							<h:selectBooleanCheckbox id="xf" value="#{_item.exclude}"
+								rendered="#{_item == conversationScope.get('itemInEditMode')}" />
+						</h:column>
+						<h:column id="cmt">
+							<f:facet name="header">Comments</f:facet>
+							<h:outputText value="#{_item.comments}"
+								rendered="#{_item != conversationScope.get('itemInEditMode')}" />
+							<h:inputText id="cmtf" value="#{_item.comments}"
+								size="30"
+								rendered="#{_item == conversationScope.get('itemInEditMode')}" />
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<h:graphicImage value="/img/page.png" alt="Show Details" title="Show Details">
+								<a:support event="onclick" action="#{dataGridEditor.selectItem()}" reRender="dtlFrg" ajaxSingle="true"/>
+							</h:graphicImage>
+						</h:column>
+					</rich:dataTable>
+				</s:div>
+				<ui:include src="/fragment/bottomPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}" />
+					<ui:param name="dataTableContainerId" value="dtc" />
+				</ui:include>
+			</h:panelGroup>
+			</tpl:context>
+			<span style="padding-left: 2px;">#{stopwatch.stop().elapsedWithUnits}</span>
+		</h:form>
+	</ui:define>
+</ui:composition>

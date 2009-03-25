@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+<suite name="Development Tests" verbose="2" parallel="false">
+    <test name="Entity Mapping Test">
+      <classes>
+         <class name="com.tetratech.edas2.test.EntityMappingDevelopmentTest"/>
+      </classes>
+    </test>
+</suite>

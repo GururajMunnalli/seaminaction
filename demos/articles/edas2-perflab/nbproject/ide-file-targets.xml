@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="edas2-perflab-IDE">
+	<property file="nbproject/debug-jboss.properties"/>
+	<target name="debug-nb">
+		<nbjpdaconnect name="edas2-perflab" host="${jpda.host}" address="${jpda.address}" transport="${jpda.transport}"/>
+	</target>
+</project>

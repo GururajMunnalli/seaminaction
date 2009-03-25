@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:panelGroup rendered="#{_item != conversationScope.get('itemInEditMode')}">
+		<a:commandLink id="e" action="#{dataManager.editItem()}" reRender="#{dataTableId}" ajaxSingle="true">
+			<h:graphicImage value="/img/edt.png" alt="Edit" title="Edit"/>
+		</a:commandLink>
+		#{_}
+		<a:commandLink id="d" action="#{dataManager.delItem()}" reRender="#{dataTableContainerId}" ajaxSingle="true">
+			<h:graphicImage value="/img/del.png" alt="Delete" title="Delete" />
+		</a:commandLink>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{_item == conversationScope.get('itemInEditMode')}">
+		<a:commandLink id="s" action="#{dataManager.saveItem()}" reRender="#{dataTableId}">
+			<h:graphicImage value="/img/sav.png" alt="Save" title="Save"/>
+		</a:commandLink>
+		#{_}
+		<a:commandLink id="c" action="#{dataManager.rvtEditItem()}" reRender="#{dataTableId}" ajaxSingle="true">
+			<h:graphicImage value="/img/rvt.png" alt="Cancel" title="Cancel"/>
+		</a:commandLink>
+	</h:panelGroup>
+</ui:composition>

@@ -1,0 +1,33 @@
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<rich:toolBar>
+		<rich:toolBarGroup location="left">
+			<rich:dropDownMenu value="Data Management">
+			 	<rich:menuItem submitMode="ajax" value="Monitoring Locations" action="#{menu.forwardToMonitoringLocations}" ajaxSingle="true"/>
+			 	<rich:menuItem submitMode="ajax" value="Activities" action="#{menu.forwardToActivities}" ajaxSingle="true"/>
+			</rich:dropDownMenu>
+		</rich:toolBarGroup>
+		<rich:toolBarGroup location="right">
+			<h:panelGroup rendered="#{not empty identity.principal}">
+				signed in as: <span style="color: #FF0000; padding-left: 3px;">#{identity.username}</span>
+			</h:panelGroup>
+			<s:link view="/mlocs.xhtml" value="Home" propagation="none"/>
+			<s:link action="#{identity.logout}" value="Logout" propagation="none" rendered="#{not empty identity.principal}"/>
+		</rich:toolBarGroup>
+		<rich:toolBarGroup location="right" style="padding-left: 0; padding-right: 3px;">
+			<a:status>
+				<f:facet name="start">
+					<h:graphicImage value="/img/spinner.gif" style="vertical-align: middle;"/>
+				</f:facet>
+				<f:facet name="stop">
+					<h:graphicImage value="/img/spinner.gif" style="vertical-align: middle; visibility: hidden;"/>
+				</f:facet>
+			</a:status>
+		</rich:toolBarGroup>
+	</rich:toolBar>
+</h:form>

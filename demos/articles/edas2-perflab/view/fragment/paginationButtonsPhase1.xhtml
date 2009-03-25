@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:commandLink id="previousPage_#{pos}" action="#{dataProviderComponent.previous()}" rendered="#{dataProviderComponent.previousAvailable}">
+		<h:graphicImage value="/img/prvpg.png" alt="Previous" title="Previous"/>
+	</h:commandLink>
+	#{_}
+	<h:commandLink id="nextPage_#{pos}" action="#{dataProviderComponent.next()}" rendered="#{dataProviderComponent.nextAvailable}">
+		<h:graphicImage value="/img/nxtpg.png" alt="Next" title="Next"/>
+	</h:commandLink>
+</ui:composition>

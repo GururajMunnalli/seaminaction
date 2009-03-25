@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<tpl:default var="suggestComponent" value="#{unitComponent}"/>	
+	<tpl:default var="rendered" value="true"/>	
+	<tpl:default var="required" value="false"/>	
+	<h:panelGroup rendered="#{rendered}">
+		<h:inputText id="#{id}f" label="#{label}" value="#{valueComponent[valueProperty]}" size="6" required="#{required}"/>
+		<fld:measurementunit id="#{id}" component="#{unitComponent}" property="#{unitProperty}"/>
+	</h:panelGroup>
+</ui:composition>

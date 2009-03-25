@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE datasources
+    PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
+    "http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
+    
+<datasources>
+   
+   <local-tx-datasource>
+      <jndi-name>edas2Datasource</jndi-name>
+      <connection-url>jdbc:oracle:thin:@brazos.tetratech-ffx.com:1521:swqmis</connection-url>
+      <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+      <user-name>wqx20</user-name>
+      <password>wqx20</password>
+<!-- 
+      <exception-sorter-class-name>
+         org.jboss.resource.adapter.jdbc.vendor.MySQLExceptionSorter
+      </exception-sorter-class-name>
+      <metadata>
+         <type-mapping>mySQL</type-mapping>
+      </metadata>
+-->
+   </local-tx-datasource>
+    
+</datasources>
+

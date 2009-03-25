@@ -1,0 +1,287 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:ui="http://java.sun.com/jsf/facelets"	template="/layout/template.xhtml">
+	<ui:param name="pageTitle" value="Monitoring Locations"/>
+	<ui:define name="transitiveMarkup">
+		<ui:include src="/fragment/monitoringLocationDetailPanel.xhtml"/>
+	</ui:define>
+	<ui:define name="body">
+		<h:form id="filter" autocomplete="off">
+			<div>
+				<rich:simpleTogglePanel switchType="ajax"
+					opened="#{!mlocSearchCriteria.blank}">
+					<f:facet name="header">Monitoring Location Filter</f:facet>
+					<table class="dataGrid">
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>HUC8</th>
+							<th>County</th>
+							<th></th>
+						</tr>
+						<tr>
+							<td>
+								<h:inputText id="id" value="#{mlocSearchCriteria.id}">
+									<a:support id="idc" event="onkeyup" action="#{mlocListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter"/>
+								</h:inputText>
+							</td>
+							<td>
+								<h:inputText id="nm" value="#{mlocSearchCriteria.name}">
+									<a:support id="nmc" event="onkeyup" action="#{mlocListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter"/>
+								</h:inputText>
+							</td>
+							<td>
+								<h:inputText id="hc" value="#{mlocSearchCriteria.huc8}">
+									<a:support id="hcc" event="onkeyup" action="#{mlocListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter"/>
+								</h:inputText>
+							</td>
+							<td>
+								<h:inputText id="cnty" value="#{mlocSearchCriteria.county}">
+									<a:support id="cntyc" event="onchange" action="#{mlocListEditor.applyFilter()}"
+										reRender="dtc" requestDelay="500" eventsQueue="filter"/>
+								</h:inputText>
+								<rich:suggestionbox id="cntys" for="cnty" minChars="1"
+									suggestionAction="#{mlocListEditor.filterCounty}" var="_county"
+									ajaxSingle="true" eventQueue="filter">
+									<h:column>
+										<h:outputText value="#{_county.name} - #{_county.state.abbreviation}"/>
+									</h:column>
+								</rich:suggestionbox>
+							</td>
+							<td>
+								<a:commandButton id="a" value="Apply Filter"
+									action="#{mlocListEditor.applyFilter()}" reRender="dtc"/>
+							</td>
+							<td>
+								<s:button id="r" value="Reset Filter"
+									action="#{mlocListEditor.resetFilter()}"/>
+							</td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<h:form id="new" autocomplete="off">
+			<div style="clear: both;">
+				<rich:simpleTogglePanel id="mloc" switchType="client"
+					opened="false">
+					<f:facet name="header">Add Monitoring Location</f:facet>
+					<ui:remove>
+					<h:messages styleClass="message" errorClass="errormsg"
+						infoClass="infomsg" warnClass="warnmsg"
+						rendered="#{empty facesMessages.currentGlobalMessages}"/>
+					</ui:remove>
+					<s:validateAll>
+					<rich:dataTable id="tbl" value="#{1}" styleClass="dataGrid">
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<a:commandLink id="a" action="#{mlocListEditor.addItem(newMonitoringLocation)}"
+								reRender="new:mloc,dtc">
+								<h:graphicImage value="/img/add.png" alt="Add" title="Add"/>
+							</a:commandLink>
+						</h:column>
+						<h:column id="id">
+							<f:facet name="header">ID<span class="required">*</span></f:facet>
+							<h:inputText id="idf" label="ID:" value="#{newMonitoringLocation.id}"
+								size="18" required="true"/>
+						</h:column>
+						<h:column id="nm">
+							<f:facet name="header">Name<span class="required">*</span></f:facet>
+							<h:inputText id="nmf" label="Name:" value="#{newMonitoringLocation.name}"
+								size="18" required="true"/>
+						</h:column>
+						<h:column id="cnty">
+							<f:facet name="header">County</f:facet>
+							<h:inputText id="cntyf" label="County:" value="#{mlocListEditor.addCountyLabel}"
+								size="18"/>
+							<rich:suggestionbox id="cntys" for="cntyf" minChars="1"
+								suggestionAction="#{mlocListEditor.filterCounty}" var="_county"
+								ajaxSingle="true" eventQueue="editor">
+								<h:column>
+									<h:outputText value="#{_county.name} - #{_county.state.abbreviation}"/>
+								</h:column>
+							</rich:suggestionbox>
+						</h:column>
+						<h:column id="hc">
+							<f:facet name="header">HUC8</f:facet>
+							<h:inputText id="hcf" label="HUC8:" value="#{newMonitoringLocation.huc8}"
+								size="6"/>
+						</h:column>
+						<h:column id="lt">
+							<f:facet name="header">Latitude<span class="required">*</span></f:facet>
+							<h:inputText id="ltf" label="Latitude:" value="#{newMonitoringLocation.latitude}"
+								size="3" required="true"/>
+						</h:column>
+						<h:column id="ln">
+							<f:facet name="header">Longitude<span class="required">*</span></f:facet>
+							<h:inputText id="lnf" label="Longitude:" value="#{newMonitoringLocation.longitude}"
+								size="3" required="true"/>
+						</h:column>
+					</rich:dataTable>
+					</s:validateAll>
+				</rich:simpleTogglePanel>
+			</div>
+			<br/>
+		</h:form>
+		<h:form id="dtc" autocomplete="off">
+			<tpl:context results="#{conversationScope.results}"
+				objectUtils="#{sessionScope.objectUtils}"
+				dataGridEditor="#{conversationScope.mlocListEditor}"
+				itemInEditMode="#{conversationScope.get('itemInEditMode')}">
+			<h:outputText value="Your search did not match any records."
+				rendered="#{results.rowCount == 0}"/>
+			<h:panelGroup rendered="#{results.rowCount gt 0}">
+				<ui:include src="/fragment/topPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}"/>
+					<ui:param name="dataTableContainerId" value="dtc"/>
+				</ui:include>
+				<s:div id="dt" style="clear:both;">
+					<rich:dataTable id="dt1" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{itemInEditMode == null}">
+						<f:facet name="header">Monitoring Locations</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditInactive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}"/>
+								<ui:param name="dataTableId" value="dt"/>
+								<ui:param name="dataTableContainerId" value="dtc"/>
+							</ui:include>
+						</h:column>
+						<h:column id="id">
+							<f:facet name="header">ID</f:facet>
+							<h:outputText value="#{_item.id}"/>
+						</h:column>
+						<h:column id="nm">
+							<f:facet name="header">Name</f:facet>
+							<h:outputText value="#{_item.name}"/>
+						</h:column>
+						<h:column id="cnty">
+							<f:facet name="header">County</f:facet>
+							<h:outputText value="#{_item.county.name} - #{_item.state.abbreviation}"
+								rendered="#{_item.county != null}"/>
+						</h:column>
+						<h:column id="hc">
+							<f:facet name="header">HUC8</f:facet>
+							<h:outputText value="#{_item.huc8}"/>
+						</h:column>
+						<h:column id="lt">
+							<f:facet name="header">Latitude</f:facet>
+							<h:outputText value="#{_item.latitude}"/>
+						</h:column>
+						<h:column id="ln">
+							<f:facet name="header">Longitude</f:facet>
+							<h:outputText value="#{_item.longitude}"/>
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<a:commandLink id="sel" action="#{dataGridEditor.selectItem()}"
+								reRender="dtlFrg">
+								<h:graphicImage value="/img/page.png" alt="View Details"
+									title="View Details"/>
+							</a:commandLink>
+						</h:column>
+						<h:column id="act">
+							<f:facet name="header">Activities</f:facet>
+							<s:link id="go" action="#{mlocListEditor.forwardToActivities()}">
+								<f:param name="mlocUid" value="#{_item.uid}"/>
+								<f:param name="mlocName" value="#{_item.name}"/>
+								<h:graphicImage value="/img/go.png" alt="View Activities"
+									title="View Activities"/>
+							</s:link>
+							<h:outputText value=" (#{mlocListEditor.getResultChildCount(_item.uid)}) " />
+						</h:column>
+					</rich:dataTable>
+					<rich:dataTable id="dt2" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{itemInEditMode != null}">
+						<f:facet name="header">Monitoring Locations</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditActive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}"/>
+								<ui:param name="dataTableId" value="dt"/>
+								<ui:param name="dataTableContainerId" value="dtc"/>
+							</ui:include>
+						</h:column>
+						<h:column id="id">
+							<f:facet name="header">ID<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.id}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:inputText id="idf" value="#{_item.id}" rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								size="18" required="true" label="ID:"/>
+						</h:column>
+						<h:column id="nm">
+							<f:facet name="header">Name<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:inputText id="nmf" value="#{_item.name}" rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								size="18" required="true" label="Name:"/>
+						</h:column>
+						<h:column id="cnty">
+							<f:facet name="header">County</f:facet>
+							<h:outputText value="#{_item.county.name} - #{_item.state.abbreviation}"
+								rendered="#{_item.county != null and !objectUtils.same(_item, itemInEditMode)}"/>
+							<h:panelGroup rendered="#{objectUtils.same(_item, itemInEditMode)}">
+								<h:inputText id="cntyf" value="#{dataGridEditor.editCountyLabel}"/>
+								<rich:suggestionbox id="cntys" for="cntyf" minChars="1"
+									suggestionAction="#{dataGridEditor.filterCounty}" var="_county"
+									ajaxSingle="true" eventQueue="editor">
+									<h:column>
+										<h:outputText value="#{_county.name} - #{_county.state.abbreviation}"/>
+									</h:column>
+								</rich:suggestionbox>
+							</h:panelGroup>
+						</h:column>
+						<h:column id="hc">
+							<f:facet name="header">HUC8</f:facet>
+							<h:outputText value="#{_item.huc8}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:inputText id="hcf" value="#{_item.huc8}" rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								size="6"/>
+						</h:column>
+						<h:column id="lt">
+							<f:facet name="header">Latitude<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.latitude}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:inputText id="ltf" value="#{_item.latitude}" rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								size="3" required="true" label="Latitude:"/>
+						</h:column>
+						<h:column id="ln">
+							<f:facet name="header">Longitude<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.longitude}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:inputText id="lnf" value="#{_item.longitude}" rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								size="3" required="true" label="Longitude:"/>
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<a:commandLink id="sel" action="#{dataGridEditor.selectItem()}" reRender="dtlFrg">
+								<h:graphicImage value="/img/page.png" alt="View Details" title="View Details"/>
+							</a:commandLink>
+						</h:column>
+						<h:column id="act">
+							<f:facet name="header">Activities</f:facet>
+								<s:link id="go" action="#{mlocListEditor.forwardToActivities()}">
+								<f:param name="mlocUid" value="#{_item.uid}"/>
+								<f:param name="mlocName" value="#{_item.name}"/>
+								<h:graphicImage value="/img/go.png" alt="View Activities" title="View Activities"/>
+							</s:link>
+							<h:outputText value=" (#{mlocListEditor.getResultChildCount(_item.uid)}) " />
+						</h:column>
+					</rich:dataTable>
+				</s:div>
+				<ui:include src="/fragment/bottomPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}"/>
+					<ui:param name="dataTableContainerId" value="dtc"/>
+				</ui:include>
+			</h:panelGroup>
+			</tpl:context>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,386 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:tpl="http://edas2.com/facelets/template" xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/layout/template.xhtml">
+	<ui:param name="pageTitle" value="Field Measurements"/>
+	<ui:define name="transitiveMarkup">
+		<ui:include src="/fragment/fieldMeasurementDetailPanel.xhtml"/>
+	</ui:define>
+	<ui:define name="body">
+		<s:div style="clear: both; padding-top: 5px;" rendered="#{fieldMeasResultListEditor.mlocUidLabel==0}">
+			<strong style="font-size: 13px;">&#171;</strong>
+			#{_}
+			<s:link action="#{fieldMeasResultListEditor.back()}" value="Back to Activities"/>
+		</s:div>
+		<s:div style="clear: both; padding-top: 5px;" rendered="#{fieldMeasResultListEditor.mlocUidLabel!=0}">
+			<strong style="font-size: 13px;">&#171;</strong>
+			#{_}
+			<s:link action="#{fieldMeasResultListEditor.back()}" value="Back to Activity"
+				rendered="#{fieldMeasResultListEditor.mlocUidLabel!=0}">
+				<f:param name="mlocUid" value="#{fieldMeasResultListEditor.mlocUidLabel}"/>
+				<f:param name="mlocName" value="#{fieldMeasResultListEditor.mlocNameLabel}"/>
+			</s:link>
+		</s:div>
+		<br/>
+		<h:form id="filter" autocomplete="off">
+			<div>
+				<rich:simpleTogglePanel opened="false" switchType="ajax">
+					<f:facet name="header">Field Measurement Filter</f:facet>
+					<table class="dataGrid">
+						<tr>
+							<th>Characteristic</th>
+							<th>Measurement<br/>Qualifier</th>
+							<th>Value Type</th>
+							<th>Detection<br/>Condition</th>
+							<th>Status</th>
+						</tr>
+						<tr>
+							<td>
+								<fld:characteristic component="#{fieldMeasResultSearchCriteria}"
+									property="characteristicName" suggestComponent="#{fieldMeasResultListEditor}"
+									required="false">
+									<a:support id="chc" event="onchange"
+										action="#{fieldMeasResultListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter"/>
+								</fld:characteristic>
+							</td>
+							<td>
+								<fld:selectEntity id="mq" component="#{fieldMeasResultSearchCriteria}"
+									property="measurementQualifier" items="#{resultMeasurementQualifierValues}"
+									labelProperty="code" noSelectionLabel="Any">
+									<a:support event="onchange"
+										action="#{fieldMeasResultListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter"/>
+								</fld:selectEntity>
+							</td>
+							<td>
+								<fld:selectEntity id="vt" component="#{fieldMeasResultSearchCriteria}"
+									property="valueType" items="#{resultValueTypeValues}"
+									labelProperty="name" noSelectionLabel="Any">
+									<a:support event="onchange"
+										action="#{fieldMeasResultListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter"/>
+								</fld:selectEntity>
+							</td>
+							<td>
+								<rich:inplaceSelect id="dcf" defaultLabel="Any"
+									value="#{fieldMeasResultSearchCriteria.detectionCondition}">
+									<s:selectItems
+										value="#{resultDetectionConditionValues}"
+										var="_asm" label="#{_asm.name}" noSelectionLabel="Any"/>
+									<s:convertEntity/>
+									<a:support id="dcc" event="onchange"
+										action="#{fieldMeasResultListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter"/>
+								</rich:inplaceSelect>
+							</td>
+							<td>
+								<rich:inplaceSelect id="sf" defaultLabel="Any"
+									value="#{fieldMeasResultSearchCriteria.status}">
+									<s:selectItems value="#{resultStatusValues}"
+										var="_asm" label="#{_asm.name}" noSelectionLabel="Any"/>
+									<s:convertEntity/>
+									<a:support id="sc" event="onchange"
+										action="#{fieldMeasResultListEditor.applyFilter()}" reRender="dtc"
+										requestDelay="500" eventsQueue="filter"/>
+								</rich:inplaceSelect>
+							</td>
+							<td>
+								<a:commandButton id="a" value="Apply Filter"
+									action="#{fieldMeasResultListEditor.applyFilter()}"
+									reRender="dtc"/>
+							</td>
+							<td>
+								<s:button id="r" value="Reset Filter"
+									action="#{fieldMeasResultListEditor.resetFilter()}"/>
+							</td>
+						</tr>
+					</table>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<h:form id="new" autocomplete="off">
+			<div style="clear:both;">
+				<rich:simpleTogglePanel switchType="client"
+					opened="false" label="Add Field Measurement">
+					<rich:dataTable id="fldmsmnt" value="#{1}" styleClass="dataGrid">
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<a:commandLink id="a" action="#{fieldMeasResultListEditor.addItem(newFieldMeasResult)}"
+								reRender="new:fldmsmnt,dtc">
+								<h:graphicImage value="/img/add.png" alt="Add" title="Add"/>
+							</a:commandLink>
+						</h:column>
+						<h:column id="ch">
+							<f:facet name="header">Characteristic<span class="required">*</span></f:facet>
+							<fld:characteristic component="#{fieldMeasResultListEditor}"
+								property="addCharacteristicLabel"/>
+						</h:column>
+						<h:column id="pm">
+							<f:facet name="header">Measurement<span class="required">*</span></f:facet>
+							<fld:measurement id="pm" valueComponent="#{newFieldMeasResult.primaryMeasurement}"
+								valueProperty="value" unitComponent="#{fieldMeasResultListEditor}"
+								unitProperty="addPrimaryMeasurementMsUnitLabel" required="true" label="Measurement and/or Unit:"/>
+						</h:column>
+						<h:column id="mq">
+							<f:facet name="header">Measurement<br/>Qualifier</f:facet>
+							<fld:rsltmsmntqualifier label="Measurement Qualifier:" component="#{newFieldMeasResult}" property="measurementQualifier"/>
+						</h:column>
+						<h:column id="vt">
+							<f:facet name="header">Value Type</f:facet>
+							<rich:inplaceSelect id="vtf" label="Value Type:" value="#{newFieldMeasResult.valueType}"
+								defaultLabel="Not set">
+								<s:selectItems value="#{resultValueTypeValues}"
+									var="_asm" label="#{_asm.name}" noSelectionLabel="Not set"/>
+								<s:convertEntity/>
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="dc">
+							<f:facet name="header">Detection<br/>Condition</f:facet>
+							<rich:inplaceSelect id="dcf" label="Detection Condition:" value="#{newFieldMeasResult.detectionCondition}"
+								defaultLabel="Not set">
+								<s:selectItems
+									value="#{resultDetectionConditionValues}"
+									var="_asm" label="#{_asm.name}" noSelectionLabel="Not set"/>
+								<s:convertEntity/>
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="st">
+							<f:facet name="header">Status</f:facet>
+							<rich:inplaceSelect id="stf" label="Status:" value="#{newFieldMeasResult.status}"
+								defaultLabel="Not set">
+								<s:selectItems value="#{resultStatusValues}"
+									var="_asm" label="#{_asm.name}" noSelectionLabel="Not set"/>
+								<s:convertEntity/>
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="x">
+							<f:facet name="header">Exclude</f:facet>
+							<h:selectBooleanCheckbox id="xf" label="Exclude:" value="#{newFieldMeasResult.exclude}"/>
+						</h:column>
+						<h:column id="cmt">
+							<f:facet name="header">Comments</f:facet>
+							<h:inputText id="cmtf" label="Comments:" value="#{newFieldMeasResult.comments}"/>
+						</h:column>
+					</rich:dataTable>
+				</rich:simpleTogglePanel>
+			</div>
+		</h:form>
+		<br/>
+		<h:form id="dtc" autocomplete="off">
+			<tpl:context results="#{conversationScope.results}"
+				objectUtils="#{sessionScope.objectUtils}"
+				dataGridEditor="#{conversationScope.fieldMeasResultListEditor}"
+				itemInEditMode="#{conversationScope.get('itemInEditMode')}">
+			<h:outputText value="Your search did not match any records." rendered="#{results.rowCount == 0}"/>
+			<h:panelGroup rendered="#{results.rowCount gt 0}">
+				<ui:include src="/fragment/topPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}"/>
+					<ui:param name="dataTableContainerId" value="dtc"/>
+				</ui:include>
+				<s:div id="dt" style="clear:both;">
+					<rich:dataTable id="dt1" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{itemInEditMode == null}">
+						<f:facet name="header">
+							<h:panelGroup>
+								Field Measurement Results
+								<h:outputText
+									value=" for Activity (#{dataGridEditor.actIdLabel})"
+									rendered="#{fieldMeasResultSearchCriteria.actUid != 0}"/>
+							</h:panelGroup>
+						</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditInactive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}"/>
+								<ui:param name="dataTableId" value="dt"/>
+								<ui:param name="dataTableContainerId" value="dtc"/>
+							</ui:include>
+						</h:column>
+						<h:column id="ch">
+							<f:facet name="header">Characteristic<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.characteristic.name}"/>
+						</h:column>
+						<h:column id="m">
+							<f:facet name="header">Measurement<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.primaryMeasurement.valueWithUnits}"/>
+						</h:column>
+						<ui:remove>
+						<h:column id="el">
+							<f:facet name="header">Elevation</f:facet>
+							<h:outputText value="#{_item.elevation.valueWithUnits}"/>
+						</h:column>
+						</ui:remove>
+						<h:column id="mq">
+							<f:facet name="header">Measure<br/>Qualifier</f:facet>
+							<h:outputText value="#{_item.measurementQualifier.code}"/>
+						</h:column>
+						<h:column id="vt">
+							<f:facet name="header">Value Type</f:facet>
+							<h:outputText value="#{_item.valueType.name}"/>
+						</h:column>
+						<h:column id="dc">
+							<f:facet name="header">Detection<br/>Condition</f:facet>
+							<h:outputText value="#{_item.detectionCondition.name}"/>
+						</h:column>
+						<h:column id="st">
+							<f:facet name="header">Status</f:facet>
+							<h:outputText value="#{_item.status.name}"/>
+						</h:column>
+						<h:column id="x">
+							<f:facet name="header">Exclude</f:facet>
+							<h:graphicImage value="/img/chk#{_item.exclude}.png" alt="#{_item.exclude}"/>
+						</h:column>
+						<h:column id="cmt">
+							<f:facet name="header">Comments</f:facet>
+							<h:outputText value="#{_item.comments}"/>
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<a:commandLink id="sel" action="#{dataGridEditor.selectItem()}" reRender="dtlFrg">
+								<h:graphicImage value="img/page.png" alt="Show Details" title="Show Details"/>
+							</a:commandLink>
+						</h:column>
+						<ui:remove>
+						<h:column id="rel">
+							<f:facet name="header">Detection<br/>Quantitation<br/>Limit</f:facet>
+							<h:commandLink id="go">
+								<h:graphicImage value="img/go.png" alt="View Related" title="View Related"/>
+							</h:commandLink>
+						</h:column>
+						</ui:remove>
+					</rich:dataTable>
+					<rich:dataTable id="dt2" var="_item" value="#{results}"
+						styleClass="dataGrid" rendered="#{itemInEditMode != null}">
+						<f:facet name="header">
+							<h:panelGroup>
+								Field Measurement Results
+								<h:outputText
+									value=" for Activity (#{dataGridEditor.actIdLabel})"
+									rendered="#{fieldMeasResultSearchCriteria.actUid != 0}"/>
+							</h:panelGroup>
+						</f:facet>
+						<h:column id="ctl">
+							<f:facet name="header">Action</f:facet>
+							<ui:include src="/fragment/rowEditButtonsEditActive.xhtml">
+								<ui:param name="dataManager" value="#{dataGridEditor}"/>
+								<ui:param name="dataTableId" value="dt"/>
+								<ui:param name="dataTableContainerId" value="dtc"/>
+							</ui:include>
+						</h:column>
+						<h:column id="ch">
+							<f:facet name="header">Characteristic<span class="required">*</span></f:facet>
+							<h:outputText rendered="#{!objectUtils.same(_item, itemInEditMode)}"
+								value="#{_item.characteristic.name}"/>
+							<fld:characteristic component="#{dataGridEditor}"
+								property="editCharacteristicLabel" 
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"/>
+						</h:column>
+						<h:column id="pm">
+							<f:facet name="header">Measurement<span class="required">*</span></f:facet>
+							<h:outputText value="#{_item.primaryMeasurement.valueWithUnits}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<fld:measurement id="pm" valueComponent="#{_item.primaryMeasurement}" valueProperty="value"
+								unitComponent="#{dataGridEditor}" unitProperty="editPrimaryMeasurementMsUnitLabel"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}" required="true"
+								label="Measurement and/or Unit:"/>
+						</h:column>
+						<ui:remove>
+						<h:column id="el">
+							<f:facet name="header">Elevation</f:facet>
+							<h:outputText value="#{_item.elevation.value}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:panelGroup rendered="#{objectUtils.same(_item, itemInEditMode)}">
+								<h:inputText id="elf" label="Elevation:" value="#{_item.elevation.value}" size="6"/>
+								<fld:measurementunit id="el" component="#{dataGridEditor}"
+									property="editElevationMsUnitLabel"/>
+							</h:panelGroup>
+						</h:column>
+						</ui:remove>
+						<h:column id="mq">
+							<f:facet name="header">Measurement<br/>Qualifier</f:facet>
+							<h:outputText value="#{_item.measurementQualifier.code}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<fld:rsltmsmntqualifier label="Measurement Qualifier:" component="#{_item}" property="measurementQualifier"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"/>
+						</h:column>
+						<h:column id="vt">
+							<f:facet name="header">Value Type</f:facet>
+							<h:outputText value="#{_item.valueType.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<rich:inplaceSelect id="vtf" value="#{_item.valueType}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								defaultLabel="Not set">
+								<s:selectItems value="#{resultValueTypeValues}"
+									var="_vt" label="#{_vt.name}" noSelectionLabel="Not set"/>
+								<s:convertEntity/>
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="dc">
+							<f:facet name="header">Detection<br/>Condition</f:facet>
+							<h:outputText value="#{_item.detectionCondition.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<rich:inplaceSelect id="dcf" value="#{_item.detectionCondition}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								defaultLabel="Not set">
+								<s:selectItems
+									value="#{resultDetectionConditionValues}"
+									var="_asm" label="#{_asm.name}" noSelectionLabel="Not set"/>
+								<s:convertEntity/>
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="st">
+							<f:facet name="header">Status</f:facet>
+							<h:outputText value="#{_item.status.name}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<rich:inplaceSelect id="stf" value="#{_item.status}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"
+								defaultLabel="Not set">
+								<s:selectItems value="#{resultStatusValues}"
+									var="_asm" label="#{_asm.name}" noSelectionLabel="Not set"/>
+								<s:convertEntity/>
+							</rich:inplaceSelect>
+						</h:column>
+						<h:column id="x">
+							<f:facet name="header">Exclude</f:facet>
+							<h:graphicImage value="/img/chk#{_item.exclude}.png" alt="#{_item.exclude}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:selectBooleanCheckbox id="xf" value="#{_item.exclude}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"/>
+						</h:column>
+						<h:column id="cmt">
+							<f:facet name="header">Comments</f:facet>
+							<h:outputText value="#{_item.comments}"
+								rendered="#{!objectUtils.same(_item, itemInEditMode)}"/>
+							<h:inputText id="cmtf" value="#{_item.comments}"
+								rendered="#{objectUtils.same(_item, itemInEditMode)}"/>
+						</h:column>
+						<h:column id="dtl">
+							<f:facet name="header">Details</f:facet>
+							<a:commandLink id="sel" action="#{dataGridEditor.selectItem()}" reRender="dtlFrg">
+								<h:graphicImage value="img/page.png" alt="Show Details" title="Show Details"/>
+							</a:commandLink>
+						</h:column>
+						<ui:remove>
+						<h:column id="rel">
+							<f:facet name="header">Detection<br/>Quantitation<br/>Limit</f:facet>
+							<h:commandLink id="go">
+								<h:graphicImage value="img/go.png" alt="View Related" title="View Related"/>
+							</h:commandLink>
+						</h:column>
+						</ui:remove>
+					</rich:dataTable>
+				</s:div>
+				<ui:include src="/fragment/bottomPagination.xhtml">
+					<ui:param name="dataProviderComponent" value="#{dataGridEditor}"/>
+					<ui:param name="dataTableContainerId" value="dtc"/>
+				</ui:include>
+			</h:panelGroup>
+			</tpl:context>
+		</h:form>
+	</ui:define>
+</ui:composition>

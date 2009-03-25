@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:decorate template="detailPanel.xhtml">
+		<ui:param name="itemType" value="Activity"/>
+		<ui:param name="dataTableContainerId" value="dtc"/>
+		<ui:param name="itemManager" value="#{activityListEditor}"/>
+		<table class="layout">
+		<tr>
+		<td class="split">
+		<s:decorate id="id" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">ID</ui:define>
+			<h:outputText value="#{itemDetails.id}" rendered="#{displayMode}"/>
+			<h:inputText id="idf" value="#{itemDetails.id}" rendered="#{editMode}" size="18" required="true" label=" "/>
+		</s:decorate>
+		<s:decorate id="mloc" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Monitoring Location</ui:define>
+			<h:outputText value="#{itemDetails.monitoringLocation.name}"/>
+		</s:decorate>
+		<s:decorate id="at" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Activity Type</ui:define>
+			<h:outputText value="#{itemDetails.type.code}" rendered="#{displayMode}"/>
+			<rich:inplaceSelect id="atf" value="#{itemDetails.type}" rendered="#{editMode}"
+				required="true" defaultLabel="Select..." label=" ">
+				<s:selectItems var="_at" value="#{activityTypeValues}" label="#{_at.code}"/>
+				<s:convertEntity />
+			</rich:inplaceSelect>
+		</s:decorate>
+		<s:decorate id="rt" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Result Type</ui:define>
+			<h:outputText value="#{itemDetails.resultType.name}" rendered="#{displayMode}"/>
+			<rich:inplaceSelect id="rtf" value="#{itemDetails.resultType}" rendered="#{editMode}"
+				required="true" defaultLabel="Select..." label=" ">
+				<s:selectItems var="_rt" value="#{resultTypeValues}" label="#{_rt.name}"/>
+				<s:convertEntity />
+			</rich:inplaceSelect>
+		</s:decorate>
+		<s:decorate id="md" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Media</ui:define>
+			<h:outputText value="#{itemDetails.media.name}" rendered="#{displayMode}"/>
+			<rich:inplaceSelect id="mdf" value="#{itemDetails.media}" rendered="#{editMode}"
+				required="true" defaultLabel="Select..." label=" ">
+				<s:selectItems var="_am" value="#{activityMediaValues}" label="#{_am.name}"/>
+				<s:convertEntity/>
+			</rich:inplaceSelect>
+		</s:decorate>
+		<s:decorate id="mds" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Media Subdivision</ui:define>
+			<h:outputText value="#{itemDetails.mediaSubdivision.name}" rendered="#{displayMode}"/>
+			<rich:inplaceSelect id="mdsf" value="#{itemDetails.mediaSubdivision}" rendered="#{editMode}"
+				defaultLabel="None" label=" ">
+				<s:selectItems var="_ams" value="#{activityMediaSubdivisionValues}" label="#{_ams.name}"
+					noSelectionLabel="None"/>
+				<s:convertEntity/>
+			</rich:inplaceSelect>
+		</s:decorate>
+		<s:decorate id="as" template="/layout/#{detailMode}.xhtml" rendered="#{itemDetails.resultType.uid == 2}">
+			<ui:define name="label">Assemblage</ui:define>
+			<h:outputText value="#{itemDetails.assemblage.name}"/>
+		</s:decorate>
+		</td>
+		<td class="split">
+		<s:decorate id="sdt" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Start Date</ui:define>
+			<h:outputText value="#{itemDetails.startDate}" rendered="#{displayMode}">
+				<s:convertDateTime pattern="#{datePattern}" type="date"/>
+			</h:outputText>
+			<rich:calendar id="sdt" value="#{itemDetails.startDate}" inputSize="7"
+				datePattern="#{datePattern}" enableManualInput="true" rendered="#{editMode}"/>
+		</s:decorate>
+		<s:decorate id="edt" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">End Date</ui:define>
+			<h:outputText value="#{itemDetails.endDate}" rendered="#{displayMode}">
+				<s:convertDateTime pattern="#{datePattern}" type="date"/>
+			</h:outputText>
+			<rich:calendar id="edt" value="#{itemDetails.endDate}" inputSize="7"
+				datePattern="#{datePattern}" enableManualInput="true" rendered="#{editMode}"/>
+		</s:decorate>
+		<s:decorate id="lat" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Latitude</ui:define>
+			<h:outputText value="#{itemDetails.latitude}" rendered="#{displayMode}"/>
+			<h:inputText id="latf" value="#{itemDetails.latitude}" rendered="#{editMode}" size="3" required="true" label=" "/>
+		</s:decorate>
+		<s:decorate id="lon" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Longitude</ui:define>
+			<h:outputText value="#{itemDetails.longitude}" rendered="#{displayMode}"/>
+			<h:inputText id="lonf" value="#{itemDetails.longitude}" rendered="#{editMode}" size="3" required="true" label=" "/>
+		</s:decorate>
+		<s:decorate id="cm" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Sample Collection Method</ui:define>
+			<h:outputText value="#{itemDetails.collectionMethod.name}"/>
+		</s:decorate>
+		<s:decorate id="ce" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Sample Collection Equipment</ui:define>
+			<h:outputText value="#{itemDetails.samplingCollectionEquipment.name}" rendered="#{displayMode}"/>
+			<rich:inplaceSelect id="cef" value="#{itemDetails.samplingCollectionEquipment}" rendered="#{editMode}"
+				defaultLabel="None" label=" ">
+				<s:selectItems var="_eq" value="#{sampleCollEquipValues}" label="#{_eq.name}" />
+				<s:convertEntity />
+			</rich:inplaceSelect>
+		</s:decorate>
+		<s:decorate id="cmt" template="/layout/#{detailMode}.xhtml">
+			<ui:define name="label">Comments</ui:define>
+			<h:outputText value="#{itemDetails.comments}" rendered="#{displayMode}"/>
+			<h:inputTextarea id="cmtf" value="#{itemDetails.comments}" rendered="#{editMode}" cols="40" rows="2" label=" "/>
+		</s:decorate>
+		</td>
+		</tr>
+		</table>
+	</ui:decorate>
+</ui:composition>

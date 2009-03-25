@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:decorate template="detailPanel.xhtml">
+		<ui:param name="itemType" value="Benthic Measurement"/>
+		<ui:param name="dataTableContainerId" value="dtc"/>
+		<ui:param name="itemManager" value="#{benthicMeasResultListEditor}"/>
+		<tpl:context label=" ">
+			<s:decorate id="act" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Activity ID</ui:define>
+				<h:outputText value="#{itemDetails.activity.id}"/>
+			</s:decorate>
+			<s:decorate id="rt" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Result Type</ui:define>
+				<h:outputText value="#{itemDetails.type.name}" rendered="#{displayMode}"/>
+				<fld:selectEntity id="rt" component="#{itemDetails}" property="type" items="#{resultTypeValues}"
+					labelProperty="name" rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="pm" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Measurement</ui:define>
+				<h:outputText value="#{itemDetails.primaryMeasurement.value}" rendered="#{displayMode}"/>
+				<h:inputText id="pmf" size="6" value="#{itemDetails.primaryMeasurement.value}"
+					rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="mq" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Measurement Qualifier</ui:define>
+				<h:outputText value="#{itemDetails.measurementQualifier.code}" rendered="#{displayMode}"/>
+				<fld:rsltmsmntqualifier component="#{itemDetails}" property="measurementQualifier"
+					rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="tx" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Taxon</ui:define>
+				<h:outputText value="#{itemDetails.taxon.name}" rendered="#{displayMode}"/>
+				<fld:taxon component="#{benthicMeasResultListEditor}" property="editTaxonLabel"
+					rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="bi" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Biological Intent</ui:define>
+				<h:outputText value="#{itemDetails.biologicalIntent.name}" rendered="#{displayMode}"/>
+				<fld:selectEntity id="bi" component="#{itemDetails}" property="biologicalIntent"
+					items="#{biologicalIntentValues}" labelProperty="name" rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="ls" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Life Stage</ui:define>
+				<h:outputText value="#{itemDetails.resultFrequencyClass.frequencyClassDescriptor.name}"
+					rendered="#{displayMode}"/>
+				<fld:selectEntity id="ls" component="#{benthicMeasResultListEditor}" property="editFreqClassDesc"
+					items="#{lifestageValues}" labelProperty="name" rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="st" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Status</ui:define>
+				<h:outputText value="#{itemDetails.status.name}" rendered="#{displayMode}"/>
+				<fld:selectEntity id="st" component="#{itemDetails}" property="status"
+					items="#{resultStatusValues}" labelProperty="name" rendered="#{editMode}"/>
+			</s:decorate>
+			<s:decorate id="cmt" template="/layout/#{detailMode}.xhtml">
+				<ui:define name="label">Comments</ui:define>
+				<h:outputText value="#{itemDetails.comments}" rendered="#{displayMode}"/>
+				<h:inputTextarea id="cmtf" value="#{itemDetails.comments}" cols="40" rows="2"
+					rendered="#{editMode}"/>
+			</s:decorate>
+		</tpl:context>
+	</ui:decorate>
+</ui:composition>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0" xmlns:m="http://ant.apache.org/ivy/maven">
+	<info organisation="com.tetratech" module="edas2-perflab"/>
+	<configurations>
+		<conf name="default" transitive="false"/>
+	</configurations>
+	<dependencies defaultconf="default">
+		<!-- Add your JDBC driver dependence here if you need it -->
+		<dependency org="com.sun.facelets" name="jsf-facelets" rev="1.1.15.B1">
+			<artifact name="jsf-facelets" type="jar"/>
+			<artifact name="jsf-facelets" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0">
+			<artifact name="commons-beanutils" type="jar"/>
+			<artifact name="commons-beanutils" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="commons-digester" name="commons-digester" rev="1.7">
+			<artifact name="commons-digester" type="jar"/>
+			<artifact name="commons-digester" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="commons-lang" name="commons-lang" rev="2.1">
+			<artifact name="commons-lang" type="jar"/>
+			<artifact name="commons-lang" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1">
+			<artifact name="commons-logging" type="jar"/>
+			<artifact name="commons-logging" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="javax.ejb" name="ejb-api" rev="3.0">
+			<artifact name="ejb-api" type="jar"/>
+		</dependency>
+		<dependency org="javax.el" name="el-api" rev="1.0">
+			<artifact name="el-api" type="jar"/>
+		</dependency>
+		<dependency org="javax.faces" name="jsf-api" rev="${jsf.version}">
+			<artifact name="jsf-api" type="jar"/>
+			<artifact name="jsf-api" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="javax.faces" name="jsf-impl" rev="${jsf.version}">
+			<artifact name="jsf-impl" type="jar"/>
+			<artifact name="jsf-impl" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="javax.persistence" name="persistence-api" rev="1.0">
+			<artifact name="persistence-api" type="jar"/>
+		</dependency>
+		<dependency org="javax.servlet" name="servlet-api" rev="2.5">
+			<artifact name="servlet-api" type="jar"/>
+		</dependency>
+		<dependency org="javax.transaction" name="jta" rev="1.0.1B">
+			<artifact name="jta" type="jar"/>
+		</dependency>
+		<dependency org="jfree" name="jfreechart" rev="1.0.8a">
+			<artifact name="jfreechart" type="jar"/>
+		</dependency>
+		<dependency org="jfree" name="jcommon" rev="1.0.12">
+			<artifact name="jcommon" type="jar"/>
+		</dependency>
+		<dependency org="com.lowagie" name="itext" rev="2.0.7">
+			<artifact name="itext" type="jar"/>
+		</dependency>
+		<dependency org="nekohtml" name="nekohtml" rev="1.9.6.2">
+			<artifact name="nekohtml" type="jar"/>
+		</dependency>
+		<dependency org="org.codehaus.groovy" name="groovy-all" rev="1.5.4">
+			<artifact name="groovy-all" type="jar"/>
+		</dependency>
+		<dependency org="org.hibernate" name="hibernate" rev="3.2.4.sp1">
+			<artifact name="hibernate" type="jar"/>
+		</dependency>
+		<dependency org="org.hibernate" name="hibernate-annotations" rev="3.3.0.ga">
+			<artifact name="hibernate-annotations" type="jar"/>
+		</dependency>
+		<dependency org="org.hibernate" name="hibernate-validator" rev="3.0.0.GA">
+			<artifact name="hibernate-validator" type="jar"/>
+		</dependency>
+		<dependency org="org.jboss.el" name="jboss-el" rev="1.0_02.CR2">
+			<artifact name="jboss-el" type="jar"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam" rev="${seam.version}">
+			<artifact name="jboss-seam" type="jar"/>
+			<artifact name="jboss-seam" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam-debug" rev="${seam.version}">
+			<artifact name="jboss-seam-debug" type="jar"/>
+			<artifact name="jboss-seam-debug" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam-ioc" rev="${seam.version}">
+			<artifact name="jboss-seam-ioc" type="jar"/>
+			<artifact name="jboss-seam-ioc" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam-mail" rev="${seam.version}">
+			<artifact name="jboss-seam-mail" type="jar"/>
+			<artifact name="jboss-seam-mail" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam-pdf" rev="${seam.version}">
+			<artifact name="jboss-seam-pdf" type="jar"/>
+			<artifact name="jboss-seam-pdf" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam-remoting" rev="${seam.version}">
+			<artifact name="jboss-seam-remoting" type="jar"/>
+			<artifact name="jboss-seam-remoting" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jboss.seam" name="jboss-seam-ui" rev="${seam.version}">
+			<artifact name="jboss-seam-ui" type="jar"/>
+			<artifact name="jboss-seam-ui" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.2">
+			<artifact name="jbpm-jpdl" type="jar"/>
+		</dependency>
+		<dependency org="org.richfaces.framework" name="richfaces-api" rev="${richfaces.version}">
+			<artifact name="richfaces-api" type="jar"/>
+			<artifact name="richfaces-api" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.richfaces.framework" name="richfaces-impl" rev="${richfaces.version}">
+			<artifact name="richfaces-impl" type="jar"/>
+			<artifact name="richfaces-impl" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.richfaces.ui" name="richfaces-ui" rev="${richfaces.version}">
+			<artifact name="richfaces-ui" type="jar"/>
+			<artifact name="richfaces-ui" type="source" ext="jar" m:classifier="sources"/>
+		</dependency>
+		<dependency org="org.testng" name="testng" rev="5.6">
+			<artifact name="testng" type="jar"/>
+		</dependency>
+		<dependency org="org.tuckey" name="urlrewritefilter" rev="3.0.4">
+			<artifact name="urlrewritefilter" type="jar"/>
+		</dependency>
+		<!-- I tried to use conf="test" but I simply didn't understand how it worked -->
+		<dependency org="org.jboss.seam.embedded" name="hibernate-all" rev="${jboss-embedded.version}">
+			<artifact name="hibernate-all" type="test-jar" ext="jar"/>
+		</dependency>
+		<dependency org="org.jboss.seam.embedded" name="thirdparty-all" rev="${jboss-embedded.version}">
+			<artifact name="thirdparty-all" type="test-jar" ext="jar"/>
+		</dependency>
+		<dependency org="org.jboss.seam.embedded" name="jboss-embedded-all" rev="${jboss-embedded.version}">
+			<artifact name="jboss-embedded-all" type="test-jar" ext="jar"/>
+		</dependency>
+		<dependency org="org.jboss.seam.embedded" name="jboss-embedded-api" rev="${jboss-embedded.version}">
+			<artifact name="jboss-embedded-api" type="test-jar" ext="jar"/>
+		</dependency>
+	</dependencies>
+</ivy-module>

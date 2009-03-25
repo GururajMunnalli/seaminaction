@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "https://facelets.dev.java.net/source/browse/*checkout*/facelets/src/etc/facelet-taglib_1_0.dtd">
+<!-- source paths are relative to this file -->
+<!-- xmlns:fld="http://edas2.com/facelets/field" -->
+<facelet-taglib>
+
+    <namespace>http://edas2.com/facelets/field</namespace>
+
+	<!-- generic -->
+    <tag>
+        <tag-name>suggest</tag-name>
+        <source>../fragment/field/suggest.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>selectEntity</tag-name>
+        <source>../fragment/field/selectEntity.xhtml</source>
+    </tag>
+
+	<!-- business-specific -->
+    <tag>
+        <tag-name>characteristic</tag-name>
+        <source>../fragment/field/characteristic.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>county</tag-name>
+        <source>../fragment/field/county.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>measurement</tag-name>
+        <source>../fragment/field/measurement.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>measurementunit</tag-name>
+        <source>../fragment/field/measurementunit.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>rsltmsmntqualifier</tag-name>
+        <source>../fragment/field/rsltmsmntqualifier.xhtml</source>
+    </tag>
+
+    <tag>
+        <tag-name>taxon</tag-name>
+        <source>../fragment/field/taxon.xhtml</source>
+    </tag>
+
+</facelet-taglib>

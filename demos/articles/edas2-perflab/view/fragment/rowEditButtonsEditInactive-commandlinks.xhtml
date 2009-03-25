@@ -1,0 +1,12 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<a:commandLink id="e" action="#{dataManager.editItem()}" reRender="#{dataTableId}" ajaxSingle="true">
+		<h:graphicImage value="/img/edt.png" alt="Edit" title="Edit"/>
+	</a:commandLink>
+	#{_}
+	<a:commandLink id="d" action="#{dataManager.delItem()}" reRender="#{dataTableContainerId}" ajaxSingle="true">
+		<h:graphicImage value="/img/del.png" alt="Delete" title="Delete"/>
+	</a:commandLink>
+</ui:composition>

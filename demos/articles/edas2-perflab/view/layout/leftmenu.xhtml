@@ -1,0 +1,59 @@
+<div>
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+	    xmlns:ui="http://java.sun.com/jsf/facelets"
+	    xmlns:h="http://java.sun.com/jsf/html"
+	    xmlns:f="http://java.sun.com/jsf/core"
+	    xmlns:s="http://jboss.com/products/seam/taglib"
+	    xmlns:rich="http://richfaces.org/rich" id="menuForm">
+<rich:togglePanel 
+	    id="panel"
+		initialState="panelA" 
+		switchType="client"
+		stateOrder="panelA,panelB"
+>
+<f:facet name="panelA">
+<h:panelGroup>
+<rich:panelMenu 
+	    width="200px"
+	    expandMode="ajax"
+        iconExpandedGroup="disc" iconCollapsedGroup="disc" 
+        iconExpandedTopGroup="chevronUp" iconGroupTopPosition="right" 
+        iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right"
+	    >
+        <rich:panelMenuGroup label="Data Management">
+            <rich:panelMenuItem label="Monitoring Location" >
+            </rich:panelMenuItem>
+            <rich:panelMenuItem label="Activity" >
+            </rich:panelMenuItem>
+        </rich:panelMenuGroup>
+        <rich:panelMenuGroup label="Reports">
+            <rich:panelMenuItem label="Field Measurement" >
+            </rich:panelMenuItem>
+            <rich:panelMenuItem   label="Benthic Macro Invertebrate" >
+            </rich:panelMenuItem>
+            <rich:panelMenuItem label="Benthic Macro Invertebrate Metric" >
+            </rich:panelMenuItem>
+        </rich:panelMenuGroup>
+        <rich:panelMenuGroup label="Administration">
+                <rich:panelMenuItem label="Organization" >
+                </rich:panelMenuItem>
+                <rich:panelMenuItem label="Project" >
+                </rich:panelMenuItem>
+        </rich:panelMenuGroup>
+ </rich:panelMenu>
+  <rich:toggleControl 
+ for="panel" switchToState="panelB"
+ value="Collapse"/>
+ </h:panelGroup>
+</f:facet>
+<f:facet name="panelB">
+<h:panelGroup>
+<p>[Menu]</p>
+ <rich:toggleControl 
+ for="panel" switchToState="panelA"
+ value="Expand"/>
+</h:panelGroup>
+</f:facet>
+ </rich:togglePanel>
+ </h:form>
+</div>

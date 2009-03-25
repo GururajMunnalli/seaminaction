@@ -1,0 +1,7 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<tpl:default var="required" value="false"/>	
+	<fld:suggest id="#{id}mu" suggestMethod="filterMeasurementUnit" labelProperty="code" size="6" required="#{required}"/>
+</ui:composition>

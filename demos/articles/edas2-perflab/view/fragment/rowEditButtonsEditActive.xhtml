@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:panelGroup rendered="#{_item != conversationScope.get('itemInEditMode')}">
+		<h:graphicImage id="e" value="/img/edt.png" alt="Edit" title="Edit">
+			<a:support id="ec" event="onclick" action="#{dataManager.editItem()}" reRender="#{dataTableId}" ajaxSingle="true"/>
+		</h:graphicImage>
+		#{' '}
+		<h:graphicImage id="d" value="/img/del.png" alt="Delete" title="Delete">
+			<a:support id="dc" event="onclick" action="#{dataManager.delItem()}" reRender="#{dataTableContainerId}" ajaxSingle="true"/>
+		</h:graphicImage>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{_item == conversationScope.get('itemInEditMode')}">
+		<h:graphicImage id="s" value="/img/sav.png" alt="Save" title="Save">
+			<a:support id="sc" event="onclick" action="#{dataManager.saveItem()}" reRender="#{dataTableId}"/>
+		</h:graphicImage>
+		#{' '}
+		<h:graphicImage id="c" value="/img/rvt.png" alt="Cancel" title="Cancel">
+			<a:support id="cc" event="onclick" action="#{dataManager.cancelEditItem()}" reRender="#{dataTableId}" ajaxSingle="true"/>
+		</h:graphicImage>
+	</h:panelGroup>
+</ui:composition>

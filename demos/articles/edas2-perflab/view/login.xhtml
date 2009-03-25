@@ -1,0 +1,45 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib" xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>EDAS2: Login</title>
+		<a:loadStyle src="resource:///extended-skin-styles.xcss"/>
+		<a:loadStyle src="/stylesheet/theme.css"/>
+	</head>
+	<body style="text-align: center;">
+		<h:form id="login">
+			<div style="margin: 0 auto;text-align:left;margin-top:30px;width:350px;">
+				<div style="text-align:center">
+					<img src="img/edaslogo.png" />
+				</div>
+				<br/>
+				<rich:panel>
+					<f:facet name="header">Login</f:facet>
+					<h:messages globalOnly="true" styleClass="message"
+					errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" />
+					<div class="dialog">
+						<h:panelGrid columns="2" rowClasses="prop"
+							columnClasses="name,value">
+							<h:outputLabel for="username">Username</h:outputLabel>
+							<h:inputText id="username" value="#{identity.username}" />
+							<h:outputLabel for="password">Password</h:outputLabel>
+							<h:inputSecret id="password" value="#{identity.password}" />
+						</h:panelGrid>
+					</div>
+					<p>
+						<i>Note:</i>
+						Use 'admin' for both username and password to log in
+					</p>
+				</rich:panel>
+				<div class="actionButtons" style="text-align:center">
+					<h:commandButton value="Login" action="#{identity.login()}"/>
+				</div>
+				<br />
+			</div>
+		</h:form>
+	</body>
+</html>

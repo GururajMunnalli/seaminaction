@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:remove>FIXME: have me use fld:suggest</ui:remove>
+	<h:inputText id="cnty" label="#{label}" value="#{component[property]}" size="25"/>
+	<rich:suggestionbox id="cntys" for="cnty"
+		minChars="1" suggestionAction="#{component[suggestMethod]}"
+		var="_county" ajaxSingle="true">
+		<h:column>
+			<h:outputText value="#{_county.name} - #{_county.state.abbreviation}"/>
+		</h:column>
+	</rich:suggestionbox>
+</ui:composition>

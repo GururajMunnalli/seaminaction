@@ -1,0 +1,1050 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering SYSTEM
+	"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" [
+	<!ENTITY model_package "com.tetratech.edas2.model">
+	<!ENTITY entity_base_class_update "AttributableUpdateEntity">
+	<!ENTITY entity_base_class_updateretire "AttributableUpdateRetireEntity">
+	<!-- need to handle the retiring fields, which don't always appear -->
+	<!ENTITY default_excludes '<column name="RETIRED_DATE" exclude="true"/>
+	<column name="RETIRED_BY" exclude="true"/>
+	<column name="UPDATED_DATE" exclude="true"/>
+	<column name="UPDATED_BY" exclude="true"/>
+	<column name="EPA_ORIG_FLAG" exclude="true"/>'>
+]>
+<!--
+TODO: always make foreign key to the entities primary type use the property name "type"
+
+Keys for MonitoringLocationCharacteristic
+- MLOC_STREAM_TYPE
+- MLOC_ECOREGION
+- MLOC_IS_CHANNELIZED
+- MLOC_WB_SALINITY
+- MLOC_COMMENTS
+- MLOC_IS_DAM
+- MLOC_WB_TYPE
+- MLOC_STREAM_ORIGIN
+- MLOC_STREAM_SUB
+- MLOC_ORDER
+- MLOC_HUC10
+
+Sequences:
+
+ACTGRP_SEQ
+ACTMET_SEQ
+ACT_SEQ - Activity
+AMCTX_SEQ
+ANLMTH_SEQ
+ATOBJ_SEQ
+BHIDX_SEQ
+CITATN_SEQ - Citation
+IDXTYP_SEQ
+LIFSTYL_SEQ - Lifestyle
+METTYP_SEQ
+MLOC_PLACE_JOIN_SEQ
+MLOC_SEQ - MonitoringLocation
+MTCTX_SEQ
+ORGADD_SEQ
+ORGEA_SEQ
+ORGPH_SEQ
+ORG_SEQ - Organization
+PLACE_SEQ
+PLACE_TYPE_SEQ
+PRJ_SEQ
+RDQLMT_SEQ
+RES_SEQ - Result
+RFCLS_SEQ
+RLSPRP_SEQ
+RTDET_SEQ
+SEQ_DI_CHARACTERISTIC
+SEQ_FA_BLOB
+TAX_IMAGE_SEQ - TaxonImage
+TLAUD_SEQ
+TLDET_SEQ
+TRLOG_SEQ
+USR_SEQ
+
+* There is problem with properly detecting a primitive boolean on a composite id when generating the Home class
+-->
+<hibernate-reverse-engineering>
+	<schema-selection match-schema="WQX20"/>
+	<type-mapping>
+		<sql-type jdbc-type="VARCHAR" length="1" hibernate-type="java.lang.Boolean"/>
+	</type-mapping>
+	
+
+	<!-- Start by excluding everything, then we will selectively bring things back -->
+	<table-filter match-name="*.*" exclude="true"/>
+	<!-- This characteristic table is screwing things up because it has no primary key -->
+	<table-filter match-name="ED_CHARACTERISTIC_BKYP" exclude="true"/>
+	
+    <table-filter match-name="ED_ORGANIZATION" exclude="false"/>
+	<table-filter match-name="ED_COUNTRY" exclude="false"/>
+	<table-filter match-name="ED_STATE" exclude="false"/>
+	<table-filter match-name="ED_COUNTY" exclude="false"/>
+	<table-filter match-name="ED_MONITORING_LOCATION_TYPE" exclude="false"/>
+	<table-filter match-name="ED_HORIZONTAL_REFERENCE_DATUM" exclude="false"/>
+	<table-filter match-name="ED_HRZNTL_COLLECTION_METHOD" exclude="false"/>
+	<table-filter match-name="ED_MONITORING_LOCATION" exclude="false"/>
+	<table-filter match-name="ED_ACTIVITY_MEDIA" exclude="false"/>
+	<table-filter match-name="ED_ACTIVITY_MEDIA_SUBDIVISION" exclude="false"/>
+	<table-filter match-name="ED_ACTIVITY_TYPE" exclude="false"/>
+	<table-filter match-name="ED_ASSEMBLAGE" exclude="false"/>
+	<table-filter match-name="ED_SAMPLE_COLLECT_EQUIP_TYPE" exclude="false"/>
+	<table-filter match-name="ED_SAMPLE_COLLECTION_EQUIP" exclude="false"/>
+	<table-filter match-name="ED_MEASUREMENT_UNIT" exclude="false"/>
+	<table-filter match-name="ED_TIME_ZONE" exclude="false"/>
+	<table-filter match-name="ED_CONTAINER_COLOR" exclude="false"/>
+	<table-filter match-name="ED_CONTAINER_TYPE" exclude="false"/>
+	<table-filter match-name="ED_THERMAL_PRESERVATIVE" exclude="false"/>
+	<table-filter match-name="ED_RELATIVE_DEPTH" exclude="false"/>
+	<table-filter match-name="ED_NET_TYPE" exclude="false"/>
+	<table-filter match-name="ED_TOXICITY_TEST_TYPE" exclude="false"/>
+	<table-filter match-name="ED_RESULT_TYPE" exclude="false"/>
+	<table-filter match-name="ED_ACTIVITY" exclude="false"/>
+	<table-filter match-name="ED_CHARACTERISTIC" exclude="false"/>
+	<table-filter match-name="ED_CHAR_PICK_LIST_VALUE" exclude="false"/>
+	<table-filter match-name="ED_ANALYTICAL_METHOD" exclude="false"/>
+	<table-filter match-name="ED_METHOD_SPECIATION" exclude="false"/>
+	<table-filter match-name="ED_RESULT_MEASURE_QUALIFIER" exclude="false"/>
+	<table-filter match-name="ED_RESULT_DETECTION_CONDITION" exclude="false"/>
+	<table-filter match-name="ED_RESULT_VALUE_TYPE" exclude="false"/>
+	<table-filter match-name="ED_RESULT_STATUS" exclude="false"/>
+	<table-filter match-name="ED_TAXON_RANK" exclude="false"/>
+	<table-filter match-name="ED_TAXON" exclude="false"/>
+	<table-filter match-name="ED_RESULT_LAB_COMMENT" exclude="false"/>
+	<table-filter match-name="ED_RESULT_TIME_BASIS" exclude="false"/>
+	<table-filter match-name="ED_RESULT_TEMPERATURE_BASIS" exclude="false"/>
+	<table-filter match-name="ED_RESULT_WEIGHT_BASIS" exclude="false"/>
+	<table-filter match-name="ED_SAMPLE_FRACTION" exclude="false"/>
+	<table-filter match-name="ED_SAMPLE_TISSUE_ANATOMY" exclude="false"/>
+	<table-filter match-name="ED_RESULT_STATISTICAL_BASE" exclude="false"/>
+	<table-filter match-name="ED_BIOLOGICAL_INTENT" exclude="false"/>
+	<table-filter match-name="ED_LIFESTYLE" exclude="false"/>
+	<table-filter match-name="ED_CITATION" exclude="false"/>
+	<table-filter match-name="ED_RESULT" exclude="false"/>
+	<table-filter match-name="ED_RESULT_FREQUENCY_CLASS" exclude="false"/>
+	<table-filter match-name="ED_FREQUENCY_CLASS_DESCRIPTOR" exclude="false"/>
+	<table-filter match-name="ED_FREQUENCY_CLASS_TYPE" exclude="false"/>
+
+	<table name="ED_ORGANIZATION" class="&model_package;.Organization">
+		<meta attribute="extends">&entity_base_class_update;</meta>
+		<meta attribute="sequence-name">ORG_SEQ</meta>
+		&default_excludes;
+		<column name="ORG_UID" property="uid" type="java.lang.Long"/>
+		<column name="ORG_ID" property="id"/>
+		<column name="ORG_NAME" property="name"/>
+		<column name="ORG_DESC" property="description"/>
+		<column name="TRB_UID" exclude="true"/>
+	</table>
+
+	<table name="ED_COUNTRY" class="&model_package;.Country">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="CNTRY_UID" property="uid" type="java.lang.Long"/>
+		<column name="CNTRY_NAME" property="name"/>
+		<column name="CNTRY_CD" property="abbreviation"/>
+		<column name="CNTRY_DESC" exclude="true"/>
+	</table>
+
+	<table name="ED_STATE" class="&model_package;.State">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="ST_UID" property="uid" type="java.lang.Long"/>
+		<column name="ST_NAME" property="name"/>
+		<column name="ST_CD" property="abbreviation"/>
+		<column name="ST_FIPS_CD" property="fipsCode"/>
+		<column name="ST_DESC" exclude="true"/>
+	</table>
+
+	<table name="ED_COUNTY" class="&model_package;.County">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="CNTY_UID" property="uid" type="java.lang.Long"/>
+		<column name="CNTY_NAME" property="name"/>
+		<column name="CNTY_FIPS_CD" property="fipsCode"/>
+		<column name="CNTY_DESC" exclude="true"/>
+	</table>
+
+	<table name="ED_MONITORING_LOCATION_TYPE" class="&model_package;.MonitoringLocationType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="MLTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="MLTYP_NAME" property="name"/>
+		<column name="MLTYP_DESC" property="description"/>
+	</table>
+
+	<table name="ED_HORIZONTAL_REFERENCE_DATUM" class="&model_package;.HorizontalReferenceDatum">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="HRDAT_UID" property="uid" type="java.lang.Long"/>
+		<column name="HRDAT_NAME" property="name"/>
+		<column name="HRDAT_DESC" property="description"/>
+	</table>
+
+	<table name="ED_HRZNTL_COLLECTION_METHOD" class="&model_package;.HorizontalCollectionMethod">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="HCMTH_UID" property="uid" type="java.lang.Long"/>
+		<column name="HCMTH_NAME" property="name"/>
+		<column name="HCMTH_DESC" property="description"/>
+	</table>
+
+	<table name="ED_MONITORING_LOCATION" class="&model_package;.MonitoringLocation">
+		<meta attribute="extends">&entity_base_class_update;</meta>
+		<meta attribute="sequence-name">MLOC_SEQ</meta>
+		&default_excludes;
+		<column name="MLOC_UID" property="uid" type="java.lang.Long"/>
+		<column name="MLOC_ID" property="id"/>
+		<column name="MLOC_NAME" property="name"/>
+		<column name="MLOC_DESC" property="description"/>
+		<column name="MLOC_LATITUDE" property="latitude"/>
+		<column name="MLOC_LONGITUDE" property="longitude"/>
+		<column name="MLOC_HUC_8" property="huc8">
+			<!--
+			<meta attribute="field-description">A unique hydrologic unit code is used to identify each hydrologic unit. The hydrologic unit codes start with the 8-digit Sub-basin (sub-basin) number that contains the Watershed. Likewise the Subwatershed hydrologic unit codes start with the 10-digit Watershed number that contains the Subwatershed. The Hydrologic Unit Boundaries coverage contains attributes for polygons, arcs and seven Arc/Info regions. Hydrologic Unit delineations are closed polygons that encompass all area draining toward the lowest point (called pour point) in the polygon.</meta>
+			-->
+		</column>
+		<column name="MLOC_VERTICAL_MEASURE" property="verticalMeasure" exclude="true"/>
+		<column name="MLOC_SOURCE_MAP_SCALE" property="sourceMapScale" exclude="true"/>
+		<column name="MLOC_TRIBAL_LAND_NAME" property="tribalLandName" exclude="true"/>
+		<column name="MLOC_TRIBAL_LAND_YN" property="tribalLand" exclude="true"/>
+		<column name="MLOC_HUC_12" exclude="true"/>
+		<column name="MLOC_HORIZONTAL_ACCURACY" property="horizontalAccuracy" exclude="true"/>
+		<column name="MSUNT_UID_HORIZONTAL_ACCURACY" exclude="true"/> <!-- embedded measurement unit -->
+		<column name="MSUNT_UID_VERTICAL_MEASURE" exclude="true"/> <!-- embedded measurement unit -->
+		<column name="VCMTH_UID" exclude="true"/>
+		<column name="VRDAT_UID" exclude="true"/>
+		<foreign-key constraint-name="SYS_C00439299">
+			<many-to-one property="type"/>
+		</foreign-key>
+	</table>
+
+	<table name="ED_ACTIVITY_MEDIA" class="&model_package;.ActivityMedia">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="ACMED_UID" property="uid" type="java.lang.Long"/>
+		<column name="ACMED_NAME" property="name"/>
+		<column name="ACMED_DESC" property="description"/>
+	</table>
+
+	<table name="ED_ACTIVITY_MEDIA_SUBDIVISION" class="&model_package;.ActivityMediaSubdivision">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="AMSUB_UID" property="uid" type="java.lang.Long"/>
+		<column name="AMSUB_NAME" property="name"/>
+		<column name="AMSUB_DESC" property="description"/>
+	</table>
+
+	<table name="ED_ACTIVITY_TYPE" class="&model_package;.ActivityType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="ACTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="ACTYP_CD" property="code"/>
+		<column name="ACTYP_DESC" property="description"/>
+		<column name="ACTYP_ANL_MTH_REQ_YN" property="analyticalMethodRequired"/>
+		<column name="ACTYP_MON_LOC_REQ_YN" property="monitoringLocationRequired"/>
+	</table>
+
+	<table name="ED_ASSEMBLAGE" class="&model_package;.Assemblage">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="ASMBLG_UID" property="uid" type="java.lang.Long"/>
+		<column name="ASMBLG_ID" property="id"/>
+		<column name="ASMBLG_NAME" property="name"/>
+		<column name="ASMBLG_DESC" property="description"/>
+	</table>
+
+	<table name="ED_SAMPLE_COLLECTION_EQUIP" class="&model_package;.SamplingCollectionEquipment">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="SCEQP_UID" property="uid" type="java.lang.Long"/>
+		<column name="SCEQP_NAME" property="name"/>
+		<column name="SCEQP_DESC" property="description"/>
+		<foreign-key constraint-name="SYS_C00439379">
+			<many-to-one property="type"/>
+		</foreign-key>
+	</table>
+
+	<table name="ED_SAMPLE_COLLECT_EQUIP_TYPE" class="&model_package;.SamplingCollectionEquipmentType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="SCETYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="SCETYP_NAME" property="name"/>
+		<column name="SCETYP_DESC" property="description"/>
+	</table>
+
+	<table name="ED_MEASUREMENT_UNIT" class="&model_package;.MeasurementUnit">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="MSUNT_UID" property="uid" type="java.lang.Long"/>
+		<column name="MSUNT_CD" property="code"/>
+		<column name="MSUNT_DESC" property="description"/>
+	</table>
+
+	<table name="ED_TIME_ZONE" class="&model_package;.TimeZone">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="TMZONE_UID" property="uid" type="java.lang.Long"/>
+		<column name="TMZONE_NAME" property="name"/>
+		<column name="TMZONE_CD" property="code"/>
+		<column name="TMZONE_OFFSET" property="offset" type="java.lang.Long"/>
+		<column name="TMZONE_DESC" property="description"/>
+	</table>
+
+	<table name="ED_CONTAINER_COLOR" class="&model_package;.ContainerColor">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="CONCOL_UID" property="uid" type="java.lang.Long"/>
+		<column name="CONCOL_NAME" property="name"/>
+		<column name="CONCOL_DESC" property="description"/>
+	</table>
+
+	<table name="ED_CONTAINER_TYPE" class="&model_package;.ContainerType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="CONTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="CONTYP_NAME" property="name"/>
+		<column name="CONTYP_DESC" property="description"/>
+	</table>
+
+	<table name="ED_THERMAL_PRESERVATIVE" class="&model_package;.ThermalPreservative">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="THPRSV_UID" property="uid" type="java.lang.Long"/>
+		<column name="THPRSV_NAME" property="name"/>
+		<column name="THPRSV_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RELATIVE_DEPTH" class="&model_package;.RelativeDepth">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RELDPTH_UID" property="uid" type="java.lang.Long"/>
+		<column name="RELDPTH_NAME" property="name"/>
+		<column name="RELDPTH_DESC" property="description"/>
+	</table>
+
+	<table name="ED_NET_TYPE" class="&model_package;.NetType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="NETTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="NETTYP_NAME" property="name"/>
+		<column name="NETTYP_DESC" property="description"/>
+	</table>
+
+	<table name="ED_TOXICITY_TEST_TYPE" class="&model_package;.ToxicityTestType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="TTTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="TTTYP_NAME" property="name"/>
+		<column name="TTTYP_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_TYPE" class="&model_package;.ResultType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RES_TYPE_UID" property="uid" type="java.lang.Long"/>
+		<column name="RES_TYPE_NAME" property="name"/>
+		<column name="RES_TYPE_DESCRIPTION" property="description"/>
+	</table>
+
+	<table name="ED_ACTIVITY" class="&model_package;.Activity">
+		<meta attribute="extends">&entity_base_class_update;</meta>
+		<meta attribute="sequence-name">ACT_SEQ</meta>
+		<meta attribute="extra-import">javax.persistence.Embedded</meta>
+		<meta attribute="extra-import">javax.persistence.AttributeOverride</meta>
+		<meta attribute="extra-import">javax.persistence.AttributeOverrides</meta>
+		<meta attribute="extra-import">javax.persistence.AssociationOverride</meta>
+		<meta attribute="extra-import">javax.persistence.PostLoad</meta>
+		<meta attribute="class-code">
+private SamplingMethod collectionMethod = new SamplingMethod();
+private SamplingMethod preparationMethod = new SamplingMethod();
+private Measurement boatSpeed = new Measurement();
+private Measurement collectionDuration = new Measurement();
+private Measurement currentSpeed = new Measurement();
+private Measurement elevation = new Measurement();
+private Measurement horizontalAccuracy = new Measurement();
+private Measurement lowerElevation = new Measurement();
+private Measurement netMeshSize = new Measurement();
+private Measurement netSurfaceArea = new Measurement();
+private Measurement reachLength = new Measurement();
+private Measurement reachWidth = new Measurement();
+private Measurement upperElevation = new Measurement();
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_BOAT_SPEED"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_BOAT_SPEED"))
+public Measurement getBoatSpeed() {
+	return this.boatSpeed;
+}
+
+public void setBoatSpeed(Measurement boatSpeed) {
+	this.boatSpeed = boatSpeed;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_COLLECTION_DURATION"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_COLLECTION_DURATION"))
+public Measurement getCollectionDuration() {
+	return this.collectionDuration;
+}
+
+public void setCollectionDuration(Measurement collectionDuration) {
+	this.collectionDuration = collectionDuration;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_CURRENT_SPEED"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_CURRENT_SPEED"))
+public Measurement getCurrentSpeed() {
+	return this.currentSpeed;
+}
+
+public void setCurrentSpeed(Measurement currentSpeed) {
+	this.currentSpeed = currentSpeed;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_DEPTH_HEIGHT"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_DEPTH_HEIGHT"))
+public Measurement getElevation() {
+	return this.elevation;
+}
+
+public void setElevation(Measurement elevation) {
+	this.elevation = elevation;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_HORIZONTAL_ACCURACY"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_HORIZONTAL_ACCURACY"))
+public Measurement getHorizontalAccuracy() {
+	return this.horizontalAccuracy;
+}
+
+public void setHorizontalAccuracy(Measurement horizontalAccuracy) {
+	this.horizontalAccuracy = horizontalAccuracy;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_DEPTH_HEIGHT_BOTTOM"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_DEPTH_HEIGHT_BOTTOM"))
+public Measurement getLowerElevation() {
+	return this.lowerElevation;
+}
+
+public void setLowerElevation(Measurement lowerElevation) {
+	this.lowerElevation = lowerElevation;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_NET_MESH_SIZE"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_NET_MESH_SIZE"))
+public Measurement getNetMeshSize() {
+	return this.netMeshSize;
+}
+
+public void setNetMeshSize(Measurement netMeshSize) {
+	this.netMeshSize = netMeshSize;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_NET_SURFACE_AREA"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_NET_SURFACE_AREA"))
+public Measurement getNetSurfaceArea() {
+	return this.netSurfaceArea;
+}
+
+public void setNetSurfaceArea(Measurement netSurfaceArea) {
+	this.netSurfaceArea = netSurfaceArea;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_REACH_LENGTH"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_REACH_LENGTH"))
+public Measurement getReachLength() {
+	return this.reachLength;
+}
+
+public void setReachLength(Measurement reachLength) {
+	this.reachLength = reachLength;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_REACH_WIDTH"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_REACH_WIDTH"))
+public Measurement getReachWidth() {
+	return this.reachWidth;
+}
+
+public void setReachWidth(Measurement reachWidth) {
+	this.reachWidth = reachWidth;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "ACT_DEPTH_HEIGHT_TOP"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_DEPTH_HEIGHT_TOP"))
+public Measurement getUpperElevation() {
+	return this.upperElevation;
+}
+
+public void setUpperElevation(Measurement upperElevation) {
+	this.upperElevation = upperElevation;
+}
+
+@Embedded
+@AttributeOverrides({
+	@AttributeOverride(name = "context", column = @Column(name = "ACT_SAM_COLLECT_METH_CONTEXT")),
+	@AttributeOverride(name = "description", column = @Column(name = "ACT_SAM_COLLECT_METH_DESC")),
+	@AttributeOverride(name = "id", column = @Column(name = "ACT_SAM_COLLECT_METH_ID")),
+	@AttributeOverride(name = "name", column = @Column(name = "ACT_SAM_COLLECT_METH_NAME")),
+	@AttributeOverride(name = "type", column = @Column(name = "ACT_SAM_COLLECT_METH_QUAL_TYPE"))
+})
+public SamplingMethod getCollectionMethod() {
+	return this.collectionMethod;
+}
+
+public void setCollectionMethod(SamplingMethod collectionMethod) {
+	this.collectionMethod = collectionMethod;
+}
+
+@Embedded
+@AttributeOverrides({
+	@AttributeOverride(name = "context", column = @Column(name = "ACT_SAM_PREP_METH_CONTEXT")),
+	@AttributeOverride(name = "description", column = @Column(name = "ACT_SAM_PREP_METH_DESC")),
+	@AttributeOverride(name = "id", column = @Column(name = "ACT_SAM_PREP_METH_ID")),
+	@AttributeOverride(name = "name", column = @Column(name = "ACT_SAM_PREP_METH_NAME")),
+	@AttributeOverride(name = "type", column = @Column(name = "ACT_SAM_PREP_METH_QUAL_TYPE"))
+})
+public SamplingMethod getPreparationMethod() {
+	return this.preparationMethod;
+}
+
+public void setPreparationMethod(SamplingMethod preparationMethod) {
+	this.preparationMethod = preparationMethod;
+}
+
+@PostLoad
+public void afterLoad() {
+	if (collectionMethod == null) {
+		collectionMethod = new SamplingMethod();
+	}
+
+	if (preparationMethod == null) {
+		preparationMethod = new SamplingMethod();
+	}
+}
+		</meta>
+		&default_excludes;
+		<column name="ACT_UID" property="uid" type="java.lang.Long"/>
+		<column name="ACT_ID" property="id"/>
+		<column name="ACT_COMMENTS" property="comments"/>
+		<column name="ACT_DEPTH_ALTITUDE_REF_POINT" property="elevationReferenceDatum"/>
+		<column name="ACT_END_DATE" property="endDate"/> <!-- add transient passthrough -->
+		<column name="ACT_END_TIME" property="endTime"/> <!-- add transient passthrough -->
+		<column name="ACT_LOC_LATITUDE" property="latitude"/>
+		<column name="ACT_LOC_LONGITUDE" property="longitude"/>
+		<column name="ACT_LOC_SOURCE_MAP_SCALE" property="sourceMapScale"/>
+		<column name="ACT_PASS_COUNT" property="passCount"/>
+		<column name="ACT_SAM_CHEMICAL_PRESERVATIVE" property="samplingChemicalPreservative"/>
+		<column name="ACT_SAM_COLLECT_EQUIP_COMMENTS" property="samplingCollectionEquipmentComments"/>
+		<column name="ACT_SAM_COMPNT_NAME" property="samplingComponentName"/>
+		<column name="ACT_SAM_COMPNT_PLACE_IN_SERIES" property="samplingComponentPlaceInSeries"/>
+		<column name="ACT_SAM_TRANSPORT_STORAGE_DESC" property="samplingTransportAndStorageProcedures"/>
+		<column name="ACT_START_DATE" property="startDate"/> <!-- add transient passthrough -->
+		<column name="ACT_START_TIME" property="startTime"/> <!-- add transient passthrough -->
+
+		<!-- The following columns are excluded in order to be mapped as embedded objects -->
+		<column name="ACT_SAM_COLLECT_METH_CONTEXT" exclude="true"/>
+		<column name="ACT_SAM_COLLECT_METH_DESC" exclude="true"/>
+		<column name="ACT_SAM_COLLECT_METH_ID" exclude="true"/>
+		<column name="ACT_SAM_COLLECT_METH_NAME" exclude="true"/>
+		<column name="ACT_SAM_COLLECT_METH_QUAL_TYPE" exclude="true"/>
+		<column name="ACT_SAM_PREP_METH_CONTEXT" exclude="true"/>
+		<column name="ACT_SAM_PREP_METH_DESC" exclude="true"/>
+		<column name="ACT_SAM_PREP_METH_ID" exclude="true"/>
+		<column name="ACT_SAM_PREP_METH_NAME" exclude="true"/>
+		<column name="ACT_SAM_PREP_METH_QUAL_TYPE" exclude="true"/>
+		<column name="ACT_BOAT_SPEED" exclude="true"/>
+		<column name="ACT_COLLECTION_DURATION" exclude="true"/>
+		<column name="ACT_CURRENT_SPEED" exclude="true"/>
+		<column name="ACT_DEPTH_HEIGHT" exclude="true"/>
+		<column name="ACT_DEPTH_HEIGHT_BOTTOM" exclude="true"/>
+		<column name="ACT_DEPTH_HEIGHT_TOP" exclude="true"/>
+		<column name="ACT_HORIZONTAL_ACCURACY" exclude="true"/>
+		<column name="ACT_NET_MESH_SIZE" exclude="true"/>
+		<column name="ACT_NET_SURFACE_AREA" exclude="true"/>
+		<column name="ACT_REACH_LENGTH" exclude="true"/>
+		<column name="ACT_REACH_WIDTH" exclude="true"/>
+		<column name="MSUNT_UID_BOAT_SPEED" exclude="true"/>
+		<column name="MSUNT_UID_COLLECTION_DURATION" exclude="true"/>
+		<column name="MSUNT_UID_CURRENT_SPEED" exclude="true"/>
+		<column name="MSUNT_UID_DEPTH_HEIGHT_BOTTOM" exclude="true"/>
+		<column name="MSUNT_UID_DEPTH_HEIGHT" exclude="true"/>
+		<column name="MSUNT_UID_DEPTH_HEIGHT_TOP" exclude="true"/>
+		<column name="MSUNT_UID_HORIZONTAL_ACCURACY" exclude="true"/>
+		<column name="MSUNT_UID_NET_MESH_SIZE" exclude="true"/>
+		<column name="MSUNT_UID_NET_SURFACE_AREA" exclude="true"/>
+		<column name="MSUNT_UID_REACH_LENGTH" exclude="true"/>
+		<column name="MSUNT_UID_REACH_WIDTH" exclude="true"/>
+
+		<foreign-key constraint-name="SYS_C00439233">
+			<many-to-one property="type"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439232">
+			<many-to-one property="media"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439234">
+			<many-to-one property="mediaSubdivision"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439258">
+			<many-to-one property="timeZoneOfStartTime"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439257">
+			<many-to-one property="timeZoneOfEndTime"/>
+			<set exclude="true"/>
+		</foreign-key>
+
+		<!-- The following foreign keys are excluded in order to be mapped into embedded objects -->
+		<foreign-key constraint-name="SYS_C00439241">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439242">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439243">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439244">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439245">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439246">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439247">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439248">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439249">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439250">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439251">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+	</table>
+
+	<table name="ED_CHARACTERISTIC" class="&model_package;.Characteristic">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="CHR_UID" property="uid" type="java.lang.Long"/>
+		<column name="CHR_NAME" property="name"/>
+		<column name="CHR_DESC" property="description"/>
+		<column name="CHR_SRS_ID" property="srsId"/>
+		<column name="CHR_STORET_ID" property="storetId"/>
+		<column name="CHR_SAMPLE_FRACTION_REQ_YN" property="sampleFractionRequired"/>
+		<column name="CHR_PICK_LIST_YN" property="pickList"/>
+	</table>
+
+	<table name="ED_ANALYTICAL_METHOD" class="&model_package;.AnalyticalMethod">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="ANLMTH_UID" property="uid" type="java.lang.Long"/>
+		<column name="ANLMTH_ID" property="secondaryId"/>
+		<column name="ANLMTH_NAME" property="name"/>
+		<column name="ANLMTH_DESC" property="description"/>
+		<column name="ANLMTH_QUAL_TYPE" property="type"/>
+	</table>
+
+	<table name="ED_METHOD_SPECIATION" class="&model_package;.MethodSpecification">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="MTHSPC_UID" property="uid" type="java.lang.Long"/>
+		<column name="MTHSPC_NAME" property="name"/>
+		<column name="MTHSPC_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_MEASURE_QUALIFIER" class="&model_package;.ResultMeasurementQualifier">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RMQLF_UID" property="uid" type="java.lang.Long"/>
+		<column name="RMQLF_CD" property="code"/>
+		<column name="RMQLF_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_DETECTION_CONDITION" class="&model_package;.ResultDetectionCondition">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RDCND_UID" property="uid" type="java.lang.Long"/>
+		<column name="RDCND_NAME" property="name"/>
+		<column name="RDCND_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_VALUE_TYPE" class="&model_package;.ResultValueType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RVTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="RVTYP_NAME" property="name"/>
+		<column name="RVTYP_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_STATUS" class="&model_package;.ResultStatus">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RESSTA_UID" property="uid" type="java.lang.Long"/>
+		<column name="RESSTA_NAME" property="name"/>
+		<column name="RESSTA_DESC" property="description"/>
+	</table>
+
+	<table name="ED_TAXON_RANK" class="&model_package;.TaxonRank">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="TXRNK_UID" property="uid" type="java.lang.Long"/>
+		<column name="TXRNK_NAME" property="name"/>
+		<column name="TXRNK_DESC" property="description"/>
+	</table>
+
+	<table name="ED_TAXON" class="&model_package;.Taxon">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="TAX_UID" property="uid" type="java.lang.Long"/>
+		<column name="TAX_NAME" property="name"/>
+		<column name="TAX_DESC" property="description"/>
+		<foreign-key constraint-name="SYS_C00439382">
+			<many-to-one property="parentTaxon"/>
+			<set property="childTaxa"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439381">
+			<many-to-one property="rank"/>
+		</foreign-key>
+	</table>
+
+	<table name="ED_CHAR_PICK_LIST_VALUE" class="&model_package;.CharacteristicPickListValue">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="CPLVAL_UID" property="uid" type="java.lang.Long"/>
+		<column name="CPLVAL_CD" property="code"/>
+		<column name="CPLVAL_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_LAB_COMMENT" class="&model_package;.ResultLabComment">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RLCOM_UID" property="uid" type="java.lang.Long"/>
+		<column name="RLCOM_CD" property="code"/>
+		<column name="RLCOM_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_TIME_BASIS" class="&model_package;.ResultTimeBasis">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RTIMB_UID" property="uid" type="java.lang.Long"/>
+		<column name="RTIMB_NAME" property="name"/>
+		<column name="RTIMB_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_TEMPERATURE_BASIS" class="&model_package;.ResultTemperatureBasis">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RTMPB_UID" property="uid" type="java.lang.Long"/>
+		<column name="RTMPB_NAME" property="name"/>
+		<column name="RTMPB_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_WEIGHT_BASIS" class="&model_package;.ResultWeightBasis">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RWBAS_UID" property="uid" type="java.lang.Long"/>
+		<column name="RWBAS_NAME" property="name"/>
+		<column name="RWBAS_DESC" property="description"/>
+	</table>
+
+	<table name="ED_SAMPLE_FRACTION" class="&model_package;.SampleFraction">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="SMFRC_UID" property="uid" type="java.lang.Long"/>
+		<column name="SMFRC_NAME" property="name"/>
+		<column name="SMFRC_DESC" property="description"/>
+	</table>
+
+	<table name="ED_SAMPLE_TISSUE_ANATOMY" class="&model_package;.SampleTissueAnatomy">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="STANT_UID" property="uid" type="java.lang.Long"/>
+		<column name="STANT_NAME" property="name"/>
+		<column name="STANT_DESC" property="description"/>
+	</table>
+
+	<table name="ED_RESULT_STATISTICAL_BASE" class="&model_package;.ResultStatisticalBase">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="RSBAS_UID" property="uid" type="java.lang.Long"/>
+		<column name="RSBAS_CD" property="code"/>
+		<column name="RSBAS_DESC" property="description"/>
+	</table>
+
+	<table name="ED_BIOLOGICAL_INTENT" class="&model_package;.BiologicalIntent">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="BIOINT_UID" property="uid" type="java.lang.Long"/>
+		<column name="BIOINT_NAME" property="name"/>
+		<column name="BIOINT_DESC" property="description"/>
+	</table>
+
+	<table name="ED_LIFESTYLE" class="&model_package;.Lifestyle">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		<meta attribute="sequence-name">LIFSTYL_SEQ</meta>
+		&default_excludes;
+		<column name="LIFSTYL_UID" property="uid" type="java.lang.Long"/>
+		<column name="LIFSTYL_NAME" property="name"/>
+		<column name="LIFSTYL_DESC" property="description"/>
+	</table>
+
+	<table name="ED_CITATION" class="&model_package;.Citation">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		<meta attribute="sequence-name">CITATN_SEQ</meta>
+		&default_excludes;
+		<column name="CITATN_UID" property="uid" type="java.lang.Long"/>
+		<column name="CITATN_ID" property="id"/>
+		<column name="CITATN_CREATOR" property="creator"/>
+		<column name="CITATN_DATE" property="date"/>
+		<column name="CITATN_PUBLISHER" property="publisher"/>
+		<column name="CITATN_TITLE" property="title"/>
+		<column name="CITATN_DESCR" property="description"/>
+		<column name="CITATN_SUBJECT" property="subject"/>
+	</table>
+
+	<table name="ED_RESULT" class="com.tetratech.edas2.model.Result">
+		<meta attribute="extends">&entity_base_class_update;</meta>
+		<meta attribute="sequence-name">RES_SEQ</meta>
+		<meta attribute="extra-import">javax.persistence.Embedded</meta>
+		<meta attribute="extra-import">javax.persistence.AttributeOverride</meta>
+		<meta attribute="extra-import">javax.persistence.AssociationOverride</meta>
+		<meta attribute="extra-import">javax.persistence.OneToOne</meta>
+		<meta attribute="extra-import">javax.persistence.PostLoad</meta>
+		<meta attribute="extra-import">javax.persistence.PostPersist</meta>
+		<meta attribute="extra-import">javax.persistence.PostUpdate</meta>
+		<meta attribute="extra-import">javax.persistence.CascadeType</meta>
+		<meta attribute="class-code">
+private Measurement elevation = new Measurement();
+private Measurement primaryMeasurement = new Measurement();
+private Measurement groupSummaryCountWeight = new Measurement();
+private ResultFrequencyClass resultFrequencyClass;
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "RES_DEPTH_HEIGHT"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_DEPTH_HEIGHT"))
+public Measurement getElevation() {
+	return this.elevation;
+}
+
+public void setElevation(Measurement elevation) {
+	this.elevation = elevation;
+}
+
+public void resetElevation() {
+	elevation = new Measurement();
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "RES_GROUP_SUMMARY_CT_WT"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_GROUP_SUMMARY_CT_WT"))
+public Measurement getGroupSummaryCountWeight() {
+	return this.groupSummaryCountWeight;
+}
+
+public void setGroupSummaryCountWeight(Measurement groupSummaryCountWeight) {
+	this.groupSummaryCountWeight = groupSummaryCountWeight;
+}
+
+@Embedded
+@AttributeOverride(name = "value", column = @Column(name = "RES_MEASURE"))
+@AssociationOverride(name = "unit", joinColumns = @JoinColumn(name = "MSUNT_UID_MEASURE"))
+public Measurement getPrimaryMeasurement() {
+	return this.primaryMeasurement;
+}
+
+public void setPrimaryMeasurement(Measurement primaryMeasurement) {
+	this.primaryMeasurement = primaryMeasurement;
+}
+
+public void resetPrimaryMeasurement() {
+	primaryMeasurement = new Measurement();
+}
+
+@PostLoad @PostPersist @PostUpdate
+public void afterLoad() {
+	if (elevation == null) {
+		resetElevation();
+	}
+	if (primaryMeasurement == null) {
+		resetPrimaryMeasurement();
+	}
+}
+
+@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "result")
+public ResultFrequencyClass getResultFrequencyClass() {
+	return this.resultFrequencyClass;
+}
+
+public void setResultFrequencyClass(
+		ResultFrequencyClass resultFrequencyClass) {
+	this.resultFrequencyClass = resultFrequencyClass;
+}
+		</meta>
+		&default_excludes;
+		<column name="RES_UID" property="uid" type="java.lang.Long"/>
+		<column name="EXCLUDE_YN" property="exclude" type="boolean"/>
+		<column name="RES_BIO_INDIVIDUAL_ID" property="bioIndividualId"/>
+		<column name="RES_COMMENTS" property="comments"/>
+		<column name="RES_DATA_LOGGER_LINE" property="dataLoggerLine"/>
+		<column name="RES_DEPTH_ALTITUDE_REF_POINT" property="elevationReferenceDatum"/>
+		<!-- TODO: consider making Lab embedded (but not the analysis) -->
+		<column name="RES_LAB_ACCRED_AUTHORITY" property="labAccreditedAuthority"/>
+		<column name="RES_LAB_ACCRED_YN" property="labAccredited"/>
+		<column name="RES_LAB_ANALYSIS_START_DATE" property="labAnalysisStartDate"/>
+		<column name="RES_LAB_ANALYSIS_START_TIME" property="labAnalysisStartTime"/>
+		<column name="RES_LAB_ANALYSIS_END_DATE" property="labAnalysisEndDate"/>
+		<column name="RES_LAB_ANALYSIS_END_TIME" property="labAnalysisEndTime"/>
+		<column name="RES_LAB_NAME" property="labName"/>
+		<!-- TODO: consider making PrimaryMeasurement embedded -->
+		<column name="RES_MEASURE_BIAS" property="measurementBias"/>
+		<column name="RES_MEASURE_CONF_INTERVAL" property="measurementConfidenceInterval"/>
+		<column name="RES_MEASURE_PRECISION" property="measurementPrecision"/>
+		<column name="RES_MEASURE_LOWER_CONF_LIMIT" property="measurementLowerConfidenceLimit"/>
+		<column name="RES_MEASURE_UPPER_CONF_LIMIT" property="measurementUpperConfidenceLimit"/>
+		<column name="RES_PARTICLE_SIZE_BASIS" property="particleSizeBasis"/>
+		<column name="RES_SAMPLING_POINT_NAME" property="samplingPointName"/>
+		<column name="RES_SPECIES_ID" property="speciesId"/>
+		<column name="RES_TAXONOMIST_ACCRED_AUTHORTY" property="taxonomistAccreditedAuthority"/>
+		<column name="RES_TAXONOMIST_ACCRED_YN" property="taxonomistAccredited"/>
+
+		<!-- embedded -->
+		<column name="RES_DEPTH_HEIGHT" exclude="true"/>
+		<column name="RES_MEASURE" exclude="true"/>
+		<column name="RES_GROUP_SUMMARY_CT_WT" exclude="true"/>
+		<column name="MSUNT_UID_DEPTH_HEIGHT" exclude="true"/>
+		<column name="MSUNT_UID_GROUP_SUMMARY_CT_WT" exclude="true"/>
+		<column name="MSUNT_UID_MEASURE" exclude="true"/>
+
+		<foreign-key constraint-name="RESTYPEFK">
+			<many-to-one property="type"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439343">
+			<many-to-one property="status"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439346">
+			<many-to-one property="valueType"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439341">
+			<many-to-one property="measurementQualifier"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439339">
+			<many-to-one property="detectionCondition"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439342">
+			<many-to-one property="statisticalBase"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439344">
+			<many-to-one property="timeBasis"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439345">
+			<many-to-one property="temperatureBasis"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439347">
+			<many-to-one property="weightBasis"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439340">
+			<many-to-one property="labComment"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439352">
+			<many-to-one property="timeZoneForLabAnalysisStartTime"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439351">
+			<many-to-one property="timeZoneOfLabAnalysisEndTime"/>
+			<set exclude="true"/>
+		</foreign-key>
+
+		<!-- embedded -->
+		<foreign-key constraint-name="SYS_C00439334">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439335">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+		<foreign-key constraint-name="SYS_C00439336">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+	</table>
+
+	<table name="ED_RESULT_FREQUENCY_CLASS" class="&model_package;.ResultFrequencyClass">
+		<meta attribute="extends">&entity_base_class_update;</meta>
+		<meta attribute="sequence-name">RFCLS_SEQ</meta>
+		<meta attribute="extra-import">javax.persistence.OneToOne</meta>
+		<meta attribute="class-code">
+private Result result;
+
+@OneToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "RES_UID", nullable = false)
+@NotNull
+public Result getResult() {
+	return this.result;
+}
+
+public void setResult(Result result) {
+	this.result = result;
+}
+		</meta>
+		&default_excludes;
+		<column name="RFCLS_UID" property="uid" type="java.lang.Long"/>
+		<column name="FCDSC_LOWER_BOUND" property="lowerBound"/>
+		<column name="FCDSC_UPPER_BOUND" property="upperBound"/>
+		<column name="RES_UID" exclude="true"/>
+		<foreign-key constraint-name="SYS_C00439361">
+			<many-to-one exclude="true"/>
+			<set exclude="true"/>
+		</foreign-key>
+	</table>
+
+	<table name="ED_FREQUENCY_CLASS_DESCRIPTOR" class="&model_package;.FrequencyClassDescriptor">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		<meta attribute="sequence-name">FCDSC_SEQ</meta>
+		&default_excludes;
+		<column name="FCDSC_UID" property="uid" type="java.lang.Long"/>
+		<column name="FCDSC_NAME" property="name"/>
+		<column name="FCDSC_DESC" property="description"/>
+	</table>
+
+	<table name="ED_FREQUENCY_CLASS_TYPE" class="&model_package;.FrequencyClassType">
+		<meta attribute="extends">&entity_base_class_updateretire;</meta>
+		&default_excludes;
+		<column name="FCTYP_UID" property="uid" type="java.lang.Long"/>
+		<column name="FCTYP_NAME" property="name"/>
+		<column name="FCTYP_DESC" property="description"/>
+		<column name="FCTYP_BOUNDS_REQUIRED_YN" property="boundsRequired"/>
+		<column name="FCTYP_UNIT_REQUIRED_YN" property="unitRequired"/>
+	</table>
+
+</hibernate-reverse-engineering>

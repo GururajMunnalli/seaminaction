@@ -1,0 +1,9 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:fld="http://edas2.com/facelets/field"
+	xmlns:tpl="http://edas2.com/facelets/template"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<tpl:default var="required" value="true"/>
+	<fld:suggest id="ch" suggestMethod="filterCharacteristic" labelProperty="name" size="20" label="Characteristic:">
+		<ui:insert/>
+	</fld:suggest>
+</ui:composition>
