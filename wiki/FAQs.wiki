@@ -45,7 +45,7 @@
 
   Both files use the Java properties syntax (i.e., name=value pair). However, Seam uses them for different purposes.
 
-  Seam uses the values in components.properties to replace Ant-style tokens in the Seam component descriptor (e.g., WEB-INF/components.xml). For instance, if the property file contained the following line:
+  Seam uses the values in components.properties to replace Ant-style tokens in the Seam component descriptor (e.g., WEB-INF/components.xml). For instance, if components.properties contained the following line:
 
 {{{
 debug=true
