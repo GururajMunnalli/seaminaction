@@ -84,6 +84,14 @@ org.jboss.seam.core.init.transactionManagementEnabled=false
 }}}
   # *Prune the instance* - If you need to store the instance in a long-term scope and don't want to be afraid of accidentally hitting an uninitialized proxy or collection, you can prune the instance after loading it. One library you can use for this purpose is [http://code.google.com/p/entity-pruner/ entity-pruner].
 
+  * *After I add or edit a record, I don't see the changes in the list*
+
+  It's a fairly typical scenario to use a conversation to add or edit a record and another conversation to display/sort/search the list of records. But since you are using two different conversations, they don't affect each other and thus you have to be careful with caching.
+
+  The most common problem people experience is that the list is not updated after a new record is added or an existing record modified. That's because you need to inform the component that manages the list to refresh the data to get the most recent changes. One approach is to raise an event in the editor component which the list component can observe and refresh the list. Another approach is to invoke a method call that refreshes the list in the navigation transition from the editor to the list page.
+
+  Don't confuse a stale list from the database not being updated (or the entity manager not being flushed). If you restart your application (or just create a new session) and see that the data was updated appropriately, you likely have a variable-scope caching problem.
+
   * *How do I send e-mail with Java?*
 
   Personally I dreaded sending e-mail in Java until I started using Seam. In fairness, Spring supporters could say the same thing about their framework. jBPM is yet another interface. Those are the APIs to the mail you are calling for.
