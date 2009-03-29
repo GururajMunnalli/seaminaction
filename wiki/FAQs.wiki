@@ -72,6 +72,18 @@ org.jboss.seam.core.init.transactionManagementEnabled=false
 
   You can also use the Hibernate Validator or Bean Validation in the service layer to validate. The tricky part is how to validate a populated object and still be able to present the user with the form again with the validation error messages. For that, you may want to check out the [http://livedemo.exadel.com/richfaces-demo/richfaces/graphValidator.jsf?c=graphValidator&tab=usage graphValidator] component from RichFaces.
 
+  * *I use Seam and I still get a LazyInitializationException*
+
+  Despite the fact that Seam curtails the appearance of this exception, it doesn't eliminate it entirely. After all, the exception exists for a reason. If you attempt to access an uninitialized proxy or collection on an entity instance which is no longer being managed by an active Hibernate Session / JPA EntityManager (perhaps because it is stored in the HTTP session), then this exception will be raised. There are two ways to deal with this problem:
+
+  # *Save the id, not the instance* - Instead of storing the actual instance in a long term scope, such as the HTTP session, store the id of the entity. Then, when you need to access the instance, have Hibernate/JPA load that instance on demand. This is done using the combination of an EntityHome and an event-scoped factory:
+{{{
+<framework:entity-home name="typeHome" entity-class="org.example.model.Type">
+    <framework:id>#{sessionScopedId}</framework:id>
+</framework:entity-home>
+}}}
+  # *Prune the instance* - If you need to store the instance in a long-term scope and don't want to be afraid of accidentally hitting an uninitialized proxy or collection, you can prune the instance after loading it. One library you can use for this purpose is [http://code.google.com/p/entity-pruner/ entity-pruner].
+
   * *How do I send e-mail with Java?*
 
   Personally I dreaded sending e-mail in Java until I started using Seam. In fairness, Spring supporters could say the same thing about their framework. jBPM is yet another interface. Those are the APIs to the mail you are calling for.
