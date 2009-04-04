@@ -257,7 +257,7 @@ in the build.properties file.
 	</target>
 
 	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-schema.sql -->
-	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-seed-data.sql -->
+	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-initial-seed-data.sql -->
 	<target name="build-db" description="Build and seed the initial H2 database for Open 18">
 		<delete failonerror="false">
 			<fileset dir="${open18.database.dir}" includes="h2*"/>
@@ -278,11 +278,11 @@ in the build.properties file.
 			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
 			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
 			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
-			<arg value="-script"/><arg value="${etc.dir}/schema/open18-seed-data.sql"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/open18-initial-seed-data.sql"/>
 		</java>
 	</target>
 
-	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-trivia-data.sql -->
+	<!-- java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 -user open18 -password tiger -script etc/schema/open18-trivia-seed-data-ch12.sql -->
 	<target name="seed-trivia" description="Seed the Open 18 database with sample trivia questions (must first deploy chapter 12 stage)">
 		<java classname="org.h2.tools.RunScript" fork="true">
 			<classpath>
@@ -291,7 +291,7 @@ in the build.properties file.
 			<arg value="-url"/><arg value="${open18.jdbc.url}"/>
 			<arg value="-user"/><arg value="${open18.jdbc.username}"/>
 			<arg value="-password"/><arg value="${open18.jdbc.password}"/>
-			<arg value="-script"/><arg value="${etc.dir}/schema/open18-trivia-seed-data.sql"/>
+			<arg value="-script"/><arg value="${etc.dir}/schema/open18-trivia-seed-data-ch12.sql"/>
 		</java>
 	</target>
 
@@ -431,14 +431,14 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 	<target name="select-project">
 		<echo>Available projects:
 
- A: projects-part1 -> golftips
- B: projects-part1 -> open18
- C: projects-part1 -> open18ee
+ A: projects-part1 (ch01) -> golftips
+ B: projects-part1 (ch02) -> open18
+ C: projects-part1 (ch02) -> open18ee
  D: projects-ch03 -> open18
  E: projects-ch04 -> open18
  F: projects-ch05 -> open18
  G: projects-ch06 -> open18
- H: projects-part3 -> open18
+ H: projects-part3 (ch07-ch10) -> open18
  I: projects-ch11 -> open18
  J: projects-ch12 -> open18
  K: projects-ch12 -> open18ice
