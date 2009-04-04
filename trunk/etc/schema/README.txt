@@ -9,8 +9,8 @@ open18-initial-schema-mysql.sql
 
 You can then seed the database with facilities.
 
-open18-facility-seed-data-ch02.sql
-open18-facility-seed-data-ch02-mysql.sql
+open18-initial-seed-data.sql
+open18-initial-seed-data-mysql.sql
 
 If you are using H2, you can simply extract one of the two zip files, which
 contain ready-made H2 database files.
