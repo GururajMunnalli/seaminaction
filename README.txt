@@ -144,7 +144,7 @@ and load the seed data:
    java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 \
       -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
    java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 \
-      -user open18 -password tiger -script etc/schema/open18-seed-data.sql
+      -user open18 -password tiger -script etc/schema/open18-initial-seed-data.sql
 
 Configuring JBoss AS
 --------------------
