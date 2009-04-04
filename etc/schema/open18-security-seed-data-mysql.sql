@@ -1,0 +1,3 @@
+-- password for admin is 'ilovegolf'
+INSERT INTO ROLE (ID, NAME) VALUES (1, 'admin');
+INSERT INTO MEMBER (ID, USERNAME, PASSWORD_HASH, EMAIL_ADDRESS) VALUES (1, 'admin', '6020c269223540373e9cdee8657090c82535a132', 'admin@open18.org');
