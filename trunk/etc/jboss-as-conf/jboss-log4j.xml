@@ -12,7 +12,7 @@
 		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
 
 		<layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{HH:mm:ss} %p [%c{6}] %m%n"/>
+			<param name="ConversionPattern" value="%d{HH:mm:ss} %p [%c{6}] %m%n"/>
 			<!--
 			<param name="ConversionPattern" value="%d{HH:mm:ss} [%p] %c#%M@%L => %m%n"/>
 			-->
@@ -34,17 +34,32 @@
 		</layout>
 	</appender>
 
-    <!-- digester is way too whiny -->
-    <category name="org.apache.commons.digester.Digester">
+    <!-- digester is way too whiny (needed if root log level is INFO) -->
+	<category name="org.apache.commons.digester.Digester">
 		<priority value="WARN" />
-    </category>
+	</category>
+
+	<!-- Tell us when Seam is initializing -->
+	<category name="javax.servlet.ServletContextListener">
+		<priority value="INFO" />
+	</category>
+
+	<!-- Tell us which components Seam is loading -->
+	<category name="org.jboss.seam.init.Initialization">
+		<priority value="INFO" />
+	</category>
 
     <!-- log SQL queries -->
 	<!--
-    <category name="org.hibernate.SQL">
+	<category name="org.hibernate.SQL">
 		<priority value="DEBUG" />
-    </category>
+	</category>
 	-->
+
+	<!-- Tell us when JBoss AS has finished starting -->
+	<category name="org.jboss.system.server.Server">
+		<priority value="INFO" />
+	</category>
 
 	<category name="org.open18">
 		<priority value="DEBUG" />
