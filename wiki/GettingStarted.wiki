@@ -9,7 +9,7 @@ First of all, I encourage you (read as "urge you") to [http://mojavelinux.com/se
 
   * Java SE Development Kit (JDK) 5.0 (or better)
   * JBoss Application Server (AS) 4.2.2.GA (or better)
-  * Seam 2.0.0.GA (or better)
+  * Seam 2.0.0.GA (or better, though example doesn't fully support 2.1 yet)
   * Apache Ant 1.7.0 (to execute the build from the project)
   * IDE - Eclipse, NetBeans, or IntelliJ IDEA (to follow along with chapter 2)
 
@@ -186,7 +186,7 @@ If you have Ant installed, you can also change to the directory of the project a
 ant explode
 }}}
 
-=== Seeding the database for Open18 ===
+=== Seeding the H2 database for Open18 ===
 
 Chapter 2 mentions that the DBA provides you with an H2 database that will be
 used to create the course directory module of the Open18 application. Those
@@ -215,8 +215,57 @@ and load the seed data:
 java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 \
   -user open18 -password tiger -script etc/schema/open18-initial-schema.sql
 java -cp lib/h2.jar org.h2.tools.RunScript -url jdbc:h2:file:databases/open18-db/h2 \
-  -user open18 -password tiger -script etc/schema/open18-seed-data.sql
+  -user open18 -password tiger -script etc/schema/open18-initial-seed-data.sql
 }}}
+
+=== Using MySQL instead of H2 ===
+
+Of course, you can use any database supported by Hibernate (or the JPA provider of your choice) to develop a database-driven Seam application. But each database requires its own unique schema. That's why I have provided a schema for MySQL in addition to the H2 schema, which can be found in the etc/schema directory of the example code. I'll describe the changes you need to make to switch the application over to MySQL.
+
+First, make sure that you have MySQL installed. Next, create a database named `open18` and create a user by the same name with the password `tiger` (just to be consistent).
+
+Next, import the Open 18 schema for MySQL into the `open18` database using the following command:
+
+{{{
+mysql -u open18 -p open18 < etc/schema/open18-initial-schema-mysql.sql
+}}}
+
+Once the schema is imported, you can see it with the set of facilities:
+
+{{{
+mysql -u open18 -p open18 < etc/schema/open18-initial-seed-data-mysql.sql
+}}}
+
+As you progress through the application, you can find additional seed data for MySQL in the etc/schema directory.
+
+To get the application to use the MySQL database instead of the H2 database, you only have to make two changes. First, open up the resources/open18-dev-ds.xml file in the open18 for any stage and modify the `<local-tx-datasource>` element as follows:
+
+{{{
+<local-tx-datasource>
+    <jndi-name>open18Datasource</jndi-name>
+    <use-java-context>false</use-java-context>
+    <connection-url>jdbc:mysql://localhost/open18</connection-url>
+    <driver-class>org.mysql.jdbc.Driver</driver-class>
+    <user-name>open18</user-name>
+    <password>tiger</password>
+</local-tx-datasource>
+}}}
+
+Next, open up the resources/META-INF/persistence-dev-war.xml file and comment out the `hibernate.dialect` property (Hibernate will figure it out automatically):
+
+{{{
+<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/> -->
+}}}
+
+You could also set it to `org.hibernate.dialect.MySQL5InnoDBDialect`.
+
+You should also make sure that the `hibernate.hbm2ddl.auto` property is set to update so that the database will be updated as you add new JPA entities in later chapters:
+
+{{{
+<property name="hibernate.hbm2ddl.auto" value="update"/>
+}}}
+
+Now you are using MySQL!
 
 === Configuring JBoss AS ===
 
