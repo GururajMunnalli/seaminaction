@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project name="jbossas" default="list-deployments" basedir=".">
+	<!-- This is a helper script that I drop into a JBoss AS installation so that
+	     I can use Ant to get a list of deployments or clear out the deployed archives -->
+
+	<property name="jboss-as.home" value="."/>
+	<property name="jboss-as.domain" value="default"/>
+	<property name="jboss-as.bin.dir" value="${jboss-as.home}/bin"/>
+	<property name="jboss-as.deploy.dir" value="${jboss-as.home}/server/${jboss-as.domain}/deploy"/>
+
+	<target name="undeploy-all" description="Undeploy all projects from JBoss AS">
+		<delete includeemptydirs="true">
+			<fileset dir="${jboss-as.deploy.dir}">
+				<exclude name="hsqldb-ds.xml"/>
+				<exclude name="jmx-console.war/**"/>
+				<include name="*.war/**"/>
+				<include name="*.ear/**"/>
+				<include name="*-ds.xml"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="list-deployments" description="List the current JBoss AS deployments">
+		<dirset id="exploded-archives" dir="${jboss-as.deploy.dir}">
+			<include name="*.war"/>
+			<include name="*.ear"/>
+			<exclude name="jmx-console.war"/>
+		</dirset>
+		<fileset id="packaged-archives" dir="${jboss-as.deploy.dir}">
+			<include name="*.war"/>
+			<include name="*.ear"/>
+		</fileset>
+		<fileset id="datasources" dir="${jboss-as.deploy.dir}">
+			<exclude name="hsqldb-ds.xml"/>
+			<include name="*-ds.xml"/>
+		</fileset>
+		<property name="exploded-archives" refid="exploded-archives"/>
+		<property name="packaged-archives" refid="packaged-archives"/>
+		<property name="datasources" refid="datasources"/>
+		<echo message="exploded archives: ${exploded-archives}"/>
+		<echo message="packaged archives: ${packaged-archives}"/>
+		<echo message="datasources: ${datasources}"/>
+	</target>
+</project>
