@@ -137,13 +137,19 @@ in the build.properties file.
 		<replace file="${seam-gen.dir}/build.xml" token="1.7.0" value="1.7.1"/>
 	</target>
 
-	<target name="rehome" description="Replace any absolute paths with the location of this build file">
-		<property name="new.home" value="${basedir.xplatform}"/>
-		<condition property="replacement.token" value="${old.home}" else="/home/twoputt">
-			<isset property="old.home"/>
-		</condition>
-		<echo>Replacing references to ${replacement.token} with ${new.home}</echo>
-		<replace dir="${stages.dir}" token="${replacement.token}" value="${new.home}">
+	<target name="rehome" description="Replace any absolute paths with the location of this build file (or new.home property override)">
+		<!-- defaults -->
+		<property name="new.home" value="${basedir}"/>
+		<property name="old.home" value="/home/twoputt"/>
+		<!-- make Windows paths Java friendly -->
+		<pathconvert property="new.home.xplatform" targetos="unix">
+			<path location="${new.home}"/>
+		</pathconvert>
+		<pathconvert property="old.home.xplatform" targetos="unix">
+			<path location="${old.home}"/>
+		</pathconvert>
+		<echo>Replacing references to ${old.home.xplatform} with ${new.home.xplatform}</echo>
+		<replace dir="${stages.dir}" token="${old.home.xplatform}" value="${new.home.xplatform}">
 			<patternset id="contains.filesystem.path">
 				<include name="**/*.properties"/>
 				<include name="**/*-ds.xml"/>
@@ -153,7 +159,7 @@ in the build.properties file.
 			</patternset>
 		</replace>
 		<!--
-		<replace dir="${prototype.dir}" token="${replacement.token}" value="${new.home}">
+		<replace dir="${prototype.dir}" token="${old.home}" value="${new.home}">
 			<patternset refid="contains.filesystem.path"/>
 		</replace>
 		-->
@@ -193,7 +199,7 @@ in the build.properties file.
 		<echo message="datasources: ${datasources}"/>
 	</target>
 
-	<target name="uninflate-all" description="Reverses the inflate process for all stages">
+	<target name="deflate-all" description="Reverses the inflate process for all stages">
 		<delete includeemptydirs="true">
 			<fileset dir="${stages.dir}">
 				<include name="*/*/lib/**"/>
@@ -405,6 +411,15 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 	<!--
 	<target name="quickstart-ivy" depends="get-jboss-as,rehome,build-db,ivyize-project" description="Perform tasks to get started without the Seam distribution"/>
 	-->
+
+	<target name="deflate-project" depends="select-project" description="Remove the libraries for the selected project (menu provided)">
+		<delete includeemptydirs="true">
+			<fileset dir="${workspace.home}/${project.name}">
+				<include name="lib/**"/>
+				<include name="bootstrap/**"/>
+			</fileset>
+		</delete>
+	</target>
 
 	<target name="inflate-project" depends="update-project" description="An alias for update-project"/>
 
