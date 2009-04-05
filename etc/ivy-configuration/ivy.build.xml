@@ -51,9 +51,9 @@
 
 	<target name="clean-ivy" depends="load-ivy">
 		<delete includeemptydirs="true" failonerror="false">
-			 <fileset dir="${lib.dir}">
-				  <include name="**/*"/>
-			 </fileset>
+			<fileset dir="${lib.dir}">
+				<include name="**/*"/>
+			</fileset>
 		</delete>
 		<ivy:cleancache/>
 	</target>
