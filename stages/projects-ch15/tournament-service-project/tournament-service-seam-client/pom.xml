@@ -201,7 +201,7 @@
 	</dependencies>
 	<properties>
 		<spring.version>2.5.2</spring.version>
-		<jetty.port>9092</jetty.port>
-		<jetty.debug.port>9192</jetty.debug.port>
+		<jetty.port>9094</jetty.port>
+		<jetty.debug.port>9194</jetty.debug.port>
 	</properties>
 </project>

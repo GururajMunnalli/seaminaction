@@ -19,9 +19,9 @@ Note: This step will start an H2 database over TCP and seed it with tournament d
 4. Visit the test client in the browser to verify that the list of upcoming
    golf tournaments can be retrieved from the service
 
-  http://localhost:9091/tournment-service-client/tournaments.action
+  http://localhost:9091/tournament-service-client
 
-5. Run the Seam-based client using jetty (port 9092):
+5. Run the Seam-based client using jetty (port 9094):
 
   cd tournament-service-seam-client
   mvn jetty:run
@@ -29,7 +29,7 @@ Note: This step will start an H2 database over TCP and seed it with tournament d
 6. Visit the Seam application in the browser to verify that the list of upcoming
    golf tournaments can be retrieved from the service
 
-  http://localhost:9092/tournment-service-client/tournaments.seam
+  http://localhost:9094/tournament-service-client
 
 7. Run the tournament manager web application, which uses Seam for the web
    layer and Spring for the backend:
