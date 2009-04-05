@@ -15,7 +15,7 @@ import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.contexts.Contexts;
 
-import org.open18.model.GolfTip;
+import org.open18.golftips.model.GolfTip;
 
 @Name("tipAction")
 public class TipAction {

@@ -1,4 +1,4 @@
-package org.open18.model;
+package org.open18.golftips.model;
 
 import java.io.Serializable;
 
