@@ -1,23 +1,52 @@
 TODO:
 -----
-- missing preloadFacilities in chapter 03
-- commit changes to ch03 and carry across code base
-- change validator package to validation
-- pro status should be in all caps (why not enum?)
+- JDK 6 fix!!!
+- add a deploy stage target that will deploy the stage that was inflated (part of quickstart)
 
-- submit JIRA issue for bug in UIAttachment referencing docType
-- submit security event bug in Pages.java (then correct the components.xml in the open18 project)
-- submit validatorId bug in Param.java
+- labelClass changed to tabClass in RichFaces 3.2!! (add to migration script)
+
+- make fix-messages-tag.sh an ant target
+- capture last login time (good use of events, or perhaps just part of login routine)
+- get back to current page after manual login: <h:form style="display: inline;"><h:commandLink action="login" actionListener="#{redirect.captureCurrentView}" value="Login" rendered="#{not identity.loggedIn}"/></h:form>
+- links in book are not underlined (change from seam-gen)
+- make Facility name a link to Facility uri in subtables
+- reorder columns on Facility and Course page so they are logical (propagate across all stages)
+- log source code issues in issue tracker
+- may want to consider making some cosmetic changes that would need to be propagated across the board
+	- ordering of fields on course and facility page
+	- application title, navigation page l&f
+- add "My Profile" in chapter 11 (after authenticating)
+- in chp 03 I use "validator" and "converter" packages and in chapter 06 I introduce a "validation" package (package is never registered in the code, so I could change it)
+- should Weather be WeatherType or should GrassType be Grass?
+- add access keys across the board
+- may want to add to seam-gen:
+  <navigation from-action="#{identity.logout}">
+    <redirect/>
+  </navigation>
+
+- instead of cool new golfers, could do golfers online in last 180 minutes (show idle time, etc)
+
+- reorder fields in forms and reduce number of columns in lists for course and facility (starting a chapter 02?)
+
+- consider using <f:facet><rich:columnGroup></rich:columnGroup></f:facet> for styling listing tables (currently uses subheader)
+- want to do cross-validation of password and confirm, but in Ajax4jsf that would cause a problem w/ required fields
+
+- do I necessarily want to restrict selecting conversation if it is the current one?
+- add Gravel to JSF component library list in appendix
+
 - submit jboss.home in build.properties overriding seam-gen setting bug
 - submit JIRA issue about a message regarding multi-module eclipse project in seam-gen creation wizard
-- submit JIRA issue that startup attribute is missing from component element in components-2.0.xsd
+- submit JIRA issue to configure title/legend for pie chart (totally missing)
+- submit JIRA issue to hibernate tools to allow {class-name} to be lowerfirst
+
+- rework seam ref doc to make charting a top level
+
+- perhaps move components.xml to META-INF
 
 - write script for generating patches between stages and for an upgrade to Seam
 
-- port changes from chapter 3 to chapter 6
 - validate that JBoss AS directory and Seam directory exist before continuing in Ant script
 - offer to inflate just the project in projects by name -Dproject=
-- continue building out golftips
 - there is a problem with hibernate.hbm2ddl.auto=update with H2 in that it generates duplicate foreign keys
 - create a target to auto-generate the prepared databases (open18-db-initial-empty.zip, open18-db-initial-seeded.zip)
 - create a target to copy a stage over to the projects/databases workspaces
@@ -27,9 +56,13 @@ TODO:
 - consider change the eclipse project name to include stage
 
 they need to be sure that JAVA_HOME points to a JDK
+http://confluence.atlassian.com/display/DOC/Set+JAVA_HOME+variable+in+Windows
+http://java.sun.com/javase/6/webnotes/install/jdk/install-windows.html#Environment
 they need a way to move projects from staging into the projects area
 they may not want to inflate everything (takes up a lot of disk space)
 need to limit the number of places I hardcode paths or give them scripts to update them
 
 the schema is messed up in that grass type is not optional
 it is allowing duplicate facility names
+
+could use <c:forEach varStatus="n" begin="1" end="9">#{n.index}</c:forEach> for hole counting
