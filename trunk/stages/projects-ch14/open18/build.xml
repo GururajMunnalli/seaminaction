@@ -144,6 +144,7 @@
             <fileset dir="${basedir}/resources">
                 <include name="seam.properties" />
                 <include name="*.drl" />
+                <include name="**/*.xhtml" />
             </fileset>
         </copy>
         
@@ -328,6 +329,13 @@
     </target>
     
     <target name="test" depends="buildtest" description="Run the tests">            
+        <condition property="incompatible.jdk" value="true">
+            <and>
+                <equals arg1="${ant.java.version}" arg2="1.6"/>
+                <not><available classname="javax.xml.bind.JAXB"/></not>
+            </and>
+        </condition>
+        <fail if="incompatible.jdk">You are using an incompatible JDK 6. Please use Sun JDK 6 Update 4 (1.6.0_04) or newer or use Open JDK 6.</fail>
         <taskdef resource="testngtasks" classpath="${testng.jar}" />
     	<path id="test.path">
 			<path path="${test.dir}" />
@@ -338,6 +346,8 @@
 			<path refid="build.classpath" />
 		</path>
     	<testng outputdir="${basedir}/test-report">
+            <jvmarg line="-Djava.endorsed.dirs=${endorsed.dir}"/>
+            <jvmarg line="-Dsun.lang.ClassLoader.allowArraySyntax=true"/>
             <classpath refid="test.path" />
             <xmlfileset dir="${test.dir}" includes="*Test.xml" />
         </testng>
