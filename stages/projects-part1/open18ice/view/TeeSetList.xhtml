@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -24,17 +25,17 @@
          </table>	
          <ice:panelGroup id="listPanelGroupTeeSetId" styleClass="edit">
 		
-            <s:decorate id="namedecId" template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <ice:inputText id="listnameTextId" 
-                          value="#{teeSetList.teeSet.name}"
-				  partialSubmit="true"/>
-            </s:decorate>
-
             <s:decorate id="colordecId" template="layout/display.xhtml">
                 <ui:define name="label">color</ui:define>
                 <ice:inputText id="listcolorTextId" 
                           value="#{teeSetList.teeSet.color}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="namedecId" template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <ice:inputText id="listnameTextId" 
+                          value="#{teeSetList.teeSet.name}"
 				  partialSubmit="true"/>
             </s:decorate>
 
@@ -54,13 +55,14 @@
     <h3>teeSet  search results</h3>
 
     <div class="searchResults" id="listteeSetResults">
-    <ice:outputText value="No teeSet exists" 
+    <ice:outputText value="The teeSet search returned no results." 
                rendered="#{empty teeSetList.resultList}"/>
                
     <ice:dataTable id="teeSetListTableId" 
                   var="teeSet"
                 value="#{teeSetList.resultList}" 
-	columnClasses="allCols"
+            resizable="true"
+        columnClasses="allCols"
              rendered="#{not empty teeSetList.resultList}">
         <ice:column id="listidId">
             <f:facet name="header">
@@ -72,6 +74,16 @@
             </f:facet>
             #{teeSet.id}&amp;nbsp;
         </ice:column>
+        <ice:column id="listcolorId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listcolorLinkId"
+                             value="color #{teeSetList.order=='color asc' ? messages.down : ( teeSetList.order=='color desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeSetList.order=='color asc' ? 'color desc' : 'color asc'}"/>
+                </s:link>
+            </f:facet>
+            #{teeSet.color}&amp;nbsp;
+        </ice:column>
         <ice:column id="listColumncourseId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -81,26 +93,6 @@
                 </s:link>
             </f:facet>
             #{teeSet.course.id}
-        </ice:column>
-        <ice:column id="listnameId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listnameLinkId"
-                             value="name #{teeSetList.order=='name asc' ? messages.down : ( teeSetList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeSetList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
-            </f:facet>
-            #{teeSet.name}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listcolorId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listcolorLinkId"
-                             value="color #{teeSetList.order=='color asc' ? messages.down : ( teeSetList.order=='color desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeSetList.order=='color asc' ? 'color desc' : 'color asc'}"/>
-                </s:link>
-            </f:facet>
-            <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />&amp;nbsp;
         </ice:column>
         <ice:column id="listladiesCourseRatingId">
             <f:facet name="header">
@@ -141,6 +133,16 @@
                 </s:link>
             </f:facet>
             #{teeSet.mensSlopeRating}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listnameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listnameLinkId"
+                             value="name #{teeSetList.order=='name asc' ? messages.down : ( teeSetList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeSetList.order=='name asc' ? 'name desc' : 'name asc'}"/>
+                </s:link>
+            </f:facet>
+            #{teeSet.name}&amp;nbsp;
         </ice:column>
         <ice:column id="listpositionId">
             <f:facet name="header">

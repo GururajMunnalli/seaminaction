@@ -23,15 +23,17 @@
           </table>
       
 
-        <s:decorate id="teeSetId" template="layout/display.xhtml">
-            <ui:define name="label">teeSetId</ui:define>
-            #{teeHome.instance.id.teeSetId}&#160;
-        </s:decorate>
 
         <s:decorate id="holeId" template="layout/display.xhtml">
             <ui:define name="label">holeId</ui:define>
             #{teeHome.instance.id.holeId}&#160;
         </s:decorate>
+
+        <s:decorate id="teeSetId" template="layout/display.xhtml">
+            <ui:define name="label">teeSetId</ui:define>
+            #{teeHome.instance.id.teeSetId}&#160;
+        </s:decorate>
+
 
         <s:decorate id="distance" template="layout/display.xhtml">
             <ui:define name="label">distance</ui:define>
@@ -60,10 +62,69 @@
                 styleClass="componentPanelTabSetLayout" 
 		style="margin-bottom:5px;margin-top:10px;">
 
+	<ice:panelTab id="viewholepanelTab" label="hole">
+   		<div class="association" id="holeParent">
+        
+       		 <h:outputText value="There is no hole associated with this tee." 
+		                  id="viewholeTextId"
+                   rendered="#{teeHome.instance.hole == null}"/>
+   
+        	<ice:dataTable  var="hole" 
+                   value="#{teeHome.instance.hole}" 
+                rendered="#{teeHome.instance.hole != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+	        columnClasses="allCols"
+                      id="viewholeTableId">
+            <ice:column id="viewidId">
+                <f:facet name="header">id</f:facet>
+                #{hole.id}
+            </ice:column>
+            <ice:column id="viewidColumnName">
+	    	    <f:facet name="header">course id</f:facet>
+		    	#{hole.course.id}
+            </ice:column>
+            <ice:column id="viewladiesHandicapId">
+                <f:facet name="header">ladiesHandicap</f:facet>
+                #{hole.ladiesHandicap}
+            </ice:column>
+            <ice:column id="viewladiesParId">
+                <f:facet name="header">ladiesPar</f:facet>
+                #{hole.ladiesPar}
+            </ice:column>
+            <ice:column id="viewmensHandicapId">
+                <f:facet name="header">mensHandicap</f:facet>
+                #{hole.mensHandicap}
+            </ice:column>
+            <ice:column id="viewmensParId">
+                <f:facet name="header">mensPar</f:facet>
+                #{hole.mensPar}
+            </ice:column>
+            <ice:column id="viewnameId">
+                <f:facet name="header">name</f:facet>
+                #{hole.name}
+            </ice:column>
+            <ice:column id="viewnumberId">
+                <f:facet name="header">number</f:facet>
+                #{hole.number}
+            </ice:column>
+            <ice:column id="viewholeColumnId">
+                <f:facet name="header">action</f:facet>
+                <s:link id="viewholeLinkId" 
+                     value="View" 
+                      view="/Hole.xhtml">
+                    <f:param name="holeId" 
+                           value="#{hole.id}"/>
+                </s:link>
+            </ice:column>
+       </ice:dataTable>
+       
+    </div>
+    </ice:panelTab>
+
 	<ice:panelTab id="viewteeSetpanelTab" label="teeSet">
    		<div class="association" id="teeSetParent">
         
-       		 <h:outputText value="No teeSet" 
+       		 <h:outputText value="There is no teeSet associated with this tee." 
 		                  id="viewteeSetTextId"
                    rendered="#{teeHome.instance.teeSet == null}"/>
    
@@ -77,17 +138,13 @@
                 <f:facet name="header">id</f:facet>
                 #{teeSet.id}
             </ice:column>
-            <ice:column id="view$idColumnName">
-	    	    <f:facet name="header">course id</f:facet>
-		    	#{teeSet.course.id}
-            </ice:column>
-            <ice:column id="viewnameId">
-                <f:facet name="header">name</f:facet>
-                #{teeSet.name}
-            </ice:column>
             <ice:column id="viewcolorId">
                 <f:facet name="header">color</f:facet>
-                <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
+                #{teeSet.color}
+            </ice:column>
+            <ice:column id="viewidColumnName">
+	    	    <f:facet name="header">course id</f:facet>
+		    	#{teeSet.course.id}
             </ice:column>
             <ice:column id="viewladiesCourseRatingId">
                 <f:facet name="header">ladiesCourseRating</f:facet>
@@ -105,6 +162,10 @@
                 <f:facet name="header">mensSlopeRating</f:facet>
                 #{teeSet.mensSlopeRating}
             </ice:column>
+            <ice:column id="viewnameId">
+                <f:facet name="header">name</f:facet>
+                #{teeSet.name}
+            </ice:column>
             <ice:column id="viewpositionId">
                 <f:facet name="header">position</f:facet>
                 #{teeSet.position}
@@ -116,61 +177,6 @@
                       view="/TeeSet.xhtml">
                     <f:param name="teeSetId" 
                            value="#{teeSet.id}"/>
-                </s:link>
-            </ice:column>
-       </ice:dataTable>
-       
-    </div>
-    </ice:panelTab>
-
-	<ice:panelTab id="viewholepanelTab" label="hole">
-   		<div class="association" id="holeParent">
-        
-       		 <h:outputText value="No hole" 
-		                  id="viewholeTextId"
-                   rendered="#{teeHome.instance.hole == null}"/>
-   
-        	<ice:dataTable  var="hole" 
-                   value="#{teeHome.instance.hole}" 
-                rendered="#{teeHome.instance.hole != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-	        columnClasses="allCols"
-                      id="viewholeTableId">
-            <ice:column id="viewidId">
-                <f:facet name="header">id</f:facet>
-                #{hole.id}
-            </ice:column>
-            <ice:column id="view$idColumnName">
-	    	    <f:facet name="header">course id</f:facet>
-		    	#{hole.course.id}
-            </ice:column>
-            <ice:column id="viewnumberId">
-                <f:facet name="header">number</f:facet>
-                #{hole.number}
-            </ice:column>
-            <ice:column id="viewmensParId">
-                <f:facet name="header">mensPar</f:facet>
-                #{hole.mensPar}
-            </ice:column>
-            <ice:column id="viewmensHandicapId">
-                <f:facet name="header">mensHandicap</f:facet>
-                #{hole.mensHandicap}
-            </ice:column>
-            <ice:column id="viewladiesParId">
-                <f:facet name="header">ladiesPar</f:facet>
-                #{hole.ladiesPar}
-            </ice:column>
-            <ice:column id="viewladiesHandicapId">
-                <f:facet name="header">ladiesHandicap</f:facet>
-                #{hole.ladiesHandicap}
-            </ice:column>
-            <ice:column id="viewholeColumnId">
-                <f:facet name="header">action</f:facet>
-                <s:link id="viewholeLinkId" 
-                     value="View" 
-                      view="/Hole.xhtml">
-                    <f:param name="holeId" 
-                           value="#{hole.id}"/>
                 </s:link>
             </ice:column>
        </ice:dataTable>

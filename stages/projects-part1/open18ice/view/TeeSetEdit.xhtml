@@ -25,15 +25,7 @@
 
         <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
 
-            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">name</ui:define>
-                        <ice:inputText id="nameId" 
-			    partialSubmit="true"
-                                   size="25"
-                              maxlength="25"
-                                  value="#{teeSetHome.instance.name}">
-                        </ice:inputText>
-            </s:decorate>
+
 
             <s:decorate id="colorDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">color</ui:define>
@@ -46,6 +38,8 @@
                         </ice:inputText>
             </s:decorate>
 
+
+
             <s:decorate id="ladiesCourseRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">ladiesCourseRating</ui:define>
                         <ice:inputText id="ladiesCourseRatingId"
@@ -53,6 +47,7 @@
                                     value="#{teeSetHome.instance.ladiesCourseRating}">
                         </ice:inputText>
             </s:decorate>
+
 
             <s:decorate id="ladiesSlopeRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">ladiesSlopeRating</ui:define>
@@ -62,6 +57,7 @@
                         </ice:inputText>
             </s:decorate>
 
+
             <s:decorate id="mensCourseRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">mensCourseRating</ui:define>
                         <ice:inputText id="mensCourseRatingId"
@@ -69,6 +65,7 @@
                                     value="#{teeSetHome.instance.mensCourseRating}">
                         </ice:inputText>
             </s:decorate>
+
 
             <s:decorate id="mensSlopeRatingDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">mensSlopeRating</ui:define>
@@ -78,6 +75,18 @@
                         </ice:inputText>
             </s:decorate>
 
+
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">name</ui:define>
+                        <ice:inputText id="nameId" 
+			    partialSubmit="true"
+                                   size="25"
+                              maxlength="25"
+                                  value="#{teeSetHome.instance.name}">
+                        </ice:inputText>
+            </s:decorate>
+
+
             <s:decorate id="positionDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">position</ui:define>
                         <ice:inputText id="positionId"
@@ -85,6 +94,7 @@
                                     value="#{teeSetHome.instance.position}">
                         </ice:inputText>
             </s:decorate>
+
             <div style="clear:both">
                 <span class="required">*</span> 
                 required fields
@@ -108,6 +118,7 @@
             <h:commandButton id="deleteteeSetHome" 
                           value="Delete" 
                          action="#{teeSetHome.remove}"
+                      immediate="true"
                        rendered="#{teeSetHome.managed}"/>
                     
             <s:button id="doneteeSetHome" 
@@ -132,7 +143,7 @@
  	<ice:panelTab id="editTabcourseId" label="course *" >
 		<div class="association" id="courseParent">
     
-        	<h:outputText id="editcourseTextId" value="No course" 
+        	<h:outputText id="editcourseTextId" value="There is no course associated with this teeSet." 
                    rendered="#{teeSetHome.instance.course == null}"/>
        	<ice:dataTable var="course" 
                    value="#{teeSetHome.instance.course}" 
@@ -144,14 +155,6 @@
                 <f:facet name="header">id</f:facet>
                 #{course.id}
             </ice:column>
-            <ice:column id="$editColumnfacilityId">
-	    	    <f:facet name="header">facility id</f:facet>
-		    	#{course.facility.id}
-            </ice:column>
-            <ice:column id="$editColumnnameId">
-                <f:facet name="header">name</f:facet>
-                #{course.name}
-            </ice:column>
             <ice:column id="$editColumndescriptionId">
                 <f:facet name="header">description</f:facet>
                 #{course.description}
@@ -159,6 +162,10 @@
             <ice:column id="$editColumndesignerId">
                 <f:facet name="header">designer</f:facet>
                 #{course.designer}
+            </ice:column>
+            <ice:column id="$editColumnfacilityId">
+	    	    <f:facet name="header">facility id</f:facet>
+		    	#{course.facility.id}
             </ice:column>
             <ice:column id="$editColumnfairwaysId">
                 <f:facet name="header">fairways</f:facet>
@@ -168,9 +175,9 @@
                 <f:facet name="header">greens</f:facet>
                 #{course.greens}
             </ice:column>
-            <ice:column id="$editColumnyearBuiltId">
-                <f:facet name="header">yearBuilt</f:facet>
-                #{course.yearBuilt}
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">name</f:facet>
+                #{course.name}
             </ice:column>
             <ice:column id="$editColumnnumHolesId">
                 <f:facet name="header">numHoles</f:facet>
@@ -179,6 +186,10 @@
             <ice:column id="$editColumnsignatureHoleId">
                 <f:facet name="header">signatureHole</f:facet>
                 #{course.signatureHole}
+            </ice:column>
+            <ice:column id="$editColumnyearBuiltId">
+                <f:facet name="header">yearBuilt</f:facet>
+                #{course.yearBuilt}
             </ice:column>
             <ice:column id="editColumncourseLinkId">
                 <f:facet name="header">action</f:facet>
@@ -204,7 +215,7 @@
  	<ice:panelTab id="editPanelTabteesId" label="tees">
         <div class="association" id="teesChildren">
         
-            <h:outputText value="No tees" 
+            <h:outputText value="There are no tees associated with this teeSet." 
 	                     id="editteesTextId"
                        rendered="#{empty teeSetHome.tees}"/>
            <ice:dataTable value="#{teeSetHome.tees}" 
@@ -213,13 +224,13 @@
                     rowClasses="rvgRowOne,rvgRowTwo"
 			  columnClasses="allCols"
                             id="editteesTable">
-               <ice:column id="editteeSetIdId">
-                    <f:facet name="header">teeSetId</f:facet>
-                    #{tee.id.teeSetId}
-                </ice:column>
                <ice:column id="editholeIdId">
                     <f:facet name="header">holeId</f:facet>
                     #{tee.id.holeId}
+                </ice:column>
+               <ice:column id="editteeSetIdId">
+                    <f:facet name="header">teeSetId</f:facet>
+                    #{tee.id.teeSetId}
                 </ice:column>
                 <ice:column id="editdistanceId">
                     <f:facet name="header">distance</f:facet>
@@ -231,10 +242,10 @@
                               id="selecttee" 
                            value="Select"
                      propagation="none">
-                        <f:param name="teeTeeSetId" 
-                                value="#{tee.id.teeSetId}"/>
                         <f:param name="teeHoleId" 
                                 value="#{tee.id.holeId}"/>
+                        <f:param name="teeTeeSetId" 
+                                value="#{tee.id.teeSetId}"/>
                         <f:param name="teeFrom" value="TeeSet"/>
                     </s:link>
                 </ice:column>

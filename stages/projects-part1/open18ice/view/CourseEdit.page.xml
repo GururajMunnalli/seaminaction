@@ -12,7 +12,7 @@
       login-required="true">
 
    
-   <begin-conversation join="true" flush-mode="manual"/>
+   <begin-conversation join="true"/>
    
    <action execute="#{courseHome.wire}"/>
    

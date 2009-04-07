@@ -1,4 +1,5 @@
 package org.open18.model;
+// Generated Apr 7, 2009 3:29:43 AM by Hibernate Tools 3.2.0.CR1
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

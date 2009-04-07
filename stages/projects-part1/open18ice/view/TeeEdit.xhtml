@@ -25,25 +25,27 @@
 
         <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
 
-            <s:decorate id="teeSetIdDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">teeSetId</ui:define>
-                <ice:inputText id="teeSetId"
-                       required="true"
-                       disabled="#{teeHome.managed}"
-                                  value="#{teeHome.instance.id.teeSetId}">
-                        partialSubmit="true"
-                 </ice:inputText>
-               </s:decorate>
 
             <s:decorate id="holeIdDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">holeId</ui:define>
                 <ice:inputText id="holeId"
                        required="true"
                        disabled="#{teeHome.managed}"
-                                  value="#{teeHome.instance.id.holeId}">
                         partialSubmit="true"
+                                  value="#{teeHome.instance.id.holeId}">
                  </ice:inputText>
                </s:decorate>
+
+            <s:decorate id="teeSetIdDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">teeSetId</ui:define>
+                <ice:inputText id="teeSetId"
+                       required="true"
+                       disabled="#{teeHome.managed}"
+                        partialSubmit="true"
+                                  value="#{teeHome.instance.id.teeSetId}">
+                 </ice:inputText>
+               </s:decorate>
+
 
             <s:decorate id="distanceDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">distance</ui:define>
@@ -53,6 +55,8 @@
                                     value="#{teeHome.instance.distance}">
                         </ice:inputText>
             </s:decorate>
+
+
             <div style="clear:both">
                 <span class="required">*</span> 
                 required fields
@@ -76,6 +80,7 @@
             <h:commandButton id="deleteteeHome" 
                           value="Delete" 
                          action="#{teeHome.remove}"
+                      immediate="true"
                        rendered="#{teeHome.managed}"/>
                     
             <s:button id="doneteeHome" 
@@ -97,10 +102,75 @@
  <ice:form id="form2teeHome">  
         <ice:panelTabSet id="editPanelTabteeHomeId" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
    
+ 	<ice:panelTab id="editTabholeId" label="hole *" >
+		<div class="association" id="holeParent">
+    
+        	<h:outputText id="editholeTextId" value="There is no hole associated with this tee." 
+                   rendered="#{teeHome.instance.hole == null}"/>
+       	<ice:dataTable var="hole" 
+                   value="#{teeHome.instance.hole}" 
+                rendered="#{teeHome.instance.hole != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+		  columnClasses="allCols"
+                      id="editholeTableId">
+            <ice:column id="$editColumnidId">
+                <f:facet name="header">id</f:facet>
+                #{hole.id}
+            </ice:column>
+            <ice:column id="$editColumncourseId">
+	    	    <f:facet name="header">course id</f:facet>
+		    	#{hole.course.id}
+            </ice:column>
+            <ice:column id="$editColumnladiesHandicapId">
+                <f:facet name="header">ladiesHandicap</f:facet>
+                #{hole.ladiesHandicap}
+            </ice:column>
+            <ice:column id="$editColumnladiesParId">
+                <f:facet name="header">ladiesPar</f:facet>
+                #{hole.ladiesPar}
+            </ice:column>
+            <ice:column id="$editColumnmensHandicapId">
+                <f:facet name="header">mensHandicap</f:facet>
+                #{hole.mensHandicap}
+            </ice:column>
+            <ice:column id="$editColumnmensParId">
+                <f:facet name="header">mensPar</f:facet>
+                #{hole.mensPar}
+            </ice:column>
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">name</f:facet>
+                #{hole.name}
+            </ice:column>
+            <ice:column id="$editColumnnumberId">
+                <f:facet name="header">number</f:facet>
+                #{hole.number}
+            </ice:column>
+            <ice:column id="editColumnholeLinkId">
+                <f:facet name="header">action</f:facet>
+                <s:link view="/Hole.xhtml" 
+                         id="viewhole" 
+                      value="View" 
+                propagation="none">
+                    <f:param name="holeId" 
+                           value="#{hole.id}"/>
+                </s:link>
+            </ice:column>
+      </ice:dataTable>
+        <div class="actionButtons">
+            <s:button value="Select hole"
+	              id="editSelectButtonholeId"
+                      view="/HoleList.xhtml">
+                <f:param name="from" value="TeeEdit"/>
+            </s:button>
+        </div>
+        
+    </div>
+    </ice:panelTab>
+   
  	<ice:panelTab id="editTabteeSetId" label="teeSet *" >
 		<div class="association" id="teeSetParent">
     
-        	<h:outputText id="editteeSetTextId" value="No teeSet" 
+        	<h:outputText id="editteeSetTextId" value="There is no teeSet associated with this tee." 
                    rendered="#{teeHome.instance.teeSet == null}"/>
        	<ice:dataTable var="teeSet" 
                    value="#{teeHome.instance.teeSet}" 
@@ -112,17 +182,13 @@
                 <f:facet name="header">id</f:facet>
                 #{teeSet.id}
             </ice:column>
+            <ice:column id="$editColumncolorId">
+                <f:facet name="header">color</f:facet>
+                #{teeSet.color}
+            </ice:column>
             <ice:column id="$editColumncourseId">
 	    	    <f:facet name="header">course id</f:facet>
 		    	#{teeSet.course.id}
-            </ice:column>
-            <ice:column id="$editColumnnameId">
-                <f:facet name="header">name</f:facet>
-                #{teeSet.name}
-            </ice:column>
-            <ice:column id="$editColumncolorId">
-                <f:facet name="header">color</f:facet>
-                <div title="#{teeSet.color}" style="background-color: #{teeSet.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />
             </ice:column>
             <ice:column id="$editColumnladiesCourseRatingId">
                 <f:facet name="header">ladiesCourseRating</f:facet>
@@ -139,6 +205,10 @@
             <ice:column id="$editColumnmensSlopeRatingId">
                 <f:facet name="header">mensSlopeRating</f:facet>
                 #{teeSet.mensSlopeRating}
+            </ice:column>
+            <ice:column id="$editColumnnameId">
+                <f:facet name="header">name</f:facet>
+                #{teeSet.name}
             </ice:column>
             <ice:column id="$editColumnpositionId">
                 <f:facet name="header">position</f:facet>
@@ -159,67 +229,6 @@
             <s:button value="Select teeSet"
 	              id="editSelectButtonteeSetId"
                       view="/TeeSetList.xhtml">
-                <f:param name="from" value="TeeEdit"/>
-            </s:button>
-        </div>
-        
-    </div>
-    </ice:panelTab>
-   
- 	<ice:panelTab id="editTabholeId" label="hole *" >
-		<div class="association" id="holeParent">
-    
-        	<h:outputText id="editholeTextId" value="No hole" 
-                   rendered="#{teeHome.instance.hole == null}"/>
-       	<ice:dataTable var="hole" 
-                   value="#{teeHome.instance.hole}" 
-                rendered="#{teeHome.instance.hole != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-		  columnClasses="allCols"
-                      id="editholeTableId">
-            <ice:column id="$editColumnidId">
-                <f:facet name="header">id</f:facet>
-                #{hole.id}
-            </ice:column>
-            <ice:column id="$editColumncourseId">
-	    	    <f:facet name="header">course id</f:facet>
-		    	#{hole.course.id}
-            </ice:column>
-            <ice:column id="$editColumnnumberId">
-                <f:facet name="header">number</f:facet>
-                #{hole.number}
-            </ice:column>
-            <ice:column id="$editColumnmensParId">
-                <f:facet name="header">mensPar</f:facet>
-                #{hole.mensPar}
-            </ice:column>
-            <ice:column id="$editColumnmensHandicapId">
-                <f:facet name="header">mensHandicap</f:facet>
-                #{hole.mensHandicap}
-            </ice:column>
-            <ice:column id="$editColumnladiesParId">
-                <f:facet name="header">ladiesPar</f:facet>
-                #{hole.ladiesPar}
-            </ice:column>
-            <ice:column id="$editColumnladiesHandicapId">
-                <f:facet name="header">ladiesHandicap</f:facet>
-                #{hole.ladiesHandicap}
-            </ice:column>
-            <ice:column id="editColumnholeLinkId">
-                <f:facet name="header">action</f:facet>
-                <s:link view="/Hole.xhtml" 
-                         id="viewhole" 
-                      value="View" 
-                propagation="none">
-                    <f:param name="holeId" 
-                           value="#{hole.id}"/>
-                </s:link>
-            </ice:column>
-      </ice:dataTable>
-        <div class="actionButtons">
-            <s:button value="Select hole"
-	              id="editSelectButtonholeId"
-                      view="/HoleList.xhtml">
                 <f:param name="from" value="TeeEdit"/>
             </s:button>
         </div>

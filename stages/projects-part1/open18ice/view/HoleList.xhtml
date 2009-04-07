@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -24,6 +25,13 @@
          </table>	
          <ice:panelGroup id="listPanelGroupHoleId" styleClass="edit">
 		
+            <s:decorate id="namedecId" template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <ice:inputText id="listnameTextId" 
+                          value="#{holeList.hole.name}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
           
    
 	  </ice:panelGroup>
@@ -40,13 +48,14 @@
     <h3>hole  search results</h3>
 
     <div class="searchResults" id="listholeResults">
-    <ice:outputText value="No hole exists" 
+    <ice:outputText value="The hole search returned no results." 
                rendered="#{empty holeList.resultList}"/>
                
     <ice:dataTable id="holeListTableId" 
                   var="hole"
                 value="#{holeList.resultList}" 
-	columnClasses="allCols"
+            resizable="true"
+        columnClasses="allCols"
              rendered="#{not empty holeList.resultList}">
         <ice:column id="listidId">
             <f:facet name="header">
@@ -68,35 +77,15 @@
             </f:facet>
             #{hole.course.id}
         </ice:column>
-        <ice:column id="listnumberId">
+        <ice:column id="listladiesHandicapId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-		             id="listnumberLinkId"
-                             value="number #{holeList.order=='number asc' ? messages.down : ( holeList.order=='number desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='number asc' ? 'number desc' : 'number asc'}"/>
+		             id="listladiesHandicapLinkId"
+                             value="ladiesHandicap #{holeList.order=='ladiesHandicap asc' ? messages.down : ( holeList.order=='ladiesHandicap desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='ladiesHandicap asc' ? 'ladiesHandicap desc' : 'ladiesHandicap asc'}"/>
                 </s:link>
             </f:facet>
-            #{hole.number}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listmensParId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listmensParLinkId"
-                             value="mensPar #{holeList.order=='mensPar asc' ? messages.down : ( holeList.order=='mensPar desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='mensPar asc' ? 'mensPar desc' : 'mensPar asc'}"/>
-                </s:link>
-            </f:facet>
-            #{hole.mensPar}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listmensHandicapId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listmensHandicapLinkId"
-                             value="mensHandicap #{holeList.order=='mensHandicap asc' ? messages.down : ( holeList.order=='mensHandicap desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='mensHandicap asc' ? 'mensHandicap desc' : 'mensHandicap asc'}"/>
-                </s:link>
-            </f:facet>
-            #{hole.mensHandicap}&amp;nbsp;
+            #{hole.ladiesHandicap}&amp;nbsp;
         </ice:column>
         <ice:column id="listladiesParId">
             <f:facet name="header">
@@ -108,15 +97,45 @@
             </f:facet>
             #{hole.ladiesPar}&amp;nbsp;
         </ice:column>
-        <ice:column id="listladiesHandicapId">
+        <ice:column id="listmensHandicapId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-		             id="listladiesHandicapLinkId"
-                             value="ladiesHandicap #{holeList.order=='ladiesHandicap asc' ? messages.down : ( holeList.order=='ladiesHandicap desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{holeList.order=='ladiesHandicap asc' ? 'ladiesHandicap desc' : 'ladiesHandicap asc'}"/>
+		             id="listmensHandicapLinkId"
+                             value="mensHandicap #{holeList.order=='mensHandicap asc' ? messages.down : ( holeList.order=='mensHandicap desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='mensHandicap asc' ? 'mensHandicap desc' : 'mensHandicap asc'}"/>
                 </s:link>
             </f:facet>
-            #{hole.ladiesHandicap}&amp;nbsp;
+            #{hole.mensHandicap}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listmensParId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listmensParLinkId"
+                             value="mensPar #{holeList.order=='mensPar asc' ? messages.down : ( holeList.order=='mensPar desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='mensPar asc' ? 'mensPar desc' : 'mensPar asc'}"/>
+                </s:link>
+            </f:facet>
+            #{hole.mensPar}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listnameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listnameLinkId"
+                             value="name #{holeList.order=='name asc' ? messages.down : ( holeList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='name asc' ? 'name desc' : 'name asc'}"/>
+                </s:link>
+            </f:facet>
+            #{hole.name}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listnumberId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listnumberLinkId"
+                             value="number #{holeList.order=='number asc' ? messages.down : ( holeList.order=='number desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{holeList.order=='number asc' ? 'number desc' : 'number asc'}"/>
+                </s:link>
+            </f:facet>
+            #{hole.number}&amp;nbsp;
         </ice:column>
         <ice:column id="listColumnHoleId">
             <f:facet name="header">action</f:facet>
