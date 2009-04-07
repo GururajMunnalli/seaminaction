@@ -17,10 +17,16 @@
         <rich:panel>
             <f:facet name="header">Golfer</f:facet>
     
-            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
-                <ui:define name="label">Name</ui:define>
-                <h:inputText id="name" required="true"
-                             value="#{golferHome.instance.name}"/>
+            <s:decorate id="firstNameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">First name</ui:define>
+                <h:inputText id="firstName" required="true"
+                             value="#{golferHome.instance.firstName}"/>
+            </s:decorate>
+
+            <s:decorate id="lastNameDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">Last name</ui:define>
+                <h:inputText id="lastName" required="true"
+                             value="#{golferHome.instance.lastName}"/>
             </s:decorate>
             
             <div style="clear:both"/>
