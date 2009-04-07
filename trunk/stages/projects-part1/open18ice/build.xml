@@ -37,16 +37,17 @@
         <fileset refid="lib" />
     </path>
 
-    <taskdef name ="groovyc"
-        classname ="org.codehaus.groovy.ant.Groovyc"
-        classpathref="build.classpath"/> <!-- really only the groovy jar is necessary -->
-
     <target name="init" description="Initialize the build">
+
+        <taskdef name ="groovyc"
+            classname ="org.codehaus.groovy.ant.Groovyc"
+            classpathref="build.classpath"/> <!-- really only the groovy jar is necessary -->
+
         <mkdir dir="${classes.model.dir}" />
         <mkdir dir="${classes.action.dir}" />
         <mkdir dir="${dist.dir}" />
         <!-- if a .groovy file is in model or action, set groovy.present -->
-        <available property="groovy.present" value="true" file="">
+        <available property="groovy.present" value="true" file="" searchparents="true">
           <filepath>
             <fileset dir="${src.action.dir}">
               <include name="**/*.groovy"/>
@@ -257,7 +258,7 @@
         <delete dir="${war.dir}"/>
         <delete dir="${basedir}/test-report"/>
         <delete dir="${basedir}/test-output"/>
-        <delete failonerror="no">
+        <delete failonerror="no" includeemptydirs="true">
             <fileset dir="${test.dir}">
                 <exclude name="**/*.class" if="eclipse.running"/>
             </fileset>
@@ -353,6 +354,21 @@
             <exclude name="icefaces-ahs.jar"/>
   	    </fileset>
 	</copy>
+	<copy todir="${lib.dir}">
+		<fileset dir="${jboss.seam.home}">
+			 <include name="core.jar"/>
+			 <include name="janino.jar"/>
+			 <include name="jbpm.jpdl.jar"/>
+			 <include name="mvel14.jar"/>
+		     <include name="jboss-seam.jar"/>
+		     <include name="jboss-seam-ui.jar"/>
+		     <include name="jboss-seam-debug.jar"/>
+		     <include name="antlr-runtime.jar"/>
+		     <include name="commons-beanutils.jar"/>
+		     <include name="commons-collections.jar"/>
+		     <include name="drools*.jar"/>	
+		</fileset>
+	  </copy>
 	</target>
 
 	<target name="purge" depends="undeploy" description="clean out jboss deployments of crashing applications"> 
