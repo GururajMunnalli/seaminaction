@@ -103,6 +103,7 @@
 
 				<s:decorate id="verifyCaptchaField" template="layout/edit.xhtml">
 					<ui:define name="label">Security check</ui:define>
+					<ui:remove><!-- NOTE: add ?ts=#{currentDate.time} to the image URL to prevent a stale CAPTCHA image --></ui:remove>
 					<h:graphicImage id="captchaChallenge" value="/seam/resource/captcha?f=#{currentDate.time}" styleClass="captchaChallenge"/>
 					<h:inputText id="verifyCaptcha" value="#{captcha.response}" required="true" size="3">
 						<a:support event="onblur" reRender="verifyCaptchaField" ajaxSingle="true" bypassUpdates="true"/>
