@@ -1,6 +1,7 @@
 TODO:
 -----
-- JDK 6 fix!!!
+- consider change the eclipse project name to include stage
+- schema is allowing duplicate facility names (is that okay?)
 - add a deploy stage target that will deploy the stage that was inflated (part of quickstart)
 
 - labelClass changed to tabClass in RichFaces 3.2!! (add to migration script)
@@ -32,9 +33,7 @@ TODO:
 - want to do cross-validation of password and confirm, but in Ajax4jsf that would cause a problem w/ required fields
 
 - do I necessarily want to restrict selecting conversation if it is the current one?
-- add Gravel to JSF component library list in appendix
 
-- submit jboss.home in build.properties overriding seam-gen setting bug
 - submit JIRA issue about a message regarding multi-module eclipse project in seam-gen creation wizard
 - submit JIRA issue to configure title/legend for pie chart (totally missing)
 - submit JIRA issue to hibernate tools to allow {class-name} to be lowerfirst
@@ -45,15 +44,10 @@ TODO:
 
 - write script for generating patches between stages and for an upgrade to Seam
 
-- validate that JBoss AS directory and Seam directory exist before continuing in Ant script
-- offer to inflate just the project in projects by name -Dproject=
-- there is a problem with hibernate.hbm2ddl.auto=update with H2 in that it generates duplicate foreign keys
-- create a target to auto-generate the prepared databases (open18-db-initial-empty.zip, open18-db-initial-seeded.zip)
+- there is a problem with hibernate.hbm2ddl.auto=update with H2 in that it generates duplicate foreign keys (http://opensource.atlassian.com/projects/hibernate/browse/HHH-3532)
 - create a target to copy a stage over to the projects/databases workspaces
-- an ant target to replace all "/home/twoputt" references with their own root
 - support setting stage for build.properties/build.xml
 
-- consider change the eclipse project name to include stage
 
 they need to be sure that JAVA_HOME points to a JDK
 http://confluence.atlassian.com/display/DOC/Set+JAVA_HOME+variable+in+Windows
@@ -63,6 +57,5 @@ they may not want to inflate everything (takes up a lot of disk space)
 need to limit the number of places I hardcode paths or give them scripts to update them
 
 the schema is messed up in that grass type is not optional
-it is allowing duplicate facility names
 
 could use <c:forEach varStatus="n" begin="1" end="9">#{n.index}</c:forEach> for hole counting
