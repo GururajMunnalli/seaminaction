@@ -15,7 +15,7 @@
     <property name="src.action.dir" value="src/action" />
     <property name="src.test.dir" value="src/test" />
     <property name="lib.dir" value="lib" />
-    <property name="war.dir" value="exploded-archives/${project.name}.war" /> <!-- dallen: GlassFish cannot accommodate .war suffix, so it has been removed -->
+    <property name="war.dir" value="exploded-archives/${project.name}" /> <!-- dallen: GlassFish cannot accommodate .war suffix, so it has been removed -->
     <property name="classes.model.dir" value="${war.dir}/WEB-INF/classes" />
     <property name="action.dir" value="WEB-INF/classes" />
     <property name="classes.action.dir" value="${war.dir}/${action.dir}" />
@@ -302,6 +302,7 @@
                 <exclude name="import*.sql"/>
                 <exclude name="${project.name}-*-ds.xml"/>
             </fileset>
+            <fileset dir="${basedir}/view"/> <!-- dallen: added view directory since tests are page-oriented -->
         </copy>
         <copy tofile="${test.dir}/META-INF/persistence.xml" 
               file="${basedir}/resources/META-INF/persistence-test-war.xml"
