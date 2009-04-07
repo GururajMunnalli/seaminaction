@@ -14,13 +14,13 @@
 			<h1>#{messages['application.title']}</h1>
 			<h2>...#{messages['application.tagline']}</h2>
 			<s:fragment rendered="#{not identity.loggedIn}">
-				<p>#{messages['membership.notMember']}#{' '}<s:link id="register" value="#{messages['membership.signUp']}" view="/register.xhtml" /></p>
+				<p>#{messages['membership.notMember']}#{' '}<s:link id="register" value="#{messages['membership.signUp']}" view="/register.xhtml" /> or #{' '}<s:link id="learn" value="learn more" view="/about-flyer.xhtml"/> about the site.</p>
 			</s:fragment>
 		</div>
 
 		<h:messages globalOnly="true" styleClass="message" errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"/>
     
-		<h:panelGrid columns="2" styleClass="panel-layout" columnClasses="panel-column">
+		<h:panelGrid columns="2" styleClass="panel-layout" columnClasses="panel-column,panel-column">
 			<rich:panel styleClass="main-panel">
 				<f:facet name="header">About #{messages['application.title']}</f:facet>
 				<p>Open 18 is a golf course directory and community site for golf players.</p>
@@ -29,7 +29,11 @@
 				<p><strong>The clubhouse:</strong></p>
 				<p>The clubhouse is a social utility that allows you to connect with other golfers. When you register to become a golfer, you will get a profile, which you can share with others. Along with that profile, you can track your golf rounds and publish personal experiences.</p>
 				<p></p>
-				<p><s:link action="#{reportGenerator.generate}" value="Generate sample report"/></p>
+				<p>
+					<s:link action="#{reportGenerator.generate}" value="Generate sample report"/>
+					#{' | '}
+					<s:link view="/sampleReport.xhtml" value="Render sample report"/>
+				</p>
 			</rich:panel>
 			<h:panelGroup>
 				<rich:panel styleClass="module-box">
