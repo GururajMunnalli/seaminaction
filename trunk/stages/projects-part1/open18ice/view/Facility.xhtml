@@ -1,0 +1,190 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"   
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+ 
+      <ice:panelGroup  id="viewfacilityHomePanelGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+			    <ice:outputText id="viewTextfacilityHomeId" value="facilityHome"/>
+                  </td>
+              </tr>
+          </table>
+      
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">name</ui:define>
+            #{facilityHome.instance.name}&#160;
+        </s:decorate>
+
+        <s:decorate id="description" template="layout/display.xhtml">
+            <ui:define name="label">description</ui:define>
+            #{facilityHome.instance.description}&#160;
+        </s:decorate>
+
+        <s:decorate id="type" template="layout/display.xhtml">
+            <ui:define name="label">type</ui:define>
+            #{facilityHome.instance.type}&#160;
+        </s:decorate>
+
+        <s:decorate id="address" template="layout/display.xhtml">
+            <ui:define name="label">address</ui:define>
+            #{facilityHome.instance.address}&#160;
+        </s:decorate>
+
+        <s:decorate id="city" template="layout/display.xhtml">
+            <ui:define name="label">city</ui:define>
+            #{facilityHome.instance.city}&#160;
+        </s:decorate>
+
+        <s:decorate id="state" template="layout/display.xhtml">
+            <ui:define name="label">state</ui:define>
+            #{facilityHome.instance.state}&#160;
+        </s:decorate>
+
+        <s:decorate id="zip" template="layout/display.xhtml">
+            <ui:define name="label">zip</ui:define>
+            #{facilityHome.instance.zip}&#160;
+        </s:decorate>
+
+        <s:decorate id="county" template="layout/display.xhtml">
+            <ui:define name="label">county</ui:define>
+            #{facilityHome.instance.county}&#160;
+        </s:decorate>
+
+        <s:decorate id="country" template="layout/display.xhtml">
+            <ui:define name="label">country</ui:define>
+            #{facilityHome.instance.country}&#160;
+        </s:decorate>
+
+        <s:decorate id="phone" template="layout/display.xhtml">
+            <ui:define name="label">phone</ui:define>
+            #{facilityHome.instance.phone}&#160;
+        </s:decorate>
+
+        <s:decorate id="uri" template="layout/display.xhtml">
+            <ui:define name="label">uri</ui:define>
+            #{facilityHome.instance.uri}&#160;
+        </s:decorate>
+
+          <div style="clear:both"/>
+ 
+
+    <div id="viewFacilityEditsearchButtons" class="actionButtons">      
+
+        <s:button view="/FacilityEdit.xhtml" 
+                    id="viewEditFacilityEdit" 
+                 value="Edit"/>
+
+        <s:button view="/#{empty facilityFrom ? 'FacilityList' : facilityFrom}.xhtml"
+                    id="viewDoneFacilityEdit"
+                 value="Done"/>
+
+    </div>
+  </ice:panelGroup>
+
+
+    <ice:form id="view2facilityHomeFormId">
+       <ice:panelTabSet id="viewfacilityHomeTabSetId" 
+                styleClass="componentPanelTabSetLayout" 
+		style="margin-bottom:5px;margin-top:10px;">
+
+   <ice:panelTab label="courses">
+    <div class="association" id="viewcoursesChildrenId">
+        
+        <h:outputText value="No courses" 
+	                 id="viewcoursesChildTextId"
+                   rendered="#{empty facilityHome.courses}"/>
+        
+        <ice:dataTable value="#{facilityHome.courses}" 
+                       var="course" 
+                  rendered="#{not empty facilityHome.courses}" 
+                rowClasses="rvgRowOne,rvgRowTwo"
+		    columnClasses="allCols"
+                        id="viewcoursesTableId">
+            <ice:column id="viewidId">
+                <f:facet name="header">id</f:facet>
+                <h:outputText id="viewidTextId" 
+		           value="#{course.id}"/>
+            </ice:column>
+            <ice:column id="viewnameId">
+                <f:facet name="header">name</f:facet>
+                <h:outputText id="viewnameTextId" 
+		           value="#{course.name}"/>
+            </ice:column>
+            <ice:column id="viewdescriptionId">
+                <f:facet name="header">description</f:facet>
+                <h:outputText id="viewdescriptionTextId" 
+		           value="#{course.description}"/>
+            </ice:column>
+            <ice:column id="viewdesignerId">
+                <f:facet name="header">designer</f:facet>
+                <h:outputText id="viewdesignerTextId" 
+		           value="#{course.designer}"/>
+            </ice:column>
+            <ice:column id="viewfairwaysId">
+                <f:facet name="header">fairways</f:facet>
+                <h:outputText id="viewfairwaysTextId" 
+		           value="#{course.fairways}"/>
+            </ice:column>
+            <ice:column id="viewgreensId">
+                <f:facet name="header">greens</f:facet>
+                <h:outputText id="viewgreensTextId" 
+		           value="#{course.greens}"/>
+            </ice:column>
+            <ice:column id="viewyearBuiltId">
+                <f:facet name="header">yearBuilt</f:facet>
+                <h:outputText id="viewyearBuiltTextId" 
+		           value="#{course.yearBuilt}"/>
+            </ice:column>
+            <ice:column id="viewnumHolesId">
+                <f:facet name="header">numHoles</f:facet>
+                <h:outputText id="viewnumHolesTextId" 
+		           value="#{course.numHoles}"/>
+            </ice:column>
+            <ice:column id="viewsignatureHoleId">
+                <f:facet name="header">signatureHole</f:facet>
+                <h:outputText id="viewsignatureHoleTextId" 
+		           value="#{course.signatureHole}"/>
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">action</f:facet>
+                <s:link id="selectcourseLinkId" 
+                     value="Select" 
+                      view="/Course.xhtml">
+                    <f:param name="courseId" 
+                            value="#{course.id}"/>
+                    <f:param name="courseFrom" value="Facility"/>
+                </s:link>
+            </ice:column>
+        </ice:dataTable>
+        
+     </div>
+    
+    <div class="actionButtons">
+        <s:button id="viewAddcourseButtonId" 
+               value="Add course"
+                view="/CourseEdit.xhtml">
+            <f:param name="facilityId" 
+                    value="#{facilityHome.instance.id}"/>
+            <f:param name="courseFrom" value="Facility"/>
+        </s:button>
+    </div>        
+   </ice:panelTab>
+</ice:panelTabSet>
+</ice:form>
+</ui:define>
+
+</ui:composition>
+
