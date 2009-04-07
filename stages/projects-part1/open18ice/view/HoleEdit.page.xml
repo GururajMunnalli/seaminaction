@@ -12,7 +12,7 @@
       login-required="true">
 
    
-   <begin-conversation join="true"/>
+   <begin-conversation join="true" flush-mode="manual"/>
    
    <action execute="#{holeHome.wire}"/>
    
