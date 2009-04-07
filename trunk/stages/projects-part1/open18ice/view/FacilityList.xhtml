@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -24,27 +25,6 @@
          </table>	
          <ice:panelGroup id="listPanelGroupFacilityId" styleClass="edit">
 		
-            <s:decorate id="namedecId" template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <ice:inputText id="listnameTextId" 
-                          value="#{facilityList.facility.name}"
-				  partialSubmit="true"/>
-            </s:decorate>
-
-            <s:decorate id="descriptiondecId" template="layout/display.xhtml">
-                <ui:define name="label">description</ui:define>
-                <ice:inputText id="listdescriptionTextId" 
-                          value="#{facilityList.facility.description}"
-				  partialSubmit="true"/>
-            </s:decorate>
-
-            <s:decorate id="typedecId" template="layout/display.xhtml">
-                <ui:define name="label">type</ui:define>
-                <ice:inputText id="listtypeTextId" 
-                          value="#{facilityList.facility.type}"
-				  partialSubmit="true"/>
-            </s:decorate>
-
             <s:decorate id="addressdecId" template="layout/display.xhtml">
                 <ui:define name="label">address</ui:define>
                 <ice:inputText id="listaddressTextId" 
@@ -59,17 +39,10 @@
 				  partialSubmit="true"/>
             </s:decorate>
 
-            <s:decorate id="statedecId" template="layout/display.xhtml">
-                <ui:define name="label">state</ui:define>
-                <ice:inputText id="liststateTextId" 
-                          value="#{facilityList.facility.state}"
-				  partialSubmit="true"/>
-            </s:decorate>
-
-            <s:decorate id="zipdecId" template="layout/display.xhtml">
-                <ui:define name="label">zip</ui:define>
-                <ice:inputText id="listzipTextId" 
-                          value="#{facilityList.facility.zip}"
+            <s:decorate id="countrydecId" template="layout/display.xhtml">
+                <ui:define name="label">country</ui:define>
+                <ice:inputText id="listcountryTextId" 
+                          value="#{facilityList.facility.country}"
 				  partialSubmit="true"/>
             </s:decorate>
 
@@ -80,10 +53,17 @@
 				  partialSubmit="true"/>
             </s:decorate>
 
-            <s:decorate id="countrydecId" template="layout/display.xhtml">
-                <ui:define name="label">country</ui:define>
-                <ice:inputText id="listcountryTextId" 
-                          value="#{facilityList.facility.country}"
+            <s:decorate id="descriptiondecId" template="layout/display.xhtml">
+                <ui:define name="label">description</ui:define>
+                <ice:inputText id="listdescriptionTextId" 
+                          value="#{facilityList.facility.description}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="namedecId" template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <ice:inputText id="listnameTextId" 
+                          value="#{facilityList.facility.name}"
 				  partialSubmit="true"/>
             </s:decorate>
 
@@ -94,10 +74,31 @@
 				  partialSubmit="true"/>
             </s:decorate>
 
+            <s:decorate id="statedecId" template="layout/display.xhtml">
+                <ui:define name="label">state</ui:define>
+                <ice:inputText id="liststateTextId" 
+                          value="#{facilityList.facility.state}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="typedecId" template="layout/display.xhtml">
+                <ui:define name="label">type</ui:define>
+                <ice:inputText id="listtypeTextId" 
+                          value="#{facilityList.facility.type}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
             <s:decorate id="uridecId" template="layout/display.xhtml">
                 <ui:define name="label">uri</ui:define>
                 <ice:inputText id="listuriTextId" 
                           value="#{facilityList.facility.uri}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
+            <s:decorate id="zipdecId" template="layout/display.xhtml">
+                <ui:define name="label">zip</ui:define>
+                <ice:inputText id="listzipTextId" 
+                          value="#{facilityList.facility.zip}"
 				  partialSubmit="true"/>
             </s:decorate>
 
@@ -117,13 +118,14 @@
     <h3>facility  search results</h3>
 
     <div class="searchResults" id="listfacilityResults">
-    <ice:outputText value="No facility exists" 
+    <ice:outputText value="The facility search returned no results." 
                rendered="#{empty facilityList.resultList}"/>
                
     <ice:dataTable id="facilityListTableId" 
                   var="facility"
                 value="#{facilityList.resultList}" 
-	columnClasses="allCols"
+            resizable="true"
+        columnClasses="allCols"
              rendered="#{not empty facilityList.resultList}">
         <ice:column id="listidId">
             <f:facet name="header">
@@ -134,36 +136,6 @@
                 </s:link>
             </f:facet>
             #{facility.id}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listnameId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listnameLinkId"
-                             value="name #{facilityList.order=='name asc' ? messages.down : ( facilityList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.name}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listdescriptionId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listdescriptionLinkId"
-                             value="description #{facilityList.order=='description asc' ? messages.down : ( facilityList.order=='description desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='description asc' ? 'description desc' : 'description asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.description}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listtypeId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listtypeLinkId"
-                             value="type #{facilityList.order=='type asc' ? messages.down : ( facilityList.order=='type desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='type asc' ? 'type desc' : 'type asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.type}&amp;nbsp;
         </ice:column>
         <ice:column id="listaddressId">
             <f:facet name="header">
@@ -185,25 +157,15 @@
             </f:facet>
             #{facility.city}&amp;nbsp;
         </ice:column>
-        <ice:column id="liststateId">
+        <ice:column id="listcountryId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-		             id="liststateLinkId"
-                             value="state #{facilityList.order=='state asc' ? messages.down : ( facilityList.order=='state desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='state asc' ? 'state desc' : 'state asc'}"/>
+		             id="listcountryLinkId"
+                             value="country #{facilityList.order=='country asc' ? messages.down : ( facilityList.order=='country desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='country asc' ? 'country desc' : 'country asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.state}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listzipId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listzipLinkId"
-                             value="zip #{facilityList.order=='zip asc' ? messages.down : ( facilityList.order=='zip desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='zip asc' ? 'zip desc' : 'zip asc'}"/>
-                </s:link>
-            </f:facet>
-            #{facility.zip}&amp;nbsp;
+            #{facility.country}&amp;nbsp;
         </ice:column>
         <ice:column id="listcountyId">
             <f:facet name="header">
@@ -215,15 +177,25 @@
             </f:facet>
             #{facility.county}&amp;nbsp;
         </ice:column>
-        <ice:column id="listcountryId">
+        <ice:column id="listdescriptionId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-		             id="listcountryLinkId"
-                             value="country #{facilityList.order=='country asc' ? messages.down : ( facilityList.order=='country desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{facilityList.order=='country asc' ? 'country desc' : 'country asc'}"/>
+		             id="listdescriptionLinkId"
+                             value="description #{facilityList.order=='description asc' ? messages.down : ( facilityList.order=='description desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='description asc' ? 'description desc' : 'description asc'}"/>
                 </s:link>
             </f:facet>
-            #{facility.country}&amp;nbsp;
+            #{facility.description}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listnameId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listnameLinkId"
+                             value="name #{facilityList.order=='name asc' ? messages.down : ( facilityList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='name asc' ? 'name desc' : 'name asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.name}&amp;nbsp;
         </ice:column>
         <ice:column id="listphoneId">
             <f:facet name="header">
@@ -235,6 +207,36 @@
             </f:facet>
             #{facility.phone}&amp;nbsp;
         </ice:column>
+        <ice:column id="listpriceRangeId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listpriceRangeLinkId"
+                             value="priceRange #{facilityList.order=='priceRange asc' ? messages.down : ( facilityList.order=='priceRange desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='priceRange asc' ? 'priceRange desc' : 'priceRange asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.priceRange}&amp;nbsp;
+        </ice:column>
+        <ice:column id="liststateId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="liststateLinkId"
+                             value="state #{facilityList.order=='state asc' ? messages.down : ( facilityList.order=='state desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='state asc' ? 'state desc' : 'state asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.state}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listtypeId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listtypeLinkId"
+                             value="type #{facilityList.order=='type asc' ? messages.down : ( facilityList.order=='type desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='type asc' ? 'type desc' : 'type asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.type}&amp;nbsp;
+        </ice:column>
         <ice:column id="listuriId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -244,6 +246,16 @@
                 </s:link>
             </f:facet>
             #{facility.uri}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listzipId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listzipLinkId"
+                             value="zip #{facilityList.order=='zip asc' ? messages.down : ( facilityList.order=='zip desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{facilityList.order=='zip asc' ? 'zip desc' : 'zip asc'}"/>
+                </s:link>
+            </f:facet>
+            #{facility.zip}&amp;nbsp;
         </ice:column>
         <ice:column id="listColumnFacilityId">
             <f:facet name="header">action</f:facet>

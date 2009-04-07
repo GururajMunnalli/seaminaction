@@ -12,7 +12,7 @@
                 <redirect view-id="/home.xhtml"/>
             </rule>
         </navigation>
-    </page>
+    </page> 
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">

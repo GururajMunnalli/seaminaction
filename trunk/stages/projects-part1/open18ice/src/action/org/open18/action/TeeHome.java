@@ -9,9 +9,9 @@ import org.jboss.seam.framework.EntityHome;
 public class TeeHome extends EntityHome<Tee> {
 
 	@In(create = true)
-	TeeSetHome teeSetHome;
-	@In(create = true)
 	HoleHome holeHome;
+	@In(create = true)
+	TeeSetHome teeSetHome;
 
 	public void setTeeId(TeeId id) {
 		setId(id);
@@ -27,10 +27,11 @@ public class TeeHome extends EntityHome<Tee> {
 
 	@Override
 	public boolean isIdDefined() {
-		if (getTeeId().getTeeSetId() == 0)
-			return false;
 		if (getTeeId().getHoleId() == 0)
 			return false;
+		if (getTeeId().getTeeSetId() == 0)
+			return false;
+
 		return true;
 	}
 
@@ -42,20 +43,21 @@ public class TeeHome extends EntityHome<Tee> {
 	}
 
 	public void wire() {
-		TeeSet teeSet = teeSetHome.getDefinedInstance();
-		if (teeSet != null) {
-			getInstance().setTeeSet(teeSet);
-		}
+		getInstance();
 		Hole hole = holeHome.getDefinedInstance();
 		if (hole != null) {
 			getInstance().setHole(hole);
 		}
+		TeeSet teeSet = teeSetHome.getDefinedInstance();
+		if (teeSet != null) {
+			getInstance().setTeeSet(teeSet);
+		}
 	}
 
 	public boolean isWired() {
-		if (getInstance().getTeeSet() == null)
-			return false;
 		if (getInstance().getHole() == null)
+			return false;
+		if (getInstance().getTeeSet() == null)
 			return false;
 		return true;
 	}

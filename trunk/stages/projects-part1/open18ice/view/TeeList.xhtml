@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -40,41 +41,22 @@
     <h3>tee  search results</h3>
 
     <div class="searchResults" id="listteeResults">
-    <ice:outputText value="No tee exists" 
+    <ice:outputText value="The tee search returned no results." 
                rendered="#{empty teeList.resultList}"/>
                
     <ice:dataTable id="teeListTableId" 
                   var="tee"
                 value="#{teeList.resultList}" 
-	columnClasses="allCols"
+            resizable="true"
+        columnClasses="allCols"
              rendered="#{not empty teeList.resultList}">
-        <ice:column id="listteeSetIdId">
-            <f:facet name="header">teeSetId</f:facet>
-            #{tee.id.teeSetId}
-        </ice:column>
         <ice:column id="listholeIdId">
             <f:facet name="header">holeId</f:facet>
             #{tee.id.holeId}
         </ice:column>
-        <ice:column id="listColumnteeSetId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		                id="listcolumnHeaderteeSetId"
-                             value="teeSet id #{teeList.order=='teeSet.id asc' ? messages.down : ( teeList.order=='teeSet.id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeList.order=='teeSet.id asc' ? 'teeSet.id desc' : 'teeSet.id asc'}"/>
-                </s:link>
-            </f:facet>
-            #{tee.teeSet.id}
-        </ice:column>
-        <ice:column id="listColumnholeId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		                id="listcolumnHeaderholeId"
-                             value="hole id #{teeList.order=='hole.id asc' ? messages.down : ( teeList.order=='hole.id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{teeList.order=='hole.id asc' ? 'hole.id desc' : 'hole.id asc'}"/>
-                </s:link>
-            </f:facet>
-            #{tee.hole.id}
+        <ice:column id="listteeSetIdId">
+            <f:facet name="header">teeSetId</f:facet>
+            #{tee.id.teeSetId}
         </ice:column>
         <ice:column id="listdistanceId">
             <f:facet name="header">
@@ -86,15 +68,35 @@
             </f:facet>
             #{tee.distance}&amp;nbsp;
         </ice:column>
+        <ice:column id="listColumnholeId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		                id="listcolumnHeaderholeId"
+                             value="hole id #{teeList.order=='hole.id asc' ? messages.down : ( teeList.order=='hole.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='hole.id asc' ? 'hole.id desc' : 'hole.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{tee.hole.id}
+        </ice:column>
+        <ice:column id="listColumnteeSetId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		                id="listcolumnHeaderteeSetId"
+                             value="teeSet id #{teeList.order=='teeSet.id asc' ? messages.down : ( teeList.order=='teeSet.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{teeList.order=='teeSet.id asc' ? 'teeSet.id desc' : 'teeSet.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{tee.teeSet.id}
+        </ice:column>
         <ice:column id="listColumnTeeId">
             <f:facet name="header">action</f:facet>
             <s:link view="/#{empty from ? 'Tee' : from}.xhtml" 
                    value="Select" 
                       id="listteeLinkId">
-                <f:param name="teeTeeSetId" 
-                        value="#{tee.id.teeSetId}"/>
                 <f:param name="teeHoleId" 
                         value="#{tee.id.holeId}"/>
+                <f:param name="teeTeeSetId" 
+                        value="#{tee.id.teeSetId}"/>
             </s:link>
         </ice:column>
     </ice:dataTable>
@@ -141,8 +143,8 @@
         <s:button view="/TeeEdit.xhtml"
                     id="listCreateteeId" 
                  value="Create tee">
-            <f:param name="teeTeeSetId"/>
             <f:param name="teeHoleId"/>
+            <f:param name="teeTeeSetId"/>
         </s:button>
     </s:div>
     

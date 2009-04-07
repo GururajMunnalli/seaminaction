@@ -12,15 +12,15 @@
       login-required="true">
 
    
-   <begin-conversation join="true" flush-mode="manual"/>
+   <begin-conversation join="true"/>
    
    <action execute="#{teeHome.wire}"/>
    
    <param name="teeFrom"/>
-   <param name="teeTeeSetId" value="#{teeHome.teeId.teeSetId}"/>
    <param name="teeHoleId" value="#{teeHome.teeId.holeId}"/>
-   <param name="teeSetFrom"/>
-   <param name="teeSetId" value="#{teeSetHome.teeSetId}"/>
+   <param name="teeTeeSetId" value="#{teeHome.teeId.teeSetId}"/>
+   <param name="holeFrom"/>
+   <param name="holeId" value="#{holeHome.holeId}"/>
    <param name="courseFrom"/>
    <param name="courseId" value="#{courseHome.courseId}"/>
    <param name="facilityFrom"/>
@@ -28,8 +28,8 @@
 
 
 
-   <param name="holeFrom"/>
-   <param name="holeId" value="#{holeHome.holeId}"/>
+   <param name="teeSetFrom"/>
+   <param name="teeSetId" value="#{teeSetHome.teeSetId}"/>
 
 
 

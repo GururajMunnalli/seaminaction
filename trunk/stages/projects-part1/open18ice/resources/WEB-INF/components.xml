@@ -20,7 +20,8 @@
 
    <core:manager concurrent-request-timeout="500" 
                  conversation-timeout="120000" 
-                 conversation-id-parameter="cid"/>
+                 conversation-id-parameter="cid"
+                 parent-conversation-id-parameter="pid"/>
     
    <persistence:managed-persistence-context name="entityManager"
                                      auto-create="true"
@@ -37,10 +38,10 @@
                            security-rules="#{securityRules}"
                               remember-me="true"/>
                               
-   <event type="org.jboss.seam.notLoggedIn">
+   <event type="org.jboss.seam.security.notLoggedIn">
        <action execute="#{redirect.captureCurrentView}"/>
    </event>
-   <event type="org.jboss.seam.postAuthenticate">
+   <event type="org.jboss.seam.security.loginSuccessful">
        <action execute="#{redirect.returnToCapturedView}"/>
    </event>
         

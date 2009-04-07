@@ -1,6 +1,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -24,13 +25,6 @@
          </table>	
          <ice:panelGroup id="listPanelGroupCourseId" styleClass="edit">
 		
-            <s:decorate id="namedecId" template="layout/display.xhtml">
-                <ui:define name="label">name</ui:define>
-                <ice:inputText id="listnameTextId" 
-                          value="#{courseList.course.name}"
-				  partialSubmit="true"/>
-            </s:decorate>
-
             <s:decorate id="descriptiondecId" template="layout/display.xhtml">
                 <ui:define name="label">description</ui:define>
                 <ice:inputText id="listdescriptionTextId" 
@@ -59,6 +53,13 @@
 				  partialSubmit="true"/>
             </s:decorate>
 
+            <s:decorate id="namedecId" template="layout/display.xhtml">
+                <ui:define name="label">name</ui:define>
+                <ice:inputText id="listnameTextId" 
+                          value="#{courseList.course.name}"
+				  partialSubmit="true"/>
+            </s:decorate>
+
           
    
 	  </ice:panelGroup>
@@ -75,13 +76,14 @@
     <h3>course  search results</h3>
 
     <div class="searchResults" id="listcourseResults">
-    <ice:outputText value="No course exists" 
+    <ice:outputText value="The course search returned no results." 
                rendered="#{empty courseList.resultList}"/>
                
     <ice:dataTable id="courseListTableId" 
                   var="course"
                 value="#{courseList.resultList}" 
-	columnClasses="allCols"
+            resizable="true"
+        columnClasses="allCols"
              rendered="#{not empty courseList.resultList}">
         <ice:column id="listidId">
             <f:facet name="header">
@@ -92,26 +94,6 @@
                 </s:link>
             </f:facet>
             #{course.id}&amp;nbsp;
-        </ice:column>
-        <ice:column id="listColumnfacilityId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		                id="listcolumnHeaderfacilityId"
-                             value="facility id #{courseList.order=='facility.id asc' ? messages.down : ( courseList.order=='facility.id desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{courseList.order=='facility.id asc' ? 'facility.id desc' : 'facility.id asc'}"/>
-                </s:link>
-            </f:facet>
-            #{course.facility.id}
-        </ice:column>
-        <ice:column id="listnameId">
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-		             id="listnameLinkId"
-                             value="name #{courseList.order=='name asc' ? messages.down : ( courseList.order=='name desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{courseList.order=='name asc' ? 'name desc' : 'name asc'}"/>
-                </s:link>
-            </f:facet>
-            #{course.name}&amp;nbsp;
         </ice:column>
         <ice:column id="listdescriptionId">
             <f:facet name="header">
@@ -133,6 +115,16 @@
             </f:facet>
             #{course.designer}&amp;nbsp;
         </ice:column>
+        <ice:column id="listColumnfacilityId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		                id="listcolumnHeaderfacilityId"
+                             value="facility id #{courseList.order=='facility.id asc' ? messages.down : ( courseList.order=='facility.id desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{courseList.order=='facility.id asc' ? 'facility.id desc' : 'facility.id asc'}"/>
+                </s:link>
+            </f:facet>
+            #{course.facility.id}
+        </ice:column>
         <ice:column id="listfairwaysId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
@@ -153,15 +145,15 @@
             </f:facet>
             #{course.greens}&amp;nbsp;
         </ice:column>
-        <ice:column id="listyearBuiltId">
+        <ice:column id="listnameId">
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
-		             id="listyearBuiltLinkId"
-                             value="yearBuilt #{courseList.order=='yearBuilt asc' ? messages.down : ( courseList.order=='yearBuilt desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{courseList.order=='yearBuilt asc' ? 'yearBuilt desc' : 'yearBuilt asc'}"/>
+		             id="listnameLinkId"
+                             value="name #{courseList.order=='name asc' ? messages.down : ( courseList.order=='name desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{courseList.order=='name asc' ? 'name desc' : 'name asc'}"/>
                 </s:link>
             </f:facet>
-            #{course.yearBuilt}&amp;nbsp;
+            #{course.name}&amp;nbsp;
         </ice:column>
         <ice:column id="listnumHolesId">
             <f:facet name="header">
@@ -182,6 +174,16 @@
                 </s:link>
             </f:facet>
             #{course.signatureHole}&amp;nbsp;
+        </ice:column>
+        <ice:column id="listyearBuiltId">
+            <f:facet name="header">
+                <s:link styleClass="columnHeader"
+		             id="listyearBuiltLinkId"
+                             value="yearBuilt #{courseList.order=='yearBuilt asc' ? messages.down : ( courseList.order=='yearBuilt desc' ? messages.up : '' )}">
+                    <f:param name="order" value="#{courseList.order=='yearBuilt asc' ? 'yearBuilt desc' : 'yearBuilt asc'}"/>
+                </s:link>
+            </f:facet>
+            #{course.yearBuilt}&amp;nbsp;
         </ice:column>
         <ice:column id="listColumnCourseId">
             <f:facet name="header">action</f:facet>

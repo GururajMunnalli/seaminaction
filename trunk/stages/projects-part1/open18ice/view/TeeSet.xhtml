@@ -23,35 +23,43 @@
           </table>
       
 
-        <s:decorate id="name" template="layout/display.xhtml">
-            <ui:define name="label">name</ui:define>
-            #{teeSetHome.instance.name}&#160;
-        </s:decorate>
+
 
         <s:decorate id="color" template="layout/display.xhtml">
             <ui:define name="label">color</ui:define>
-            <div title="#{teeSetHome.instance.color}" style="background-color: #{teeSetHome.instance.color}; height: 1em; width: 1em; outline: 1px solid black; margin: 0 auto;" />&#160;
+            #{teeSetHome.instance.color}&#160;
         </s:decorate>
+
 
         <s:decorate id="ladiesCourseRating" template="layout/display.xhtml">
             <ui:define name="label">ladiesCourseRating</ui:define>
             #{teeSetHome.instance.ladiesCourseRating}&#160;
         </s:decorate>
 
+
         <s:decorate id="ladiesSlopeRating" template="layout/display.xhtml">
             <ui:define name="label">ladiesSlopeRating</ui:define>
             #{teeSetHome.instance.ladiesSlopeRating}&#160;
         </s:decorate>
+
 
         <s:decorate id="mensCourseRating" template="layout/display.xhtml">
             <ui:define name="label">mensCourseRating</ui:define>
             #{teeSetHome.instance.mensCourseRating}&#160;
         </s:decorate>
 
+
         <s:decorate id="mensSlopeRating" template="layout/display.xhtml">
             <ui:define name="label">mensSlopeRating</ui:define>
             #{teeSetHome.instance.mensSlopeRating}&#160;
         </s:decorate>
+
+
+        <s:decorate id="name" template="layout/display.xhtml">
+            <ui:define name="label">name</ui:define>
+            #{teeSetHome.instance.name}&#160;
+        </s:decorate>
+
 
         <s:decorate id="position" template="layout/display.xhtml">
             <ui:define name="label">position</ui:define>
@@ -83,7 +91,7 @@
 	<ice:panelTab id="viewcoursepanelTab" label="course">
    		<div class="association" id="courseParent">
         
-       		 <h:outputText value="No course" 
+       		 <h:outputText value="There is no course associated with this teeSet." 
 		                  id="viewcourseTextId"
                    rendered="#{teeSetHome.instance.course == null}"/>
    
@@ -97,14 +105,6 @@
                 <f:facet name="header">id</f:facet>
                 #{course.id}
             </ice:column>
-            <ice:column id="view$idColumnName">
-	    	    <f:facet name="header">facility id</f:facet>
-		    	#{course.facility.id}
-            </ice:column>
-            <ice:column id="viewnameId">
-                <f:facet name="header">name</f:facet>
-                #{course.name}
-            </ice:column>
             <ice:column id="viewdescriptionId">
                 <f:facet name="header">description</f:facet>
                 #{course.description}
@@ -112,6 +112,10 @@
             <ice:column id="viewdesignerId">
                 <f:facet name="header">designer</f:facet>
                 #{course.designer}
+            </ice:column>
+            <ice:column id="viewidColumnName">
+	    	    <f:facet name="header">facility id</f:facet>
+		    	#{course.facility.id}
             </ice:column>
             <ice:column id="viewfairwaysId">
                 <f:facet name="header">fairways</f:facet>
@@ -121,9 +125,9 @@
                 <f:facet name="header">greens</f:facet>
                 #{course.greens}
             </ice:column>
-            <ice:column id="viewyearBuiltId">
-                <f:facet name="header">yearBuilt</f:facet>
-                #{course.yearBuilt}
+            <ice:column id="viewnameId">
+                <f:facet name="header">name</f:facet>
+                #{course.name}
             </ice:column>
             <ice:column id="viewnumHolesId">
                 <f:facet name="header">numHoles</f:facet>
@@ -132,6 +136,10 @@
             <ice:column id="viewsignatureHoleId">
                 <f:facet name="header">signatureHole</f:facet>
                 #{course.signatureHole}
+            </ice:column>
+            <ice:column id="viewyearBuiltId">
+                <f:facet name="header">yearBuilt</f:facet>
+                #{course.yearBuilt}
             </ice:column>
             <ice:column id="viewcourseColumnId">
                 <f:facet name="header">action</f:facet>
@@ -150,7 +158,7 @@
    <ice:panelTab label="tees">
     <div class="association" id="viewteesChildrenId">
         
-        <h:outputText value="No tees" 
+        <h:outputText value="There are no tees associated with this teeSet." 
 	                 id="viewteesChildTextId"
                    rendered="#{empty teeSetHome.tees}"/>
         
@@ -160,13 +168,13 @@
                 rowClasses="rvgRowOne,rvgRowTwo"
 		    columnClasses="allCols"
                         id="viewteesTableId">
-            <ice:column id="viewteeSetIdId">
-                <f:facet name="header">teeSetId</f:facet>
-                #{tee.id.teeSetId}
-            </ice:column>
             <ice:column id="viewholeIdId">
                 <f:facet name="header">holeId</f:facet>
                 #{tee.id.holeId}
+            </ice:column>
+            <ice:column id="viewteeSetIdId">
+                <f:facet name="header">teeSetId</f:facet>
+                #{tee.id.teeSetId}
             </ice:column>
             <ice:column id="viewdistanceId">
                 <f:facet name="header">distance</f:facet>
@@ -178,10 +186,10 @@
                 <s:link id="selectteeLinkId" 
                      value="Select" 
                       view="/Tee.xhtml">
-                    <f:param name="teeTeeSetId" 
-                            value="#{tee.id.teeSetId}"/>
                     <f:param name="teeHoleId" 
                             value="#{tee.id.holeId}"/>
+                    <f:param name="teeTeeSetId" 
+                            value="#{tee.id.teeSetId}"/>
                     <f:param name="teeFrom" value="TeeSet"/>
                 </s:link>
             </ice:column>

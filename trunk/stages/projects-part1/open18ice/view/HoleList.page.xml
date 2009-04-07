@@ -12,4 +12,5 @@
    <param name="firstResult" value="#{holeList.firstResult}"/>
    <param name="order" value="#{holeList.order}"/>
    <param name="from"/>
+   <param name="name" value="#{holeList.hole.name}"/>
 </page>

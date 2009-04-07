@@ -3,7 +3,6 @@
 <project name="open18ice" default="deploy" basedir=".">
 
     <!-- Give user a chance to override without editing this file or typing -D -->
-    <property file="../../../${basedir}/build.properties" /> <!-- dallen: root directory of seaminaction example code -->
     <property file="${basedir}/build.properties" />
 
     <property name="profile" value="dev" />
@@ -46,7 +45,7 @@
         <mkdir dir="${classes.action.dir}" />
         <mkdir dir="${dist.dir}" />
         <!-- if a .groovy file is in model or action, set groovy.present -->
-        <available property="groovy.present" value="true" file="" searchparents="true">
+        <available property="groovy.present" value="true" file="">
           <filepath>
             <fileset dir="${src.action.dir}">
               <include name="**/*.groovy"/>
@@ -168,7 +167,6 @@
             <filterset>
                 <filter token="debug"       value="${debug}" />
                 <filter token="jndiPattern" value="${project.name}/#{ejbName}/local"/>
-                <filter token="embeddedEjb" value="false"/>
             </filterset>
         </copy>
         
@@ -181,14 +179,9 @@
         
 		<copy todir="${war.dir}/WEB-INF/lib">
 			<fileset dir="${lib.dir}">
-				<include name="oscache*.jar" />
-                <include name="jboss-seam-*.jar" />
+                <includesfile name="deployed-jars.list"/>
                 <exclude name="jboss-seam-gen.jar" />
-                <include name="drools-*.jar"/>
-                <include name="janino-*.jar"/>
-                <include name="antlr-*.jar"/>
-                <include name="mvel*.jar"/>
-                <include name="core.jar"/> <!-- dallen: Eclipse JDT required for GlassFish deployment -->
+                <exclude name="icefaces-ahs.jar"/>
                 <include name="groovy-*.jar" if="groovy.present"/>
             </fileset>
         </copy>
@@ -204,19 +197,6 @@
                 <include name="*jpdl.xml" />
                 <include name="hibernate.cfg.xml" />
                 <include name="jbpm.cfg.xml" />
-            </fileset>
-        </copy>
-        
-        <copy todir="${war.dir}/WEB-INF/lib">
-            <fileset dir="${lib.dir}">
-                <include name="jboss-seam.jar" />
-                <include name="jbpm*.jar" />
-                <include name="jboss-el.jar" />
-                <include name="commons-digester.jar" />
-                <include name="commons-beanutils.jar" />
-                <include name="icefaces*.jar" />
-                <include name="backport-util-concurrent.jar" />
-                <include name="commons-fileupload.jar"/> 	
             </fileset>
         </copy>
         
@@ -338,21 +318,28 @@
     
     <target name="test" depends="buildtest" description="Run the tests">            
         <taskdef resource="testngtasks" classpath="${testng.jar}" />
-        <testng outputdir="${basedir}/test-report">
-            <classpath path="${test.dir}" />
-            <classpath path="${bootstrap.dir}" />
-            <classpath refid="build.classpath" />
-            <xmlfileset dir="${test.dir}" includes="*Test.xml" />
-        </testng>
+		<path id="test.path">
+			<path path="${test.dir}" />
+			<fileset dir="${lib.dir}/test">
+				<include name="*.jar" />
+			</fileset>
+			<path path="${bootstrap.dir}" />
+			<path refid="build.classpath" />
+		</path>
+		<testng outputdir="${basedir}/test-report">
+			<classpath refid="test.path" />
+			<xmlfileset dir="${test.dir}" includes="*Test.xml" />
+		</testng>
     </target>
     
 	<target name="freshen" description="grab fresh icefaces jars">
 	<copy todir="${lib.dir}">
 	    <fileset dir="${icefaces.home}/lib">
-		   <include name="icefaces*.jar" />
-                   <include name="backport-util-concurrent.jar" />	
-                   <include name="commons-fileupload.jar"/> 	
-                   <include name="commons-digester.jar"/>		
+		    <include name="icefaces*.jar" />
+            <include name="backport-util-concurrent.jar" />	
+            <include name="commons-fileupload.jar"/> 	
+            <include name="commons-digester.jar"/>
+            <exclude name="icefaces-ahs.jar"/>
   	    </fileset>
 	</copy>
 	</target>
