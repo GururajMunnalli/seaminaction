@@ -34,6 +34,23 @@
 	<property name="jboss-as.archive.path" value="${vault.dir}/${jboss-as.archive.file}"/>
 
 	<property name="sourceforge.mirror.jboss.baseurl" value="http://${sourceforge.mirror}/sourceforge/jboss"/> 
+    <property name="glassfish.version" value="${glassfish.major.version}-${glassfish.build.number}"/>
+    <condition property="glassfish.os.folder" value="Linux">
+	    <os name="Linux"/>
+	</condition>
+    <condition property="glassfish.target.os" value="linux">
+	    <os name="Linux"/>
+	</condition>
+    <condition property="glassfish.os.folder" value="Darwin">
+	    <os family="mac"/>
+	</condition>
+    <condition property="glassfish.target.os" value="darwin">
+	    <os family="mac"/>
+	</condition>
+	<property name="glassfish.os.folder" value="WINNT"/>
+	<property name="glassfish.target.os" value="windows"/>
+    <property name="glassfish.installer.jar" value="glassfish-installer-${glassfish.version}-${glassfish.target.os}.jar"/>
+    <property name="glassfish.download.url" value="http://download.java.net/javaee5/${glassfish.major.version}/promoted/${glassfish.os.folder}/${glassfish.installer.jar}"/>
 
 	<property name="jboss-as.domain" value="default"/>
 	<property name="jboss-as.bin.dir" value="${jboss-as.home}/bin"/>
@@ -113,19 +130,19 @@ in the build.properties file.
 	<target name="get-glassfish" description="Downloads GlassFish and extracts it to the software directory (i.e., opt)">
 		<mkdir dir="${vault.dir}"/>
 		<if>
-			<not><available file="${vault.dir}/glassfish-installer-v2ur2-b04-linux.jar"/></not>
+			<not><available file="${vault.dir}/${glassfish.installer.jar}"/></not>
 			<then>
 				<echo>Downloading GlassFish (~50MB) may take a while. Please be patient.</echo>
-				<get src="http://java.net/download/javaee5/v2ur2/promoted/Linux/glassfish-installer-v2ur2-b04-linux.jar"
-					dest="${vault.dir}/glassfish-installer-v2ur2-b04-linux.jar"/>
+				<get src="${glassfish.download.url}"
+					dest="${vault.dir}/${glassfish.installer.jar}"/>
 			</then>
 		</if>
 		<if>
-			<not><available file="${opt.dir}/glassfish-v2/bin" type="dir"/></not>
+			<not><available file="${opt.dir}/glassfish-${glassfish.major.version}/bin" type="dir"/></not>
 			<then>
-				<java jar="${vault.dir}/glassfish-installer-v2ur2-b04-linux.jar" fork="true"/>
-				<move file="glassfish" tofile="${opt.dir}/glassfish-v2"/>
-				<ant antfile="${opt.dir}/glassfish-v2/setup.xml" inheritAll="false">
+				<java jar="${vault.dir}/${glassfish.installer.jar}" fork="true"/>
+				<move file="glassfish" tofile="${opt.dir}/glassfish-${glassfish.major.version}"/>
+				<ant antfile="${opt.dir}/glassfish-${glassfish.major.version}/setup.xml" inheritAll="false">
 					<property name="instance.port" value="7070"/>
 					<property name="https.port" value="7171"/>
 				</ant>
