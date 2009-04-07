@@ -15,7 +15,7 @@
     <property name="src.action.dir" value="src/action" />
     <property name="src.test.dir" value="src/test" />
     <property name="lib.dir" value="lib" />
-    <property name="war.dir" value="exploded-archives/${project.name}.war" />
+    <property name="war.dir" value="exploded-archives/${project.name}.war" /> <!-- dallen: GlassFish cannot accommodate .war suffix, so it has been removed -->
     <property name="classes.model.dir" value="${war.dir}/WEB-INF/classes" />
     <property name="action.dir" value="WEB-INF/classes" />
     <property name="classes.action.dir" value="${war.dir}/${action.dir}" />
