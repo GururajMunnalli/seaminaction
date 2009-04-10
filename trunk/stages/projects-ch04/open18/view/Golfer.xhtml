@@ -34,10 +34,12 @@
         </rich:panel>
 
         <div class="actionButtons">
+            <ui:remove>
             <h:commandButton id="save" 
                           value="Save" 
                          action="#{golferHome.persist}"
                        rendered="#{!golferHome.managed}"/>                   
+            </ui:remove>
             <h:commandButton id="update" 
                           value="Save" 
                          action="#{golferHome.update}"
