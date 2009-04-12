@@ -48,7 +48,6 @@
    <component name="passwordManager">
       <property name="digestAlgorithm">SHA-1</property>
       <property name="charset">UTF-8</property>
-      <property name="encoding">base64</property>
    </component>
 
    <component name="newGolfer" class="org.open18.model.Golfer" scope="event">
