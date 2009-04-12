@@ -720,7 +720,51 @@ candidates.each {
 	}
 	it.write(text)
 }
+
+candidates = ant.fileScanner {
+	fileset(dir: '${project.dir}/view') {
+		and {
+			contains(text: '#{s:hasPermission(view.viewId,')
+		}
+		include(name: '**/*.page.xml')
+	}
+}
+candidates.each {
+	def text = it.text
+	text = text.replaceAll("#\\{s:hasPermission\\(([^,]+), null, ([^\\)]+)\\)\\}", "#{s:hasPermission(\$2, \$1)}")
+	it.write(text)
+}
+
+candidates = ant.fileScanner {
+	fileset(dir: '${project.dir}/src') {
+		and {
+			contains(text: "#{s:hasPermission('")
+		}
+		include(name: '**/*Home.java')
+	}
+}
+candidates.each {
+	def text = it.text
+	text = text.replaceAll("#\\{s:hasPermission\\('[^']+', ('[^']+'), ([^\\)]+)\\)\\}", "#{s:hasPermission(\$2, \$1)}")
+	it.write(text)
+}
 		]]></groovy>
+
+		<condition property="replace.security.rules">
+			<or>
+				<contains string="${project.selection}" substring="projects-ch11"/>
+				<contains string="${project.selection}" substring="projects-ch12"/>
+				<contains string="${project.selection}" substring="projects-ch13"/>
+				<contains string="${project.selection}" substring="projects-ch14"/>
+				<contains string="${project.selection}" substring="projects-final"/>
+			</or>
+		</condition>
+
+		<copy tofile="${project.dir}/resources/security.drl" overwrite="true">
+			<fileset dir="${etc.dir}">
+				<include name="security-seam21-compatible.drl" if="replace.security.rules"/>
+			</fileset>
+		</copy>
 
 	</target>
 
