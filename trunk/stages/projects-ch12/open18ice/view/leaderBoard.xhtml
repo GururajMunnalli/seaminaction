@@ -59,8 +59,8 @@
 	
 		    <ice:form>
 		      <h3>Top 10 LeaderBoard for course and tee set: #{leaderBoard.teeSet.course.name} - #{leaderBoard.teeSet.nameOrColor}</h3>
-		    <i>  <h4>Men's Course Rating is #{leaderBoard.teeSet.mensCourseRating}</h4>
-		      <h4>Ladie's Course Rating is #{leaderBoard.teeSet.ladiesCourseRating}</h4></i>  
+		    <i>  <h4>Men's Course Rating: #{not empty leaderBoard.teeSet.mensCourseRating ? leaderBoard.teeSet.mensCourseRating : 'n/a'}</h4>
+		      <h4>Ladies' Course Rating: #{not empty leaderBoard.teeSet.ladiesCourseRating ? leaderBoard.teeSet.ladiesCourseRating : 'n/a'}</h4></i>  
 		      <ice:outputText value="There are currently no rounds entered for that TeeSet" 
 		                     rendered="#{empty leaderBoardManager.roundsLookup[leaderBoard.teeSet.id]}"/> 
 		      <ice:panelGroup styleClass="formBorderHighlight" rendered="#{not empty leaderBoardManager.roundsLookup[leaderBoard.teeSet.id]}">
@@ -73,13 +73,13 @@
 						</f:facet>
 						<ice:outputText value="#{_round.totalScore}"/>
 					</ice:column>
-					<ice:column id="golfer">
+					<ice:column id="firstNameColumn">
 						<f:facet name="header">
 							<ice:outputText value="First Name"/>
 						</f:facet>
 						<ice:outputText value="#{_round.golfer.firstName}"/>
 					</ice:column>
-					<ice:column id="golfer">
+					<ice:column id="lastNameColumn">
 						<f:facet name="header">
 							<ice:outputText value="Last Name"/>
 						</f:facet>
