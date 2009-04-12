@@ -33,7 +33,7 @@ public abstract class Member implements Serializable {
 	private String username;
 	private String passwordHash;
 	private String emailAddress;
-	private boolean enabled = true;
+//	private boolean enabled = true;
 	private Set<Role> roles = new HashSet<Role>(0);
 
 	@Id
@@ -78,13 +78,13 @@ public abstract class Member implements Serializable {
 		this.emailAddress = emailAddress;
 	}
 
-	private boolean isEnabled() {
-		return enabled;
-	}
-
-	private void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+//	private boolean isEnabled() {
+//		return enabled;
+//	}
+//
+//	private void setEnabled(boolean enabled) {
+//		this.enabled = enabled;
+//	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "MEMBER_ROLE",
