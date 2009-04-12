@@ -34,23 +34,23 @@
 	<property name="jboss-as.archive.path" value="${vault.dir}/${jboss-as.archive.file}"/>
 
 	<property name="sourceforge.mirror.jboss.baseurl" value="http://${sourceforge.mirror}/sourceforge/jboss"/> 
-    <property name="glassfish.version" value="${glassfish.major.version}-${glassfish.build.number}"/>
-    <condition property="glassfish.os.folder" value="Linux">
-	    <os name="Linux"/>
+	<property name="glassfish.version" value="${glassfish.major.version}-${glassfish.build.number}"/>
+	<condition property="glassfish.os.folder" value="Linux">
+		<os name="Linux"/>
 	</condition>
-    <condition property="glassfish.target.os" value="linux">
-	    <os name="Linux"/>
+	<condition property="glassfish.target.os" value="linux">
+		<os name="Linux"/>
 	</condition>
-    <condition property="glassfish.os.folder" value="Darwin">
-	    <os family="mac"/>
+	<condition property="glassfish.os.folder" value="Darwin">
+		<os family="mac"/>
 	</condition>
-    <condition property="glassfish.target.os" value="darwin">
-	    <os family="mac"/>
+	<condition property="glassfish.target.os" value="darwin">
+		<os family="mac"/>
 	</condition>
 	<property name="glassfish.os.folder" value="WINNT"/>
 	<property name="glassfish.target.os" value="windows"/>
-    <property name="glassfish.installer.jar" value="glassfish-installer-${glassfish.version}-${glassfish.target.os}.jar"/>
-    <property name="glassfish.download.url" value="http://download.java.net/javaee5/${glassfish.major.version}/promoted/${glassfish.os.folder}/${glassfish.installer.jar}"/>
+	<property name="glassfish.installer.jar" value="glassfish-installer-${glassfish.version}-${glassfish.target.os}.jar"/>
+	<property name="glassfish.download.url" value="http://download.java.net/javaee5/${glassfish.major.version}/promoted/${glassfish.os.folder}/${glassfish.installer.jar}"/>
 
 	<property name="jboss-as.domain" value="default"/>
 	<property name="jboss-as.bin.dir" value="${jboss-as.home}/bin"/>
@@ -466,19 +466,20 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
  A: projects-part1 (ch01) -> golftips
  B: projects-part1 (ch02) -> open18
  C: projects-part1 (ch02) -> open18ee
- D: projects-ch03 -> open18
- E: projects-ch04 -> open18
- F: projects-ch05 -> open18
- G: projects-ch06 -> open18
- H: projects-part3 (ch07-ch10) -> open18
- I: projects-ch11 -> open18
- J: projects-ch12 -> open18
- K: projects-ch12 -> open18ice
- L: projects-ch13 -> open18
- M: projects-ch14 -> open18
+ D: projects-part1 (ch02) -> open18ice
+ E: projects-ch03 -> open18
+ F: projects-ch04 -> open18
+ G: projects-ch05 -> open18
+ H: projects-ch06 -> open18
+ I: projects-part3 (ch07-ch10) -> open18
+ J: projects-ch11 -> open18
+ K: projects-ch12 -> open18
+ L: projects-ch12 -> open18ice
+ M: projects-ch13 -> open18
+ N: projects-ch14 -> open18
  </echo>
 		<input addproperty="project.index" message="Enter the letter that corresponds to the project you want to update:"
-			validargs="A,B,C,D,E,F,G,H,I,J,K,L,M"/>
+			validargs="A,B,C,D,E,F,G,H,I,J,K,L,M,N"/>
 		<switch value="${project.index}">
 			<case value="A">
 				<property name="project.selection" value="projects-part1/golftips"/>
@@ -490,33 +491,36 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 				<property name="project.selection" value="projects-part1/open18ee"/>
 			</case>
 			<case value="D">
-				<property name="project.selection" value="projects-ch03/open18"/>
+				<property name="project.selection" value="projects-part1/open18ice"/>
 			</case>
 			<case value="E">
-				<property name="project.selection" value="projects-ch04/open18"/>
+				<property name="project.selection" value="projects-ch03/open18"/>
 			</case>
 			<case value="F">
-				<property name="project.selection" value="projects-ch05/open18"/>
+				<property name="project.selection" value="projects-ch04/open18"/>
 			</case>
 			<case value="G">
-				<property name="project.selection" value="projects-ch06/open18"/>
+				<property name="project.selection" value="projects-ch05/open18"/>
 			</case>
 			<case value="H">
-				<property name="project.selection" value="projects-part3/open18"/>
+				<property name="project.selection" value="projects-ch06/open18"/>
 			</case>
 			<case value="I">
-				<property name="project.selection" value="projects-ch11/open18"/>
+				<property name="project.selection" value="projects-part3/open18"/>
 			</case>
 			<case value="J">
-				<property name="project.selection" value="projects-ch12/open18"/>
+				<property name="project.selection" value="projects-ch11/open18"/>
 			</case>
 			<case value="K">
-				<property name="project.selection" value="projects-ch12/open18ice"/>
+				<property name="project.selection" value="projects-ch12/open18"/>
 			</case>
 			<case value="L">
-				<property name="project.selection" value="projects-ch13/open18"/>
+				<property name="project.selection" value="projects-ch12/open18ice"/>
 			</case>
 			<case value="M">
+				<property name="project.selection" value="projects-ch13/open18"/>
+			</case>
+			<case value="N">
 				<property name="project.selection" value="projects-ch14/open18"/>
 			</case>
 		</switch>
@@ -568,6 +572,155 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 				<include name="**/*"/>
 			</fileset>
 		</copy>
+
+	</target>
+
+	<target name="upgrade-project" depends="verify-seam,select-project">
+
+		<property name="project.dir" value="${workspace.home}/${project.name}"/>
+
+		<replace dir="${project.dir}" token="-2.0.xsd" value="-2.1.xsd">
+			<include name="resources/WEB-INF/components.xml"/>
+			<include name="resources/WEB-INF/pages.xml"/>
+			<include name="view/**/*.page.xml"/>
+		</replace>
+
+		<replace file="${project.dir}/resources/WEB-INF/components.xml" token="xmlns:pdf" value="xmlns:document"/>
+
+		<replace file="${project.dir}/resources/WEB-INF/components.xml" token="http://jboss.com/products/seam/pdf" value="http://jboss.com/products/seam/document"/>
+
+		<replace file="${project.dir}/resources/WEB-INF/components.xml">
+			<replacetoken><![CDATA[<pdf:document-store]]></replacetoken>
+			<replacevalue><![CDATA[<document:document-store]]></replacevalue>
+		</replace>
+
+		<replace file="${project.dir}/resources/WEB-INF/components.xml">
+			<not><contains text="security:rule-based-permission-resolver"/></not>
+			<replacetoken><![CDATA[<drools:rule-base name="securityRules">]]></replacetoken>
+			<replacevalue><![CDATA[<security:rule-based-permission-resolver/>
+
+   <drools:rule-base name="securityRules">]]></replacevalue>
+		</replace>
+
+		<replace file="${project.dir}/resources/WEB-INF/components.xml">
+			<replacetoken><![CDATA[<framework:entity-query name="availableActorIdsQuery"
+      ejbql="select m.username from Member m where m.username != #{identity.username}"
+      order="m.username asc"/>]]></replacetoken>
+			<replacevalue><![CDATA[<framework:entity-query name="availableActorIdsQuery"
+      ejbql="select m.username from Member m"
+      order="m.username asc">
+      <framework:restrictions>
+         <value>m.username != #{identity.username}</value>
+      </framework:restrictions>
+   </framework:entity-query>]]></replacevalue>
+		</replace>
+
+		<replace file="${project.dir}/resources/WEB-INF/components.xml">
+			<replacetoken><![CDATA[<framework:entity-query name="friendsQuery"
+      ejbql="select fl.friend from FriendLink fl where fl.golfer.username = #{currentGolfer.username}"
+      order="fl.friend.lastName asc, fl.friend.firstName asc"/>]]></replacetoken>
+			<replacevalue><![CDATA[<framework:entity-query name="friendsQuery"
+      ejbql="select fl.friend from FriendLink fl"
+      order="fl.friend.lastName asc, fl.friend.firstName asc">
+      <framework:restrictions>
+         <value>fl.golfer.username = #{currentGolfer.username}</value>
+      </framework:restrictions>
+   </framework:entity-query>]]></replacevalue>
+		</replace>
+
+		<replace file="${project.dir}/resources/security.drl"
+			token="import org.jboss.seam.security.PermissionCheck;"
+			value="import org.jboss.seam.security.permission.PermissionCheck;"/>
+
+		<replace dir="${project.dir}" token="package org.jboss.seam.pdf" value="package org.jboss.seam.document">
+			<include name="src/**/*.java"/>
+		</replace>
+
+		<replace dir="${project.dir}" token="new DocumentData" value="new ByteArrayDocumentData">
+			<include name="src/**/*.java"/>
+		</replace>
+
+		<replace dir="${project.dir}">
+			<include name="deployed-*.list"/>
+			<not><contains text="itext-rtf.jar"/></not>
+			<replacetoken><![CDATA[itext.jar]]></replacetoken>
+			<replacevalue><![CDATA[itext.jar
+itext-rtf.jar]]></replacevalue>
+		</replace>
+
+		<replace dir="${project.dir}">
+			<include name="deployed-*.list"/>
+			<not><contains text="jxl.jar"/></not>
+			<replacetoken><![CDATA[jsf-facelets.jar]]></replacetoken>
+			<replacevalue><![CDATA[jsf-facelets.jar
+jxl.jar]]></replacevalue>
+		</replace>
+
+		<path id="script.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="groovy-all.jar"/>
+			</fileset>
+		</path>
+
+		<taskdef name="groovy"
+			classname ="org.codehaus.groovy.ant.Groovy"
+			classpathref="script.classpath"/>
+
+		<groovy><![CDATA[
+def candidates = ant.fileScanner {
+	fileset(dir: '${project.dir}/src') {
+		and {
+			contains(text: ' extends EntityQuery ')
+			contains(text: 'RESTRICTIONS')
+			not {
+				contains(text: 'EJBQL')
+			}
+		}
+		include(name: '**/*List.java')
+	}
+}
+candidates.each {
+	def className = it.name.replace(".java", "")
+	def entityName = className.replace("List", "")
+	def text = it.text
+	text = text.replaceAll("public class (.*)List extends EntityQuery \\{", "public class \$1List extends EntityQuery<\$1> {")
+
+	def cleanerPattern = ~/(?s).*(\n\n\t+@Override\s+public List<String> getRestrictions\(\) \{[^\}]*\}).*/
+	def cleanerMatcher = cleanerPattern.matcher(text)
+	text = text.replace(cleanerMatcher[0][1], "")
+
+	cleanerPattern = ~/(?s).*(\n\n\t+@Override\s+public Integer getMaxResults\(\) \{[^\}]*\}).*/
+	cleanerMatcher = cleanerPattern.matcher(text)
+	text = text.replace(cleanerMatcher[0][1], "")
+
+	def queryPattern = ~/(?s).*(\n\t+@Override\s+public String getEjbql\(\) \{\s+return "([^"]+)";\s+}).*/
+	def queryMatcher = queryPattern.matcher(text)
+
+	text = text.replace("private static final String[] RESTRICTIONS = {", """private static final String EJBQL = \"${queryMatcher[0][2]}\";
+
+	private static final String[] RESTRICTIONS = {""")
+
+	def constrPattern = ~/(?s).*(\t+public ${className}\(\) \{).*/
+	def constrMatcher = constrPattern.matcher(text)
+
+	if (constrMatcher.matches()) {
+		text = text.replace(queryMatcher[0][1], "")
+		text = text.replace(constrMatcher[0][1], """	public ${className}() {
+		setEjbql(EJBQL);
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+		setMaxResults(25);""")
+	}
+	else {
+		text = text.replace(queryMatcher[0][1], """
+	public ${className}() {
+		setEjbql(EJBQL);
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+		setMaxResults(25);
+	}""")
+	}
+	it.write(text)
+}
+		]]></groovy>
 
 	</target>
 
