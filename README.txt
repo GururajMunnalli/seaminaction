@@ -34,6 +34,7 @@ The commands of most interest are shown here:
    build-db         Build and seed the initial H2 database for Open 18
    update-project   Update the libraries for the selected project (menu provided)
    quickstart       Executes get-seam, get-jboss-as, build-db, and update-project
+   upgrade-project  Upgrade the project to be compaible with Seam 2.1 (menu provided)
 
 You run each command by prefix it with ant, as shown here:
 
@@ -49,6 +50,8 @@ Recommended versions to retrieve:
  - JBoss AS - 4.2.2.GA
  - Seam - 2.0.3.CR1 (until GA is released)
  - Java SE - Sun JDK 5 (or 6)
+
+You can use Seam 2.1, but you have to execute upgrade-project on a stage first.
 
 ** IMPORTANT **
 Make sure that your JBoss AS directory is jboss-as-4.2.2.GA and not
