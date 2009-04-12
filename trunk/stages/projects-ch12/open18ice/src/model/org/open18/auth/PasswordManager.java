@@ -33,6 +33,22 @@ public class PasswordManager {
 		this.charset = charset;
 	}
 
+	public Encoding getEncoding() {
+		return this.encoding;
+	}
+
+	public void setEncoding(Encoding encoding) {
+		this.encoding = encoding;
+	}
+
+	public String getSaltPhrase() {
+		return this.saltPhrase;
+	}
+
+	public void setSaltPhrase(String saltPhrase) {
+		this.saltPhrase = saltPhrase;
+	}
+
 	public String hash(String plainTextPassword) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance(digestAlgorithm);
@@ -46,7 +62,6 @@ public class PasswordManager {
 			else {
 				digest.update(plainTextPassword.getBytes(charset));
 			}
-			digest.update(plainTextPassword.getBytes(charset));
 			byte[] rawHash = digest.digest();
 			if (encoding != null && encoding.equals(Encoding.base64)) {
 				return Base64.encodeBytes(rawHash);
