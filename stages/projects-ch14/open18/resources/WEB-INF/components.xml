@@ -335,7 +335,7 @@
 
    <framework:entity-query name="availableActorIdsQuery"
       ejbql="select m.username from Member m where m.username != #{identity.username}"
-	  order="m.username asc"/>
+      order="m.username asc"/>
    <factory name="availableActorIds" value="#{availableActorIdsQuery.resultList}"/>
 
    <framework:entity-home name="friendHome" entity-class="org.open18.model.Golfer"/>
@@ -343,7 +343,7 @@
 
    <framework:entity-query name="friendsQuery"
       ejbql="select fl.friend from FriendLink fl where fl.golfer.username = #{currentGolfer.username}"
-	  order="fl.friend.lastName asc, fl.friend.firstName asc"/>
+      order="fl.friend.lastName asc, fl.friend.firstName asc"/>
    <factory name="friends" value="#{friendsQuery.resultList}"/>
 
    <factory name="cachedTaskInstanceListForType" value="#{taskInstanceListForType}"/>
