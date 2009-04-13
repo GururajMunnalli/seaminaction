@@ -633,6 +633,10 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 			token="import org.jboss.seam.security.PermissionCheck;"
 			value="import org.jboss.seam.security.permission.PermissionCheck;"/>
 
+		<replace dir="${project.dir}" token="org.jboss.seam.pdf" value="org.jboss.seam.document">
+			<include name="resources/WEB-INF/web.xml"/>
+		</replace>
+
 		<replace dir="${project.dir}" token="package org.jboss.seam.pdf" value="package org.jboss.seam.document">
 			<include name="src/**/*.java"/>
 		</replace>
