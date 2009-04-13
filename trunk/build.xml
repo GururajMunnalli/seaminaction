@@ -367,6 +367,7 @@ in the build.properties file.
 				<include name="README.txt"/>
 				<include name="lib/h2.jar"/>
 				<include name="lib/ant*jar"/>
+				<include name="lib/groovy*jar"/>
 				<include name="databases/open18-db/**"/>
 				<include name="etc/**"/>
 
