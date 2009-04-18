@@ -652,6 +652,38 @@ import org.jboss.seam.document.DocumentData;</replacevalue>
 		</replace>
 
 		<replace dir="${project.dir}">
+			<include name="src/**/*.java"/>
+			<replacetoken>
+@Converter</replacetoken>
+			<replacevalue>
+@BypassInterceptors
+@Converter</replacevalue>
+		</replace>
+
+		<replace dir="${project.dir}">
+			<include name="src/**/*.java"/>
+			<replacetoken>import org.jboss.seam.annotations.faces.Converter;</replacetoken>
+			<replacevalue>import org.jboss.seam.annotations.faces.Converter;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;</replacevalue>
+		</replace>
+
+		<replace dir="${project.dir}">
+			<include name="src/**/*.java"/>
+			<replacetoken>
+@Validator</replacetoken>
+			<replacevalue>
+@BypassInterceptors
+@Validator</replacevalue>
+		</replace>
+
+		<replace dir="${project.dir}">
+			<include name="src/**/*.java"/>
+			<replacetoken>import org.jboss.seam.annotations.faces.Validator;</replacetoken>
+			<replacevalue>import org.jboss.seam.annotations.faces.Validator;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;</replacevalue>
+		</replace>
+
+		<replace dir="${project.dir}">
 			<include name="deployed-*.list"/>
 			<not><contains text="itext-rtf.jar"/></not>
 			<replacetoken><![CDATA[itext.jar]]></replacetoken>
