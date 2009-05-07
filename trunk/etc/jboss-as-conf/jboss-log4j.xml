@@ -68,9 +68,8 @@
 	<root>
 		<priority value="INFO"/>
 		<appender-ref ref="CONSOLE"/>
-		<!--
+		<!-- You can disable the file appender if you always run JBoss AS in the foreground -->
 		<appender-ref ref="FILE"/>
-		-->
 	</root>
 
 </log4j:configuration>
