@@ -714,11 +714,7 @@ jxl.jar]]></replacevalue>
 def candidates = ant.fileScanner {
 	fileset(dir: '${project.dir}/src') {
 		and {
-			contains(text: ' extends EntityQuery ')
-			contains(text: 'RESTRICTIONS')
-			not {
-				contains(text: 'EJBQL')
-			}
+			contains(text: 'return Arrays.asList(RESTRICTIONS);')
 		}
 		include(name: '**/*List.java')
 	}
@@ -727,22 +723,28 @@ candidates.each {
 	def className = it.name.replace(".java", "")
 	def entityName = className.replace("List", "")
 	def text = it.text
-	text = text.replaceAll("public class (.*)List extends EntityQuery \\{", "public class \$1List extends EntityQuery<\$1> {")
+	text = text.replaceAll("public class ((My)?(.*))List extends EntityQuery \\{", "public class \$1List extends EntityQuery<\$3> {")
 
-	def cleanerPattern = ~/(?s).*(\n\n\t+@Override\s+public List<String> getRestrictions\(\) \{[^\}]*\}).*/
+	def cleanerPattern = ~/(?s).*(\n\t?\n\t+@Override\s+public List<String> getRestrictions\(\) \{[^\}]*\}).*/
 	def cleanerMatcher = cleanerPattern.matcher(text)
 	text = text.replace(cleanerMatcher[0][1], "")
 
-	cleanerPattern = ~/(?s).*(\n\n\t+@Override\s+public Integer getMaxResults\(\) \{[^\}]*\}).*/
+	cleanerPattern = ~/(?s).*(\n\t?\n\t+@Override\s+public Integer getMaxResults\(\) \{[^\}]*\}).*/
 	cleanerMatcher = cleanerPattern.matcher(text)
 	text = text.replace(cleanerMatcher[0][1], "")
 
 	def queryPattern = ~/(?s).*(\n\t+@Override\s+public String getEjbql\(\) \{\s+return "([^"]+)";\s+}).*/
 	def queryMatcher = queryPattern.matcher(text)
 
-	text = text.replace("private static final String[] RESTRICTIONS = {", """private static final String EJBQL = \"${queryMatcher[0][2]}\";
+	if (queryMatcher.matches()) {
+		text = text.replace("private static final String[] RESTRICTIONS = {", """private static final String EJBQL = \"${queryMatcher[0][2]}\";
 
 	private static final String[] RESTRICTIONS = {""")
+	}
+	else {
+		queryPattern = ~/(?s).*(\n\t+@Override\s+public String getEjbql\(\) \{\s+return EJBQL;\s+}).*/
+		queryMatcher = queryPattern.matcher(text)
+	}
 
 	def constrPattern = ~/(?s).*(\t+public ${className}\(\) \{).*/
 	def constrMatcher = constrPattern.matcher(text)
