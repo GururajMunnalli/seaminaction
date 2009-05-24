@@ -68,6 +68,7 @@ public class MyRoundList extends EntityQuery {
 	public String getOrder(){
 		return sortColumn +" "+descending;
 	}
+
 	@Override
 	public List<String> getRestrictions() {
 		return Arrays.asList(RESTRICTIONS);
