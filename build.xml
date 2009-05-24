@@ -448,6 +448,7 @@ Cannot find a Seam distribution. Use the following command to download Seam auto
 			<property name="project.type" value="${project.type}"/>
 			<property name="jboss.home" value="${jboss-as.home}"/>
 			<property name="icefaces" value="${icefaces}"/>
+			<property name="icefaces.home" value=""/>
 			<property name="driver.jar" value="${h2.jdbc.jar}"/>
 		</ant>
 		<if>
