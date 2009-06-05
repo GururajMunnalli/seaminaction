@@ -1,0 +1,16 @@
+#Sun May 17 20:09:58 EDT 2009
+action.package=org.preflight.action
+action.sources=/preflight-seam/src/hot
+eclipse.preferences.version=1
+model.package=org.preflight.model
+model.sources=/preflight-seam/src/main
+seam.ejb.project=preflight
+seam.project.connection.profile=preflight
+seam.project.deployment.type=war
+seam.project.settings.version=1.1
+seam.project.web.root.folder=/preflight-seam/view
+seam.runtime.name=seam-2.1.x
+seam.test.creating=true
+seam.test.project=preflight-seam
+test.package=org.preflight.test
+test.sources=/preflight-seam/src/test
