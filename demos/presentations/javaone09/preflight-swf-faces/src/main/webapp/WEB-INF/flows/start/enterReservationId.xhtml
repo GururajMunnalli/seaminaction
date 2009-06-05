@@ -1,0 +1,58 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://www.springframework.org/tags/faces"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:define name="content">
+
+		<h1>Preflight Check-in</h1>
+		<p><em>Available 24 hours before your flight departure time.</em></p>
+
+		<ui:fragment id="messages">
+			<div id="messagesInsertionPoint">
+				<h:messages errorClass="errors"/>
+			</div>
+		</ui:fragment>
+
+		<h:form id="locatorForm">
+			<fieldset>
+				<div class="field">
+					<div class="label">
+						<h:outputLabel for="reservationNumber">Reservation #</h:outputLabel>
+					</div>
+					<div class="input">
+						<h:inputText id="reservationNumber" value="#{reservationIdentifier.reservationNumber}" size="6"/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">
+						<h:outputLabel for="passengerLastName">Last name</h:outputLabel>
+					</div>
+					<div class="input">
+						<h:inputText id="passengerLastName" value="#{reservationIdentifier.passengerLastName}" size="15"/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="label">
+						<h:outputLabel for="checkInGroup">Check in group</h:outputLabel>
+					</div>
+					<div class="input">
+						<h:selectBooleanCheckbox id="checkInGroup" value="#{reservationIdentifier.checkInGroup}" style="position: relative; top: 3px;"/>
+					</div>
+				</div>
+			</fieldset>
+
+			<div class="buttonGroup">
+				<h:commandButton id="locate" action="locate" value="Begin check in"/>
+				#{' '}
+				<h:commandButton id="cancel" action="cancel" immediate="true" value="Nevermind, I'll do it later"/>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

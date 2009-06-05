@@ -1,0 +1,63 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="/layout/template.xhtml">
+
+	<ui:param name="pageTitle" value="Flights and Passengers"/>
+
+	<ui:define name="content">
+
+		<ui:include src="/layout/steps.xhtml">
+			<ui:param name="step" value="1"/>
+		</ui:include>
+
+		<br/>
+
+		<h1>Flights and Passengers</h1>
+
+		<p><em>Select the flights for the passengers you want to check in.</em></p>
+
+		<h:form id="flightsForm">
+			<rich:panel>
+				<f:facet name="header">Available flights for check in</f:facet>
+				<h2>#{reservation.origin.name} - #{reservation.destination.name} (#{reservation.itineraryType.label})</h2>
+				<rich:dataTable var="_selectableItem" value="#{candidateBoardingPasses}">
+					<h:column>
+						<f:facet name="header">Passengers</f:facet>
+						#{_selectableItem.item.ticket.passenger.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Flight segment</f:facet>
+						#{_selectableItem.item.flightSegment.flight.airline.name}
+						#{_selectableItem.item.flightSegment.flight.airline.code}-#{_selectableItem.item.flightSegment.flight.number}#{', '}
+						<h:outputText value="#{_selectableItem.item.flightSegment.flight.departureTime}">
+							<s:convertDateTime type="both" dateStyle="long" timeStyle="short"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Check-in status</f:facet>
+						#{_selectableItem.item.checkedIn ? 'Checked-in' : 'Not checked-in'}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Options</f:facet>
+						<span style="float: left; display: block; padding: 3px 0;">Check in now</span>
+						<h:selectBooleanCheckbox value="#{_selectableItem.selected}" style="float: right;"/>
+					</h:column>
+				</rich:dataTable>
+
+			</rich:panel>
+			<div class="advanceButtons">
+				<h:commandButton action="cancel" immediate="true" value="Cancel"/>
+				<h:commandButton action="continue" value="Continue"/>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+

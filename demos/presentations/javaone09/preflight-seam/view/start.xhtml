@@ -1,0 +1,48 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="layout/template.xhtml">
+
+	<ui:define name="content">
+
+		<h1>Begin preflight check in</h1>
+		<p><em>Enter your reservation information to begin the process.</em></p>
+
+		<h:form id="beginCheckInForm">
+			<rich:panel style="float: left;">
+				<f:facet name="header">Required reservation information</f:facet>
+				<div class="dialog">
+					<h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+						<h:outputLabel for="reservationNumber" value="Reservation number"/>
+						<h:panelGroup>
+							<h:inputText id="reservationNumber" value="#{reservationIdentifier.reservationNumber}" size="6" required="true">
+								<s:validate/>
+							</h:inputText>
+							#{' '}
+							<h:message for="reservationNumber" styleClass="errors"/>
+						</h:panelGroup>
+						<h:outputLabel for="passengerLastName" value="Passenger last name"/>
+						<h:panelGroup>
+							<h:inputText id="passengerLastName" value="#{reservationIdentifier.passengerLastName}" size="15" required="true">
+								<s:validate/>
+							</h:inputText>
+							#{' '}
+							<h:message for="passengerLastName" styleClass="errors"/>
+						</h:panelGroup>
+					</h:panelGrid>
+				</div>
+			</rich:panel>
+
+			<div class="actionButtons">
+				<h:commandButton value="Begin check in" action="#{checkInAssistant.locateReservationForCheckIn}"/>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

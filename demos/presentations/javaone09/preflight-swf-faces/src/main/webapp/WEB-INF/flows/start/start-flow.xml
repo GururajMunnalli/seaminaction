@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/webflow
+		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<var name="reservationIdentifier" class="org.preflight.criteria.ReservationIdentifier"/>
+
+	<view-state id="enterReservationId">
+		<transition on="locate" to="locateReservation"/>
+		<transition on="cancel" to="finish"/>
+	</view-state>
+
+	<action-state id="locateReservation">
+		<evaluate expression="checkInService.locateReservationForCheckIn(reservationIdentifier, messageContext)" result="conversationScope.reservation"/>
+		<transition on="${reservation != null}" to="beginCheckIn"/>
+		<transition on="${reservation == null}" to="enterReservationId">
+			<!--<set name="flashScope.statusMessage" value="'Invalid reservation number.'" />-->
+		</transition>
+	</action-state>
+
+	<subflow-state id="beginCheckIn" subflow="checkIn">
+		<input name="checkInGroup" type="boolean" value="reservationIdentifier.checkInGroup"/>
+		<transition on="confirmed" to="finish"/>
+		<transition on="canceled" to="enterReservationId"/>
+	</subflow-state>
+
+	<end-state id="finish" view="externalRedirect:servletRelative:/home"/>
+
+</flow>

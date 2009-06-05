@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:c="http://java.sun.com/jstl/core">
+
+   <div>
+      <a href="#{request.contextPath}/spring/home">Home</a>
+      <a href="#{request.contextPath}/spring/start">Begin check-in</a>
+      <c:if test="#{not empty currentUser.name}">
+         signed in as: #{currentUser.name} <a href="#{request.contextPath}/spring/logout">Logout</a>
+      </c:if>
+      <c:if test="#{empty currentUser.name}">
+         <a href="#{request.contextPath}/spring/login">Login</a>
+      </c:if>
+   </div>
+
+</ui:composition>

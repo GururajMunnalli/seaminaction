@@ -1,0 +1,59 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/layout/template.xhtml">
+
+	<ui:param name="pageTitle" value="Issue boarding pass"/>
+
+    <ui:define name="content">
+
+		<ui:include src="/layout/steps.xhtml">
+			<ui:param name="step" value="4"/>
+		</ui:include>
+
+		<br/>
+
+		<h1>Boarding pass options</h1>
+
+		<h:form id="boardingPassForm">
+			<rich:panel>
+				<f:facet name="header">Available flights for check in</f:facet>
+				<h2>#{reservation.origin.name} - #{reservation.destination.name} (#{reservation.itineraryType.label})</h2>
+				<rich:dataTable var="_boardingPass" value="#{boardingPasses}">
+					<h:column>
+						<f:facet name="header">Passengers</f:facet>
+						#{_boardingPass.ticket.passenger.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Flight segment</f:facet>
+						#{_boardingPass.flightSegment.flight.airline.name}
+						#{_boardingPass.flightSegment.flight.airline.code}-#{_boardingPass.flightSegment.flight.number}#{', '}
+						<h:outputText value="#{_boardingPass.flightSegment.flight.departureTime}">
+							<s:convertDateTime type="both" dateStyle="long" timeStyle="long"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Check-in status</f:facet>
+						#{_boardingPass.checkedIn ? 'Checked-in' : 'Not checked-in'}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Boarding pass options</f:facet>
+						Options, options, options
+					</h:column>
+				</rich:dataTable>
+			</rich:panel>
+			<div class="advanceButtons">
+				<h:commandButton action="cancel" immediate="true" value="Cancel"/>
+				<h:commandButton action="commit" value="Commit"/>
+			</div>
+		</h:form>
+
+    </ui:define>
+
+</ui:composition>
+

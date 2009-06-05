@@ -1,0 +1,61 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:s="http://www.springframework.org/tags/faces"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:param name="pageTitle" value="Check-in Summary"/>
+	<ui:param name="pageClass" value="wizard"/>
+
+	<ui:define name="content">
+
+		<ui:include src="/WEB-INF/layouts/steps.xhtml">
+			<ui:param name="step" value="5"/>
+		</ui:include>
+
+		<br/>
+
+		<h1>Check-in summary</h1>
+
+		<h:form id="boardingPassesForm">
+			<f:facet name="header">Available flights for check in</f:facet>
+			<h2>#{reservation.origin.name} - #{reservation.destination.name} (#{reservation.itineraryType.label})</h2>
+			<h:dataTable id="boardingPasses" var="_boardingPass" value="#{boardingPasses}" styleClass="summary">
+				<h:column>
+					<f:facet name="header">Passengers</f:facet>
+					#{_boardingPass.ticket.passenger.name}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Flight number</f:facet>
+					#{_boardingPass.flightSegment.flight.airline.name}
+					#{_boardingPass.flightSegment.flight.airline.code}-#{_boardingPass.flightSegment.flight.number}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Departure date</f:facet>
+					<h:outputText value="#{_boardingPass.flightSegment.flight.departureTime}">
+						<f:convertDateTime type="both" dateStyle="medium" timeStyle="short"/>
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">Check-in status</f:facet>
+					#{_boardingPass.checkedIn ? 'Checked-in' : 'Not checked-in'}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Seating</f:facet>
+					#{_boardingPass.seat.number}
+				</h:column>
+			</h:dataTable>
+
+			<div class="buttonGroup">
+				<h:commandButton action="cancel" immediate="true" value="Cancel"/>
+				#{' '}
+				<h:commandButton action="confirm" value="Confirm"/>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

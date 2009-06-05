@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html">
+
+	<table class="steps">
+		<tr>
+			<td width="20%" class="#{step == 1 ? 'current' : ''}">
+				<h3>Step 1</h3>
+				<span>Check flight and passenger details</span>
+			</td>
+			<td width="20%" class="#{step == 2 ? 'current' : ''}">
+				<h3>Step 2</h3>
+				<span>Declare number of bags</span>
+			</td>
+			<td width="20%" class="#{step == 3 ? 'current' : ''}">
+				<h3>Step 3</h3>
+				<span>Choose or confirm your seats</span>
+			</td>
+			<td width="20%" class="#{step == 4 ? 'current' : ''}">
+				<h3>Step 4</h3>
+				<span>Issue your boarding pass</span>
+			</td>
+			<td width="20%" class="#{step == 5 ? 'current' : ''}">
+				<h3>Step 5</h3>
+				<span>View check-in summary</span>
+			</td>
+		</tr>
+	</table>
+
+</ui:composition>

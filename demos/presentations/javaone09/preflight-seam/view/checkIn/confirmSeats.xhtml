@@ -1,0 +1,126 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="/layout/template.xhtml">
+
+	<ui:param name="pageTitle" value="Confirm seats"/>
+
+	<ui:define name="head">
+		<style type="text/css">
+table.seats {
+	background-color: #151515;
+	border-collapse: collapse;
+	border: 0;
+}
+table.seats td {
+	border: 0;
+	background-color: #151515;
+	color: #FFFFFF !important;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;
+}
+table.seat-matrix tbody td {
+	background-color: #151515;
+}
+.section-first {
+	padding: 10px 2px 0px 5px;
+}
+.section-economy {
+	padding: 10px 10px 5px 2px;
+}
+.section-first table.seats td {
+	padding: 4px;
+}
+table.seat-matrix thead th {
+	font-weight: normal;
+	text-align: left;
+}
+		</style>
+	</ui:define>
+
+    <ui:define name="content">
+
+		<ui:include src="/layout/steps.xhtml">
+			<ui:param name="step" value="3"/>
+		</ui:include>
+
+		<br/>
+
+		<h1>Confirm seats and check in</h1>
+
+		<h:form id="seatsForm">
+			<rich:panel>
+				<f:facet name="header">Available flights for check in</f:facet>
+				<h2>#{reservation.origin.name} - #{reservation.destination.name} (#{reservation.itineraryType.label})</h2>
+				<rich:dataTable id="boardingPasses" var="_boardingPass" value="#{boardingPasses}">
+					<h:column>
+						<f:facet name="header">Passengers</f:facet>
+						#{_boardingPass.ticket.passenger.name}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Flight segment</f:facet>
+						#{_boardingPass.flightSegment.flight.airline.name}
+						#{_boardingPass.flightSegment.flight.airline.code}-#{_boardingPass.flightSegment.flight.number}#{', '}
+						<h:outputText value="#{_boardingPass.flightSegment.flight.departureTime}">
+							<s:convertDateTime type="both" dateStyle="long" timeStyle="short"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Check-in status</f:facet>
+						#{_boardingPass.checkedIn ? 'Checked-in' : 'Not checked-in'}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Seating</f:facet>
+						<span style="float: left; display: block; line-height: 2.1em; text-align: middle;">#{_boardingPass.seat.number}</span>
+						<a4j:commandButton action="#{seatSelector.viewOrChangeSeats(_boardingPass)}" reRender="seatingChart" value="View or change" style="float: right; margin: 2px 0;"/>
+					</h:column>
+				</rich:dataTable>
+			</rich:panel>
+
+			<div class="advanceButtons">
+				<h:commandButton action="cancel" immediate="true" value="Cancel"/>
+				<h:commandButton action="continue" value="Continue"/>
+			</div>
+
+		</h:form>
+
+		<h:panelGroup id="seatingChart">
+			<h:form id="seatingChartForm" rendered="#{not empty selectedBoardingPass}">
+				<h2>Seating chart</h2>
+				<p><em>Select or change the seat for #{activeBoardingPass.ticket.passenger.name}.</em></p>
+				<h:dataTable id="seatMatrix" var="_l1" value="#{1}" styleClass="seat-matrix">
+					<rich:columns var="_section" value="#{seatMatrix.sections}">
+						<f:facet name="header">#{_section.fareClass} CLASS</f:facet>
+				        <div class="section-#{_section.fareClass.key}">
+							<rich:dataTable var="_colgroup" value="#{_section.columnGroups}" styleClass="seats">
+								<rich:subTable var="_col" value="#{_colgroup.columns}">
+									<rich:column>#{_col.letter}</rich:column>
+									<rich:columns var="_row" value="#{_section.rows}" index="r">
+										<a4j:commandLink action="#{seatSelector.select(_col.seatSelections[r])}" disabled="#{not _col.seatSelections[r].available}" reRender="seatMatrix,boardingPasses">
+											<h:graphicImage value="/img/seat-#{_col.seatSelections[r].status.key}-#{_section.fareClass.key}.gif"/>
+										</a4j:commandLink>
+										<f:facet name="footer"><h:outputText value="#{_row.number}" rendered="#{not _colgroup.last}"/></f:facet> <!-- leaves space when not rendered -->
+									</rich:columns>
+								</rich:subTable>
+							</rich:dataTable>
+						</div>
+						<f:facet name="footer">#{_section.fareClass} CLASS</f:facet>
+					</rich:columns>
+				</h:dataTable>
+				<div class="actionButtons">
+					<a4j:commandButton action="#{seatSelector.close}" immediate="true" value="Done" reRender="seatingChart"/>
+				</div>
+			</h:form>
+		</h:panelGroup>
+
+    </ui:define>
+
+</ui:composition>
+

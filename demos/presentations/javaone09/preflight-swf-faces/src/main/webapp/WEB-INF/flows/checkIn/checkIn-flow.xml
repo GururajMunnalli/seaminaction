@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/webflow
+		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+	<persistence-context/>
+
+	<!-- 
+	<input name="reservationId" value="requestScope.reservationId"/>
+	-->
+	<input name="checkInGroup" type="boolean" required="false"/>
+
+	<on-start>
+		<evaluate expression="checkInService.fetchReservation(reservation.id)" result="flowScope.reservation"/>
+		<evaluate expression="checkInService.locateBoardingPasses(reservation, checkInGroup)" result="flowScope.boardingPasses" result-type="dataModel"/>
+	</on-start>
+
+	<view-state id="flights">
+		<transition on="continue" to="confirmSeats"/>
+		<transition on="cancel" to="canceled"/>
+	</view-state>
+
+	<view-state id="confirmSeats">
+		<transition on="viewOrChangeSeat"> <!-- does not transition to an actual state -->
+			<evaluate expression="checkInService.buildSeatMatrixWithSelections(boardingPasses.selectedRow)" result="viewScope.seatMatrix"/>
+			<render fragments="seatingChart"/> <!-- why can't this be relative? (such as when it's in a form) -->
+		</transition>
+		<transition on="change"> <!-- does not transition to an actual state -->
+			<evaluate expression="checkInService.changeReservedSeat(boardingPasses.selectedRow, seatMatrix.selectedSeat)"/>
+			<render fragments="boardingPassesForm:boardingPasses,seatingChartForm:seatsByRow"/>
+		</transition>
+		<transition on="done"> <!-- does not transition to an actual state -->
+			<evaluate expression="boardingPasses.selections.clear()"/>
+			<render fragments="seatingChart"/>
+		</transition>
+		<transition on="continue" to="summary">
+			<evaluate expression="checkInService.checkIn(boardingPasses.wrappedData)"/>
+		</transition>
+		<transition on="cancel" to="canceled"/>
+	</view-state>
+
+	<view-state id="summary">
+		<transition on="confirm" to="confirmed"/>
+		<transition on="cancel" to="canceled"/>
+	</view-state>
+
+	<end-state id="confirmed" commit="true">
+		<!--<output name="flashScope.statusMessage" value="'You have successfully checked in!'"/>-->
+	</end-state>
+
+	<end-state id="canceled"/>
+
+</flow>

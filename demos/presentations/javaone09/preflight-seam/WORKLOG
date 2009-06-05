@@ -1,0 +1,8 @@
+TODO
+====
+* Need decision if passport info is absent
+* Need decision for 3+ bags (charge them)
+* Possibly divide the flights table by segment
+* Choose seat page
+
+* if click on seat of group member, swap with your current seat (if you don't have a seat, then group member loses seat)

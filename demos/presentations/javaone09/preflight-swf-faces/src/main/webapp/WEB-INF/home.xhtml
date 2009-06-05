@@ -1,0 +1,24 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://www.springframework.org/tags/faces"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/layouts/standard.xhtml">
+
+	<ui:param name="pageClass" value="home"/>
+
+	<ui:define name="content">
+
+		<h1>Preflight check-in overview</h1>
+		<p><em>Available 24 hours before your flight departure time, but closes 90 minutes prior to departure.</em></p>
+
+		<ui:include src="/WEB-INF/layouts/steps.xhtml"/>
+
+		<p align="right">
+			<a href="start">Check in now &#187;</a>
+		</p>
+
+	</ui:define>
+</ui:composition>
