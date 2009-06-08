@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//AJAX4JSF//CDK Generator config/EN"  "http://labs.jboss.com/jbossrichfaces/component-config.dtd">
+<components>
+	<component>
+		<name>com.jsfone.OutputBooleanCheckbox</name>
+		<family>com.jsfone.OutputBooleanCheckbox</family>
+		<classname>com.jsfone.component.html.HtmlOutputBooleanCheckbox</classname>
+		<superclass>com.jsfone.component.UIOutputBooleanCheckbox</superclass>
+		<description>
+			<![CDATA[
+    ]]>
+		</description>
+		<renderer generate="true" override="true">
+			<name>com.jsfone.OutputBooleanCheckboxRenderer</name>
+			<template>com/jsfone/htmlOutputBooleanCheckbox.jspx</template>
+		</renderer>
+		<tag>
+			<name>outputBooleanCheckbox</name>
+			<classname>com.jsfone.taglib.OutputBooleanCheckboxTag</classname>
+			<superclass>
+				org.ajax4jsf.webapp.taglib.HtmlComponentTagBase
+			</superclass>
+		</tag>
+		&ui_component_attributes;
+		&ui_output_attributes;
+		&html_universal_attributes;
+		&html_events;
+		<property>
+			<name>visibleStates</name>
+			<classname>java.lang.String</classname>
+			<description>
+				Determines when the image is visible based on the value of the component.
+				Acceptable values are 'true', 'false', 'both', 'neither'.
+			</description>
+			<defaultvalue>"both"</defaultvalue>
+		</property>
+	</component>
+</components>

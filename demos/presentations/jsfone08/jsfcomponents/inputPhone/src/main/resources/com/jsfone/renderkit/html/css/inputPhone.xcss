@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:template xmlns:f="http:/jsf.exadel.com/template"
+	xmlns:u="http:/jsf.exadel.com/template/util"
+	xmlns="http://www.w3.org/1999/xhtml">
+	<f:verbatim><![CDATA[
+span.jsfone-dash {
+	padding: 0 3px;
+}
+]]></f:verbatim>
+	<u:selector name="input.jsfone-input-phone">
+		<u:style name="background-color" skin="controlBackgroundColor"/>
+		<u:style name="color" skin="controlTextColor"/>
+		<u:style name="background-position" value="left top"/>
+		<u:style name="background-repeat" value="repeat-x"/>
+		<u:style name="background-image">
+			<f:resource f:key="org.richfaces.renderkit.html.images.SliderFieldGradient"/>
+		</u:style>
+		<u:style name="border" value="1px solid"/>
+		<u:style name="border-color" skin="tableBorderColor" />
+	</u:selector>	
+</f:template>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:c="http://java.sun.com/jsf/core" 
+	xmlns:ui="http://ajax4jsf.org/cdk/ui"
+	xmlns:u="http://ajax4jsf.org/cdk/u"
+	xmlns:h="http://ajax4jsf.org/cdk/h"
+	xmlns:x="http://ajax4jsf.org/cdk/x"
+	class="com.jsfone.renderkit.html.SelectBooleanCheckboxRenderer"
+	baseclass="com.jsfone.renderkit.SelectBooleanCheckboxRendererBase"
+	component="javax.faces.component.UISelectBoolean">
+	<h:scripts>new org.ajax4jsf.javascript.PrototypeScript(),scripts/checkboxcontrol.js</h:scripts>
+	<f:resource name="/com/jsfone/renderkit/html/images/checked.gif" var="iconChecked"/>
+	<f:resource name="/com/jsfone/renderkit/html/images/unchecked.gif" var="iconUnchecked"/>
+	<f:clientid var="clientId"/>
+	<c:set var="style" value="#{component.attributes['style']}"/>
+	<c:set var="styleClass" value="#{component.attributes['styleClass']}"/>
+	<c:set var="disabled" value="#{component.attributes['disabled']}"/>
+	<input id="#{clientId}" name="#{clientId}" type="hidden" value="#{component.selected}"/>
+	<img id="#{clientId}_checked" src="#{iconChecked}"
+		style="#{style} cursor: pointer; display: #{component.selected ? 'inline' : 'none'}"
+		styleClass="#{styleClass} jsfone-input-checkbox jsfone-state-checked"
+		onclick="JSFOne.toggleCheckbox('#{clientId}', false);"
+		x:passThruWithExclusions="id,value,styleClass,style,onclick"/>
+	<img id="#{clientId}_unchecked" src="#{iconUnchecked}"
+		style="#{style} cursor: pointer; display: #{component.selected ? 'none' : 'inline'}"
+		styleClass="#{styleClass} jsfone-input-checkbox jsfone-state-unchecked"
+		onclick="JSFOne.toggleCheckbox('#{clientId}', true)"
+		x:passThruWithExclusions="id,value,styleClass,style,onclick"/>
+</f:root>

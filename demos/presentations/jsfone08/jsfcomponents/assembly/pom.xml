@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>components</artifactId>
+		<groupId>com.jsfone</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jsfone</groupId>
+	<artifactId>jsfone-components</artifactId>
+	<name>JSFOne component library</name>
+	<packaging>jar</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.richfaces.cdk</groupId>
+				<artifactId>maven-cdk-plugin</artifactId>
+				<version>3.2.0.GA</version>
+				<configuration>
+					<library>
+						<prefix>com.jsfone</prefix>
+						<description>JSFOne components</description>
+						<taglibs>
+							<taglib>
+								<shortName>jsfone</shortName>
+								<taglib>jsfone</taglib>
+								<uri>http://jsfone.com/components</uri>
+								<displayName>JSFOne components</displayName>
+							</taglib>
+						</taglibs>
+					</library>
+					<!--
+					<excludeXcss>**/basic.xcss, **/basic_classes.xcss, **/extended.xcss, **/extended_classes.xcss, **/skin*.xcss</excludeXcss>
+					<commonStyle>org/richfaces/skin.xcss</commonStyle>
+					-->
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

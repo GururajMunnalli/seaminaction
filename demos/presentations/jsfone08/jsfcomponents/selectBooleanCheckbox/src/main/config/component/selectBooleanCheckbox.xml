@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//AJAX4JSF//CDK Generator config/EN"  "http://labs.jboss.com/jbossrichfaces/component-config.dtd">
+
+<components>
+	<component>
+		<name>com.jsfone.SelectBooleanCheckbox</name>
+		<family>com.jsfone.SelectBooleanCheckbox</family>
+		<classname>com.jsfone.component.html.HtmlSelectBooleanCheckbox</classname>
+		<superclass>javax.faces.component.UISelectBoolean</superclass>
+		<description>An image-based input checkbox.</description>
+		<renderer generate="true" override="true">
+			<name>com.jsfone.SelectBooleanCheckboxRenderer</name>
+			<template>com/jsfone/htmlSelectBooleanCheckbox.jspx</template>
+		</renderer>
+		<tag>
+			<name>selectBooleanCheckbox</name>
+			<classname>com.jsfone.taglib.SelectBooleanCheckboxTag</classname>
+			<superclass>org.ajax4jsf.webapp.taglib.HtmlComponentTagBase</superclass>
+		</tag>
+		&ui_component_attributes;
+		&ui_select_boolean_attributes;
+		&html_style_attributes;
+		&html_universal_attributes;
+		&html_events;
+		<property>
+			<name>disabled</name>
+			<classname>boolean</classname>
+			<description>Disable the state of the checkbox</description>
+		</property>
+		<property>
+			<name>readonly</name>
+			<classname>boolean</classname>
+			<description>Disable the state of the checkbox</description>
+		</property>
+		<property>
+			<name>tabindex</name>
+			<classname>java.lang.String</classname>
+			<description>This attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros</description>
+		</property>
+	</component>
+</components>

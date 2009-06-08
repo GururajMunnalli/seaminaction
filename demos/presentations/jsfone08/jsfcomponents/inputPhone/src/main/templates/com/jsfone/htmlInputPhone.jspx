@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:c="http://java.sun.com/jsf/core" 
+	xmlns:ui="http://ajax4jsf.org/cdk/ui"
+	xmlns:u="http://ajax4jsf.org/cdk/u"
+	xmlns:h="http://ajax4jsf.org/cdk/h"
+	xmlns:x="http://ajax4jsf.org/cdk/x"
+	class="com.jsfone.renderkit.html.InputPhoneRenderer"
+	baseclass="com.jsfone.renderkit.InputPhoneRendererBase"
+	component="com.jsfone.component.UIInputPhone">
+	<f:clientid var="clientId"/>
+	<c:set var="styleClass" value="#{component.attributes['styleClass']}"/>
+	<h:scripts>/com/jsfone/renderkit/html/scripts/phoneinput.js</h:scripts>
+	<h:styles>/com/jsfone/renderkit/html/css/inputPhone.xcss</h:styles>
+	<input id="#{clientId}" name="#{clientId}" type="text" size="3" maxlength="3"
+		onkeypress="JSFOne.PhoneInput.getInstance('#{clientId}').autoTab(this, 3, event);"
+		onselect="JSFOne.PhoneInput.getInstance('#{clientId}').stopAutoTab();"
+		value="#{this:getAreaCode(context, component)}"
+		class="jsfone-input-phone jsfone-input-phone-areacode #{styleClass}"
+		x:passThruWithExclusions="id,name,value,size,maxlength,onkeypress,onselect,styleClass"/>
+	<span class="jsfone-dash">-</span>
+	<input id="#{clientId}_prefix" name="#{clientId}_prefix" type="text" size="3" maxlength="3"
+		onkeypress="JSFOne.PhoneInput.getInstance('#{clientId}').autoTab(this, 3, event);"
+		onselect="JSFOne.PhoneInput.getInstance('#{clientId}').stopAutoTab();"
+		value="#{this:getPrefix(context, component)}"
+		class="jsfone-input-phone jsfone-input-phone-prefix #{styleClass}"
+		x:passThruWithExclusions="id,name,value,size,maxlength,onkeypress,onselect,styleClass"/>
+	<span class="jsfone-dash">-</span>
+	<input id="#{clientId}_line" name="#{clientId}_line" type="text" size="4" maxlength="4"
+		onkeypress="JSFOne.PhoneInput.getInstance('#{clientId}').autoTab(this, 4, event);"
+		onselect="JSFOne.PhoneInput.getInstance('#{clientId}').stopAutoTab();"
+		value="#{this:getLine(context, component)}"
+		class="jsfone-input-phone jsfone-input-phone-line #{styleClass}"
+		x:passThruWithExclusions="id,name,value,size,maxlength,onkeypress,onselect,styleClass"/>
+</f:root>

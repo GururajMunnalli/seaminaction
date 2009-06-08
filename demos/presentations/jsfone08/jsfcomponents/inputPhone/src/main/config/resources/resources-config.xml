@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource-config>
+	<!-- These are automatically generated from h:scripts and h:styles -->
+	<!--
+	<resource>
+		<name>com/jsfone/renderkit/html/scripts/phoneinput.js</name>
+		<path>com/jsfone/renderkit/html/scripts/phoneinput.js</path>
+	</resource>
+	<resource>
+		<name>com/jsfone/renderkit/html/css/inputPhone.xcss</name>
+		<path>com/jsfone/renderkit/html/css/inputPhone.xcss</path>
+	</resource>     
+	-->
+</resource-config>

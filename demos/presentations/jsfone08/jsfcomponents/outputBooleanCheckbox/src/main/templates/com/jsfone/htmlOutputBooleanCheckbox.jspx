@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:root 
+	xmlns:f="http://ajax4jsf.org/cdk/template" 
+	xmlns:c="http://java.sun.com/jsf/core" 
+	xmlns:ui="http://ajax4jsf.org/cdk/ui"
+	xmlns:u="http://ajax4jsf.org/cdk/u"
+	xmlns:x="http://ajax4jsf.org/cdk/x"
+	class="com.jsfone.renderkit.html.OutputBooleanCheckboxRenderer"
+	baseclass="com.jsfone.renderkit.OutputBooleanCheckboxRendererBase"
+	component="com.jsfone.component.UIOutputBooleanCheckbox">
+	<f:resource name="/com/jsfone/renderkit/html/images/checked.gif" var="iconChecked"/>
+	<f:resource name="/com/jsfone/renderkit/html/images/unchecked.gif" var="iconUnchecked"/>
+	<f:clientid var="clientId"/>
+	<c:set var="style" value="#{component.attributes['style']}"/>
+	<c:set var="styleClass" value="#{component.attributes['styleClass']}"/>
+	<img id="#{clientId}"
+		src="#{this:getValueAsBoolean(context, component) ? iconChecked : iconUnchecked}"
+		style="#{style} #{this:getVisible(context, component) ? '' : 'visibility: hidden;'}"
+		class="jsfone-output-checkbox jsfone-state-#{this:getValueAsBoolean(context, component) ? 'checked' : 'unchecked'} #{styleClass}"
+		x:passThruWithExclusions="id,value,styleClass,style"/>
+</f:root>

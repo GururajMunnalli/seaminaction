@@ -1,0 +1,156 @@
+Before starting
+
+1. Remove the modules from the root pom.xml
+2. Clean out the old libraries in the showcase webapp
+
+OutputBooleanCheckbox
+
+1. Generate component project
+
+  mvn archetype:create -DarchetypeGroupId=org.richfaces.cdk -DarchetypeArtifactId=maven-archetype-jsf-component -DarchetypeVersion=3.2.1.GA -DartifactId=outputBooleanCheckbox
+  cd outputBooleanCheckbox
+  mvn cdk:create -Dname=outputBooleanCheckbox
+  ../fix-project.sh
+
+2. Verify the auto-generated component works
+
+  cd ~/demos/jsfone08/showcase/webapp
+  <obc:outputBooleanCheckbox id="booleanProperty" style="border: 1px solid gray; background-color: #FFFFFF; height: 1em;" title="Auto-generated component"/>
+  ant restart
+
+3. Register attributes for JSP TLD
+
+  vim src/main/config/component/outputBooleanCheckbox.xml
+  &html_universal_attributes;
+
+4. Put the checked/unchecked images in resources
+
+  mkdir -p src/main/resources/com/jsfone/renderkit/html/images
+  cp ../../resources/*checked* src/main/resources/com/jsfone/renderkit/html/images/
+
+5. Prototype the component in the renderer template
+
+	<f:resource name="/com/jsfone/renderkit/html/images/checked.gif" var="iconChecked"/>
+	<f:resource name="/com/jsfone/renderkit/html/images/unchecked.gif" var="iconUnchecked"/>
+	<c:set var="style" value="#{component.attributes['style']}"/>
+	<c:set var="styleClass" value="#{component.attributes['styleClass']}"/>
+x:passThruWithExclusions="id,value,styleClass,style"
+
+6. Change component to extend UISelectBoolean
+
+  src/main/java/com/jsfone/component/UIOutputBooleanCheckbox.java
+  extends UISelectBoolean
+  import javax.faces.component.UISelectBoolean
+
+  use #{component.selected} in renderer template
+
+7. Play nicer with converters, submitted values; add getValueAsBoolean method to renderer
+
+  Create src/main/java/com/jsfone/renderkit/OutputBooleanCheckboxRendererBase.java
+  Class should be abstract
+  Class should extend org.ajax4jsf.renderkit.RendererBase
+
+  Template should have baseclass="com.jsfone.renderkit.OutputBooleanCheckboxRendererBase"
+
+8. Add getVisible method which allows user to control when checkbox is displayed 
+
+  src/main/java/com/jsfone/renderkit/OutputBooleanCheckboxRendererBase.java
+
+SelectBooleanCheckbox
+
+1. Generate component project
+
+  mvn archetype:create -DarchetypeGroupId=org.richfaces.cdk -DarchetypeArtifactId=maven-archetype-jsf-component -DarchetypeVersion=3.2.1.GA -DartifactId=selectBooleanCheckbox
+  cd selectBooleanCheckbox
+  mvn cdk:create -Dname=selectBooleanCheckbox
+  ../fix-project.sh
+
+2. Put the checked/unchecked images and scripts in resources
+
+  mkdir -p src/main/resources/com/jsfone/renderkit/html/images
+  cp ../../resources/*checked* src/main/resources/com/jsfone/renderkit/html/images/
+  mkdir -p src/main/resources/com/jsfone/renderkit/html/scripts
+  cp ../../resources/checkboxcontrol.js src/main/resources/com/jsfone/renderkit/html/scripts
+
+3. Prototype the component in the renderer template
+
+	<h:scripts>new org.ajax4jsf.javascript.PrototypeScript(),scripts/checkboxcontrol.js</h:scripts>
+	<f:resource name="/com/jsfone/renderkit/html/images/checked.gif" var="iconChecked"/>
+	<f:resource name="/com/jsfone/renderkit/html/images/unchecked.gif" var="iconUnchecked"/>
+	<c:set var="style" value="#{component.attributes['style']}"/>
+	<c:set var="styleClass" value="#{component.attributes['styleClass']}"/>
+	<c:set var="disabled" value="#{component.attributes['disabled']}"/>
+	<input id="#{clientId}" name="#{clientId}" type="hidden" value="#{component.selected}"/>
+	<img id="#{clientId}_checked" src="#{iconChecked}"
+		style="#{style} cursor: pointer; display: #{component.selected ? 'inline' : 'none'}"
+		styleClass="#{styleClass} jsfone-input-checkbox jsfone-state-checked"
+		onclick="JSFOne.toggleCheckbox('#{clientId}', false);"
+		x:passThruWithExclusions="id,value,styleClass,style,onclick"/>
+	<img id="#{clientId}_unchecked" src="#{iconUnchecked}"
+		style="#{style} cursor: pointer; display: #{component.selected ? 'none' : 'inline'}"
+		styleClass="#{styleClass} jsfone-input-checkbox jsfone-state-unchecked"
+		onclick="JSFOne.toggleCheckbox('#{clientId}', true)"
+		x:passThruWithExclusions="id,value,styleClass,style,onclick"/>
+
+4. Implement decode/conversion
+
+  Create src/main/java/com/jsfone/renderkit/SelectBooleanCheckboxRendererBase.java
+  Class should be abstract
+  Class should extend org.ajax4jsf.renderkit.HeaderResourcesRendererBase
+  
+  Template should have baseclass="com.jsfone.renderkit.SelectBooleanCheckboxRendererBase"
+
+InputPhone
+
+1. Generate component project
+
+  mvn archetype:create -DarchetypeGroupId=org.richfaces.cdk -DarchetypeArtifactId=maven-archetype-jsf-component -DarchetypeVersion=3.2.1.GA -DartifactId=inputPhone
+  cd inputPhone
+  mvn cdk:create -Dname=inputPhone
+  ../fix-project.sh
+
+2. Put the styles and scripts in resources
+
+  mkdir -p src/main/resources/com/jsfone/renderkit/html/css
+  cp ../../resources/inputPhone.xcss
+  mkdir -p src/main/resources/com/jsfone/renderkit/html/scripts
+  cp ../../resources/phoneinput.js
+
+3. Prototype the component in the renderer template
+
+	<c:set var="styleClass" value="#{component.attributes['styleClass']}"/>
+	<h:scripts>/com/jsfone/renderkit/html/scripts/phoneinput.js</h:scripts>
+	<h:styles>/com/jsfone/renderkit/html/css/inputPhone.xcss</h:styles>
+	<input id="#{clientId}" name="#{clientId}" type="text" size="3" maxlength="3"
+		onkeypress="JSFOne.PhoneInput.getInstance('#{clientId}').autoTab(this, 3, event);"
+		onselect="JSFOne.PhoneInput.getInstance('#{clientId}').stopAutoTab();"
+		value="#{this:getAreaCode(context, component)}"
+		class="jsfone-input-phone jsfone-input-phone-areacode #{styleClass}"
+		x:passThruWithExclusions="id,name,value,size,maxlength,onkeypress,onselect,styleClass"/>
+	<span class="jsfone-dash">-</span>
+	<input id="#{clientId}_prefix" name="#{clientId}_prefix" type="text" size="3" maxlength="3"
+		onkeypress="JSFOne.PhoneInput.getInstance('#{clientId}').autoTab(this, 3, event);"
+		onselect="JSFOne.PhoneInput.getInstance('#{clientId}').stopAutoTab();"
+		value="#{this:getPrefix(context, component)}"
+		class="jsfone-input-phone jsfone-input-phone-prefix #{styleClass}"
+		x:passThruWithExclusions="id,name,value,size,maxlength,onkeypress,onselect,styleClass"/>
+	<span class="jsfone-dash">-</span>
+	<input id="#{clientId}_line" name="#{clientId}_line" type="text" size="4" maxlength="4"
+		onkeypress="JSFOne.PhoneInput.getInstance('#{clientId}').autoTab(this, 4, event);"
+		onselect="JSFOne.PhoneInput.getInstance('#{clientId}').stopAutoTab();"
+		value="#{this:getLine(context, component)}"
+		class="jsfone-input-phone jsfone-input-phone-line #{styleClass}"
+		x:passThruWithExclusions="id,name,value,size,maxlength,onkeypress,onselect,styleClass"/>
+
+4. Implement helper methods on renderer as well as decode/conversion
+
+  Create src/main/java/com/jsfone/renderkit/InputPhoneRendererBase.java
+  Class should be abstract
+  Class should extend org.ajax4jsf.renderkit.HeaderResourcesRendererBase
+
+  Extend UIInputPhone to handle internal conversion to value holder
+
+  Create src/main/java/com/jsfone/model/Phone.java
+  Create src/main/java/com/jsfone/convert/PhoneConverter.java
+
+  Template should have baseclass="com.jsfone.renderkit.InputPhoneRendererBase"

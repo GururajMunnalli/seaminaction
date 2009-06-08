@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource-config>
+	<!-- Optionally define resource variables here rather than in template -->
+	<!--
+	<resource>
+		<name>iconChecked</name>
+		<path>com/jsfone/renderkit/html/images/checked.gif</path>
+	</resource>
+	<resource>
+		<name>iconUnchecked</name>
+		<path>com/jsfone/renderkit/html/images/unchecked.gif</path>
+	</resource>
+	-->
+</resource-config>
