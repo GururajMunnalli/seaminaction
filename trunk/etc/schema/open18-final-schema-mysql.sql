@@ -13,7 +13,7 @@ CREATE TABLE `FACILITY` (
   `address` varchar(50) default NULL,
   `name` varchar(50) NOT NULL,
   `state` varchar(2) default NULL,
-  `type` varchar(15) NOT NULL,
+  `type` varchar(15) NOT NULL, -- should probably be "membership"
   `country` varchar(30) default NULL,
   `description` text,
   `uri` varchar(255) default NULL,
