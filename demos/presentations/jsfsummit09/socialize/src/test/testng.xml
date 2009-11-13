@@ -3,7 +3,7 @@
 
    <test name="initial-seam">
       <packages>
-         <package name="org.maki.seam.*"/>
+         <package name="com.socialize.*"/>
       </packages>
    </test>
 	
