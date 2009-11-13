@@ -3,8 +3,8 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <groupId>org.maki.basic-settings</groupId>
-    <artifactId>basic-settings</artifactId>
+    <groupId>com.jsfsummit</groupId>
+    <artifactId>jsfsummit-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
@@ -13,13 +13,7 @@
   <artifactId>socialize</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>Socialize: RESTful Seam application</name>
-
-  <scm>
-    <connection>scm:svn:http://maven-additions.googlecode.com/svn/trunk/seam-example</connection>
-    <developerConnection>scm:svn:https://maven-additions.googlecode.com/svn/trunk/seam-example</developerConnection>
-    <url>http://code.google.com/p/maven-additions/source/browse/trunk/seam-example</url>
-  </scm>
+  <name>Socialize: A RESTful Seam application</name>
 
   <build>
     <testResources>
@@ -70,7 +64,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.maki.seam</groupId>
+      <groupId>com.jsfsummit</groupId>
       <artifactId>seam-dependencies</artifactId>
       <version>1.0-SNAPSHOT</version>
       <type>pom</type>
