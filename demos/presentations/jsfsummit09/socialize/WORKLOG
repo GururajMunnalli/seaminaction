@@ -1,0 +1,5 @@
+TODO:
+----
+= test to demo CRUD
+= Basic Auth (protected user, etc)
+= alt client, such as Android (client for read/write)
