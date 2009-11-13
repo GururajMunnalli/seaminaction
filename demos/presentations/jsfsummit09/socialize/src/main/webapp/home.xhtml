@@ -5,9 +5,22 @@
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:f="http://java.sun.com/jsf/core">
    <head>
-      <title>Welcome</title>
+      <title>Socialize: A Seam RESTEasy Demo</title>
    </head>
    <body>
-      <h1>Welcome</h1>
+      <h1>Welcome to Socialize</h1>
+      <p>
+        Click on one of the URLs below to access a REST resource.
+      </p>
+      <ul>
+         <li><a href="#{request.contextPath}/seam/resource/rest/timeline">Public timeline (All)</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/timeline?count=2">Public timeline (1 - 2)</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/timeline/mojavelinux">Public timeline (mojavelinux)</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/users">Users (All)</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/users?show=1">First User</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/users?show=1&amp;start=1">Second User</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/users/1">First User (by id)</a></li>
+         <li><a href="#{request.contextPath}/seam/resource/rest/user.vcf?screen_name=mojavelinux">mojavelinux (vcard)</a></li>
+      </ul>
    </body>
 </html>
