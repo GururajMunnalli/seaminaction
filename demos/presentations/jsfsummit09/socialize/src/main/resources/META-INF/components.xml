@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<components xmlns="http://jboss.com/products/seam/components"
+   xmlns:core="http://jboss.com/products/seam/core"
+   xmlns:framework="http://jboss.com/products/seam/framework"
+   xmlns:persistence="http://jboss.com/products/seam/persistence"
+   xmlns:resteasy="http://jboss.com/products/seam/resteasy"
+   xmlns:security="http://jboss.com/products/seam/security"
+   xmlns:transaction="http://jboss.com/products/seam/transaction"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+      http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
+      http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+      http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
+      http://jboss.com/products/seam/resteasy http://jboss.com/products/seam/resteasy-2.2.xsd
+      http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+      http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd">
+
+   <core:init debug="true"/>
+
+   <core:manager conversation-timeout="300000"/>
+
+   <factory name="authenticator" value="#{org.maki.seam.extensions.authenticator}"/>
+
+   <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
+
+   <persistence:entity-manager-factory name="entityManagerFactory" persistence-unit-name="project-database"/>
+
+   <persistence:managed-persistence-context name="entityManager" entity-manager-factory="#{entityManagerFactory}" auto-create="true"/>
+
+   <transaction:entity-transaction entity-manager="#{entityManager}"/>
+
+   <resteasy:application>
+      <resteasy:media-type-mappings>
+         <key>xml</key><value>application/xml</value>
+         <key>json</key><value>application/json</value>
+         <key>vcf</key><value>text/x-vCard</value>
+      </resteasy:media-type-mappings>
+   </resteasy:application>
+
+   <framework:entity-home name="userHome" entity-class="com.socialize.model.User"/>
+
+   <resteasy:resource-home name="userResourceHome" path="/users" entity-home="#{userHome}" entity-id-class="java.lang.Long" media-types="application/xml application/json" readonly="false"/>
+
+   <resteasy:resource-query name="userResourceQuery" path="/users" entity-class="com.socialize.model.User" media-types="application/xml application/json"/>
+
+</components>

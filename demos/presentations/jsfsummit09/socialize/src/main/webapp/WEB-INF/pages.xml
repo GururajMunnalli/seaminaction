@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+      http://jboss.com/products/seam/pages 
+      http://jboss.com/products/seam/pages-2-1.0.xsd"
+   login-view-id="/home.xhtml"
+   no-conversation-view-id="/home.xhtml">
+
+   <!-- If you try to access a page that requires you to login, you'll be
+          redirected to the "home" page -->
+   <exception class="org.jboss.seam.security.NotLoggedInException"> 
+      <redirect view-id="/home.xhtml">
+         <message severity="warn">Please login first</message> 
+      </redirect> 
+   </exception> 
+
+   <!-- We should support content type (if JSON is being served, then we can have a JSON response) -->
+   <exception class="com.socialize.NoSuchUserException"> 
+      <http-error error-code="404">
+         <message>No such user</message>
+      </http-error>
+   </exception> 
+
+</pages>
