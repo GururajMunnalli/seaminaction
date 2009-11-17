@@ -6,70 +6,83 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement(name = "update")
 public class Update implements Serializable
 {
-   private Long id;
-   
-   private User user;
-   
-   private Date created;
-   
-   private String text;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-   public Update() {}
-   
-   public Update(long id, User user, String text) {
-      this.id = id;
-      this.user = user;
-      this.text = text;
-      this.created = new Date();
-   }
-   
-   @Id @GeneratedValue
-   public Long getId()
-   {
-      return id;
-   }
+    @OneToOne
+    private User user;
 
-   public void setId(Long id)
-   {
-      this.id = id;
-   }
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
 
-   @ManyToOne(fetch = FetchType.EAGER)
-   @JoinColumn(name = "USER_ID", nullable = false)
-   public User getUser() {
-      return this.user;
-   }
-   
-   public void setUser(User user) {
-      this.user = user;
-   }
+    private String text;
 
-   public Date getCreated()
-   {
-      return created;
-   }
+    public Update()
+    {}
 
-   public void setCreated(Date created)
-   {
-      this.created = created;
-   }
+    public Update(final long id, final User user, final String text)
+    {
+        this.id = id;
+        this.user = user;
+        this.text = text;
+        created = new Date();
+    }
 
-   public String getText()
-   {
-      return text;
-   }
+    @Id
+    @GeneratedValue
+    public Long getId()
+    {
+        return id;
+    }
 
-   public void setText(String text)
-   {
-      this.text = text;
-   }
+    public void setId(final Long id)
+    {
+        this.id = id;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "USER_ID", nullable = false)
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(final User user)
+    {
+        this.user = user;
+    }
+
+    public Date getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated(final Date created)
+    {
+        this.created = created;
+    }
+
+    public String getText()
+    {
+        return text;
+    }
+
+    public void setText(final String text)
+    {
+        this.text = text;
+    }
 }

@@ -3,73 +3,77 @@ package com.socialize.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = "screen_name"))
+// @Table(uniqueConstraints = @UniqueConstraint(columnNames = "screen_name"))
 @XmlRootElement(name = "user")
+@NamedQueries( { @NamedQuery(name = "user.bySName", query = "from User where screenName = :sn") })
 public class User
 {
-   private Long id;
-   
-   private String screenName;
-   
-   private String name;
-   
-   private String location;
-   
-   private String url;
+    private Long id;
 
-   @Id @GeneratedValue
-   public Long getId()
-   {
-      return id;
-   }
+    private String screenName;
 
-   public void setId(Long id)
-   {
-      this.id = id;
-   }
+    private String name;
 
-   @XmlElement(name = "screen_name")
-   public String getScreenName()
-   {
-      return screenName;
-   }
+    private String location;
 
-   public void setScreenName(String screenName)
-   {
-      this.screenName = screenName;
-   }
+    private String url;
 
-   public String getName()
-   {
-      return name;
-   }
+    @Id
+    @GeneratedValue
+    public Long getId()
+    {
+        return id;
+    }
 
-   public void setName(String name)
-   {
-      this.name = name;
-   }
+    public void setId(final Long id)
+    {
+        this.id = id;
+    }
 
-   public String getLocation()
-   {
-      return location;
-   }
+    @XmlElement(name = "screen_name")
+    public String getScreenName()
+    {
+        return screenName;
+    }
 
-   public void setLocation(String location)
-   {
-      this.location = location;
-   }
+    public void setScreenName(final String screenName)
+    {
+        this.screenName = screenName;
+    }
 
-   public String getUrl()
-   {
-      return url;
-   }
+    public String getName()
+    {
+        return name;
+    }
 
-   public void setUrl(String url)
-   {
-      this.url = url;
-   }
+    public void setName(final String name)
+    {
+        this.name = name;
+    }
+
+    public String getLocation()
+    {
+        return location;
+    }
+
+    public void setLocation(final String location)
+    {
+        this.location = location;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public void setUrl(final String url)
+    {
+        this.url = url;
+    }
 }
