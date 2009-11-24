@@ -63,8 +63,10 @@ public class TimelineService
 
     @POST
     @Consumes( { MediaType.TEXT_PLAIN })
+    @Produces( { MediaType.TEXT_PLAIN })
     @Path("/{screenName}")
-    public long updateUserStatus(@PathParam("screenName") final String screenName, final String status)
+    public long updateUserStatus(@PathParam("screenName") final String screenName,
+            @QueryParam("status") final String status)
     {
         if (!("mojavelinux".equals(screenName) || "lincolnthree".equals(screenName)))
         {
