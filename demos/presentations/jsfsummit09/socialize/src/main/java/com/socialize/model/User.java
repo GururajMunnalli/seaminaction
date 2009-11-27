@@ -3,15 +3,12 @@ package com.socialize.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 // @Table(uniqueConstraints = @UniqueConstraint(columnNames = "screen_name"))
 @XmlRootElement(name = "user")
-@NamedQueries( { @NamedQuery(name = "user.bySName", query = "from User where screenName = :sn") })
 public class User
 {
     private Long id;
