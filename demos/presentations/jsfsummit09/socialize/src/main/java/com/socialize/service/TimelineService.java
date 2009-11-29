@@ -38,7 +38,7 @@ public class TimelineService
     public Timeline getUpdates(@QueryParam("count") @DefaultValue(COUNT_DEFAULT) final int count)
     {
         @SuppressWarnings("unchecked")
-        List<Update> updates = entityManager.createQuery("select u from Update u order by u.created desc")
+        List<Update> updates = entityManager.createQuery("select u from Update u order by u.created asc")
                 .setMaxResults(Math.min(count, MAX_COUNT_ALLOWED)).getResultList();
         return new Timeline(updates);
     }
@@ -56,7 +56,7 @@ public class TimelineService
 
         @SuppressWarnings("unchecked")
         List<Update> updates = entityManager.createQuery(
-                "select u from Update u where u.user.screenName = :screen_name order by u.created desc").setParameter(
+                "select u from Update u where u.user.screenName = :screen_name order by u.created asc").setParameter(
                 "screen_name", screenName).setMaxResults(Math.min(count, MAX_COUNT_ALLOWED)).getResultList();
         return new Timeline(updates);
     }
@@ -70,34 +70,22 @@ public class TimelineService
     {
         try
         {
-            System.out.println("Called update!");
             if (!("mojavelinux".equals(screenName) || "lincolnthree".equals(screenName)))
             {
                 throw new NoSuchUserException(screenName);
             }
 
-            System.out.println("Before query 1");
-
-            @SuppressWarnings("unused")
-            List<Update> updates = entityManager.createQuery(
-                    "select u from Update u where u.user.screenName = :screen_name order by u.created asc")
-                    .setParameter("screen_name", screenName).setMaxResults(Math.min(6, MAX_COUNT_ALLOWED))
-                    .getResultList();
-
-            System.out.println("Before query: " + screenName + " status: " + status);
             User user = null;
             Update u = new Update();
             user = (User) entityManager.createQuery("select u from User u where u.screenName = :sn").setParameter("sn",
                     screenName).getSingleResult();
 
-            System.out.println("Before update");
             u.setUser(user);
             u.setText(status);
             u.setCreated(new Date());
             entityManager.persist(u);
             entityManager.flush();
 
-            System.out.println("Returning from update!");
             return u.getId();
         }
         catch (Exception e)
