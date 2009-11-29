@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jsfsummit.socialize.domain.Status;
+import com.jsfsummit.socialize.service.TimelineService;
 
 public class Display extends Activity
 {
@@ -38,23 +39,39 @@ public class Display extends Activity
         switch (view.getId())
             {
             case R.id.Refresh:
-                feeds.setText(generateText());
-                feeds.setText(ts.getUserStatuses("lincolnthree"));
+                refresh();
                 break;
             case R.id.Send:
-                if (text.getText().toString().length() != 0)
-                {
-                    Status s = new Status(text.getText().toString().trim());
-                    statuses.add(s);
-                    text.setText("");
-                    ts.updateUserStatus("lincolnthree", s.getMessage());
-                }
+                send();
+                refresh();
                 break;
             case R.id.Clear:
-                feeds.setText("");
-                statuses.clear();
+                clear();
                 break;
             }
+    }
+
+    private void clear()
+    {
+        feeds.setText("");
+        statuses.clear();
+    }
+
+    private void send()
+    {
+        if (text.getText().toString().length() != 0)
+        {
+            Status s = new Status(text.getText().toString().trim());
+            statuses.add(s);
+            text.setText("");
+            ts.updateUserStatus("lincolnthree", s);
+        }
+    }
+
+    private void refresh()
+    {
+        statuses = ts.getUserStatuses("lincolnthree");
+        feeds.setText(generateText());
     }
 
     private String generateText()
