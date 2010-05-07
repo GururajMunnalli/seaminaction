@@ -1,0 +1,4 @@
+This directory can be moved to the following source location so that it's put
+into the classpath and thus the resources not exposed via the web root.
+
+src/main/resources/META-INF/resources/jax
