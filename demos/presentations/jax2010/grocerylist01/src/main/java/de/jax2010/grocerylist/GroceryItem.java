@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class GroceryItem implements Serializable
@@ -34,7 +33,6 @@ public class GroceryItem implements Serializable
    }
 
    @NotNull
-   @NotEmpty
    public String getName()
    {
       return name;

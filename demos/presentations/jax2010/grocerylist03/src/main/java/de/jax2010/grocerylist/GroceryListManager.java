@@ -47,7 +47,7 @@ public class GroceryListManager {
    }
 
    public String reset() {
-      em.createQuery("delete GroceryItem").executeUpdate();
+      em.createQuery("delete from GroceryItem").executeUpdate();
       return "home?faces-redirect=true";
    }
 
