@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:jax="http://java.sun.com/jsf/composite/jax"
+   template="/WEB-INF/templates/default.xhtml">
+   
+   <ui:define name="content">
+
+      <h1>Grocery List</h1>
+      <h:panelGroup rendered="#{empty groceryList}">
+         <p><em>No items.</em></p>
+      </h:panelGroup>
+      <h:form id="form" rendered="#{not empty groceryList}">
+         <h:dataTable id="table" var="_item" value="#{groceryList}" styleClass="data">
+            <h:column>
+               <f:facet name="header">Id</f:facet>
+               #{_item.id}
+            </h:column>
+            <h:column>
+               <f:facet name="header">Quantity</f:facet>
+               <div style="text-align: center">
+                  #{_item.quantity}
+               </div>
+            </h:column>
+            <h:column>
+               <f:facet name="header">Name</f:facet>
+               #{_item.name}
+            </h:column>
+            <h:column>
+               <f:facet name="header">Section</f:facet>
+               #{_item.section}
+            </h:column>
+         </h:dataTable>
+      </h:form>
+
+      <h:form rendered="#{not empty groceryList}">
+         <h:commandButton action="#{groceryListManager.reset}" value="Reset"/>
+      </h:form>
+
+      <h2>Add Item</h2>
+      <h:form id="addForm">
+         <h:outputLabel for="quantity" value="Quantity:"/>
+         <h:inputText id="quantity" value="#{newItem.quantity}"/>
+         <br/>
+         <h:outputLabel for="name" value="Name:"/>
+         <h:inputText id="name" value="#{newItem.name}"/>
+         <br/>
+         <h:outputLabel for="section" value="Section:"/>
+         <h:inputText id="section" value="#{newItem.section}"/>
+         <br/>
+         <h:commandButton id="add" action="#{groceryListManager.add(newItem)}" value="Add"/>
+      </h:form>
+   </ui:define>
+
+</ui:composition>

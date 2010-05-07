@@ -1,0 +1,1 @@
+--insert into GroceryItem (id, name, quantity, section) values (1, 'Eggs', 12, 'Dairy')

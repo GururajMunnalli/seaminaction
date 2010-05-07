@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:cc="http://java.sun.com/jsf/composite">
+   <cc:interface>
+      <cc:attribute name="label" required="false"/>
+      <cc:attribute name="required" required="false" default="true"/>
+   </cc:interface>
+
+   <cc:implementation>
+      <f:event type="preRenderComponent" listener="#{inputFieldProcessor.preRender}"/>
+
+      <div class="entry" id="#{cc.clientId}">
+         <h:outputLabel value="#{cc.attrs.label}:" for="input"
+               styleClass="#{cc.attrs.invalid ? 'label errors' : 'label'}">
+            <h:panelGroup styleClass="required" rendered="#{cc.attrs.required}">*</h:panelGroup>
+         </h:outputLabel>
+         <span class="#{cc.attrs.invalid ? 'input errors' : 'input'}">
+            <cc:insertChildren/>
+         </span>
+         <h:message for="input" styleClass="error errors" rendered="#{cc.attrs.invalid}"/>
+      </div>
+
+   </cc:implementation>
+</ui:composition>

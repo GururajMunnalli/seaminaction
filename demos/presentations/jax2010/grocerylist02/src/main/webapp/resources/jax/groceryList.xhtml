@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:cc="http://java.sun.com/jsf/composite">
+   <cc:interface>
+      <cc:attribute name="model" required="true"/>
+      <cc:attribute name="debug" required="false" default="false"/>
+   </cc:interface>
+   <cc:implementation>
+      <h:panelGroup rendered="#{empty cc.attrs.model}">
+         <p><em>No items.</em></p>
+      </h:panelGroup>
+      <h:form id="form" rendered="#{not empty cc.attrs.model}">
+         <h:dataTable id="table" var="_item" value="#{cc.attrs.model}" styleClass="data">
+            <h:column rendered="#{cc.attrs.debug}">
+               <f:facet name="header">Id</f:facet>
+               #{_item.id}
+            </h:column>
+            <h:column>
+               <f:facet name="header">Quantity</f:facet>
+               <div style="text-align: center">
+                  #{_item.quantity}
+               </div>
+            </h:column>
+            <h:column>
+               <f:facet name="header">Name</f:facet>
+               #{_item.name}
+            </h:column>
+            <h:column>
+               <f:facet name="header">Section</f:facet>
+               #{_item.section}
+            </h:column>
+         </h:dataTable>
+      </h:form>
+   </cc:implementation>
+</ui:composition>

@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:cc="http://java.sun.com/jsf/composite">
+   <cc:interface>
+      <cc:attribute name="label" required="true"/>
+      <cc:attribute name="required" required="false" default="true"/>
+   </cc:interface>
+
+   <cc:implementation>
+      <c:set var="labelOrDefault" value="#{empty cc.attrs.label ? cc.id.substring(0, 1).toUpperCase().concat(cc.id.substring(1)) : cc.attrs.label}"/>
+      <c:set var="invalid" value="#{not empty facesContext.getMessageList(cc.clientId.concat(':input'))}"/>
+
+      <div class="entry" id="#{cc.clientId}">
+         <h:outputLabel value="#{labelOrDefault}:" for="input"
+               styleClass="#{invalid ? 'label errors' : 'label'}">
+            <c:if test="#{cc.attrs.required}"><span class="required">*</span></c:if>
+         </h:outputLabel>
+         <span class="#{invalid ? 'input errors' : 'input'}">
+            <cc:insertChildren/>
+         </span>
+         <h:message for="input" styleClass="error errors" rendered="#{invalid}"/>
+      </div>
+
+   </cc:implementation>
+</ui:composition>
