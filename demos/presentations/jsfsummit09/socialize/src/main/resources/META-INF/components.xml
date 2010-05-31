@@ -11,6 +11,7 @@
       http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
       http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
       http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.2.xsd
+      http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.2.xsd
       http://jboss.com/products/seam/resteasy http://jboss.com/products/seam/resteasy-2.2.xsd
       http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
       http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd">
@@ -39,8 +40,16 @@
 
    <framework:entity-home name="userHome" entity-class="com.socialize.model.User"/>
 
-   <resteasy:resource-home name="userResourceHome" path="/users" entity-home="#{userHome}" entity-id-class="java.lang.Long" media-types="application/xml application/json" readonly="false"/>
+   <resteasy:resource-home name="userResourceHome"
+      path="/users"
+      entity-home="#{userHome}"
+      entity-id-class="java.lang.Long"
+      media-types="application/xml application/json text/x-vCard"
+      readonly="false"/>
 
-   <resteasy:resource-query name="userResourceQuery" path="/users" entity-class="com.socialize.model.User" media-types="application/xml application/json"/>
+   <resteasy:resource-query name="userResourceQuery"
+      path="/users"
+      entity-class="com.socialize.model.User"
+      media-types="application/xml application/json"/>
 
 </components>
