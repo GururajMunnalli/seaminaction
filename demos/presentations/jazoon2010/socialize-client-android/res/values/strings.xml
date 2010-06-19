@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Socialize!</string>
+    <string name="app_name">Socialize</string>
+    <color name="background">#000000</color>
+    <string name="server_addr">172.20.32.124</string>
+<string name="username">Username</string>
+<string name="status">What's the latest?</string>
+</resources>

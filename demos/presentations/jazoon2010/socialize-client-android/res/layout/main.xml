@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/background">
+     
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/hello"
+		android:gravity="center_vertical|center_horizontal"
+		android:textColor="#666666" />
+	<TextView 
+         android:id="@+id/username_lbl"
+         android:text="@string/username"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"></TextView>
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"></EditText>
+    <TextView 
+         android:id="@+id/status_lbl"
+         android:text="@string/status"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"></TextView>
+    <EditText
+		android:id="@+id/input"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"></EditText>
+	<LinearLayout
+		android:id="@+id/LinearLayout02"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+		<Button
+			android:text="Clear"
+			android:id="@+id/Clear"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:onClick="myClickHandler"></Button>
+		<Button
+			android:text="Refresh"
+			android:id="@+id/Refresh"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:onClick="myClickHandler"></Button>
+		<Button
+			android:text="Send"
+			android:id="@+id/Send"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:onClick="myClickHandler"></Button>
+	</LinearLayout>
+	<View
+		android:layout_width="fill_parent"
+		android:layout_height="2dip"
+		android:background="#666666" />
+	<TextView
+		android:layout_width="fill_parent"
+		android:id="@+id/feeds"
+		android:layout_height="wrap_content"
+		android:gravity="left"
+		android:textColor="#ffffff" />
+
+
+
+</LinearLayout>

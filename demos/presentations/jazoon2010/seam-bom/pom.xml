@@ -1,0 +1,205 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+   <parent>
+      <groupId>com.mojavelinux</groupId>
+      <artifactId>demos-parent</artifactId>
+      <version>1.0-SNAPSHOT</version>
+   </parent>
+
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>com.mojavelinux</groupId>
+   <artifactId>seam2-bom</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>pom</packaging>
+   <name>Seam 2 dependencies POM</name>
+   <url>http://code.google.com/p/seaminaction</url>
+
+   <issueManagement>
+      <system>GoogleCode</system>
+      <url>http://code.google.com/p/seaminaction/issues/list</url>
+   </issueManagement>
+
+   <developers>
+      <developer>
+         <id>dan.j.allen</id>
+         <name>Dan Allen</name>
+         <email>dan.j.allen@gmail.com</email>
+         <timezone>-5</timezone>
+      </developer>
+      <developer>
+         <id>lincolnbaxter</id>
+         <name>Lincoln Baxter, III</name>
+         <email>lincolnbaxter@ocpsoft.com</email>
+         <timezone>-5</timezone>
+      </developer>
+      <developer>
+         <id>cmaki</id>
+         <name>Chris Maki</name>
+         <email>chrismaki@mac.com</email>
+         <timezone>-7</timezone>
+      </developer>
+   </developers>
+   
+   <dependencies>
+      <!-- the following dependencies are added to address some issues in Seam pom files -->
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
+         <version>2.5</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>javax.el</groupId>
+         <artifactId>el-api</artifactId>
+         <scope>provided</scope>
+         <version>1.0</version>
+      </dependency>
+
+      <!-- dependencies used by the project -->
+      <dependency>
+         <groupId>commons-logging</groupId>
+         <artifactId>commons-logging</artifactId>
+         <version>1.1.1</version>
+      </dependency>
+      <dependency>
+         <groupId>commons-collections</groupId>
+         <artifactId>commons-collections</artifactId>
+         <version>3.2</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.el</groupId>
+         <artifactId>jboss-el</artifactId>
+         <version>${jboss.el.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam</groupId>
+         <artifactId>jboss-seam</artifactId>
+         <version>${seam.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam</groupId>
+         <artifactId>jboss-seam-resteasy</artifactId>
+         <version>${seam.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam</groupId>
+         <artifactId>jboss-seam-ui</artifactId>
+         <version>${seam.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.seam</groupId>
+         <artifactId>jboss-seam-debug</artifactId>
+         <version>${seam.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.sun.facelets</groupId>
+         <artifactId>jsf-facelets</artifactId>
+         <version>1.1.15.B1</version>
+      </dependency>
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-api</artifactId>
+         <version>1.2_12</version>
+      </dependency>
+      <dependency>
+         <groupId>javax.faces</groupId>
+         <artifactId>jsf-impl</artifactId>
+         <version>1.2_12</version>
+      </dependency>
+      <dependency>
+         <groupId>org.richfaces.framework</groupId>
+         <artifactId>richfaces-api</artifactId>
+         <version>${richfaces.version}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>junit</groupId>
+               <artifactId>junit</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.richfaces.framework</groupId>
+         <artifactId>richfaces-impl</artifactId>
+         <version>${richfaces.version}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>junit</groupId>
+               <artifactId>junit</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.richfaces.ui</groupId>
+         <artifactId>richfaces-ui</artifactId>
+         <version>${richfaces.version}</version>
+         <exclusions>
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+            </exclusion>
+         </exclusions>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-core</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-validator</artifactId>
+         <version>${hibernate.validator.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-annotations</artifactId>
+         <version>${hibernate.annotations.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-entitymanager</artifactId>
+         <version>${hibernate.entitymanager.version}</version>
+      </dependency>
+      <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>${hibernate.search.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>log4j</artifactId>
+         <version>1.2.14</version>
+      </dependency>
+
+      <!-- seam unit testing requirements -->
+      <!-- this is not transitive -->
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <version>5.9</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+
+   <properties>
+      <seam.version>2.2.0.GA</seam.version>
+      <jboss.el.version>1.0_02.CR5</jboss.el.version>
+      <richfaces.version>3.3.1.GA</richfaces.version>
+      <hibernate.version>3.3.1.GA</hibernate.version>
+      <hibernate.validator.version>3.1.0.GA</hibernate.validator.version>
+      <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
+      <hibernate.entitymanager.version>3.4.0.GA</hibernate.entitymanager.version>
+      <hibernate.search.version>3.1.1.GA</hibernate.search.version>
+   </properties>
+
+</project>
