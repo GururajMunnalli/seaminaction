@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jsfsummit.socialize.domain.Status;
-import com.jsfsummit.socialize.service.TimelineService;
+import com.jsfsummit.socialize.service.TimelineClient;
 
 public class Display extends Activity
 {
@@ -20,7 +20,7 @@ public class Display extends Activity
     private TextView feeds;
 
     private List<Status> statuses = new ArrayList<Status>();
-    TimelineService ts = new TimelineService();
+    TimelineClient ts = new TimelineClient(getApplicationContext().getResources().getString(R.string.server_addr));
 
     /** Called when the activity is first created. */
     @Override
@@ -64,13 +64,13 @@ public class Display extends Activity
             Status s = new Status(text.getText().toString().trim());
             statuses.add(s);
             text.setText("");
-            ts.updateUserStatus("lincolnthree", s);
+            ts.updateUserStatus("mojavelinux", s);
         }
     }
 
     private void refresh()
     {
-        statuses = ts.getUserStatuses("lincolnthree");
+        statuses = ts.getUserStatuses("mojavelinux");
         feeds.setText(generateText());
     }
 
